@@ -1,1 +1,7 @@
-*.{aux,pdf,fls,log,out,toc}
+*.aux
+*.fls
+*.log
+*.pdf
+*.fdb_latexmk
+*.synctex.gz
+
