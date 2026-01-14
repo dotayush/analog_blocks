@@ -10,18 +10,37 @@ create higher order filters.
 \begin{center}
   \begin{circuitikz}
     % Paths, nodes and wires:
-  	\draw (9, 7.75) to[american voltage source, l={$V_{cc}$}] (9, 6.5);
-  	\node[ground] at (9, 6.5){};
-  	\draw (10.75, 5.5) to[european resistor, l={$G_1$}] (10.75, 4);
-  	\draw (10.75, 7.5) to[capacitor, l={$C_1$}] (10.75, 6.25);
-  	\draw (9, 7.75) -| (9, 8) -- (10.25, 8);
-  	\draw (10.75, 5.75) -- (11.75, 5.75);
-  	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N1) at (12.25, 5.75){} node[anchor=center] at (N1.text){$V_{out}$};
-  	\draw (9, 3.75) to[american voltage source, l_={$V_{ee}$}] (9, 5);
-  	\node[ground, xscale=-1, yscale=-1] at (9, 5){};
-  	\draw (10.25, 8) -| (10.75, 7.5);
-  	\draw (10.75, 6.25) |- (10.75, 5.5);
-  	\draw (10.75, 4.25) -| (10.75, 3.5) -- (9, 3.5) -| (9, 3.75);
+	  \draw (5.5, 5.25) to[american voltage source, l_={$V_{ee}$}] (5.5, 6.5);
+	  \node[ground] at (5.5, 8){};
+	  \node[ground, xscale=-1, yscale=-1] at (5.5, 6.5){};
+	  \draw (7, 6.75) to[european resistor, l={$G_1$}] (7, 5.25);
+	  \draw (7, 9.25) to[capacitor, l={$C_1$}] (7, 7.75);
+	  \draw (7, 7.75) -- (7, 6.75);
+	  \draw (7, 5.25) -| (7, 5);
+	  \draw (5.5, 5) -- (7, 5);
+	  \draw (5.5, 5) -| (5.5, 5.25);
+	  \draw (5.5, 9.25) -| (5.5, 9.5);
+	  \draw (5.5, 9.5) -- (7, 9.5);
+	  \draw (7, 9.5) -| (7, 9.25);
+	  \draw (7, 7.25) -- (7.75, 7.25);
+	  \draw (5.5, 8) to[sinusoidal voltage source, l_={$V_{in}$}] (5.5, 9.25);
+	  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N1) at (8.25, 7.25){} node[anchor=center] at (N1.text){$V_{out}$};
+	  \node[ground] at (9.5, 8){};
+	  \node[ground, xscale=-1, yscale=-1] at (9.5, 5.25){};
+	  \draw (11, 6.75) to[european resistor, l={$G_1$}] (11, 5.25);
+	  \draw (11, 9.25) to[capacitor, l={$C_1$}] (11, 7.75);
+	  \draw (11, 7.75) -- (11, 6.75);
+	  \draw (11, 5.25) -| (11, 5);
+	  \draw (9.5, 5) -- (11, 5);
+	  \draw (9.5, 5) -| (9.5, 5.25);
+	  \draw (9.5, 9.25) -| (9.5, 9.5);
+	  \draw (9.5, 9.5) -- (11, 9.5);
+	  \draw (11, 9.5) -| (11, 9.25);
+	  \draw (11, 7.25) -- (11.75, 7.25);
+	  \draw (9.5, 8) to[sinusoidal voltage source, l_={$V_{in}$}] (9.5, 9.25);
+	  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N2) at (12.25, 7.25){} node[anchor=center] at (N2.text){$V_{out}$};
+	  \node[shape=rectangle, minimum width=3.215cm, minimum height=0.465cm] at (6.125, 4.25){} node[anchor=north, align=center, text width=2.827cm, inner sep=6pt] at (6.125, 4.5){Circuit Schematic};
+	  \node[shape=rectangle, minimum width=2.715cm, minimum height=0.465cm] at (10.375, 4.25){} node[anchor=north, align=center, text width=2.327cm, inner sep=6pt] at (10.375, 4.5){Small-Signal\\Schematic};
   \end{circuitikz}
 \end{center}
 
@@ -30,48 +49,78 @@ create higher order filters.
 Applying KCL at $V_{out}$, we get:
 \begin{equation}
   \begin{aligned}
-    (V_{out} - V_{cc})sC_1 + (V_{out} - V_{ee}){G_1} &= 0 \\
-    V_{out}sC_1 - V_{cc}sC_1 + V_{out}G_1 - V_{ee}G_1 &= 0
+    (V_{out} - V_{in})sC_1 + V_{out}{G_1} &= 0 \\
+    V_{out}sC_1 - V_{in}sC_1 + V_{out}G_1 &= 0
   \end{aligned}
 \end{equation}
 
 Now! A few important equations can be derived:
 \begin{enumerate}
-  \item Transfer Function: We rearrange KCL for Transfer Function
-    in terms of \(\frac{V_{out}}{V_{cc}}\):
+  \item \textbf{Transfer Function:}
     \begin{align*}
-      V_{out}(sC_1 + G_1) - V_{cc}sC_1 - V_{ee}G_1 &= 0 \\
-      V_{out}(sC_1 + G_1) &= V_{cc}sC_1 + V_{ee}G_1 \\
-      V_{out} &= \frac{V_{cc}sC_1 + V_{ee}G_1}{sC_1 + G_1} \\
-      \boxed{\frac{V_{out}}{V_{cc}} = \frac{V_{cc}sC_1 + V_{ee}G_1}{V_{cc}(sC_1 + G_1)}}
+      V_{out}(sC_1 + G_1) - V_{in}sC_1 &= 0 \\
+      V_{out}(sC_1 + G_1) &= V_{in}sC_1 \\
+      V_{out} &= \frac{V_{in}sC_1}{sC_1 + G_1} \\
+      \boxed{H(s) = \frac{N(s)}{D(s)} = \frac{V_{out}}{V_{in}} = \frac{sC_1}{(sC_1 + G_1)}}
     \end{align*}
-  \item Poles: We can find the poles by setting the denominator
-    of the transfer function to zero:
+  \item \textbf{Poles (\(D(s) = 0\)):}
     \begin{align*}
-      V_{cc}(sC_1 + G_1) &= 0 \\
       sC_1 + G_1 &= 0 \\
       s &= -\frac{G_1}{C_1} \\
-      \text{Complex Pole at } &s = -\frac{1}{R_1 C_1} \\
+      \text{Pole at } &s = -\frac{1}{R_1 C_1} \\
     \end{align*}
-    We can calculate the frequency corresponding to this pole:
+    Frequency corresponding to this pole:
     \begin{align*}
       s &= -2 \pi f_p \\
       -2 \pi f_p &= -\frac{1}{R_1 C_1} \\
       \boxed{f_p = \frac{1}{2 \pi R_1 C_1}}
     \end{align*}
-  \item Input Impedance \(Z_{in}\):
+    A single, first-order, real and negative pole indicates a
+    stable system.
+  \item \textbf{Zeros (\(N(s) = 0\)):}
     \begin{align*}
-      Z_{in} &= \frac{1}{sC_1} + \frac{1}{G_1} \\
-      \boxed{Z_{in} = \frac{1}{sC_1} + R_1}
+      sC_1 &= 0 \\
+      s &= 0 \\
     \end{align*}
-  \item Output Impedance \(Z_{out}\):
+    Frequency corresponding to this zero:
     \begin{align*}
-      Z_{out} &= \frac{1}{sC_1 + G_1} \\
-      Z_{out} &= \frac{1}{sC_1 + \frac{1}{R_1}} \\
-      Z_{out} &= \frac{1}{\frac{sC_1 R_1 + 1}{R_1}} \\
-      Z_{out} &= \frac{R_1}{1 + sC_1 R_1}\frac{1 - sC_1 R_1}{1 - sC_1 R_1} \\
-      Z_{out} &= \frac{R_1(1 - sC_1 R_1)}{1^2 - (sC_1 R_1)^2} \\
-      \boxed{Z_{out} = \frac{R_1(1 - sC_1 R_1)}{1 - (sC_1 R_1)^2}}
+      s &= -2 \pi f_z \\
+      -2 \pi f_z &= 0 \\
+      \boxed{f_z = 0 Hz}
+    \end{align*}
+    A finite zero exists at the origin (DC = 0Hz).
+  \item \textbf{DC Gain (\(A_{DC} = H(0)\)):}
+    \begin{align*}
+      A_{DC} &= \lim_{s \to 0} \frac{sC_1}{sC_1 + G_1} \\
+      A_{DC} &= \frac{0}{0 + G_1} \\
+      \boxed{A_{DC} = 0}
+    \end{align*}
+  \item \textbf{Gain Bandwidth Product (GBW):}
+    \begin{align*}
+      GBW &= A_{DC} \cdot f_p \\
+      &= 0 \cdot \frac{1}{2 \pi R_1 C_1} \\
+      \boxed{GBW = 0}
+    \end{align*}
+  \item \textbf{Input Impedance \(Z_{in}\):}
+     Knowing $G_1 = \frac{1}{R_1}$ and the impedance of a capacitor is
+     $\frac{1}{sC_1}$, we can write:
+     \begin{align*}
+       Z_{in} = \frac{1}{sC_1} + R_1 \\
+       \text{Substituting } s = j \omega &: \\
+       \boxed{Z_{in} = R_1 - j \frac{1}{\omega C_1}}
+     \end{align*}
+  \item \textbf{Output Impedance \(Z_{out}\):}
+    Knowing $G_1 = \frac{1}{R_1}$ and the impedance of a capacitor is
+    $\frac{1}{sC_1}$, we can write:
+    \begin{align*}
+      Z_{out} &= R1 \parallel \frac{1}{sC_1} \\
+      Z_{out} &= \frac{R1 \cdot \frac{1}{sC_1}}{R1 + \frac{1}{sC_1}} \\
+      Z_{out} &= \frac{\frac{R_1}{sC_1}}{\frac{sC_1 R_1 + 1}{sC_1}} \\
+      Z_{out} &= \frac{R_1}{sC_1 R_1 + 1} \\
+      \text{Substituting \(s = j \omega\):} &:\\
+        Z_{out} &= \frac{R_1}{1 + j \omega R_1 C_1} \cdot \frac{1 - j \omega R_1 C_1}{1 - j \omega R_1 C_1} \\
+        Z_{out} &= \frac{R_1 - j \omega R_1^2 C_1}{1 + (\omega R_1 C_1)^2} \\
+        \boxed{Z_{out} = \frac{R_1}{1 + (\omega R_1 C_1)^2} - j \frac{\omega R_1^2 C_1}{1 + (\omega R_1 C_1)^2}}
     \end{align*}
 \end{enumerate}
 
@@ -92,22 +141,15 @@ Also compute the input and output impedances at
     &= 159.15 \Omega \\
     \boxed{R_1 \approx 159 \Omega}
   \end{align*}
-  \item Calculating \(Z_{in}\) at \(f = 75Hz\):
+  \item Calculating \(Z_{in}\) and \(Z_{out}\) at \(f = 75Hz\):
   \begin{align*}
-    s &= j2 \pi f = j2 \pi (75Hz) \approx j471.24 \\
-    Z_{in} &= \frac{1}{sC_1} + R_1 \\
-    &= \frac{1}{j471.24 (1\mu F)} + 159.15 \Omega \\
-    &= -j2122.06 + 159.15 \\
-    \boxed{Z_{in} \approx 159.15 - j2122.06 \Omega}
-  \end{align*}
-  \item Calculating \(Z_{out}\) at \(f = 75Hz\):
-  \begin{align*}
-    Z_{out} &= \frac{R_1(1 - sC_1 R_1)}{1 - (sC_1 R_1)^2} \\
-            &= \frac{159.15(1 - j471.24 (1\mu F) 159.15)}{1 - (j471.24 (1\mu F) 159.15)^2} \\
-            &= \frac{159.15(1 - j0.075)}{1 - (-0.075^2)} \\
-            &= \frac{159.15 - j11.94}{1 + 0.005625} \\
-            &= \frac{159.15 - j11.94}{1.005624} \\
-            \boxed{Z_{out} \approx 158.26 - j11.86 \Omega}
+    \omega &= 2 \pi f = 2 \pi (75Hz) = 471.24 \text{ rad/s} \\
+    Z_{in} &= R_1 - j \frac{1}{\omega C_1} \\
+           &= 159 \Omega - j \frac{1}{(471.24)(1\mu F)} \\
+           &\approx 159 \Omega - j 2123.72 \Omega \\
+    Z_{out} &= \frac{R_1}{1 + (\omega R_1 C_1)^2} - j \frac{\omega R_1^2 C_1}{1 + (\omega R_1 C_1)^2} \\
+            &= \frac{159 \Omega}{1 + (471.24 \cdot 159 \Omega \cdot 1\mu F)^2} - j \frac{(471.24)(159 \Omega)^2 (1\mu F)}{1 + (471.24 \cdot 159 \Omega \cdot 1\mu F)^2} \\
+            &\approx 153.96 \Omega - j 11.52 \Omega
   \end{align*}
 \end{enumerate}
 
