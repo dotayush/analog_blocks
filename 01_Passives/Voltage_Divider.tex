@@ -1,0 +1,147 @@
+\section{Voltage Divider}
+
+\paragraph{Overview:}
+Constructed from two resistors in series, a voltage
+divider is a simple circuit that turns a large voltage
+into a smaller one.
+
+\paragraph{Schematic:}
+\begin{center}
+  \begin{circuitikz}
+    % Paths, nodes and wires:
+	  \draw (10, 8.25) to[american voltage source, l={$V_{cc}$}] (10, 7);
+	  \draw (11.5, 6.25) to[european resistor, l_={$G_1$}] (11.5, 8);
+	  \draw (11.5, 5.75) to[european resistor, l={$G_2$}] (11.5, 4);
+	  \draw (11.5, 6) -- (12.25, 6);
+	  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N1) at (12.75, 6){} node[anchor=center] at (N1.text){$V_{out}$};
+	  \draw (11.5, 5.75) -| (11.5, 6);
+	  \draw (11.5, 6.25) -| (11.5, 6);
+	  \draw (11.5, 8) -| (11.5, 8.25) -- (10, 8.25);
+	  \draw (11.5, 4) -- (10, 4);
+	  \draw (10, 4) to[american voltage source, l_={$V_{ee}$}] (10, 5.25);
+	  \node[ground] at (10, 7){};
+	  \node[ground, xscale=-1, yscale=-1] at (10, 5.25){};
+  \end{circuitikz}
+\end{center}
+
+\subsection{Transfer Function}
+\raggedright
+Applying KCL at $V_{out}$, we get:
+\begin{equation}
+  \begin{aligned}
+    (V_{out} - V_{cc}){G_1} + (V_{out} - V_{ee}){G_2} &= 0 \\
+    V_{out}G_1 - V_{cc}G_1 + V_{out}G_2 - V_{ee}G_2 &= 0
+  \end{aligned}
+\end{equation}
+
+Now! A few important equations can be derived:
+\begin{enumerate}
+  \item Rearranging KCL for Transfer Function in terms of
+    \(\frac{V_{out}}{V_{cc}}\):
+    \begin{align*}
+      V_{out}(G_1 + G_2) - V_{cc}G_1 - V_{ee}G_2 &= 0 \\
+      V_{out}(G_1 + G_2) &= V_{cc}G_1 + V_{ee}G_2 \\
+      V_{out} &= \frac{V_{cc}G_1 + V_{ee}G_2}{G_1 + G_2} \\
+      V_{out} &= V_{cc} \frac{G_1}{G_1 + G_2} + V_{ee} \frac{G_2}{G_1 + G_2} \\
+      \boxed{\frac{V_{out}}{V_{cc}} = \frac{G_1}{G_1 + G_2} + \frac{V_{ee}}{V_{cc}} \frac{G_2}{G_1 + G_2}}
+    \end{align*}
+  \item Rearranging KCL for Resistor Ratio \(\frac:{R_2}{R_1}:\):
+    \begin{align*}
+      G_1(V_{out} - V_{cc}) - G_2(V_{ee} - V_{out}) &= 0 \\
+      G_1(V_{out} - V_{cc}) &= G_2(V_{ee} - V_{out}) \\
+      \frac{G_1}{G_2} &= \frac{V_{ee} - V_{out}}{V_{out} - V_{cc}} \\
+      \hspace{1cm} \text{Substituting } G_1 = \frac{1}{R_1} \text{ and } G_2 = \frac{1}{R_2} \text{ gives:} \hspace{1cm} \\
+      \boxed{\frac{R_2}{R_1} = \frac{V_{ee} - V_{out}}{V_{out} - V_{cc}}}
+    \end{align*}
+  \item Input Impedance \(Z_{in}\):
+    \begin{align*}
+      Z_{in} &= \frac{1}{G_1} + \frac{1}{G_2} \\
+      \boxed{Z_{in} = R_1 + R_2}
+    \end{align*}
+  \item Output Impedance \(Z_{out}\):
+    \begin{align*}
+      Z_{out} &= \frac{1}{G_1 + G_2} \\
+      Z_{out} &= \frac{1}{\frac{1}{R_1} + \frac{1}{R_2}} \\
+      Z_{out} &= \frac{1}{\frac{R_1 + R_2}{R_1 R_2}} \\
+      \boxed{Z_{out} = \frac{R_1 R_2}{R_1 + R_2}}
+    \end{align*}
+\end{enumerate}
+
+\subsection{Example Design}
+
+\paragraph{Question:}
+Design a voltage divider to step down a \(10V\) supply
+to \(3.3V\). Calculate the input and output impedances
+of the voltage divider.
+
+\paragraph{Solution:}
+\begin{enumerate}
+  \item Calculating the resistor ratio \(\frac{R_2}{R_1}\):
+    \begin{align*}
+      \frac{R_2}{R_1} &= \frac{V_{ee} - V_{out}}{V_{out} - V_{cc}} \\
+      &= \frac{0V - 3.3V}{3.3V - 10V} \\
+      &= \frac{-3.3V}{-6.7V} \\
+    \frac{R_2}{R_1} &\approx 0.4925
+    \end{align*}
+  \item Fixing \(R_2 = 10 k\Omega\) (a standard value) and calculating
+    \(R_1\):
+    \begin{align*}
+      R_1 &= \frac{R_2}{0.4925} \\
+      &= \frac{10 k\Omega}{0.4925} \\
+      R_1 &\approx 20.3 k\Omega
+    \end{align*}
+  \item Calculating Input and Output Impedances:
+    \[
+        \begin{aligned}
+        Z_{in} &= R_1 + R_2 \\
+        &= 20.3 k\Omega + 10 k\Omega \\
+        Z_{in} &\approx 30.3 k\Omega
+        \end{aligned}
+      \]
+      \[
+        \begin{aligned}
+          Z_{out} &= \frac{R_1 R_2}{R_1 + R_2} \\
+          Z_{out} &= \frac{(20.3 k\Omega)(10 k\Omega)}{20.3 k\Omega + 10 k\Omega} \\
+          Z_{out} &\approx 6.77 k\Omega
+        \end{aligned}
+      \]
+\end{enumerate}
+
+\subsection{Non-Idealities}
+\begin{itemize}
+  \item \textbf{Component Tolerances:} Refer to \ref{sec:theory_general_tolerances}.
+  \item \textbf{Parasitics:} Refer to \ref{sec:theory_general_parasitics}.
+  \item \textbf{Loading Effects:} Refer to \ref{sec:theory_general_loading}.
+  \item \textbf{Temperature Dependence:} Resistor values can change with temperature,
+    affecting the output voltage.
+\end{itemize}
+
+\subsection{Applications}
+\begin{itemize}
+  \item \textbf{Voltage Scaling (High-Impedance Loads Only):}
+    Reduces a voltage to a lower level when the next stage draws
+    negligible current.
+    E.g., scaling 12V down to 3.3V for ADC inputs or logic sense pins.
+
+  \item \textbf{Bias Voltage Generation:}
+    Creates a DC operating point for active devices when only a
+    small bias current is required.
+    E.g., base biasing of BJTs, gate biasing of MOSFETs,
+    mid-supply reference for single-supply op-amp circuits.
+
+  \item \textbf{Adjustable Setpoints (Using Potentiometers):}
+    Provides user-adjustable voltages where precision and load
+    current are not critical.
+    E.g., volume controls, comparator thresholds, brightness
+    controls, calibration trim points.
+
+  \item \textbf{Sensor Signal Scaling:}
+    Matches sensor output levels to ADC input ranges when sensor
+    output impedance is low and ADC input impedance is high.
+    E.g., temperature sensors, resistive sensors, potentiometers.
+
+  \item \textbf{Signal Attenuation:}
+    Reduces signal amplitude for measurement or protection.
+    E.g., oscilloscope probes, audio input attenuation networks,
+    safe voltage sensing in test equipment.
+\end{itemize}

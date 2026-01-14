@@ -1,9 +1,12 @@
-\documentclass{article}
+\documentclass[12pt]{book}
 
-% These are only here for the sake of this tutorial.
-\usepackage{amsmath}
-\usepackage{array}
-\usepackage{tabularx}
+% packages
+\usepackage{amsmath, amssymb, array, float}
+\usepackage{tabularx, circuitikz}
+\usepackage[left=1cm, top=2.54cm, bottom=2.54cm, right=1cm]{geometry}
+\ctikzset{bipoles/resistor/height=0.15}
+
+% custom stuff
 \newcolumntype{M}{>{$}X<{$}}
 \newcommand{\lt}{\textbackslash{}lt }
 \newcommand{\lk}{\textbackslash{}lk }
@@ -11,135 +14,24 @@
 \newcommand{\lc}{\textbackslash{}lc }
 \renewcommand{\ll}{\textbackslash{}ll }
 \renewcommand{\le}{\textbackslash{}le }
-% spacing macro
 \newcommand{\spc}{,\:}
 
+% document
 \begin{document}
-\title{Analogica Indica}
+
+\frontmatter
+\title{Handbook of Analog Circuits}
 \author{Ayush Gupta}
 \date{\today}
 \maketitle
+\tableofcontents
 
-\section{Transistors}
-A transistor is a fundamental semiconductor device that finds its use in
-amplification and switching applications. The most widely used transistors
-are Bipolar Junction Transistors (BJT) and Field Effect Transistors (FET).
-All transistors are three terminal devices. The terminals are named
-differently for BJTs and FETs but play similar roles.
-
-\begin{table}[ht]
-  \centering
-    \begin{tabularx}{\textwidth}{|c|X|X|X|} \hline
-      Type & Terminal 1 & Terminal 2 & Terminal 3 \\ \hline
-      BJT & Emitter & Base & Collector \\ \hline
-      FET & Source & Gate & Drain \\ \hline
-    \end{tabularx}
-  \caption{Transistor Terminals}
-\end{table}
-
-The operation of a transistor involves controlling the current flow between
-two terminals (Collector-Emitter for BJT \& Drain-Source for FET) using
-a third terminal (Base for BJT \& Gate for FET). The control mechanism
-differs between BJTs and FETs.
-
-\begin{center}
-  \begin{tabularx}{\textwidth}{|c|X|X|X|} \hline
-    Type & What Controlling & What Controlled & How To \\ \hline
-    BJT & Base & Collector--Emitter & Set Current At Base \\ \hline
-    FET & Gate & Drain-Source & Set Voltage At Gate \\ \hline
-  \end{tabularx}
-\end{center}
-
-\subsection{Modes of Operation}
-All transistors use three modes of operation: Cut-Off, Active and
-Saturation. They can be summarized as follows:
-
-\begin{table}[h]
-  \centering
-    \begin{tabularx}{\textwidth}{|c|X|X|X|} \hline
-      Mode & State & CE/DS Resistance & Application \\ \hline
-      Cut-Off & Off & High & Open-Switch \\ \hline
-      Active & Partially On & Moderate & Amplification \\ \hline
-      Saturation & Fully On & Low & Closed-Switch \\ \hline
-    \end{tabularx}
-  \caption{Modes of Transistor Operation}
-\end{table}
-
-Unfortunately! Due to historical flaws in FET terminology, many texts often
-refer the Active Mode as the Saturation Mode and the Saturation Mode as
-Ohmic/Linear/Triode Mode. \textbf{This can be very confusing at first...
-Please be careful!}
-
-I've intentionally not used the terms N-Channel or P-Channel classifications
-for both BJTs and FETs and Depletion or Enhancement configurations for FETs
-as the mode of operation remains the same regardless of these variations.
-
-\subsection{Governing Equations}
-
-Assuming an N-Channel BJT \& an N-Channel Enhancement FET, the conditions for
-each mode of operation are as follows:
-
-\begin{table}[ht]
-  \centering
-    \begin{tabularx}{\textwidth}{|c|M|M|} \hline
-      Mode & $BJT$ & $FET$\\ \hline
-      Cut-Off & V_{BE} < V_{th} & V_{GS} < V_{th} \\ \hline
-      Active & V_{BE} \geq V_{th} \land V_{CE} > V_{CE(sat)} & V_{GS} \geq V_{th} \land V_{DS} \geq (V_{GS} - V_{th}) \\ \hline
-      Saturation & V_{BE} \geq V_{th} \land V_{CE} \leq V_{CE(sat)} & V_{GS} \geq V_{th} \land V_{DS} < (V_{GS} - V_{th}) \\ \hline
-    \end{tabularx}
-  \caption{Transistor Operating Mode Conditions}
-\end{table}
-
-The Eber-Moll model for BJTs and the Shichman-Hodges model for FETs provide
-a more detailed representation of transistor behavior. The terminal equations
-for each mode of operation are as follows:
-
-\begin{itemize}
-  \item \textbf{Cut-Off Mode:}
-    \begin{itemize}
-      \item BJT $(V_{BE} < V_{th}): I_B \approx 0\spc I_C \approx 0\spc I_E \approx 0$
-      \item FET $(V_{GS} < V_{th}): I_G \approx 0\spc I_D \approx 0\spc I_S \approx 0$
-    \end{itemize}
-  \item \textbf{Active Mode:}
-    \begin{itemize}
-      \item BJT $(V_{BE} \geq V_{th} \land V_{CE} > V_{CE(sat)}): I_C = I_S (e^{V_{BE}/V_T} - 1)\spc I_C = \beta I_B\spc I_E = I_B + I_C$
-      \item FET $(V_{GS} \geq V_{th} \land V_{DS} \geq V_{GS}-V_{th}): I_D = k (V_{GS} - V_{th})^2\spc I_G \approx 0\spc I_S = I_D$
-    \end{itemize}
-  \item \textbf{Saturation Mode:}
-    \begin{itemize}
-      \item BJT $(V_{BE} \geq V_{th} \land V_{CE} \leq V_{CE(sat)}): I_C \approx I_{C(sat)}\spc I_E = I_B + I_C$
-      \item FET $(V_{GS} \geq V_{th} \land V_{DS} < V_{GS}-V_{th}): I_D = k[(V_{GS}-V_{th})V_{DS} - V_{DS}^2/2]\spc I_G \approx 0\spc I_S = I_D$
-    \end{itemize}
-\end{itemize}
-
-These are just approximations and the real world current would show slight
-deviations due to various secondary effects (i.e. non-idealities).
-
-\subsection{Physical Structure}
-
-\begin{itemize}
-  \item \textbf{BJT:} Consists of three layers of semiconductor material
-    forming two P-N junctions. The layers are named Emitter, Base and
-    Collector. The Emitter is heavily doped to inject charge carriers
-    efficiently into the Base, which is very thin and lightly doped.
-    The Collector is moderately doped to collect carriers from the Base.
-    \begin{itemize}
-      \item Modelled by coupled P-N diode equations also known as the
-        Eber-Moll model. In Active Mode, It reduces to $I_C = I_S
-        (e^{V_{BE}/V_T} - 1)$ and $I_E = I_B + I_C$ because the Base-Collector
-        junction is reverse biased and can be neglected.
-    \end{itemize}
-  \item \textbf{FET:} Consists of a channel of semiconductor material
-    (N-type for N-Channel FETs) with terminals at either end called
-    Source and Drain. A Gate terminal is placed above the channel,
-    separated by a thin insulating layer (oxide). The Gate voltage
-    controls the conductivity of the channel, allowing current to flow
-    between Source and Drain when a sufficient voltage is applied.
-    \begin{itemize}
-      \item Modelled by the Shichman-Hodges equations. In Active Mode,
-        It reduces to $I_D = k (V_{GS} - V_{th})^2$ because the channel
-        is pinched off near the Drain and the current saturates.
-    \end{itemize}
-\end{itemize}
+\mainmatter
+\include{00_Introduction/Introduction}
+\include{01_Passives/Passives}
+\include{02_Filters/Filters}
+\include{03_Current_Mirrors/Current_Mirrors}
+\include{04_Amplifiers/Amplifiers}
+\include{1X_Theory/Theory}
 
 \end{document}

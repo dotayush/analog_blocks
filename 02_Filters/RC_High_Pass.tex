@@ -1,0 +1,144 @@
+\section{RC High Pass Filter}
+
+\paragraph{Overview:}
+A simple two component circuit that passes high frequency
+signals and attenuates low  frequency signals. It is a
+single pole filter but can be used in multiple stages to
+create higher order filters.
+
+\paragraph{Schematic:}
+\begin{center}
+  \begin{circuitikz}
+    % Paths, nodes and wires:
+  	\draw (9, 7.75) to[american voltage source, l={$V_{cc}$}] (9, 6.5);
+  	\node[ground] at (9, 6.5){};
+  	\draw (10.75, 5.5) to[european resistor, l={$G_1$}] (10.75, 4);
+  	\draw (10.75, 7.5) to[capacitor, l={$C_1$}] (10.75, 6.25);
+  	\draw (9, 7.75) -| (9, 8) -- (10.25, 8);
+  	\draw (10.75, 5.75) -- (11.75, 5.75);
+  	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N1) at (12.25, 5.75){} node[anchor=center] at (N1.text){$V_{out}$};
+  	\draw (9, 3.75) to[american voltage source, l_={$V_{ee}$}] (9, 5);
+  	\node[ground, xscale=-1, yscale=-1] at (9, 5){};
+  	\draw (10.25, 8) -| (10.75, 7.5);
+  	\draw (10.75, 6.25) |- (10.75, 5.5);
+  	\draw (10.75, 4.25) -| (10.75, 3.5) -- (9, 3.5) -| (9, 3.75);
+  \end{circuitikz}
+\end{center}
+
+\subsection{Transfer Function}
+\raggedright
+Applying KCL at $V_{out}$, we get:
+\begin{equation}
+  \begin{aligned}
+    (V_{out} - V_{cc})sC_1 + (V_{out} - V_{ee}){G_1} &= 0 \\
+    V_{out}sC_1 - V_{cc}sC_1 + V_{out}G_1 - V_{ee}G_1 &= 0
+  \end{aligned}
+\end{equation}
+
+Now! A few important equations can be derived:
+\begin{enumerate}
+  \item Transfer Function: We rearrange KCL for Transfer Function
+    in terms of \(\frac{V_{out}}{V_{cc}}\):
+    \begin{align*}
+      V_{out}(sC_1 + G_1) - V_{cc}sC_1 - V_{ee}G_1 &= 0 \\
+      V_{out}(sC_1 + G_1) &= V_{cc}sC_1 + V_{ee}G_1 \\
+      V_{out} &= \frac{V_{cc}sC_1 + V_{ee}G_1}{sC_1 + G_1} \\
+      \boxed{\frac{V_{out}}{V_{cc}} = \frac{V_{cc}sC_1 + V_{ee}G_1}{V_{cc}(sC_1 + G_1)}}
+    \end{align*}
+  \item Poles: We can find the poles by setting the denominator
+    of the transfer function to zero:
+    \begin{align*}
+      V_{cc}(sC_1 + G_1) &= 0 \\
+      sC_1 + G_1 &= 0 \\
+      s &= -\frac{G_1}{C_1} \\
+      \text{Complex Pole at } &s = -\frac{1}{R_1 C_1} \\
+    \end{align*}
+    We can calculate the frequency corresponding to this pole:
+    \begin{align*}
+      s &= -2 \pi f_p \\
+      -2 \pi f_p &= -\frac{1}{R_1 C_1} \\
+      \boxed{f_p = \frac{1}{2 \pi R_1 C_1}}
+    \end{align*}
+  \item Input Impedance \(Z_{in}\):
+    \begin{align*}
+      Z_{in} &= \frac{1}{sC_1} + \frac{1}{G_1} \\
+      \boxed{Z_{in} = \frac{1}{sC_1} + R_1}
+    \end{align*}
+  \item Output Impedance \(Z_{out}\):
+    \begin{align*}
+      Z_{out} &= \frac{1}{sC_1 + G_1} \\
+      Z_{out} &= \frac{1}{sC_1 + \frac{1}{R_1}} \\
+      Z_{out} &= \frac{1}{\frac{sC_1 R_1 + 1}{R_1}} \\
+      Z_{out} &= \frac{R_1}{1 + sC_1 R_1}\frac{1 - sC_1 R_1}{1 - sC_1 R_1} \\
+      Z_{out} &= \frac{R_1(1 - sC_1 R_1)}{1^2 - (sC_1 R_1)^2} \\
+      \boxed{Z_{out} = \frac{R_1(1 - sC_1 R_1)}{1 - (sC_1 R_1)^2}}
+    \end{align*}
+\end{enumerate}
+
+\subsection{Example Design}
+\paragraph{Question:}
+Design a high pass filter with a cutoff frequency of
+\(f_p = 1kHz\) using a capacitor value of \(C_1 = 1\mu F\).
+Also compute the input and output impedances at
+\(f = 75Hz\).
+
+\paragraph{Solution:}
+\begin{enumerate}
+  \item Calculating \(R_1\):
+  \begin{align*}
+    f_p &= \frac{1}{2 \pi R_1 C_1} \\
+    R_1 &= \frac{1}{2 \pi f_p C_1} \\
+    &= \frac{1}{2 \pi (1kHz)(1\mu F)} \\
+    &= 159.15 \Omega \\
+    \boxed{R_1 \approx 159 \Omega}
+  \end{align*}
+  \item Calculating \(Z_{in}\) at \(f = 75Hz\):
+  \begin{align*}
+    s &= j2 \pi f = j2 \pi (75Hz) \approx j471.24 \\
+    Z_{in} &= \frac{1}{sC_1} + R_1 \\
+    &= \frac{1}{j471.24 (1\mu F)} + 159.15 \Omega \\
+    &= -j2122.06 + 159.15 \\
+    \boxed{Z_{in} \approx 159.15 - j2122.06 \Omega}
+  \end{align*}
+  \item Calculating \(Z_{out}\) at \(f = 75Hz\):
+  \begin{align*}
+    Z_{out} &= \frac{R_1(1 - sC_1 R_1)}{1 - (sC_1 R_1)^2} \\
+            &= \frac{159.15(1 - j471.24 (1\mu F) 159.15)}{1 - (j471.24 (1\mu F) 159.15)^2} \\
+            &= \frac{159.15(1 - j0.075)}{1 - (-0.075^2)} \\
+            &= \frac{159.15 - j11.94}{1 + 0.005625} \\
+            &= \frac{159.15 - j11.94}{1.005624} \\
+            \boxed{Z_{out} \approx 158.26 - j11.86 \Omega}
+  \end{align*}
+\end{enumerate}
+
+\subsection{Non-Idealities}
+\begin{itemize}
+  \item \textbf{Component Tolerances:} Refer to \ref{sec:theory_general_tolerances}.
+  \item \textbf{Parasitics:} Refer to \ref{sec:theory_general_parasitics}.
+  \item \textbf{Loading Effects:} Refer to \ref{sec:theory_general_loading}.
+\end{itemize}
+
+\subsection{Applications}
+\begin{itemize}
+  \item \textbf{AC Coupling (DC Blocking):}
+    Removes DC offsets while passing the AC signal.
+    \textit{Used between amplifier stages to prevent bias shift.}
+
+  \item \textbf{Audio Pop and Drift Removal:}
+    Eliminates slow voltage drift and power-on transients that
+    cause clicks or speaker cone offset.
+
+  \item \textbf{Sensor Offset Removal:}
+    Blocks slowly varying offsets in sensors while preserving
+    fast changes.
+    \textit{Example: vibration or motion detection.}
+
+  \item \textbf{Edge and Transient Detection:}
+    Converts sudden changes in voltage into sharp pulses.
+    \textit{Used in timing, triggering, and reset circuits.}
+
+  \item \textbf{Baseline Restoration:}
+    Keeps signal centered around zero by removing accumulated
+    low-frequency components.
+\end{itemize}
+
