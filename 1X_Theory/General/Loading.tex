@@ -29,14 +29,24 @@ and Box 2 will form a voltage divider and the voltage seen at the
 input of Box 2 will drop significantly. This effect is known as
 loading.
 
-Similarly, if the output impedance of Box 2 (\(Z_{out_2}\)) is not
-negligible compared to the input impedance of Box 3 (\(Z_{in_3}\)),
-then Box 2 and Box 3 will also form a voltage divider.
-
-To minimize loading effects, We usually keep $Z_{out_1}$ about 10
-times smaller than $Z_{in_2}$ and $Z_{out_2}$ about 10 times smaller
-than $Z_{in_3}$.
-
-\textbf{This a thumb rule and doesn't apply if you're dealing with
-either Active Circuits, Current Sources, Radio Frequency Circuits
-or some other special cases.}
+\textbf{This a pseudo law and doesn't hold true if you're dealing
+with a few special cases.}
+\begin{enumerate}
+  \item \textbf{In Passive Circuits}, We want to maintain the voltage
+    levels without stages loading each other. Thus, We want the output
+    impedance ofthe driving stage to be very low compared to the input
+    impedance of the load. If Box 2 was a Passive Circuit, We would
+    want $Z_{out_2}$ to be much smaller than $Z_{in_3}$.
+  \item \textbf{In Active Circuits}, Please find What the Input and
+    Output Impedances are for the specific circuit stage you're using
+    or designing and then decide if loading is an issue or not.
+  \item \textbf{In Current Sources}, We want to maintain a constant current
+    regardless of the load. To do this, We want the output impedance
+    of the Current Source to be very high compared to the input
+    impedance of the load. Thus, If Box 2 was a Current Source, We would
+    want $Z_{out_2}$ to be much larger than $Z_{in_3}$.
+  \item \textbf{In RF Circuits}, transmission line effects come into play
+    and we usually want to match impedances to avoid reflections,
+    i.e., $Z_{out_2} = Z_{in_3}$. This is done by placing a matching
+    network between Box 2 and Box 3.
+\end{enumerate}

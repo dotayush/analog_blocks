@@ -24,7 +24,8 @@ capacitance.
 
 \subsection{Resistor Parasitics}
 Below I've shown the model of a real resistor including its
-parasitic elements.
+parasitic elements whose ideal resistance should've been just
+\(R_2\).
 \begin{center}
   \begin{circuitikz}
     % Paths, nodes and wires:
@@ -44,3 +45,18 @@ parasitic elements.
 	  \node[shape=rectangle, draw, line width=3pt, dash pattern={on 3pt off 6pt}, minimum width=3.644cm, minimum height=1.144cm] at (12.75, 7.125){};
   \end{circuitikz}
 \end{center}
+
+The total impedance of the resistor can be calculated as:
+\begin{equation}
+  \begin{aligned}
+    Z_{\text{resistor}} &= (X_{L_1} + R_1 + X_{L_2} + R_2 + X_{L_3} + R_3) \parallel X_{C_{13}} \\
+                        &= ( j\omega L_1 + R_1 + j\omega L_2 + R_2 + j\omega L_3 + R_3) \parallel \frac{1}{j\omega C_{13}} \\
+                        &= (R_1 + R_2 + R_3 + j\omega (L_1 + L_2 + L_3)) \parallel \frac{1}{j\omega C_{13}} \\
+  \end{aligned}
+\end{equation}
+
+Do you see it isn't just $R_2$ anymore? Normally $R_1$, $R_3$,
+$L_1$, $L_2$, $L_3$, and $C_{13}$ are very small compared to
+$R_2$ and can be ignored at low frequencies. However, at high
+frequencies, these parasitics can significantly affect the
+performance of the resistor.
