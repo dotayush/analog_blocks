@@ -1,0 +1,82 @@
+\section{Probability}
+\label{sec:theory_general_probability}
+
+Probability is your best friend when dealing with real-world
+electronic components. All electronic device properties suffer
+from variations. Namely there are two types of variations:
+\begin{enumerate}
+  \item \textbf{Systematic Variations:} These are predictable
+    variations that occur due to known factors in the
+    manufacturing process. For example, if a certain batch of
+    resistors is consistently \(2\%\) higher in resistance due
+    to a calibration error in the manufacturing equipment, this
+    is a systematic variation.
+  \item \textbf{Random Variations:} These are unpredictable
+    variations that occur due to inherent randomness in the
+    manufacturing process. For example, slight differences in
+    material properties or environmental conditions during
+    manufacturing can lead to random variations in component
+    values.
+\end{enumerate}
+It is almost impossible to elimiate variations if you're not making
+the components yourself, but as a designer you can take steps to
+understand and mitigate their impact on your designs.
+
+\subsection{Pre and Post Production}
+Before production, designers use statistical models like Monte Carlo
+simulations to predict how these variations will affect circuit
+performance. After production, manufacturers perform quality control
+tests to ensure that components meet specified tolerances.
+
+In both cases, It is done by analysing a large number of components,
+recording the values for interesting parameters, and analyzing the
+resulting distribution.
+
+\subsection{Available Tools}
+It is common to assume that these variations follow a normal (Gaussian)
+distribution, although this may not always be the case. There are several
+tools available to analyze and interpret these distributions, including:
+\begin{itemize}
+  \item \textbf{Mean (Average):} The mean is the average value
+    of all measured component values. $$\mu = \frac{1}{N} \sum_{i=1}^{N} x_i$$
+    where \(N\) is the total number of measurements and \(x_i\)
+    represents each individual measurement.
+  \item \textbf{Variance (\(\sigma^2\)):} Variance measures how
+    much the component values deviate from the mean. It is
+    calculated as the average of the squared differences from
+    the mean. $$\sigma^2 = \frac{1}{N} \sum_{i=1}^{N} (x_i - \mu)^2$$
+  \item \textbf{Standard Deviation (SD or \(\sigma\)):} The
+    standard deviation is the square root of the variance and
+    provides a measure of the spread of component values around
+    the mean. $$\sigma = \sqrt{\sigma^2}$$
+  \item \textbf{Cumulative Distribution Function (CDF):} The CDF
+    represents the probability that a random variable takes on
+    a value less than or equal to a specific value. It is useful
+    for determining the likelihood of a component falling within
+    a certain range.
+  \item \textbf{Probability Density Function (PDF):} The PDF
+    describes the relative likelihood of a random variable to
+    take on a specific value. It is the derivative of the CDF and
+    provides insights into the distribution of component values.
+\end{itemize}
+
+\subsection{Mitigations}
+For an analog integrated circuit designer, these tricks can help
+mitigate the impact of variations:
+\begin{itemize}
+  \item \textbf{Redundancy:} Use components with fused
+    nets that can be trimmed or adjusted after manufacturing to
+    achieve the desired performance.
+  \item \textbf{Common Centroid Layout:} A common centroid layout
+    technique can help reduce the impact of systematic variations
+    by averaging out the effects across multiple components.
+  \item \textbf{Area Scaling:} M. Pelgrom discovered that many
+    variations decrease as the area of the component increases.
+    This is known as Pelgrom's Law. By increasing the size of
+    components, you can reduce the impact of random variations
+    (by approximately the square root of the area).
+  \item \textbf{Dummy Structures:} Adding dummy structures around
+    critical components can help create a more uniform
+    manufacturing environment, reducing variations caused by
+    edge effects.
+\end{itemize}

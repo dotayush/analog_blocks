@@ -184,29 +184,3 @@ Also compute the input and output impedances at
   \item \textbf{Parasitics:} Refer to \ref{sec:theory_general_parasitics}.
   \item \textbf{Loading Effects:} Refer to \ref{sec:theory_general_loading}.
 \end{itemize}
-
-\subsection{Applications}
-\begin{itemize}
-  \item \textbf{Anti-aliasing before ADCs:}
-    Limits signal bandwidth so that frequency components above
-    the sampling limit do not fold back into the baseband.
-    \textit{Very common in microcontroller analog inputs.}
-
-  \item \textbf{PWM to Analog Conversion:}
-    Converts a pulse-width-modulated digital signal into a smooth
-    DC or slowly varying voltage.
-    \textit{Used in DACs made from GPIO pins.}
-
-  \item \textbf{Power Supply Decoupling:}
-    Reduces high-frequency noise on supply rails caused by
-    switching regulators or digital logic.
-
-  \item \textbf{Sensor Signal Smoothing:}
-    Removes rapid noise from temperature, pressure, or light
-
-
-  \item \textbf{Envelope Detection:}
-    Extracts the slowly varying amplitude of a modulated signal
-    after rectification.
-
-\end{itemize}

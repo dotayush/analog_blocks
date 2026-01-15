@@ -1,30 +1,15 @@
 \section{Tolerances}
 \label{sec:theory_general_tolerances}
 
-In real-world resistors, capacitors, and inductors (and actually
-a lot of other components) cannot be manufactured to their exact
-specified values. This is due to natural imperfections of
-process, material, and environment.
+Suppose you buy 100 resistors all labeled as \(100 \Omega\)
+with a tolerance of \(\pm 5\%\). This means that the actual
+resistance value can vary between \(95 \Omega\) and \(105 \Omega\)
+even though it is labeled as \(100 \Omega\).
 
-To account for this, manufacturers tend to design for a approximate
-value and specify a tolerance range. For example, a resistor
-labeled as \(100 \Omega\) with a tolerance of \(\pm 5\%\)
-means that the actual resistance value can vary between
-\(95 \Omega\) and \(105 \Omega\) even though it is labeled as
-\(100 \Omega\).
+In real-world resistors, capacitors, and inductors (and
+actually a lot of other components) cannot be manufactured to
+their exact specified values. This is due to natural
+imperfections of process, material, and environment.
 
-
-\subsection{Mathematical Tricks}
-A really interesting mathematical trick you can do is measure a
-bunch of 100 \(\Omega\) resistors that all say have a specifed
-\(\pm 5\%\) tolerance. You'll find that the recorded data points
-will follow a normal distribution (bell curve) centered around
-\(100 \Omega\).
-
-Manufacturers use statistical properties like Standard Deviation,
-Cumulative Distribution Function (CDF), and Probability Density
-Function (PDF) to assess the quality of their manufacturing
-process and ensure that most of their components fall within
-the specified tolerance range. This extends not just to resistors
-but also capacitors, inductors, integrated circuits, and many
-other electronic components.
+Refer to \ref{sec:theory_general_probability} on how to deal
+with this as a designer.

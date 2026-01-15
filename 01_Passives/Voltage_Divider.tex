@@ -149,33 +149,3 @@ of the voltage divider.
   \item \textbf{Temperature Dependence:} Resistor values can change with temperature,
     affecting the output voltage.
 \end{itemize}
-
-\subsection{Applications}
-\begin{itemize}
-  \item \textbf{Voltage Scaling (High-Impedance Loads Only):}
-    Reduces a voltage to a lower level when the next stage draws
-    negligible current.
-    E.g., scaling 12V down to 3.3V for ADC inputs or logic sense pins.
-
-  \item \textbf{Bias Voltage Generation:}
-    Creates a DC operating point for active devices when only a
-    small bias current is required.
-    E.g., base biasing of BJTs, gate biasing of MOSFETs,
-    mid-supply reference for single-supply op-amp circuits.
-
-  \item \textbf{Adjustable Setpoints (Using Potentiometers):}
-    Provides user-adjustable voltages where precision and load
-    current are not critical.
-    E.g., volume controls, comparator thresholds, brightness
-    controls, calibration trim points.
-
-  \item \textbf{Sensor Signal Scaling:}
-    Matches sensor output levels to ADC input ranges when sensor
-    output impedance is low and ADC input impedance is high.
-    E.g., temperature sensors, resistive sensors, potentiometers.
-
-  \item \textbf{Signal Attenuation:}
-    Reduces signal amplitude for measurement or protection.
-    E.g., oscilloscope probes, audio input attenuation networks,
-    safe voltage sensing in test equipment.
-\end{itemize}
