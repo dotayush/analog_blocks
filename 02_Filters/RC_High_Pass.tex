@@ -45,83 +45,107 @@ create higher order filters.
 \end{center}
 
 \subsection{Transfer Function}
-\raggedright
-Applying KCL at $V_{out}$, we get:
-\begin{equation}
-  \begin{aligned}
-    (V_{out} - V_{in})sC_1 + V_{out}{G_1} &= 0 \\
-    V_{out}sC_1 - V_{in}sC_1 + V_{out}G_1 &= 0
-  \end{aligned}
-\end{equation}
+Applying KCL at $V_{out}$ on Full Schematic, we get:
+\[
+  (V_{out} - V_{in}){sC_1} + (V_{out} - V_{ee}){G_1} = 0
+\]
 
-Now! A few important equations can be derived:
+\paragraph{Superposition:}
 \begin{enumerate}
-  \item \textbf{Transfer Function:}
+  \item Due to \(V_{in}\) alone (\(V_{ee} = 0V\)):
     \begin{align*}
+      (V_{out} - V_{in}){sC_1} + (V_{out} - 0){G_1} &= 0 \\
+      V_{out}sC_1 - V_{in}sC_1 + V_{out}G_1 &= 0 \\
       V_{out}(sC_1 + G_1) - V_{in}sC_1 &= 0 \\
       V_{out}(sC_1 + G_1) &= V_{in}sC_1 \\
-      V_{out} &= \frac{V_{in}sC_1}{sC_1 + G_1} \\
-      \boxed{H(s) = \frac{N(s)}{D(s)} = \frac{V_{out}}{V_{in}} = \frac{sC_1}{(sC_1 + G_1)}}
+      \boxed{H_1(s) = \frac{N_1(s)}{D_1(s)} = \frac{V_{out_1}}{V_{in}} = \frac{sC_1}{sC_1 + G_1}}
     \end{align*}
-  \item \textbf{Poles (\(D(s) = 0\)):}
+  \item Due to \(V_{ee}\) alone (\(V_{in} = 0V\)):
+    \begin{align*}
+      (V_{out} - 0){sC_1} + (V_{out} - V_{ee}){G_1} &= 0 \\
+      V_{out}sC_1 + V_{out}G_1 - V_{ee}G_1 &= 0 \\
+      V_{out}(sC_1 + G_1) - V_{ee}G_1 &= 0 \\
+      V_{out}(sC_1 + G_1) &= V_{ee}G_1 \\
+      \boxed{H_2(s) = \frac{N_2(s)}{D_2(s)} = \frac{V_{out_2}}{V_{ee}} = \frac{G_1}{sC_1 + G_1}}
+    \end{align*}
+\end{enumerate}
+
+\paragraph{Total Output:}
+\begin{align*}
+  V_{out} &= V_{out_1} + V_{out_2} \\
+  &= H_1(s) V_{in} + H_2(s) V_{ee} \\
+  &= \frac{sC_1}{sC_1 + G_1} V_{in} + \frac{G_1}{sC_1 + G_1} V_{ee}
+\end{align*}
+
+\subsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Poles (\(D(s) = 0\)):} \\
+    For both \(H_1(s)\) and \(H_2(s)\):
     \begin{align*}
       sC_1 + G_1 &= 0 \\
+      sC_1 &= -G_1 \\
       s &= -\frac{G_1}{C_1} \\
-      \text{Pole at } &s = -\frac{1}{R_1 C_1} \\
     \end{align*}
-    Frequency corresponding to this pole:
+    Negative real pole \(\Rightarrow\) stable first-order system. Frequency
+    corresponding to this pole:
     \begin{align*}
       s &= -2 \pi f_p \\
-      -2 \pi f_p &= -\frac{1}{R_1 C_1} \\
-      \boxed{f_p = \frac{1}{2 \pi R_1 C_1}}
+      -2 \pi f_p &= -\frac{G_1}{C_1} \\
+      \boxed{f_p = \frac{G_1}{2 \pi C_1} = \frac{1}{2 \pi R_1 C_1}}
     \end{align*}
-    A single, first-order, real and negative pole indicates a
-    stable system.
-  \item \textbf{Zeros (\(N(s) = 0\)):}
+  \item \textbf{Zeroes (\(N(s) = 0\)):} \\
+    For \(H_1(s)\):
     \begin{align*}
-      sC_1 &= 0 \\
-      s &= 0 \\
+      N_1(s) \quad\rightarrow\quad sC_1 = 0 \\
+      s_z &= 0
     \end{align*}
-    Frequency corresponding to this zero:
+    Zero at the origin for \(H_1(s)\). \\
+    For \(H_2(s)\):
     \begin{align*}
-      s &= -2 \pi f_z \\
-      -2 \pi f_z &= 0 \\
-      \boxed{f_z = 0 Hz}
+      N_2(s) \quad\rightarrow\quad G_1 = 0 \\
+      \text{No finite zeroes.}
     \end{align*}
-    A finite zero exists at the origin (DC = 0Hz).
-  \item \textbf{DC Gain (\(A_{DC} = H(0)\)):}
+    No finite zeroes for \(H_2(s)\).
+  \item \textbf{DC Gain \(A_{DC}\):} \\
+    For \(H_1(s)\):
     \begin{align*}
-      A_{DC} &= \lim_{s \to 0} \frac{sC_1}{sC_1 + G_1} \\
-      A_{DC} &= \frac{0}{0 + G_1} \\
-      \boxed{A_{DC} = 0}
+      H_1(0) &= \frac{0 \cdot C_1}{0 \cdot C_1 + G_1} = 0 \\
+      \boxed{A_{DC_1} = 0 = -\infty dB}
     \end{align*}
+    Gain is zero at DC for \(H_1(s)\). \\
+    For \(H_2(s)\):
+    \begin{align*}
+      H_2(0) &= \frac{G_1}{0 \cdot C_1 + G_1} = 1 \\
+      \boxed{A_{DC_2} = 1 = 0 dB}
+    \end{align*}
+    Gain is unity at DC for \(H_2(s)\).
   \item \textbf{Gain Bandwidth Product (GBW):}
+    We use the DC gain from \(H_1(s)\) since it is
+    the high pass characteristic:
     \begin{align*}
-      GBW &= A_{DC} \cdot f_p \\
-      &= 0 \cdot \frac{1}{2 \pi R_1 C_1} \\
+      GBW &= A_{DC_1} \cdot f_p \\
+          &= 0 \cdot \frac{1}{2 \pi R_1 C_1} \\
       \boxed{GBW = 0}
     \end{align*}
-  \item \textbf{Input Impedance \(Z_{in}\):}
-     Knowing $G_1 = \frac{1}{R_1}$ and the impedance of a capacitor is
-     $\frac{1}{sC_1}$, we can write:
-     \begin{align*}
-       Z_{in} = \frac{1}{sC_1} + R_1 \\
-       \text{Substituting } s = j \omega &: \\
-       \boxed{Z_{in} = R_1 - j \frac{1}{\omega C_1}}
-     \end{align*}
-  \item \textbf{Output Impedance \(Z_{out}\):}
-    Knowing $G_1 = \frac{1}{R_1}$ and the impedance of a capacitor is
-    $\frac{1}{sC_1}$, we can write:
-    \begin{align*}
-      Z_{out} &= R1 \parallel \frac{1}{sC_1} \\
-      Z_{out} &= \frac{R1 \cdot \frac{1}{sC_1}}{R1 + \frac{1}{sC_1}} \\
-      Z_{out} &= \frac{\frac{R_1}{sC_1}}{\frac{sC_1 R_1 + 1}{sC_1}} \\
-      Z_{out} &= \frac{R_1}{sC_1 R_1 + 1} \\
-      \text{Substituting \(s = j \omega\):} &:\\
+  \item \textbf{Impedances:}
+    Substituting \(G_1 = \frac{1}{R_1}\) and \(s = j \omega\):
+    \paragraph{At Input:}
+      \begin{align*}
+        Z_{in} = \frac{1}{sC_1} + R_1 \\
+        \text{Substituting } s = j \omega &: \\
+        \boxed{Z_{in} = R_1 - j \frac{1}{\omega C_1}}
+      \end{align*}
+    \paragraph{At Output:}
+      \begin{align*}
+        Z_{out} &= R1 \parallel \frac{1}{sC_1} \\
+        Z_{out} &= \frac{R1 \cdot \frac{1}{sC_1}}{R1 + \frac{1}{sC_1}} \\
+        Z_{out} &= \frac{\frac{R_1}{sC_1}}{\frac{sC_1 R_1 + 1}{sC_1}} \\
+        Z_{out} &= \frac{R_1}{sC_1 R_1 + 1} \\
+        \text{Substituting } s = j \omega &: \\
         Z_{out} &= \frac{R_1}{1 + j \omega R_1 C_1} \cdot \frac{1 - j \omega R_1 C_1}{1 - j \omega R_1 C_1} \\
         Z_{out} &= \frac{R_1 - j \omega R_1^2 C_1}{1 + (\omega R_1 C_1)^2} \\
-        \boxed{Z_{out} = \frac{R_1}{1 + (\omega R_1 C_1)^2} - j \frac{\omega R_1^2 C_1}{1 + (\omega R_1 C_1)^2}}
-    \end{align*}
+        \boxed{Z_{out} = \frac{R_1}{1 + (\omega R_1 C_1)^2} - j \frac{\omega R_1^2 C_1}{1 + (\omega R_1 C_1)^2}} \
+      \end{align*}
 \end{enumerate}
 
 \subsection{Example Design}
