@@ -1,6 +1,7 @@
 \section{Parasitics}
 \label{sec:theory_general_parasitics}
 
+
 In real-world circuits, components are not ideal and exhibit
 parasitic characteristics that can affect circuit performance.
 You can safely assume everything has some parasitics, and
@@ -49,13 +50,11 @@ parasitic elements whose ideal resistance should've been just
 \end{center}
 
 The total impedance of the resistor can be calculated as:
-\begin{equation}
-  \begin{aligned}
-    Z_{\text{resistor}} &= (X_{L_1} + R_1 + X_{L_2} + R_2 + X_{L_3} + R_3) \parallel X_{C_{13}} \\
-                        &= ( j\omega L_1 + R_1 + j\omega L_2 + R_2 + j\omega L_3 + R_3) \parallel \frac{1}{j\omega C_{13}} \\
-                        &= (R_1 + R_2 + R_3 + j\omega (L_1 + L_2 + L_3)) \parallel \frac{1}{j\omega C_{13}} \\
-  \end{aligned}
-\end{equation}
+\begin{align*}
+  Z_{\text{resistor}} &= (X_{L_1} + R_1 + X_{L_2} + R_2 + X_{L_3} + R_3) \parallel X_{C_{13}} \\
+                      &= ( j\omega L_1 + R_1 + j\omega L_2 + R_2 + j\omega L_3 + R_3) \parallel \frac{1}{j\omega C_{13}} \\
+                      &= (R_1 + R_2 + R_3 + j\omega (L_1 + L_2 + L_3)) \parallel \frac{1}{j\omega C_{13}} \\
+\end{align*}
 
 You can clearly see that even something as simple as a resistor
 isn't truly just a resistor anymore when you consider its

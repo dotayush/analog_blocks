@@ -113,13 +113,13 @@ Applying KCL at $V_{out}$ on Full Schematic, we get:
       H_1(0) &= \frac{0 \cdot C_1}{0 \cdot C_1 + G_1} = 0 \\
       \boxed{A_{DC_1} = 0 = -\infty dB}
     \end{align*}
-    Gain is zero at DC for \(H_1(s)\). \\
+    Zero DC gain for \(H_1(s)\). \\
     For \(H_2(s)\):
     \begin{align*}
       H_2(0) &= \frac{G_1}{0 \cdot C_1 + G_1} = 1 \\
       \boxed{A_{DC_2} = 1 = 0 dB}
     \end{align*}
-    Gain is unity at DC for \(H_2(s)\).
+    Unity DC gain for \(H_2(s)\).
   \item \textbf{Gain Bandwidth Product (GBW):}
     We use the DC gain from \(H_1(s)\) since it is
     the high pass characteristic:
@@ -129,24 +129,7 @@ Applying KCL at $V_{out}$ on Full Schematic, we get:
       \boxed{GBW = 0}
     \end{align*}
   \item \textbf{Impedances:}
-    Substituting \(G_1 = \frac{1}{R_1}\) and \(s = j \omega\):
-    \paragraph{At Input:}
-      \begin{align*}
-        Z_{in} = \frac{1}{sC_1} + R_1 \\
-        \text{Substituting } s = j \omega &: \\
-        \boxed{Z_{in} = R_1 - j \frac{1}{\omega C_1}}
-      \end{align*}
-    \paragraph{At Output:}
-      \begin{align*}
-        Z_{out} &= R1 \parallel \frac{1}{sC_1} \\
-        Z_{out} &= \frac{R1 \cdot \frac{1}{sC_1}}{R1 + \frac{1}{sC_1}} \\
-        Z_{out} &= \frac{\frac{R_1}{sC_1}}{\frac{sC_1 R_1 + 1}{sC_1}} \\
-        Z_{out} &= \frac{R_1}{sC_1 R_1 + 1} \\
-        \text{Substituting } s = j \omega &: \\
-        Z_{out} &= \frac{R_1}{1 + j \omega R_1 C_1} \cdot \frac{1 - j \omega R_1 C_1}{1 - j \omega R_1 C_1} \\
-        Z_{out} &= \frac{R_1 - j \omega R_1^2 C_1}{1 + (\omega R_1 C_1)^2} \\
-        \boxed{Z_{out} = \frac{R_1}{1 + (\omega R_1 C_1)^2} - j \frac{\omega R_1^2 C_1}{1 + (\omega R_1 C_1)^2}} \
-      \end{align*}
+    Same as RC Low Pass Filter.
 \end{enumerate}
 
 \subsection{Example Design}
@@ -177,10 +160,3 @@ Also compute the input and output impedances at
             &\approx 153.96 \Omega - j 11.52 \Omega
   \end{align*}
 \end{enumerate}
-
-\subsection{Non-Idealities}
-\begin{itemize}
-  \item \textbf{Component Tolerances:} Refer to \ref{sec:theory_general_tolerances}.
-  \item \textbf{Parasitics:} Refer to \ref{sec:theory_general_parasitics}.
-  \item \textbf{Loading Effects:} Refer to \ref{sec:theory_general_loading}.
-\end{itemize}
