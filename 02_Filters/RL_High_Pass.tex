@@ -1,9 +1,9 @@
-\section{RL Low Pass Filter}
+\section{RL High Pass Filter}
 
 \paragraph{Overview:}
 Constructed from a resistor and inductor in series, a RL
-Low Pass Filter allows low frequency signals to pass while
-attenuating high frequency signals. It is a single pole
+High Pass Filter allows high frequency signals to pass while
+attenuating low frequency signals. It is a single pole
 filter but can be used in multiple stages to create higher
 order filters.
 
@@ -14,7 +14,7 @@ order filters.
 	  \draw (5.5, 5.25) to[american voltage source, l_={$V_{ee}$}] (5.5, 6.5);
 	  \node[ground] at (5.5, 8){};
 	  \node[ground, xscale=-1, yscale=-1] at (5.5, 6.5){};
-	  \draw (7, 6.75) to[european resistor, l={$G_1$}] (7, 5.25);
+	  \draw (7, 9.25) to[european resistor, l={$G_1$}] (7, 7.75);
 	  \draw (7, 7.75) -- (7, 6.75);
 	  \draw (7, 5.25) -| (7, 5);
 	  \draw (5.5, 5) -- (7, 5);
@@ -27,7 +27,7 @@ order filters.
 	  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N1) at (8.25, 7.25){} node[anchor=center] at (N1.text){$V_{out}$};
 	  \node[ground] at (9.5, 8){};
 	  \node[ground, xscale=-1, yscale=-1] at (9.5, 5.25){};
-	  \draw (11, 6.75) to[european resistor, l={$G_1$}] (11, 5.25);
+	  \draw (11, 9.25) to[european resistor, l={$G_1$}] (11, 7.75);
 	  \draw (11, 7.75) -- (11, 6.75);
 	  \draw (11, 5.25) -| (11, 5);
 	  \draw (9.5, 5) -- (11, 5);
@@ -40,44 +40,45 @@ order filters.
 	  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N2) at (12.25, 7.25){} node[anchor=center] at (N2.text){$V_{out}$};
 	  \node[shape=rectangle, minimum width=3.215cm, minimum height=0.465cm] at (6.125, 4.25){} node[anchor=north, align=center, text width=2.827cm, inner sep=6pt] at (6.125, 4.5){Full Schematic};
 	  \node[shape=rectangle, minimum width=2.715cm, minimum height=0.465cm] at (10.375, 4.25){} node[anchor=north, align=center, text width=2.327cm, inner sep=6pt] at (10.375, 4.5){Small-Signal\\Schematic};
-	  \draw (7, 9.25) to[american inductor, l={$L_1$}] (7, 7.75);
-	  \draw (11, 9.25) to[american inductor, l={$L_1$}] (11, 7.75);
+	  \draw (7, 6.75) to[american inductor, l={$L_1$}] (7, 5.25);
+	  \draw (11, 6.75) to[american inductor, l={$L_1$}] (11, 5.25);
   \end{circuitikz}
 \end{center}
 
 \subsection{Transfer Function}
 Applying KCL at $V_{out}$ on Full Schematic, we get:
 \[
-  \frac{V_{out} - V_{in}}{sL_1} + (V_{out} - V_{ee}){G_1} = 0
+  (V_{out} - V_{in}){G_1} + \frac{(V_{out} - V_{ee})}{sL_1} = 0
 \]
 \paragraph{Superposition:}
 \begin{enumerate}
   \item Due to \(V_{in}\) alone (\(V_{ee} = 0V\)):
     \begin{align*}
-      \frac{(V_{out} - V_{in})}{sL_1} + (V_{out} - 0){G_1} &= 0 \\
-      \frac{V_{out}}{sL_1} - \frac{V_{in}}{sL_1} + V_{out}G_1 &= 0 \\
-      V_{out}(G_1 + \frac{1}{sL_1}) - \frac{V_{in}}{sL_1} &= 0 \\
-      V_{out}(G_1 + \frac{1}{sL_1}) &= \frac{V_{in}}{sL_1} \\
-      V_{out} &= \frac{\frac{V_{in}}{sL_1}}{(G_1 + \frac{1}{sL_1})} \\
-      V_{out} &= \frac{1}{L_1 s G_1 + 1}V_{in} \\
-      \boxed{H_1(s) = \frac{N_1(s)}{D_1(s)} = \frac{V_{out_1}}{V_{in}} = \frac{1}{L_1 s G_1 + 1}}
+      (V_{out} - V_{in}){G_1} + \frac{(V_{out} - 0)}{sL_1} &= 0 \\
+      V_{out}G_1 - V_{in}G_1 + \frac{V_{out}}{sL_1} &= 0 \\
+      V_{out}(G_1 + \frac{1}{sL_1}) - V_{in}G_1 &= 0 \\
+      V_{out}(G_1 + \frac{1}{sL_1}) &= V_{in}G_1 \\
+      V_{out} &= \frac{V_{in}G_1}{(G_1 + \frac{1}{sL_1})} \\
+      V_{out} &= \frac{G_1 s L_1}{G_1 s L_1 + 1}V_{in} \\
+      \boxed{H_1(s) = \frac{N_1(s)}{D_1(s)} = \frac{V_{out_1}}{V_{in}} = \frac{G_1 s L_1}{G_1 s L_1 + 1}}
     \end{align*}
   \item Due to \(V_{ee}\) alone (\(V_{in} = 0V\)):
     \begin{align*}
-      \frac{(V_{out} - 0)}{sL_1} + (V_{out} - V_{ee}){G_1} &= 0 \\
-      \frac{V_{out}}{sL_1} + V_{out}G_1 - V_{ee}G_1 &= 0 \\
-      V_{out}(G_1 + \frac{1}{sL_1}) - V_{ee}G_1 &= 0 \\
-      V_{out}(G_1 + \frac{1}{sL_1}) &= V_{ee}G_1 \\
-      V_{out} &= \frac{V_{ee}G_1}{(G_1 + \frac{1}{sL_1})} \\
-      V_{out} &= \frac{sL_1 G_1}{G_1 s L_1 + 1}V_{ee} \\
-      \boxed{H_2(s) = \frac{N_2(s)}{D_2(s)} = \frac{V_{out_2}}{V_{ee}} = \frac{sL_1 G_1}{G_1 s L_1 + 1}}
+      (V_{out} - 0){G_1} + \frac{(V_{out} - V_{ee})}{sL_1} &= 0 \\
+      V_{out}G_1 + \frac{V_{out}}{sL_1} - \frac{V_{ee}}{sL_1} &= 0 \\
+      V_{out}(G_1 + \frac{1}{sL_1}) - \frac{V_{ee}}{sL_1} &= 0 \\
+      V_{out}(G_1 + \frac{1}{sL_1}) &= \frac{V_{ee}}{sL_1} \\
+      V_{out} &= \frac{Vee}{(G_1 + \frac{1}{sL_1}) sL_1} \\
+      V_{out} &= \frac{1}{G_1 s L_1 + 1}V_{ee} \\
+      \boxed{H_2(s) = \frac{N_2(s)}{D_2(s)} = \frac{V_{out_2}}{V_{ee}} = \frac{1}{G_1 s L_1 + 1}}
     \end{align*}
 \end{enumerate}
-\paragraph{Total Response:}
+
+\paragraph{Total Output:}
 \begin{align*}
   V_{out} &= V_{out_1} + V_{out_2} \\
   V_{out} &= H_1(s) V_{in} + H_2(s) V_{ee} \\
-  \boxed{V_{out} = \frac{1}{L_1 s G_1 + 1} V_{in} + \frac{sL_1 G_1}{G_1 s L_1 + 1} V_{ee}}
+  \boxed{V_{out} = \frac{G_1 s L_1}{G_1 s L_1 + 1} V_{in} + \frac{1}{G_1 s L_1 + 1} V_{ee}}
 \end{align*}
 
 \subsection{Analysis}
@@ -85,49 +86,49 @@ Applying KCL at $V_{out}$ on Full Schematic, we get:
     \item \textbf{Poles (\(D(s) = 0\)):} \\
       For both \(H_1(s)\) and \(H_2(s)\):
       \begin{align*}
-        L_1 s G_1 + 1 &= 0 \\
-        L_1 s G_1 &= -1 \\
-        s &= -\frac{1}{L_1 G_1}
+        G_1 s L_1 + 1 &= 0 \\
+        G_1 s L_1 &= -1 \\
+        s_p &= -\frac{1}{G_1 L_1} \\
       \end{align*}
       Negative real pole indicates a stable system. Frequency
       corresponding to this pole:
       \begin{align*}
         s &= -2 \pi f_p \\
-        -2 \pi f_p &= -\frac{1}{L_1 G_1} \\
-        f_p &= \frac{1}{2 \pi L_1 G_1} = \frac{R_1}{2 \pi L_1} \quad\text{where } R_1 = \frac{1}{G_1}
+        -2 \pi f_p &= -\frac{1}{G_1 L_1} \\
+        f_p &= \frac{1}{2 \pi G_1 L_1} = \frac{R_1}{2 \pi L_1} \\
       \end{align*}
-    \item \textbf{Zeros (\(N(s) = 0\)):}
+    \item \textbf{Zeroes (\(N(s) = 0\)):} \\
       For \(H_1(s)\):
       \begin{align*}
-          N_1(s) = 1 = 0 \\
-      \end{align*}
-      No zeros for \(H_1(s)\). \\
-      For \(H_2(s)\):
-      \begin{align*}
-          N_2(s) = s L_1 G_1 = 0 \\
+          N_1(s) = G_1 s L_1 = 0 \\
           s_z &= 0 \quad \text{[let \(s = s_z\)]} \\
           f_z &= \frac{|s_z|}{2\pi} = 0 Hz
       \end{align*}
-      Zero at the origin for \(H_2(s)\).
-    \item \textbf{DC Gain (\(H(0)\)):} \\
-      For \(H_1(s)\):
-      \begin{align*}
-        H_1(0) &= \frac{1}{L_1 (0) G_1 + 1} \\
-        H_1(0) &= 1
-      \end{align*}
-      Gain is unity at DC for \(H_1(s)\). \\
+      Zero at the origin for \(H_1(s)\). \\
       For \(H_2(s)\):
       \begin{align*}
-        H_2(0) &= \frac{(0) L_1 G_1}{G_1 (0) L_1 + 1} \\
-        H_2(0) &= 0
+        N_2(s) = 1 = 0 \quad\Rightarrow\quad \text{No Zeroes}
       \end{align*}
-      Gain is zero at DC for \(H_2(s)\).
+      No finite zeroes for \(H_2(s)\).
+    \item \textbf{DC Gain (\(H(0)\)):} \\
+      For \(H_1(s)\):
+        \begin{align*}
+          H_1(0) &= \frac{G_1 \cdot 0 \cdot L_1}{G_1 \cdot 0 \cdot L_1 + 1} \\
+          H_1(0) &= 0
+        \end{align*}
+      Gain is zero at DC for \(H_1(s)\). \\
+      For \(H_2(s)\):
+        \begin{align*}
+          H_2(0) &= \frac{1}{G_1 \cdot 0 \cdot L_1 + 1} \\
+          H_2(0) &= 1
+        \end{align*}
+      Gain is unity at DC for \(H_2(s)\).
     \item \textbf{Gain-Bandwidth Product (\(GBW\)):}
       We use the values from \(H_1(s)\) as it is the
       high-pass characteristic:
       \begin{align*}
         GBW &= A_{DC} \times f_p \\
-        GBW &= 1 \times \frac{R_1}{2 \pi L_1} = \frac{R_1}{2 \pi L_1}
+        GBW &= 0 \times \frac{R_1}{2 \pi L_1} = 0
       \end{align*}
     \item \textbf{Impedances:}
       Substituting \(G_1 = \frac{1}{R_1}\) and \(s = j \omega\):
@@ -151,18 +152,37 @@ Applying KCL at $V_{out}$ on Full Schematic, we get:
 \subsection{Example Design}
 
 \paragraph{Question:}
-Design a RL Low Pass Filter with a pole frequency of
-\(f_p = 1 kHz\) and a resistor value of \(R_1 = 1 k\Omega\).
+Design a RL High Pass Filter with a cutoff frequency of
+\(f_p = 45kHz\) using a resistor of value \(R_1 = 330 \Omega\).
+Also compute the input and output impedances at
+\(f = 10kHz\).
+
 \paragraph{Solution:}
 \begin{enumerate}
   \item Calculating the inductor value \(L_1\):
     \begin{align*}
       f_p &= \frac{R_1}{2 \pi L_1} \\
       L_1 &= \frac{R_1}{2 \pi f_p} \\
-      L_1 &= \frac{1 k\Omega}{2 \pi (1 kHz)} \\
-      L_1 &\approx 0.159 H
+      L_1 &= \frac{330}{2 \pi \cdot 45000} \\
+      \boxed{L_1 = 1.167 mH}
     \end{align*}
-\end{enumerate}
+  \item Calculate the input and output impedances at
+    \(f = 10kHz\):
+    \paragraph{At Input:}
+      \begin{align*}
+        Z_{in} &= R_1 + j \omega L_1 \\
+        Z_{in} &= 330 + j 2 \pi (10000) (1.167 \times 10^{-3}) \\
+        Z_{in} &= 330 + j 73.3 \\
+        \boxed{Z_{in} = 330 + j 73.3 \Omega}
+      \end{align*}
+    \paragraph{At Output:}
+      \begin{align*}
+        Z_{out} &= \frac{\omega^2 R_1 L_1^2}{R_1^2 + (\omega L_1)^2} + j \frac{\omega R_1^2 L_1}{R_1^2 + (\omega L_1)^2} \\
+        Z_{out} &= \frac{(2 \pi (10000))^2 (330) (1.167 \times 10^{-3})^2}{(330)^2 + (2 \pi (10000) (1.167 \times 10^{-3}))^2} + j \frac{(2 \pi (10000)) (330)^2 (1.167 \times 10^{-3})}{(330)^2 + (2 \pi (10000) (1.167 \times 10^{-3}))^2} \\
+        Z_{out} &= 6.94 + j 69.4 \\
+        \boxed{Z_{out} = 6.94 + j 69.4 \Omega}
+      \end{align*}
+  \end{enumerate}
 
 \subsection{Non-Idealities}
 \begin{itemize}
@@ -170,4 +190,3 @@ Design a RL Low Pass Filter with a pole frequency of
   \item \textbf{Parasitics:} Refer to \ref{sec:theory_general_parasitics}.
   \item \textbf{Loading Effects:} Refer to \ref{sec:theory_general_loading}.
 \end{itemize}
-

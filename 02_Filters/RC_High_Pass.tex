@@ -1,10 +1,11 @@
 \section{RC High Pass Filter}
 
 \paragraph{Overview:}
-A simple two component circuit that passes high frequency
-signals and attenuates low  frequency signals. It is a
-single pole filter but can be used in multiple stages to
-create higher order filters.
+Constructed from a resistor and capacitor in series, a RC
+High Pass Filter allows high frequency signals to pass while
+attenuating low frequency signals. It is a single pole
+filter but can be used in multiple stages to create higher
+order filters.
 
 \paragraph{Schematic:}
 \begin{center}
@@ -39,7 +40,7 @@ create higher order filters.
 	  \draw (11, 7.25) -- (11.75, 7.25);
 	  \draw (9.5, 8) to[sinusoidal voltage source, l_={$V_{in}$}] (9.5, 9.25);
 	  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N2) at (12.25, 7.25){} node[anchor=center] at (N2.text){$V_{out}$};
-	  \node[shape=rectangle, minimum width=3.215cm, minimum height=0.465cm] at (6.125, 4.25){} node[anchor=north, align=center, text width=2.827cm, inner sep=6pt] at (6.125, 4.5){Circuit Schematic};
+	  \node[shape=rectangle, minimum width=3.215cm, minimum height=0.465cm] at (6.125, 4.25){} node[anchor=north, align=center, text width=2.827cm, inner sep=6pt] at (6.125, 4.5){Full Schematic};
 	  \node[shape=rectangle, minimum width=2.715cm, minimum height=0.465cm] at (10.375, 4.25){} node[anchor=north, align=center, text width=2.327cm, inner sep=6pt] at (10.375, 4.5){Small-Signal\\Schematic};
   \end{circuitikz}
 \end{center}
@@ -86,8 +87,8 @@ Applying KCL at $V_{out}$ on Full Schematic, we get:
       sC_1 &= -G_1 \\
       s &= -\frac{G_1}{C_1} \\
     \end{align*}
-    Negative real pole \(\Rightarrow\) stable first-order system. Frequency
-    corresponding to this pole:
+    Negative real pole indicates a stable first-order system.
+    Frequency corresponding to this pole:
     \begin{align*}
       s &= -2 \pi f_p \\
       -2 \pi f_p &= -\frac{G_1}{C_1} \\
@@ -96,14 +97,14 @@ Applying KCL at $V_{out}$ on Full Schematic, we get:
   \item \textbf{Zeroes (\(N(s) = 0\)):} \\
     For \(H_1(s)\):
     \begin{align*}
-      N_1(s) \quad\rightarrow\quad sC_1 = 0 \\
-      s_z &= 0
+        N_1(s) = sC_1 = 0 \\
+        s_z &= 0 \quad \text{[let \(s = s_z\)]} \\
+        f_z &= \frac{|s_z|}{2\pi} = 0 Hz
     \end{align*}
     Zero at the origin for \(H_1(s)\). \\
     For \(H_2(s)\):
     \begin{align*}
-      N_2(s) \quad\rightarrow\quad G_1 = 0 \\
-      \text{No finite zeroes.}
+      N_2(s) = G_1 = 0
     \end{align*}
     No finite zeroes for \(H_2(s)\).
   \item \textbf{DC Gain \(A_{DC}\):} \\

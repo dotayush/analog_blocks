@@ -84,37 +84,37 @@ Applying KCL at $V_{out}$ on Full Schematic, we get:
       \begin{align*}
         D(s) \quad\rightarrow\quad G_1 + sC_1 = 0 \\
         s_p &= -\frac{G_1}{C_1} \\
-        s_p &= -\frac{1}{R_1 C_1} \quad \text{(Substituting } G_1 = \frac{1}{R_1} \text{)} \\
       \end{align*}
-    Negative real pole \(\Rightarrow\) stable first-order system. Frequency
-    corresponding to this pole:
+    Negative real pole indactes a stable first-order system.
+    Frequency corresponding to this pole:
     \begin{align*}
       s &= -2 \pi f_p \\
-      -2 \pi f_p &= -\frac{1}{R_1 C_1} \\
-      \boxed{f_p = \frac{1}{2 \pi R_1 C_1}}
+      -2 \pi f_p &= -\frac{G_1}{C_1} \\
+      \boxed{f_p = \frac{G_1}{2 \pi C_1} = \frac{1}{2 \pi R_1 C_1}}
     \end{align*}
-  \item \textbf{Zeroes (\(N(s) = 0)\)):} \\
+  \item \textbf{Zeroes (\(N(s) = 0\)):} \\
     For $H_1(s)$:
       \begin{align*}
-        N_1(s) = G_1 = 0 \quad\Rightarrow\quad \text{No Zeroes}
+        N_1(s) = G_1 = 0
       \end{align*}
     No zeroes for \(H_1(s)\). \\
     For $H_2(s)$:
       \begin{align*}
-        N_2(s) = sC_1 = 0 \quad\Rightarrow\quad s_z &= 0 \\
+        N_2(s) = sC_1 = 0 \\
+        s_z &= 0 \quad \text{[let \(s = s_z\)]}\\
         f_z &= \frac{|s_z|}{2\pi} = 0 Hz
       \end{align*}
     Zero at origin for \(H_2(s)\).
   \item \textbf{DC Gain (\(H(0)\)):} \\
     For \(H_1(s)\):
       \begin{align*}
-        H_1(0) &= \frac{G_1}{G_1 + 0} = 1 \\
+        H_1(0) &= \frac{G_1}{G_1 + 0 \cdot C_1} = 1 \\
         \boxed{A_{DC_1} = 1 = 0 dB}
       \end{align*}
     Gain is unity at DC for \(H_1(s)\). \\
     For \(H_2(s)\):
       \begin{align*}
-        H_2(0) &= \frac{0}{G_1 + 0} = 0 \\
+        H_2(0) &= \frac{0 \cdot C_1}{G_1 + 0 \cdot C_1} = 0 \\
         \boxed{A_{DC_2} = 0 = -\infty dB}
       \end{align*}
     Gain is zero at DC for \(H_2(s)\).
@@ -140,7 +140,6 @@ Applying KCL at $V_{out}$ on Full Schematic, we get:
         Z_{out} &= \frac{R_1}{sC_1 R_1 + 1} \\
         \text{Substituting } s = j \omega &: \\
         Z_{out} &= \frac{R_1}{1 + j \omega R_1 C_1} \cdot \frac{1 - j \omega R_1 C_1}{1 - j \omega R_1 C_1} \\
-        Z_{out} &= \frac{R_1 - j \omega R_1^2 C_1}{1 + (\omega R_1 C_1)^2} \\
         Z_{out} &= \frac{R_1 - j \omega R_1^2 C_1}{1 + (\omega R_1 C_1)^2} \\
         \boxed{Z_{out} = \frac{R_1}{1 + (\omega R_1 C_1)^2} - j \frac{\omega R_1^2 C_1}{1 + (\omega R_1 C_1)^2}} \\
       \end{align*}
