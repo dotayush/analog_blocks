@@ -1,4 +1,4 @@
-\section{RL High Pass Filter}
+\subsection{RL High Pass Filter}
 
 \paragraph{Overview:}
 Constructed from a resistor and inductor in series, a RL
@@ -45,7 +45,7 @@ order filters.
   \end{circuitikz}
 \end{center}
 
-\subsection{Transfer Function}
+\subsubsection{Transfer Function}
 Applying KCL at $V_{out}$ on Full Schematic, we get:
 \[
   (V_{out} - V_{in}){G_1} + \frac{(V_{out} - V_{ee})}{sL_1} = 0
@@ -81,7 +81,7 @@ Applying KCL at $V_{out}$ on Full Schematic, we get:
   \boxed{V_{out} = \frac{G_1 s L_1}{G_1 s L_1 + 1} V_{in} + \frac{1}{G_1 s L_1 + 1} V_{ee}}
 \end{align*}
 
-\subsection{Analysis}
+\subsubsection{Analysis}
 \begin{enumerate}
     \item \textbf{Poles (\(D(s) = 0\)):} \\
       For both \(H_1(s)\) and \(H_2(s)\):
@@ -134,7 +134,7 @@ Applying KCL at $V_{out}$ on Full Schematic, we get:
       Same as RL Low Pass Filter.
 \end{enumerate}
 
-\subsection{Example Design}
+\subsubsection{Example Design}
 
 \paragraph{Question:}
 Design a RL High Pass Filter with a cutoff frequency of

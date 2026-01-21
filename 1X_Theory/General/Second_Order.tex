@@ -1,0 +1,205 @@
+\subsection{Second Order Systems}
+\label{sec:theory_general_second_order}
+
+A second order system is one that can be describe by a
+differential equation of order 2 in time domain which
+transforms into polynomial with degree 2 in Laplace
+domain. The general form of a second order transfer
+function is given by:
+\begin{align*}
+  H(s) = \frac{V_{out}}{V_{in}} = \frac{\text{Zeros}}{\text{Poles}} = \frac{N(s)}{D(s)} = \frac{b_2 s^2 + b_1 s + b_0}{a_2 s^2 + a_1 s + a_0} = \underbrace{\frac{b_2 s^2}{a_2 s^2+a_1 s+a_0}}_{\text{Highpass}} + \underbrace{\frac{b_1 s}{a_2 s^2+a_1 s+a_0}}_{\text{Bandpass}} + \underbrace{\frac{b_0}{a_2 s^2+a_1 s+a_0}}_{\text{Lowpass}}
+\end{align*}
+
+\paragraph{Mathematical Overview of Poles:}
+There are multiple ways to represent a second order
+polynomial. I have listed four common forms below:
+\begin{enumerate}
+  \item The Mathematical form: This is the general representation
+    of a second order polynomial.
+    \begin{equation*}
+      a x^2 + b x + c
+    \end{equation*}
+  \item The Normalized form: We divide the entire polynomial
+    by the coefficient of \( s^2 \) to make it unity.
+    \begin{equation*}
+      s^2 + \frac{a_1}{a_2}s + \frac{a_0}{a_2}
+    \end{equation*}
+  \item The Factored form: We express the polynomial
+    in terms of its roots (poles).
+    \begin{align*}
+      (s + p_1)(s + p_2) \\
+      s^2 + (p_1 + p_2)s + p_1 p_2
+    \end{align*}
+    where \( p_1 \) and \( p_2 \) are the roots (poles) of the polynomial.
+  \item The Natural form: We express the polynomial
+    in terms of its natural frequency and damping ratio.
+    \begin{align*}
+      s^2 + 2 \zeta \omega_n s + \omega_n^2 \\
+      s^2 + \frac{\omega_n}{Q} s + \omega_n^2
+    \end{align*}
+    where \( \omega_n \) is the natural frequency and \( \zeta \) is the
+    damping ratio and \( Q\) is the quality factor.
+\end{enumerate}
+
+Here is a summary table of the coefficients across different forms:
+
+\begin{center}
+  \begin{tabularx}{\linewidth}{|X|X|X|X|X|}
+    \hline
+    \textbf{Coefficient} & \textbf{Mathematical} & \textbf{Normalized} & \textbf{Factored} & \textbf{Natural} \\
+    \hline
+    \(s^2\) & \(a\) & 1 & 1 & 1 \\
+    \hline
+    \(s\) & \(b\) & \(\displaystyle\frac{a_1}{a_2}\) & \(p_1 + p_2\) & \(2\zeta\omega_n\) \\
+    \hline
+    Constant & \(c\) & \(\displaystyle\frac{a_0}{a_2}\) & \(p_1 p_2\) & \(\omega_n^2\) \\
+    \hline
+  \end{tabularx}
+\end{center}
+
+Next, we explore the relationships between coefficients, poles,
+natural frequency, and damping ratio through three key comparisons.
+\begin{enumerate}
+  \item \textbf{Normalized Form vs. Factored Form}
+    \noindent From the table, we have:
+    \[ \frac{a_1}{a_2} = p_1 + p_2 \quad \text{and} \quad \frac{a_0}{a_2} = p_1 p_2 \]
+    The discriminant
+    \(\displaystyle \Delta = \left( \frac{a_1}{a_2} \right)^2 - 4 \left( \frac{a_0}{a_2} \right) \)
+    determines three pole configurations:
+    \begin{enumerate}
+      \item \textbf{Two distinct real poles (overdamped):} Assume \( p_2 = k p_1 \) with \( k \in \mathbb{R} \), \( k \neq 1 \).
+        \begin{align*}
+          \frac{a_1}{a_2} &= p_1(1 + k) \quad \Rightarrow \quad p_1 = \frac{a_1}{a_2(1 + k)} \tag{i} \\
+          \frac{a_0}{a_2} &= k p_1^2 \quad \Rightarrow \quad k p_1^2 = \frac{a_0}{a_2} \tag{ii}
+        \end{align*}
+        Substituting (i) into (ii):
+        \begin{align*}
+        k \left( \frac{a_1}{a_2(1 + k)} \right)^2 = \frac{a_0}{a_2}
+        \quad \Rightarrow \quad
+        \frac{k}{(1+k)^2} = \frac{a_0 a_2}{a_1^2}
+        \end{align*}
+        For large \(k\):
+        \[ \boxed{k \approx \frac{a_1^2}{a_0 a_2}} \]
+      \item \textbf{One repeated real pole (critically damped):} Let \( p_1 = p_2 = p \).
+        \begin{align*}
+          \frac{a_1}{a_2} &= 2p \quad \Rightarrow \quad p = \frac{a_1}{2a_2} \tag{i} \\
+          \frac{a_0}{a_2} &= p^2 \quad \Rightarrow \quad p^2 = \frac{a_0}{a_2} \tag{ii}
+        \end{align*}
+        Substituting (i) into (ii):
+        \begin{align*}
+          \left( \frac{a_1}{2a_2} \right)^2 = \frac{a_0}{a_2}
+          \quad \Rightarrow \quad
+          \boxed{a_1^2 = 4 a_0 a_2}
+        \end{align*}
+      \item \textbf{Two complex conjugate poles (underdamped):} Let \( p_{1,2} = \alpha \pm j\beta \), with \( \alpha, \beta \in \mathbb{R} \).
+        \begin{align*}
+          \frac{a_1}{a_2} &= 2\alpha \quad \Rightarrow \quad \alpha = \frac{a_1}{2a_2} \tag{i} \\
+          \frac{a_0}{a_2} &= \alpha^2 + \beta^2 \quad \Rightarrow \quad \alpha^2 + \beta^2 = \frac{a_0}{a_2} \tag{ii}
+        \end{align*}
+        Substituting (i) into (ii):
+        \begin{align*}
+          \left( \frac{a_1}{2a_2} \right)^2 + \beta^2 = \frac{a_0}{a_2}
+          \quad \Rightarrow \quad
+          \boxed{\beta = \sqrt{\frac{a_0}{a_2} - \frac{a_1^2}{4a_2^2}}}
+        \end{align*}
+    \end{enumerate}
+    These relations help determine pole locations from
+    polynomial coefficients and help in pole placement
+    design (chose k to set pole separation).
+  \item \textbf{Normalized Form vs. Natural Form}
+    \noindent From the table:
+    \[ \frac{a_1}{a_2} = 2\zeta\omega_n \quad \text{and} \quad \frac{a_0}{a_2} = \omega_n^2 \]
+    From the second equation:
+    \[ \omega_n = \sqrt{\frac{a_0}{a_2}} \tag{ii} \]
+    Substituting (ii) into the first:
+    \begin{align*}
+    \frac{a_1}{a_2} = 2\zeta \sqrt{\frac{a_0}{a_2}}
+    \quad \Rightarrow \quad
+    \zeta = \frac{a_1}{2\sqrt{a_0 a_2}}
+    \end{align*}
+    Since quality factor \( Q = 1/(2\zeta) \):
+    \[ \boxed{Q = \frac{\sqrt{a_0 a_2}}{a_1}} \]
+    Unlike the factored form, comparison with the natural form does
+    not require separate algebraic cases; the three damping regimes
+    emerge solely from the numerical value of \(\zeta\). These
+    relations help determine natural frequency and damping ratio from
+    polynomial coefficients.
+  \item \textbf{Factored Form vs. Natural Form}
+    \noindent From the table:
+    \[ p_1 + p_2 = 2\zeta\omega_n \quad \text{and} \quad p_1 p_2 = \omega_n^2 \]
+    From the second equation:
+    \[ \omega_n = \sqrt{p_1 p_2} \tag{ii} \]
+    Substituting (ii) into the first:
+    \begin{align*}
+      p_1 + p_2 = 2\zeta \sqrt{p_1 p_2}
+      \quad \Rightarrow \quad
+      \zeta = \frac{p_1 + p_2}{2\sqrt{p_1 p_2}}
+    \end{align*}
+    Expressed in terms of quality factor:
+    \[ \boxed{Q = \frac{\sqrt{p_1 p_2}}{p_1 + p_2}}\]
+    We now examine the three pole configurations:
+    \begin{enumerate}
+      \item \textbf{Two distinct real poles (overdamped):} With \( p_2 = k p_1 \),
+        \[ Q = \frac{\sqrt{k p_1^2}}{p_1 + k p_1} = \frac{\sqrt{k}}{1+k} \]
+        For large k:
+        \[ \boxed{Q \approx \frac{1}{\sqrt{k}}} \]
+      \item \textbf{One repeated real pole (critically damped):} With \( p_1 = p_2 = p \),
+        \[ Q = \frac{2\sqrt{p^2}}{p + p} = \boxed{1} \]
+      \item \textbf{Two complex conjugate poles (underdamped):} With \( p_{1,2} = \alpha \pm j\beta \),
+        \begin{align*}
+           Q = \frac{2\sqrt{(\alpha + j\beta)(\alpha - j\beta)}}{2\alpha}
+           = \frac{2\sqrt{\alpha^2 + \beta^2}}{2\alpha} \\
+           \boxed{ Q = \frac{\sqrt{\alpha^2 + \beta^2}}{\alpha}}
+         \end{align*}
+    \end{enumerate}
+    These relations help determine natural frequency and
+    damping ratio from pole locations.
+\end{enumerate}
+Here's  table summarizing the relationships:
+\begin{center}
+  \begin{tabularx}{\linewidth}{|X|X|X|X|} \hline
+    \textbf{Comparison} & \textbf{Key Equations} & \textbf{Pole Configurations} & \textbf{Design Insights} \\ \hline
+    Normalized vs. Factored & \(\frac{a_1}{a_2} = p_1 + p_2\) \newline \(\frac{a_0}{a_2} = p_1 p_2\) & Over: \(k \approx \frac{a_1^2}{a_0 a_2}\) \newline Critical: \(a_1^2 = 4 a_0 a_2\) \newline Under: \(\beta = \sqrt{\frac{a_0}{a_2} - \frac{a_1^2}{4a_2^2}}\) & Determine pole locations from coefficients; pole placement design. \\ \hline
+    Normalized vs. Natural & \(\frac{a_1}{a_2} = 2\zeta\omega_n\) \newline \(\frac{a_0}{a_2} = \omega_n^2\) & \(\omega_n = \sqrt{\frac{a_0}{a_2}}\) \newline \(\zeta = \frac{a_1}{2\sqrt{a_0 a_2}}\) & Determine natural frequency and damping ratio from coefficients. \\ \hline
+    Factored vs. Natural & \(p_1 + p_2 = 2\zeta\omega_n\) \newline \(p_1 p_2 = \omega_n^2\) & Over: \(Q \approx \frac{1}{\sqrt{k}}\) \newline Critical: \(Q = 1\) \newline Under: \(Q = \frac{\sqrt{\alpha^2 + \beta^2}}{\alpha}\) & Determine natural frequency and damping ratio from pole locations. \\ \hline
+  \end{tabularx}
+\end{center}
+
+\paragraph{Example:}
+\begin{enumerate}
+  \item Given the second order polynomial \( 3s^2 + 12s + 27 \),
+  determine the pole configuration, natural frequency, and
+  damping ratio.
+  \paragraph{Solution:}
+  \begin{enumerate}
+    \item Identify coefficients:
+      \[ a_2 = 3, \quad a_1 = 12, \quad a_0 = 27 \]
+    \item Calculate natural frequency:
+      \begin{align*}
+        \omega_n = \sqrt{\frac{a_0}{a_2}} = \sqrt{\frac{27}{3}} = \sqrt{9} = 3 \text{ rad/s}
+      \end{align*}
+    \item Calculate damping ratio:
+      \begin{align*}
+        \zeta = \frac{a_1}{2\sqrt{a_0 a_2}} = \frac{12}{2\sqrt{27 \cdot 3}} = \frac{12}{2\sqrt{81}} = \frac{12}{18} = \frac{2}{3} \approx 0.6667
+      \end{align*}
+    \item Determine pole configuration:
+      Since \( \zeta \approx 0.6667 < 1 \), the system is underdamped with
+      complex conjugate poles.
+  \end{enumerate}
+  \item Given the second order polynomial \( 2s^2 + (8 + x)s + 16 \),
+  determine the value of \( x \) for critical damping.
+  \paragraph{Solution:}
+  \begin{enumerate}
+    \item Identify coefficients:
+      \[ a_2 = 2, \quad a_1 = 8 + x, \quad a_0 = 16 \]
+    \item Apply critical damping condition:
+      \begin{align*}
+        a_1^2 = 4 a_0 a_2 \\
+        (8 + x)^2 = 4 \cdot 16 \cdot 2 \\
+        (8 + x)^2 = 128 \\
+        8 + x = \sqrt{128} \\
+        x = \sqrt{128} - 8 \approx 3.3137
+      \end{align*}
+  \end{enumerate}
+  Thus, \( x \approx 3.3137 \) for critical damping.
+\end{enumerate}

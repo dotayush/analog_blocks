@@ -1,4 +1,4 @@
-\section{RC High Pass Filter}
+\subsection{RC High Pass Filter}
 
 \paragraph{Overview:}
 Constructed from a resistor and capacitor in series, a RC
@@ -45,7 +45,7 @@ order filters.
   \end{circuitikz}
 \end{center}
 
-\subsection{Transfer Function}
+\subsubsection{Transfer Function}
 Applying KCL at $V_{out}$ on Full Schematic, we get:
 \[
   (V_{out} - V_{in}){sC_1} + (V_{out} - V_{ee}){G_1} = 0
@@ -78,7 +78,7 @@ Applying KCL at $V_{out}$ on Full Schematic, we get:
   &= \frac{sC_1}{sC_1 + G_1} V_{in} + \frac{G_1}{sC_1 + G_1} V_{ee}
 \end{align*}
 
-\subsection{Analysis}
+\subsubsection{Analysis}
 \begin{enumerate}
   \item \textbf{Poles (\(D(s) = 0\)):} \\
     For both \(H_1(s)\) and \(H_2(s)\):
@@ -132,7 +132,7 @@ Applying KCL at $V_{out}$ on Full Schematic, we get:
     Same as RC Low Pass Filter.
 \end{enumerate}
 
-\subsection{Example Design}
+\subsubsection{Example Design}
 \paragraph{Question:}
 Design a high pass filter with a cutoff frequency of
 \(f_p = 1kHz\) using a capacitor value of \(C_1 = 1\mu F\).

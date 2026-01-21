@@ -1,4 +1,4 @@
-\section{LC Low Pass Filter}
+\subsection{LC Low Pass Filter}
 
 \paragraph{Overview:}
 Constructed from an inductor and capacitor in series, a LC
@@ -45,7 +45,7 @@ single pole filters (-20 dB/decade).
   \end{circuitikz}
 \end{center}
 
-\subsection{Transfer Function}
+\subsubsection{Transfer Function}
 Applying KCL at $V_{out}$ on Full Schematic, we get:
 \[
   \frac{(V_{out} - V_{in})}{sL_1} + (V_{out} - V_{ee}){sC_1} = 0
@@ -82,7 +82,7 @@ Applying KCL at $V_{out}$ on Full Schematic, we get:
   V_{out} &= \frac{1}{s^2C_1L_1 + 1}V_{in} + \frac{s^2C_1L_1}{s^2C_1L_1 + 1}V_{ee} \\
 \end{align*}
 
-\subsection{Analysis}
+\subsubsection{Analysis}
 \begin{enumerate}
   \item \textbf{Poles (\(D(s) = 0\)):} \\
     For both \(H_1(s)\) and \(H_2(s)\):
@@ -149,7 +149,7 @@ Applying KCL at $V_{out}$ on Full Schematic, we get:
       \end{align*}
 \end{enumerate}
 
-\subsection{Example Design}
+\subsubsection{Example Design}
 \paragraph{Question:}
 Design a LC Low Pass Filter with a cutoff frequency of
 \(f_p = 1 kHz\) using standard component values.

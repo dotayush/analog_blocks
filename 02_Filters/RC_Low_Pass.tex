@@ -1,4 +1,4 @@
-\section{RC Low Pass Filter}
+\subsection{RC Low Pass Filter}
 
 \paragraph{Overview:}
 Constructed from a resistor and capacitor in series, a RC
@@ -45,7 +45,7 @@ order filters.
   \end{circuitikz}
 \end{center}
 
-\subsection{Transfer Function}
+\subsubsection{Transfer Function}
 Applying KCL at $V_{out}$ on Full Schematic, we get:
 \[
   (V_{out} - V_{in}){G_1} + (V_{out} - V_{ee}){sC_1} = 0
@@ -77,7 +77,7 @@ Applying KCL at $V_{out}$ on Full Schematic, we get:
   V_{out} &= \frac{V_{in}G_1}{G_1 + sC_1} + \frac{V_{ee}sC_1}{G_1 + sC_1}
 \end{align*}
 
-\subsection{Analysis}
+\subsubsection{Analysis}
 \begin{enumerate}
   \item \textbf{Poles (\(D(s) = 0\)):} \\
     For both \(H_1(s)\) and \(H_2(s)\):
@@ -145,7 +145,7 @@ Applying KCL at $V_{out}$ on Full Schematic, we get:
       \end{align*}
 \end{enumerate}
 
-\subsection{Example Design}
+\subsubsection{Example Design}
 
 \paragraph{Question:}
 Design a RC Low Pass Filter with a cutoff frequency of
