@@ -1,0 +1,32 @@
+\subsection{Complementary}
+\label{sec:theory_general_complementary}
+
+There are primarily two types of transistor technologies used in
+analog circuit design: NPN and PNP for Bipolar Junction Transistors
+(BJTs), and NMOS and PMOS for Metal-Oxide-Semiconductor Field
+Effect Transistors (MOSFETs).
+
+These transistor types are complementary to each other, meaning
+their electrical characteristics and behaviors are opposite in
+nature. Any circuit designed involving transistors can be converted
+into its complementary form by following these general rules:
+
+\begin{enumerate}
+  \item Replace NPN BJTs with PNP BJTs and vice versa.
+  \item Replace NMOS MOSFETs with PMOS MOSFETs and vice versa.
+  \item Reverse the polarity of all voltage supplies.
+  \item Reverse the direction of all current sources.
+\end{enumerate}
+
+\noindent A good things to remember when designing,
+\begin{itemize}
+  \item N-type devices (NPN, NMOS) are typically used to
+  sink conventional current to ground from a higher potential,
+  while P-type devices (PNP, PMOS) are used to source conventional
+  current from a higher potential toward the load.
+  \item N-type devices are commonly used as low-side switches,
+  while P-type devices are commonly used as high-side switches.
+  This means N-type devices are often placed between the load
+  and ground (or lower potential), while P-type devices are placed
+  between the power supply and the load.
+\end{itemize}

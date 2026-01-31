@@ -123,7 +123,10 @@ to pass. It is a second-order filter.
     Applying KCL at $V_{out}$ on Full Schematic of Series
     Configuration, we get:
     \begin{align*}
-      (V_{out} - V_{in})G_1 + \frac{(V_{out} - V_{x})}{sL_1} = 0 \tag{i} \\
+      (V_{out} - V_{in})G_1 + \frac{(V_{out} - V_{x})}{sL_1} = 0 \tag{i}
+    \end{align*}
+    Applying KCL at \(V_{x}\):
+    \begin{align*}
       (V_{x} - V_{ee})sC_1 + \frac{(V_{x} - V_{out})}{sL_1} = 0 \tag{ii}
     \end{align*}
     From equation (ii):

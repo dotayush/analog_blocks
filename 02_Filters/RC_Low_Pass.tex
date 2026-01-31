@@ -141,7 +141,7 @@ Applying KCL at $V_{out}$ on Full Schematic, we get:
         \text{Substituting } s = j \omega &: \\
         Z_{out} &= \frac{R_1}{1 + j \omega R_1 C_1} \cdot \frac{1 - j \omega R_1 C_1}{1 - j \omega R_1 C_1} \\
         Z_{out} &= \frac{R_1 - j \omega R_1^2 C_1}{1 + (\omega R_1 C_1)^2} \\
-        \boxed{Z_{out} = \frac{R_1}{1 + (\omega R_1 C_1)^2} - j \frac{\omega R_1^2 C_1}{1 + (\omega R_1 C_1)^2}} \\
+        \boxed{Z_{out} = \frac{R_1}{1 + (\omega R_1 C_1)^2} - j \frac{\omega R_1^2 C_1}{1 + (\omega R_1 C_1)^2}}
       \end{align*}
 \end{enumerate}
 
@@ -160,7 +160,7 @@ Also compute the input and output impedances at
       f_p &= \frac{1}{2 \pi R_1 C_1} \\
       R_1 &= \frac{1}{2 \pi f_p C_1} \\
       &= \frac{1}{2 \pi (45kHz)(1\mu F)} \\
-      R_1 &\approx 3.54 \Omega \\
+      R_1 &\approx 3.54 \Omega
     \end{align*}
   \item Calculating \(Z_{in}\) and \(Z_{out}\) at \(f = 10kHz\):
     \begin{align*}
@@ -172,7 +172,6 @@ Also compute the input and output impedances at
               &= \frac{3.54 \Omega}{1 + (62,832 \cdot 3.54 \Omega \cdot 1\mu F)^2} - j \frac{(62,832)(3.54 \Omega)^2 (1\mu F)}{1 + (62,832 \cdot 3.54 \Omega \cdot 1\mu F)^2} \\
               &= \frac{3.54 \Omega}{1 + (0.222)^2} - j \frac{(62,832)(12.52 \Omega^2)(1\mu F)}{1 + (0.222)^2} \\
               &\approx \frac{3.54 \Omega}{1.049} - j \frac{0.786 \Omega}{1.049} \\
-              &\approx 3.37 \Omega - j 0.75 \Omega \\
+              &\approx 3.37 \Omega - j 0.75 \Omega
     \end{align*}
-
 \end{enumerate}

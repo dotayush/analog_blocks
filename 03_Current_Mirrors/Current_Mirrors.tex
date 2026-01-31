@@ -1,2 +1,43 @@
 \chapter{Current Mirrors}
 \label{ch:Current_Mirrors}
+
+This chapter covers various types of current mirrors,
+which are circuits designed to copy (or "mirror") a current
+from one it's branch to another. Current mirrors are
+widely used in analog integrated circuits for biasing and
+active load applications.
+
+\subsubsection{Non-Idealities}
+All current mirrors are subject to non-idealities that
+can affect their performance. Some common non-idealities
+include:
+\begin{itemize}
+  \item \textbf{Component Tolerances:} Refer to \ref{sec:theory_general_tolerances}.
+  \item \textbf{Parasitics:} Refer to \ref{sec:theory_general_parasitics}.
+  \item \textbf{Loading Effects:} Refer to \ref{sec:theory_general_loading}.
+  \item \textbf{(MOSFET) Channel Length Modulation:} Generally
+    we assume $\lambda = 0$ for mathematical simplication but
+    in reality, $\lambda$ is non-zero which causes the output
+    current to vary with changes in the output voltage,
+    affecting the accuracy of the current mirroring. You can
+    reduce this effect by using cascode current mirrors.
+  \item \textbf{(BJT) Base Width Modulation:} The Early effect can
+    cause variations in the mirrored current due to changes in
+    the collector-emitter voltage. Using cascode configurations
+    can help mitigate this effect.
+  \item \textbf{Temperature Variations:} Changes in temperature
+    can affect the characteristics of the transistors used in
+    current mirrors, leading to variations in the mirrored current.
+\end{itemize}
+
+\subsection{Technology}
+All current mirrors discussed in this chapter are
+implemented using MOSFETs but you can build them
+with any other transistor technology like BJTs
+or JFETs as well.
+
+\section{Basic Topologies}
+\input{03_Current_Mirrors/Widlar_Mirror}
+\input{03_Current_Mirrors/Wilson_Mirror}
+\section{Improved Topologies}
+\input{03_Current_Mirrors/Modified_Wilson_Mirror}
