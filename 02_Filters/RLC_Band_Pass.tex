@@ -1,12 +1,10 @@
-\subsection{RLC Band Pass Filter}
-\label{sec:rlc_band_pass}
+\subsubsection{RLC Band Pass Filter}
 
 \paragraph{Overview:}
 Constructed from a resistor, inductor, and capacitor in series
 or parallel, a RLC Band Pass Filter allows a specific band of
 frequencies to pass while attenuating frequencies outside this
 band. It is a second order filter.
-
 \paragraph{Schematic:}
 \begin{center}
   \begin{circuitikz}
@@ -84,7 +82,7 @@ band. It is a second order filter.
   \end{circuitikz}
 \end{center}
 
-\subsubsection{Transfer Function}
+\subsubsubsection{Transfer Function}
 \begin{enumerate}
   \item \textbf{Parallel Configuration:}
     Applying KCL at $V_{out}$ on Full Schematic of Parallel
@@ -121,25 +119,25 @@ band. It is a second order filter.
     Applying KCL at $V_{out}$ on Full Schematic of Series
     Configuration, we get:
     \begin{align*}
-      (V_{out} - V_{x})sC_1 + (V_{out} - V_{ee}){G_1} &= 0 \tag{i}
+      (V_{out} - V_{x})sC_1 + (V_{out} - V_{ee}){G_1} &= 0 \tag{1}
     \end{align*}
     Applying KCL at \(V_{x}\):
     \begin{align*}
-      \frac{(V_{x} - V_{in})}{sL_1} + (V_{x} - V_{out})sC_1 &= 0 \tag{ii}
+      \frac{(V_{x} - V_{in})}{sL_1} + (V_{x} - V_{out})sC_1 &= 0 \tag{2}
     \end{align*}
-    From equation (ii):
+    From equation (2):
     \begin{align*}
       \frac{V_{x}}{sL_1} - \frac{V_{in}}{sL_1} + V_{x}sC_1 - V_{out}sC_1 &= 0 \\
       V_{x}(\frac{1}{sL_1} + sC_1) - \frac{V_{in}}{sL_1} - V_{out}sC_1 &= 0 \\
       V_{x}(\frac{1}{sL_1} + sC_1) &= \frac{V_{in}}{sL_1} + V_{out}sC_1 \\
       V_{x} &= \frac{\frac{V_{in}}{sL_1} + V_{out}sC_1}{\frac{1}{sL_1} + sC_1} \\
       V_{x} &= \frac{\left(\frac{V_{in} + V_{out}s^2 L_1 C_1}{s L_1}\right)}{\left(\frac{1 + s^2 L_1 C_1}{s L_1}\right)} \\
-      V_{x} &= \frac{V_{in} + V_{out}s^2 L_1 C_1}{1 + s^2 L_1 C_1} \tag{iii}
+      V_{x} &= \frac{V_{in} + V_{out}s^2 L_1 C_1}{1 + s^2 L_1 C_1} \tag{3}
     \end{align*}
     \paragraph{Superposition:}
       \begin{enumerate}
         \item Due to \(V_{in}\) alone (\(V_{ee} = 0V\)):
-          Substituting equation (iii) into equation (i):
+          Substituting equation (3) into equation (1):
           \begin{align*}
             \left(V_{out} - \left(\frac{V_{in} + V_{out}s^2 L_1 C_1}{1 + s^2 L_1 C_1}\right)\right) \cdot sC_1 + (V_{out} - 0){G_1} &= 0 \\
             \left(V_{out}(1 + s^2 L_1 C_1) - (V_{in} + V_{out}s^2 L_1 C_1)\right) \cdot \frac{sC_1}{1 + s^2 L_1 C_1} + V_{out}G_1 &= 0 \\
@@ -156,7 +154,7 @@ band. It is a second order filter.
             \boxed{H_3(s) = \frac{N_3(s)}{D_3(s)} = \frac{V_{out_3}}{V_{in}} = \frac{sC_1}{sC_1 + G_1(1 + s^2 L_1 C_1)}}
           \]
         \item Due to \(V_{ee}\) alone (\(V_{in} = 0V\)):
-          Substituting equation (iii) into equation (i):
+          Substituting equation (3) into equation (1):
           \begin{align*}
             \left(V_{out} - \left(\frac{0 + V_{out}s^2 L_1 C_1}{1 + s^2 L_1 C_1}\right)\right) \cdot sC_1 + (V_{out} - V_{ee}){G_1} &= 0 \\
             \left(V_{out}(1 + s^2 L_1 C_1) - V_{out}s^2 L_1 C_1\right) \cdot \frac{sC_1}{1 + s^2 L_1 C_1} + (V_{out} - V_{ee}){G_1} &= 0 \\
@@ -182,7 +180,7 @@ band. It is a second order filter.
       \end{align*}
 \end{enumerate}
 
-\subsubsection{Analysis}
+\subsubsubsection{Analysis}
 \begin{enumerate}
   \item \textbf{Poles (\(D(s) = 0\)):} \\
       \begin{enumerate}
@@ -192,7 +190,7 @@ band. It is a second order filter.
             G_1 + \frac{1}{sL_1} + sC_1 &= 0 \\
             \frac{s L_1 G_1 + 1 + s^2 L_1 C_1}{s L_1} &= 0 \\
             s^2 L_1 C_1 + s L_1 G_1 + 1 &= 0 \\
-            s^2 + s \frac{G_1}{C_1} + \frac{1}{L_1 C_1} &= 0 \tag{iv}
+            s^2 + s \frac{G_1}{C_1} + \frac{1}{L_1 C_1} &= 0 \tag{4}
           \end{align*}
           Applying Shree Dharacharya's Formula:
           \begin{align*}
@@ -231,7 +229,7 @@ band. It is a second order filter.
             sC_1 + G_1(1 + s^2 L_1 C_1) &= 0 \\
             G_1 s^2 L_1 C_1 + sC_1 + G_1 &= 0 \\
             s^2 L_1 C_1 G_1 + s C_1 + G_1 &= 0 \\
-            s^2 + s \frac{1}{L_1 G_1} + \frac{1}{L_1 C_1} &= 0 \tag{v}
+            s^2 + s \frac{1}{L_1 G_1} + \frac{1}{L_1 C_1} &= 0 \tag{5}
           \end{align*}
           Applying Shree Dharacharya's Formula:
           \begin{align*}
@@ -394,9 +392,7 @@ band. It is a second order filter.
       \end{enumerate}
 \end{enumerate}
 
-\subsubsection{Example Design}
-
-\paragraph{Question:}
+\subsubsubsection{Question}
 Design a Band-Pass Filter using both Series and Parallel RLC
 Configurations with the following specifications:
 \begin{enumerate}
@@ -409,14 +405,14 @@ Configurations with the following specifications:
   \item \textbf{Parallel RLC Configuration:}
     \begin{align*}
       f_0 &= \frac{1}{2\pi \sqrt{L_1 C_1}} = 1 \text{ kHz} \\
-      \implies L_1 C_1 &= \frac{1}{(2\pi \cdot 1000)^2} = 2.533 \times 10^{-8} \text{ H-F} \tag{i} \\
+      \implies L_1 C_1 &= \frac{1}{(2\pi \cdot 1000)^2} = 2.533 \times 10^{-8} \text{ H-F} \tag{6} \\
       Q &= \frac{C_1}{G_1} \sqrt{\frac{1}{L_1 C_1}} = 10 \\
-      \implies G_1 &= \frac{C_1}{10} \sqrt{\frac{1}{L_1 C_1}} = \frac{C_1}{10} \cdot 2\pi \cdot 1000 = 628.32 C_1 \text{ S} \tag{ii}
+      \implies G_1 &= \frac{C_1}{10} \sqrt{\frac{1}{L_1 C_1}} = \frac{C_1}{10} \cdot 2\pi \cdot 1000 = 628.32 C_1 \text{ S} \tag{7}
     \end{align*}
     Assuming \(C_1 = 1 \mu F = 1 \times 10^{-6} F\):
     \begin{align*}
-      \text{From (i): } L_1 &= \frac{2.533 \times 10^{-8}}{1 \times 10^{-6}} = 0.02533 H = 25.33 mH \\
-      \text{From (ii): } G_1 &= 628.32 \times 1 \times 10^{-6} = 0.00062832 S \\
+      \text{From (6): } L_1 &= \frac{2.533 \times 10^{-8}}{1 \times 10^{-6}} = 0.02533 H = 25.33 mH \\
+      \text{From (7): } G_1 &= 628.32 \times 1 \times 10^{-6} = 0.00062832 S \\
       \implies R_1 &= \frac{1}{G_1} = \frac{1}{0.00062832} = 1591.55 \Omega
     \end{align*}
     We find the values as:
@@ -426,14 +422,14 @@ Configurations with the following specifications:
   \item \textbf{Series RLC Configuration:}
     \begin{align*}
       f_0 &= \frac{1}{2\pi \sqrt{L_1 C_1}} = 1 \text{ kHz} \\
-      \implies L_1 C_1 &= \frac{1}{(2\pi \cdot 1000)^2} = 2.533 \times 10^{-8} \text{ H-F} \tag{iii} \\
+      \implies L_1 C_1 &= \frac{1}{(2\pi \cdot 1000)^2} = 2.533 \times 10^{-8} \text{ H-F} \tag{8} \\
       Q &= G_1 \sqrt{\frac{L_1}{C_1}} = 10 \\
-      \implies G_1 &= 10 \sqrt{\frac{C_1}{L_1}} \tag{iv} \\
+      \implies G_1 &= 10 \sqrt{\frac{C_1}{L_1}} \tag{9} \\
     \end{align*}
     Assuming \(C_1 = 1 \mu F = 1 \times 10^{-6} F\):
     \begin{align*}
-      \text{From (iii): } L_1 &= \frac{2.533 \times 10^{-8}}{1 \times 10^{-6}} = 0.02533 H = 25.33 mH \\
-      \text{From (iv): } G_1 &= 10 \sqrt{\frac{1 \times 10^{-6}}{0.02533}} \approx 0.0628319 S \\
+      \text{From (8): } L_1 &= \frac{2.533 \times 10^{-8}}{1 \times 10^{-6}} = 0.02533 H = 25.33 mH \\
+      \text{From (9): } G_1 &= 10 \sqrt{\frac{1 \times 10^{-6}}{0.02533}} \approx 0.0628319 S \\
       \implies R_1 &= \frac{1}{G_1} = \frac{1}{0.0628319} \approx 15.9155 \Omega
     \end{align*}
     We find the values as:

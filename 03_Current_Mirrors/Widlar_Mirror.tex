@@ -1,14 +1,9 @@
 \subsection{Widlar Mirror}
 
 \paragraph{Overview:}
-Constructed from two transistors and a resistor, a Widlar
-Current Mirror is a variation of the basic current mirror
-that allows for the generation of smaller output currents
-than the reference current. You can adjust the output
-current by changing the value of the resistor. The source
-are sink configurations are complementary to each other.
-Refer \ref{sec:theory_general_complementary} for information
-on complementary circuits.
+Constructed from two transistors, It is the
+simplest form of a current mirror that can provide a
+current gain different from unity.
 
 \paragraph{Schematic:}
 \begin{center}
@@ -104,13 +99,13 @@ transistors:\\
     \begin{align*}
       (V_{out} - V_{cc})G_3 + I_{M_1} &= 0 \\
       V_{out}G_3 - V_{cc}G_3 + I_{M_1} &= 0 \\
-      V_{out} &= V_{cc} - \frac{I_{M_1}}{G_3} \tag{i}\end{align*}
+      V_{out} &= V_{cc} - \frac{I_{M_1}}{G_3} \tag{1}\end{align*}
     Applying KCL at $V_{x}$:
     \begin{align*}
       (V_{x} - V_{cc})G_2 + I_{M_0} + I_{G} &= 0 \\
       V_{x}G_2 - V_{cc}G_2 + (I_{M_0} + I_{G}) &= 0 \\
       V_{x}G_2 &= - (I_{M_0} + I_{G}) + V_{cc}G_2 \\
-      V_{x} &= V_{cc} - \frac{(I_{M_0} + I_{G})}{G_2} \tag{ii}
+      V_{x} &= V_{cc} - \frac{(I_{M_0} + I_{G})}{G_2} \tag{2}
     \end{align*}
     Using the transistor equations for $I_{M_0}$ and
     $I_{M_1}$:
@@ -118,11 +113,11 @@ transistors:\\
       I_{M_0} &= k_{n_0}(V_{gs_0} - V_{th})^2 \cdot (1 + \lambda V_{ds_0}) \\
               &= k_{n_0}(V_{x} - V_{ee} - V_{th})^2 \cdot (1 + \lambda (V_{x} - V_{ee})) \\
               &= k_{n_0}\left(\left(V_{cc} - \frac{(I_{M_0} + I_{G})}{G_2}\right) - V_{ee} - V_{th}\right)^2 \cdot \left(1 + \lambda \left(\left(V_{cc} - \frac{(I_{M_0} + I_{G})}{G_2}\right) - V_{ee}\right)\right) \\
-              &= k_{n_0}\left(\left(V_{cc} - \frac{(I_{M_0} + I_{G})}{G_2}\right) - V_{ee} - V_{th}\right)^2 \quad \text{[assuming } \lambda = 0 \text{]} \tag{iii} \\ \\
+              &= k_{n_0}\left(\left(V_{cc} - \frac{(I_{M_0} + I_{G})}{G_2}\right) - V_{ee} - V_{th}\right)^2 \quad \text{[assuming } \lambda = 0 \text{]} \tag{3} \\ \\
       I_{M_1} &= k_{n_1}(V_{gs_1} - V_{th})^2 \cdot (1 + \lambda V_{ds_1}) \\
               &= k_{n_1}(V_{x} - V_{ee} - V_{th})^2 \cdot (1 + \lambda (V_{out} - V_{ee})) \\
               &= k_{n_1}\left(\left(V_{cc} - \frac{(I_{M_0} + I_{G})}{G_2}\right) - V_{ee} - V_{th}\right)^2 \cdot \left(1 + \lambda \left(V_{cc} - \frac{I_{M_1}}{G_3} - V_{ee}\right)\right) \\
-              &= k_{n_1}\left(\left(V_{cc} - \frac{(I_{M_0} + I_{G})}{G_2}\right) - V_{ee} - V_{th}\right)^2 \quad \text{[assuming } \lambda = 0 \text{]} \tag{iv} \\
+              &= k_{n_1}\left(\left(V_{cc} - \frac{(I_{M_0} + I_{G})}{G_2}\right) - V_{ee} - V_{th}\right)^2 \quad \text{[assuming } \lambda = 0 \text{]} \tag{4} \\
     \end{align*}
     It can be seen that,
     \begin{align*}
@@ -137,69 +132,30 @@ transistors:\\
     Applying KCL at $V_{out}$:
     \begin{align*}
       V_{out}G_3 + V_{out}g_{o_1} + g_{m_1}V_{x} &= 0 \\
-      V_{out}(G_3 + g_{o_1}) + g_{m_1}V_{x} &= 0 \tag{v}
+      V_{out}(G_3 + g_{o_1}) + g_{m_1}V_{x} &= 0 \tag{5}
     \end{align*}
     Applying KCL at $V_{x}$:
     \begin{align*}
       V_{x}G_2 + V_{x}g_{o_0} + g_{m_0}V_{x} + I_{G} &= 0 \\
-      V_{x}(G_2 + g_{o_0} + g_{m_0}) &= 0 \quad \text{[assuming } I_G \approx 0 \text{ by MOS physics]} \tag{vi}
+      V_{x}(G_2 + g_{o_0} + g_{m_0}) &= 0 \quad \text{[assuming } I_G \approx 0 \text{ by MOS physics]} \tag{6}
     \end{align*}
     Adding voltage source $V_s$ at $V_x$ that supplies
     a current $I_s$ into $V_{x}$, we get:
     \begin{align*}
-      V_{x}(G_2 + g_{o_0} + g_{m_0}) - I_{s} &=0 \tag{vi'}
+      V_{x}(G_2 + g_{o_0} + g_{m_0}) - I_{s} &=0 \tag{7} \\
+      V_{x} = V_{s} \tag{8}
     \end{align*}
-    Third equation arises from Voltage Source:
-    \begin{align*}
-      V_{x} = V_{s} \tag{vii}
-    \end{align*}
-    Solving,
+    Solving equations (5), (7) and (8):
     \begin{align*}
       V_{out} &= - \frac{g_{m_1} V_{x}}{G_3 + g_{o_1}} \\
-              &= - \frac{g_{m_1} V_{s}}{G_3 + g_{o_1}} \quad \text{[from (vii)]} \\
+              &= - \frac{g_{m_1} V_{s}}{G_3 + g_{o_1}} \quad \text{[from (8)]} \\
       \boxed{H(s) = \frac{N(s)}{D(s)} = \frac{V_{out}}{V_{s}} = - \frac{g_{m_1}}{G_3 + g_{o_1}}}
     \end{align*}
 \end{enumerate}
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \textbf{Setting Current to be Mirrored}:
-    \begin{enumerate}
-      \item Choose appropriate transistor dimensions
-        ($W$ and $L$) for transistors $M_0$ and $M_1$
-        to achieve the desired current gain.
-        \begin{align*}
-          \frac{I_{out}}{I_{in}} &= \frac{W_1 L_0}{L_1 W_0}
-        \end{align*}
-      \item Choose a suitable overdrive voltage value
-        ($V_{ov}$) for computing the bias voltage at
-        node $V_{x}$.
-        \begin{align*}
-          V_{ov_0} &= V_{gs_0} - V_{th} \\
-          V_{ov_0} &= (V_{x} - V_{ee}) - V_{th} \\
-          V_{x} &= V_{ov_0} + V_{th} + V_{ee}
-        \end{align*}
-      \item Using the chosen $V_{ov}$, compute $W_0$
-        to set the required bias current $I_{in}$.
-        \begin{align*}
-          I_{in} = I_{M_0} &= \frac{1}{2} \mu_n C_{ox} \frac{W_0}{L_0} V_{ov_0}^2 \\
-          \therefore W_0 &= \frac{2 I_{in} L_0}{\mu_n C_{ox} V_{ov_0}^2}
-        \end{align*}
-        $W_1$ can then be computed using the current
-        gain relation from step (a).
-      \item Compute the required value of $G_2$ (or
-        $R_2$) to ensure that the voltage at node
-        $V_{x}$ is as calculated in step (b).
-        \begin{align*}
-          (V_{x} - V_{cc})G_2 + I_{M_0} + I_{G} &= 0 \\
-          (V_{x} - V_{cc})G_2 + I_{M_0} &\approx 0 \quad \text{[assuming } I_G \approx 0 \text{ by MOS physics ]} \\
-          (V_{x} - V_{cc})G_2 &\approx - I_{M_0} \\
-          G_2 &\approx - \frac{I_{M_0}}{(V_{x} - V_{cc})} \\
-          \therefore G_2 &= \frac{I_{M_0}}{V_{cc} - V_{x}} \\
-          R_2 &= \frac{1}{G_2} = \frac{V_{cc} - V_{x}}{I_{M_0}}
-        \end{align*}
-    \end{enumerate}
-  \item \textbf{Output Load Limit}: Maximum possible
+  \item \textbf{Output Load (Max)}: Maximum possible
     load that can be connected at the output before
     the transistor $M_2$ goes out of saturation can
     be calculated as follows:
@@ -208,7 +164,7 @@ transistors:\\
     \end{align*}
   \item \textbf{Impedances}:
     \paragraph{At Input:} Applying a test current $I_{test}$
-      at $V_{x}$, from equation (vi):
+      at $V_{x}$, from equation (6):
       \begin{align*}
         V_{x}(G_2 + g_{o_0} + g_{m_0}) &= I_{test} \\
         \therefore Z_{in} &= \frac{V_{x}}{I_{test}} = \frac{1}{G_2 + g_{o_0} + g_{m_0}}
@@ -218,10 +174,10 @@ transistors:\\
         Z_{in} &\approx \frac{1}{g_{m_0}} = \frac{2 I_{M_0}}{V_{ov_0}}
       \end{align*}
     \paragraph{At Output:} Applying a test current $I_{test}$
-      at $V_{out}$, from equation (v):
+      at $V_{out}$, from equation (5):
       \begin{align*}
         V_{out}(G_3 + g_{o_1}) + g_{m_1}V_{x} &= I_{test} \\
-        V_{out}(G_3 + g_{o_1}) + g_{m_1}(0) &= I_{test} \quad \text{[from (vii), } V_{x} = 0 \text{]} \\
+        V_{out}(G_3 + g_{o_1}) + g_{m_1}(0) &= I_{test} \quad \text{[from (7)]} \\
         \therefore Z_{out} &= \frac{V_{out}}{I_{test}} = \frac{1}{G_3 + g_{o_1}}
       \end{align*}
       Ignoring $G_3$, we get:
@@ -230,20 +186,58 @@ transistors:\\
       \end{align*}
 \end{enumerate}
 
-\subsubsection{Example Design}
+\subsubsection{Design}
+Large Signal Analysis can be used to set the bias
+currents and voltages in this circuit.
+\begin{enumerate}
+  \item Choose appropriate transistor dimensions
+    ($W$ and $L$) for transistors $M_0$ and $M_1$
+    to achieve the desired current gain.
+    \begin{align*}
+      \frac{I_{out}}{I_{in}} &= \frac{W_1 L_0}{L_1 W_0}
+    \end{align*}
+  \item Choose a suitable overdrive voltage value
+    ($V_{ov}$) for computing the bias voltage at
+    node $V_{x}$.
+    \begin{align*}
+      V_{ov_0} &= V_{gs_0} - V_{th} \\
+      V_{ov_0} &= (V_{x} - V_{ee}) - V_{th} \\
+      V_{x} &= V_{ov_0} + V_{th} + V_{ee}
+    \end{align*}
+  \item Using the chosen $V_{ov}$, compute $W_0$
+    to set the required bias current $I_{in}$.
+    \begin{align*}
+      I_{in} = I_{M_0} &= \frac{1}{2} \mu_n C_{ox} \frac{W_0}{L_0} V_{ov_0}^2 \\
+      \therefore W_0 &= \frac{2 I_{in} L_0}{\mu_n C_{ox} V_{ov_0}^2}
+    \end{align*}
+    $W_1$ can then be computed using the current
+    gain relation from step (a).
+  \item Compute the required value of $G_2$ (or
+    $R_2$) to ensure that the voltage at node
+    $V_{x}$ is as calculated in step (b).
+    \begin{align*}
+      (V_{x} - V_{cc})G_2 + I_{M_0} + I_{G} &= 0 \\
+      (V_{x} - V_{cc})G_2 + I_{M_0} &\approx 0 \quad \text{[assuming } I_G \approx 0 \text{ by MOS physics ]} \\
+      (V_{x} - V_{cc})G_2 &\approx - I_{M_0} \\
+      G_2 &\approx - \frac{I_{M_0}}{(V_{x} - V_{cc})} \\
+      \therefore G_2 &= \frac{I_{M_0}}{V_{cc} - V_{x}} \\
+      R_2 &= \frac{1}{G_2} = \frac{V_{cc} - V_{x}}{I_{M_0}}
+    \end{align*}
+\end{enumerate}`
 
-\paragraph{Question:}
-Design a Widlar Current Mirror (Sink) such that it
-mirrors a current of $I_{in} = 100\mu A$ with a current
-gain of 5. Assume $V_{cc} = 5V$, $V_{ee} = 0V$,
-$V_{th} = 1V$, $\lambda = 0.02 V^{-1}$,
-$\frac{1}{2} \mu_n C_{ox} = 100 \mu A/V^2$ and
-$L = 1 \mu m$ for all transistors. Find
-the output impedance of the mirror and the maximum
-load that can be connected at the output if $V_{L,
-max} = 4V$.
+\subsubsection{Question}
+Design a Widlar Current Mirror (Sink) that meets
+the following requirements. The mirror must provide
+a current gain at the output of 5. The input current
+must be $I_{in} = 100 \mu A$. The mirror must operate
+with $V_{cc} = 5V$ and $V_{ee} = 0V$. Assume the
+following transistor parameters: $V_{th} = 1V$,
+$\lambda = 0.02 V^{-1}$, $\frac{1}{2} \mu_n C_{ox} =
+100 \mu A/V^2$ and $L = 1 \mu m$ for all transistors.
+Find the output impedance of the mirror and the
+maximum load that can be connected at the output
+if $V_{L, max} = 4V$.
 \paragraph{Solution:}
-
 \begin{enumerate}
   \item \textbf{Choose appropriate transistor dimensions:}
     \begin{align*}
@@ -282,3 +276,55 @@ max} = 4V$.
                    &= 8 k\Omega
     \end{align*}
 \end{enumerate}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms Vx Vout Vs Is Itest
+  syms G3 G2 go0 gm0 go1 gm1
+
+  % system kcl
+  eq1 = Vout*(G3 + go1) + Vx*gm1 == 0; % KCL @ Vout
+  eq2 = Vx*(G2 + go0 + gm0) == 0; % KCL @ Vx
+
+  % voltage transfer function: Vs forced at Vx & Is injected into Vx
+  eq2_vt = Vx*(G2 + go0 + gm0) - Is == 0;
+  eq3_vt = Vx == Vs; % equation introduced.
+  sol_vt = solve([eq1, eq2_vt, eq3_vt], [Vout, Vx, Vs]);
+  volt_transfer = simplify(sol_vt.Vout/sol_vt.Vs);
+  % volt_transfer = subs(volt_transfer, 'G2', 0);
+  % volt_transfer = subs(volt_transfer, 'G3', 0);
+  printf('=== Voltage Transfer Results ===\n');
+  pretty(volt_transfer)
+  printf('\n');
+
+  % current transfer function: Is injected into Vx
+  sol_ct = solve([eq1, eq2_vt], [Vout, Vx]);
+  Iout = sol_ct.Vout * G3;
+  curr_transfer = simplify(Iout/Is);
+  printf('=== Current Transfer Results ===\n');
+  pretty(curr_transfer)
+  printf('\n');
+
+  % input impedence: Itest injected into Vx
+  eq2_zin = Vx*(G2 + go0 + gm0) + Itest == 0;
+  sol_zin = solve([eq1, eq2_zin], [Vout, Vx]);
+  zin = simplify(sol_zin.Vx/Itest);
+  % zin = subs(zin, 'G2', 0);
+  % zin = subs(zin, 'G3', 0);
+  printf('=== Input Impedence Results ===\n');
+  pretty(zin)
+  printf('\n');
+
+  % output impedence: Itest injected into Vout
+  eq1_zout = Vout*(G3 + go1) + Vx*gm1 + Itest == 0;
+  sol_zout = solve([eq1_zout, eq2], [Vout, Vx]);
+  zout = simplify(sol_zout.Vout/Itest);
+  % zout = subs(zout, 'G2', 0);
+  % zout = subs(zout, 'G3', 0);
+  printf('=== Output Impedence Results ===\n');
+  pretty(zout)
+  printf('\n');
+\end{lstlisting}

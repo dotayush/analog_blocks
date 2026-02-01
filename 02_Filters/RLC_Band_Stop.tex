@@ -1,11 +1,10 @@
-\subsection{RLC Band Stop Filter}
+\subsubsection{RLC Band Stop Filter}
 
 \paragraph{Overview:}
 Constructed from a resistor, inductor, and capacitor in series or
 parallel, a RLC Band Stop Filter attenuates signals within a
 specific frequency range while allowing signals outside this range
 to pass. It is a second-order filter.
-
 \paragraph{Schematic:}
 \begin{center}
   \begin{circuitikz}
@@ -84,7 +83,7 @@ to pass. It is a second-order filter.
   \end{circuitikz}
 \end{center}
 
-\subsubsection{Transfer Function}
+\subsubsubsection{Transfer Function}
 \begin{enumerate}
   \item \textbf{Parallel Configuration:}
     Applying KCL at \(V_{out}\) on Full Schematic of Parallel
@@ -123,23 +122,23 @@ to pass. It is a second-order filter.
     Applying KCL at $V_{out}$ on Full Schematic of Series
     Configuration, we get:
     \begin{align*}
-      (V_{out} - V_{in})G_1 + \frac{(V_{out} - V_{x})}{sL_1} = 0 \tag{i}
+      (V_{out} - V_{in})G_1 + \frac{(V_{out} - V_{x})}{sL_1} = 0 \tag{1}
     \end{align*}
     Applying KCL at \(V_{x}\):
     \begin{align*}
-      (V_{x} - V_{ee})sC_1 + \frac{(V_{x} - V_{out})}{sL_1} = 0 \tag{ii}
+      (V_{x} - V_{ee})sC_1 + \frac{(V_{x} - V_{out})}{sL_1} = 0 \tag{2}
     \end{align*}
-    From equation (ii):
+    From equation (2):
     \begin{align*}
       V_{x}sC_1 - V_{ee}sC_1 + \frac{V_{x}}{sL_1} - \frac{V_{out}}{sL_1} &= 0 \\
       V_{x}\left(sC_1 + \frac{1}{sL_1}\right) &= V_{ee}sC_1 + \frac{V_{out}}{sL_1} \\
       V_{x} &= \frac{V_{ee}sC_1 + \frac{V_{out}}{sL_1}}{sC_1 + \frac{1}{sL_1}} \\
-      \boxed{V_{x} = \frac{V_{ee}s^2L_1C_1 + V_{out}}{s^2L_1C_1 + 1}} \tag{iii}
+      \boxed{V_{x} = \frac{V_{ee}s^2L_1C_1 + V_{out}}{s^2L_1C_1 + 1}} \tag{3}
     \end{align*}
     \paragraph{Superposition:}
       \begin{enumerate}
         \item Due to \(V_{in}\) alone (\(V_{ee} = 0V\)):
-          Substituting equation (iii) into equation (i):
+          Substituting equation (3) into equation (1):
           \begin{align*}
             (V_{out} - V_{in})G_1 + \frac{V_{out} - \frac{0 + V_{out}}{s^2L_1C_1 + 1}}{sL_1} &= 0 \\
             (V_{out} - V_{in})G_1 + \frac{V_{out}\left(1 - \frac{1}{s^2L_1C_1 + 1}\right)}{sL_1} &= 0 \\
@@ -151,7 +150,7 @@ to pass. It is a second-order filter.
             \boxed{H_3(s) = \frac{N_3(s)}{D_3(s)} = \frac{V_{out_3}}{V_{in}} = \frac{G_1(s^2L_1C_1 + 1)}{G_1(s^2L_1C_1 + 1) + sC_1}}
           \end{align*}
         \item Due to \(V_{ee}\) alone (\(V_{in} = 0V\)):
-          Substituting equation (iii) into equation (i):
+          Substituting equation (3) into equation (1):
           \begin{align*}
             (V_{out} - 0)G_1 + \frac{V_{out} - \frac{V_{ee}s^2L_1C_1 + V_{out}}{s^2L_1C_1 + 1}}{sL_1} &= 0 \\
             V_{out}G_1 + \frac{V_{out} - \left(\frac{V_{out}}{s^2L_1C_1 + 1} + \frac{V_{ee}s^2L_1C_1}{s^2L_1C_1 + 1}\right)}{sL_1} &= 0 \\
@@ -173,7 +172,7 @@ to pass. It is a second-order filter.
       \end{align*}
 \end{enumerate}
 
-\subsubsection{Analysis}
+\subsubsubsection{Analysis}
 Instead of doing a regular analysis, Look at the table below comparing
 \(H_1(s), H_2(s), H_3(s), H_4(s)\) of RLC Band Stop Filter (BS) with
 \(H_1(s), H_2(s), H_3(s), H_4(s)\) of RLC Band Pass Filter (BP). \\
@@ -200,9 +199,7 @@ It also follows for our band stop filter (BS) that, \\\\
 \end{tabularx}\\\\
 The impedances are the exact same as in RLC Band Pass Filter.
 
-\subsubsection{Example Design}
-
-\paragraph{Question:}
+\subsubsubsection{Question}
 Design a RLC Band Stop Filter with a center frequency of
 \(f_0 = 1kHz\), bandwidth of \(BW = 100Hz\). Use \(C_1 = 0.1\mu F\).
 Compute their input and output impedances at \(f_0\).

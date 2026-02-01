@@ -1,10 +1,9 @@
-\subsection{Voltage Divider}
+\subsubsection{Voltage Divider}
 
 \paragraph{Overview:}
 Constructed from two resistors in series, a voltage
 divider is a simple circuit that turns a large voltage
 into a smaller one.
-
 \paragraph{Schematic:}
 \begin{center}
   \begin{circuitikz}
@@ -43,12 +42,11 @@ into a smaller one.
   \end{circuitikz}
 \end{center}
 
-\subsubsection{Transfer Function}
+\subsubsubsection{Transfer Function}
 Applying KCL at $V_{out}$ of Full Schematic, we get:
 \[
   (V_{out} - V_{in}){G_1} + (V_{out} - V_{ee}){G_2} = 0
 \]
-
 \paragraph{Superposition:}
 \begin{enumerate}
   \item Due to \(V_{in}\) alone (\(V_{ee} = 0V\)):
@@ -68,14 +66,13 @@ Applying KCL at $V_{out}$ of Full Schematic, we get:
       \boxed{H_2(s) = \frac{N_2(s)}{D_2(s)} = \frac{V_{out_2}}{V_{ee}} = \frac{G_2}{G_1 + G_2}}
     \end{align*}
 \end{enumerate}
-
 \paragraph{Total Output:}
 \begin{align*}
   V_{out} &= V_{out_1} + V_{out_2} \\
   V_{out} &= V_{in} \frac{G_1}{G_1 + G_2} + V_{ee} \frac{G_2}{G_1 + G_2}
 \end{align*}
 
-\subsubsection{Analysis}
+\subsubsubsection{Analysis}
 \begin{enumerate}
   \item \textbf{Resistor Ratio (\(\frac{R_2}{R_1}\)):}
     From KCL at \(V_{out}\) of Full Schematic:
@@ -101,13 +98,10 @@ Applying KCL at $V_{out}$ of Full Schematic, we get:
       \end{align*}
 \end{enumerate}
 
-\subsubsection{Example Design}
-
-\paragraph{Question:}
+\subsubsubsection{Question}
 Design a voltage divider to step down a \(10V\) supply
 to \(3.3V\). Calculate the input and output impedances
 of the voltage divider.
-
 \paragraph{Solution:}
 \begin{enumerate}
   \item Calculate the resistor ratio (\(\frac{R_2}{R_1}\)):
@@ -141,7 +135,7 @@ of the voltage divider.
       \]
 \end{enumerate}
 
-\subsubsection{Non-Idealities}
+\subsubsubsection{Non-Idealities}
 \begin{itemize}
   \item \textbf{Component Tolerances:} Refer to \ref{sec:theory_general_tolerances}.
   \item \textbf{Parasitics:} Refer to \ref{sec:theory_general_parasitics}.

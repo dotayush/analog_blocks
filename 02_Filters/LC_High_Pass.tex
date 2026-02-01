@@ -1,4 +1,4 @@
-\subsection{LC High Pass Filter}
+\subsubsection{LC High Pass Filter}
 
 \paragraph{Overview:}
 Constructed from an inductor and capacitor in series, a LC
@@ -6,7 +6,6 @@ High Pass Filter allows high frequency signals to pass while
 attenuating low frequency signals. It is a second order
 filter and can provide a steeper roll-off (-40 dB/decade) than
 single pole filters (-20 dB/decade).
-
 \paragraph{Schematic:}
 \begin{center}
   \begin{circuitikz}
@@ -45,7 +44,7 @@ single pole filters (-20 dB/decade).
   \end{circuitikz}
 \end{center}
 
-\subsubsection{Transfer Function}
+\subsubsubsection{Transfer Function}
 Applying KCL at $V_{out}$ on Full Schematic, we get:
 \[
   (V_{out} - V_{in})sC_1 + \frac{(V_{out} - V_{ee})}{sL_1} = 0
@@ -75,7 +74,6 @@ Applying KCL at $V_{out}$ on Full Schematic, we get:
       \boxed{H_2(s) = \frac{N_2(s)}{D_2(s)} = \frac{V_{out_2}}{V_{ee}} = \frac{1}{s^2C_1L_1 + 1}}
     \end{align*}
 \end{enumerate}
-
 \paragraph{Total Output:}
 \begin{align*}
   V_{out} &= V_{out_1} + V_{out_2} \\
@@ -83,7 +81,7 @@ Applying KCL at $V_{out}$ on Full Schematic, we get:
   V_{out} &= \frac{s^2C_1L_1}{s^2C_1L_1 + 1}V_{in} + \frac{1}{s^2C_1L_1 + 1}V_{ee} \\
 \end{align*}
 
-\subsubsection{Analysis}
+\subsubsubsection{Analysis}
 \begin{enumerate}
   \item \textbf{Poles (\(D(s) = 0\)):} \\
     For both \(H_1(s)\) and \(H_2(s)\):
@@ -137,7 +135,7 @@ Applying KCL at $V_{out}$ on Full Schematic, we get:
     Same as the LC Low Pass Filter.
 \end{enumerate}
 
-\subsubsection{Example Design}
+\subsubsubsection{Question}
 Design a LC High Pass Filter with a cutoff frequency of
 \(f_c = 10 kHz\). Choose standard component values for \(L_1\)
 and \(C_1\).

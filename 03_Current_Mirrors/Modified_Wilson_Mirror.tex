@@ -1,18 +1,16 @@
 \subsection{Modified Wilson Mirror}
 
 \paragraph{Overview:}
-Constructed from transistors and resistors, a
-Modified Wilson Mirror is an enhanced version of
-the Wilson Current Mirror. It offers improved
-performance in terms of output resistance and
-accuracy of current replication.
+Constructed from four transistors, It improves
+upon the Wilson Current Mirror by providing a
+higher input impedance which in turn improves
+the accuracy of current mirroring.
 
 \paragraph{Schematic:}
 \begin{center}
   \begin{tikzpicture}
   	% Paths, nodes and wires:
-  	\node[shape=rectangle, draw={rgb,255:red,255;green,0;blue,0}, line width=1pt, dash pattern={on 4pt off 2pt on 1pt off 2pt on 1pt off 2pt}, minimum width=1.965cm, minimum height=2.215cm] at (15.02, 2.688){};
-  	\node[shape=rectangle, draw={rgb,255:red,255;green,0;blue,0}, line width=1pt, dash pattern={on 4pt off 2pt on 1pt off 2pt on 1pt off 2pt}, minimum width=1.965cm, minimum height=2.215cm] at (6, 7.145){};
+  	\node[shape=rectangle, draw={rgb,255:red,255;green,0;blue,0}, line width=1pt, dash pattern={on 4pt off 2pt on 1pt off 2pt on 1pt off 2pt}, minimum width=1.715cm, minimum height=2.195cm] at (6.125, 7.135){};
   	\draw (3.23, 8.04) to[american voltage source, l_={$V_{cc}$}] (1.98, 8.04);
   	\node[nmos, arrowmos, xscale=-1](N1) at (3.5, 2.75){} node[anchor=east] at (N1.text){$M_0$};
   	\node[nmos, arrowmos](N2) at (6, 2.75){} node[anchor=west] at (N2.text){$M_1$};
@@ -25,254 +23,210 @@ accuracy of current replication.
   	\draw (4, 1) -| (4.75, 1.75);
   	\node[ground, rotate=-90] at (1.98, 8.04){};
   	\node[ground, rotate=-90] at (2.75, 1){};
-  	\draw (6, 5.79) -- (6.5, 5.79);
-  	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N3) at (7, 5.75){} node[anchor=center] at (N3.text){$V_{out}$};
+  	\draw[dash pattern={on 0.4pt off 0.8pt}, -stealth] (6, 5.5) -- (6.5, 5.5);
+  	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N3) at (7, 5.46){} node[anchor=center] at (N3.text){$V_{out}$};
   	\draw (6, 7.5) to[european resistor, l={\textcolor{rgb,255:red,255;green,0;blue,0}{$G_5$}}] (6, 6);
   	\draw (6, 5.79) -- (6, 6.02);
   	\draw (3.5, 7.54) |- (3.23, 8.04);
   	\path[draw={rgb,255:red,255;green,0;blue,0}] (3.5, 8.04) -| (6, 7.5);
-  	\node[pmos, arrowmos](N4) at (15, 7.168){} node[anchor=west] at (N4.text){$M_1$};
-  	\node[pmos, arrowmos, xscale=-1](N5) at (12.5, 7.168){} node[anchor=east] at (N5.text){$M_0$};
-  	\draw (13.98, 7.168) -- (13.48, 7.168);
-  	\draw (15, 4.71) -| (15, 4.27);
-  	\draw (13.71, 7.168) |- (14.77, 6.25);
-  	\draw (12.5, 3.75) to[european resistor, l={$G_4$}] (12.5, 2.25);
-  	\draw (15, 3.75) to[european resistor, l={\textcolor{rgb,255:red,255;green,0;blue,0}{$G_5$}}] (15, 2.25);
-  	\draw (15, 4.27) |- (15, 3.75);
-  	\draw (12.5, 7.938) |- (15, 8.188) -| (15, 7.938);
-  	\draw (15, 4.02) -- (15.5, 4.02);
-  	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N6) at (16, 4.02){} node[anchor=center] at (N6.text){$V_{out}$};
-  	\draw (12.5, 2.25) -- (12.5, 2) -| (13.75, 2);
-  	\draw (12.5, 8.188) to[american voltage source, l_={$V_{cc}$}] (11.25, 8.188);
-  	\node[ground, rotate=-90] at (11.25, 8.188){};
-  	\draw (13, 1.25) to[american voltage source, l={$V_{ee}$}] (11.75, 1.25);
-  	\draw (13, 1.25) -| (13.75, 2);
-  	\node[ground, rotate=-90] at (11.75, 1.25){};
   	\draw (10.25, 10.75) -- (10.25, -0);
-  	\draw (1, 9.25) -- (19, 9.25);
-  	\node[shape=rectangle, minimum width=3.84cm, minimum height=1.09cm] at (4.813, 10.063){} node[anchor=north, align=center, text width=3.452cm, inner sep=6pt] at (4.813, 10.625){Full Schematic\\(Sink)};
-  	\node[shape=rectangle, minimum width=3.84cm, minimum height=1.09cm] at (13.562, 10.063){} node[anchor=north, align=center, text width=3.452cm, inner sep=6pt] at (13.562, 10.625){Full Schematic\\(Source)};
+  	\node[shape=rectangle, minimum width=4.84cm, minimum height=1.09cm] at (5.187, 10){} node[anchor=north, align=center, text width=4.452cm, inner sep=6pt] at (5.187, 10.563){Large Signal Schematic\\(Sink)};
   	\node[shape=rectangle, minimum width=3.09cm, minimum height=2.465cm] at (8.687, 7){} node[anchor=north west, align=left, text width=2.702cm, inner sep=6pt] at (7.125, 8.25){\textcolor{rgb,255:red,255;green,0;blue,0}{\footnotesize Exists Only For Analysis. In  Implementation take output directly from V\_\{out\}}};
-  	\path[draw={rgb,255:red,255;green,0;blue,0}] (13.75, 2) -| (15, 2.25);
-  	\node[shape=rectangle, minimum width=3.09cm, minimum height=2.465cm] at (17.708, 2.562){} node[anchor=north west, align=left, text width=2.702cm, inner sep=6pt] at (16.145, 3.812){\textcolor{rgb,255:red,255;green,0;blue,0}{\footnotesize Exists Only For Analysis. In  Implementation take output directly from V\_\{out\}}};
-  	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N7) at (7, 3.71){} node[anchor=center] at (N7.text){$V_{x}$};
-  	\draw (6, 3.71) |- (6.5, 3.71);
-  	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N8) at (16, 6.25){} node[anchor=center] at (N8.text){$V_{x}$};
-  	\draw (14.98, 6.25) |- (15.48, 6.25);
-  	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N9) at (4.75, 3.96){} node[anchor=center] at (N9.text){$I_{G_1}$};
-  	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N10) at (13.71, 6){} node[anchor=center] at (N10.text){$I_{G_1}$};
-  	\draw (12.5, 4.562) -- (12.5, 3.75);
-  	\draw (1, -0) -- (19, -0);
-  	\draw (12.5, -7.063) to[american current source, l_={$g_{m_1}v_{gs}$}] (12.5, -8.563);
-  	\draw (14, -7.063) to[european resistor, l_={$g_{o_1}$}] (14, -8.563);
-  	\draw (12.5, -8.563) -- (14, -8.563);
-  	\draw (14, -7.063) -- (12.5, -7.063);
-  	\draw (12.5, -8.563) -- (11.25, -8.563);
-  	\draw (11.25, -7.063) -- (10.5, -7.063);
-  	\node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (11.25, -7.313){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (11.25, -7.313){\footnotesize G};
-  	\node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (11.25, -8.313){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (11.25, -8.313){\footnotesize S};
-  	\node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (14.5, -7.313){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (14.5, -7.313){\footnotesize D};
-  	\draw (10.5, -7.063) -- (9.75, -7.063);
-  	\draw (8.25, -7.063) to[american current source, l={$g_{m_0}v_{gs}$}] (8.25, -8.563);
-  	\draw (6.75, -7.063) to[european resistor, l={$g_{o_0}$}] (6.75, -8.563);
-  	\draw (8.25, -7.063) -- (6.75, -7.063);
-  	\draw (8.25, -8.563) -- (6.75, -8.563);
-  	\draw (6.75, -7.063) -| (6.75, -5.563);
-  	\draw (9.75, -8.563) -- (8.25, -8.563);
-  	\node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (9.75, -7.313){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (9.75, -7.313){\footnotesize G};
-  	\node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (9.75, -8.313){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (9.75, -8.313){\footnotesize S};
-  	\node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (6.25, -7.313){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (6.25, -7.313){\footnotesize D};
-  	\draw (6.75, -1.25) to[european resistor, l={$G_4$}] (6.75, -2.75);
-  	\draw (6.75, -2.75) -| (6.75, -3.25);
-  	\draw (6.75, -1.25) -| (6.75, -0.75) -- (7.5, -0.75) -| (7.5, -1);
-  	\draw (14, -2.063) to[european resistor, l={$G_5$}] (14, -3.563);
-  	\draw (14, -3.563) -| (14, -4.063);
-  	\draw (14, -2.063) -| (14, -1.563) |- (13.25, -1.563) -| (13.25, -1.813);
-  	\draw (14, -4.063) -- (14.75, -4.063);
-  	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.465cm](N11) at (14.875, -6.313){} node[anchor=center] at (N11.text){$V_{x}$};
-  	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N12) at (15.25, -4.063){} node[anchor=center] at (N12.text){$V_{out}$};
-  	\node[ground] at (9.75, -8.563){};
-  	\node[ground] at (11.25, -8.563){};
-  	\node[ground] at (7.5, -1){};
-  	\node[ground] at (13.25, -1.813){};
-  	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N13) at (10, -6.375){} node[anchor=center] at (N13.text){$I_{G_1}$};
-  	\node[shape=rectangle, minimum width=4.215cm, minimum height=1.09cm] at (10.25, -0.937){} node[anchor=north, align=center, text width=3.827cm, inner sep=6pt] at (10.25, -0.375){Small Signal Schematic\\(Sink)};
+  	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N4) at (7, 3.71){} node[anchor=center] at (N4.text){$V_{x}$};
+  	\draw[dash pattern={on 0.4pt off 0.8pt}, -stealth] (6, 3.71) |- (6.5, 3.71);
+  	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N5) at (4.75, 4.25){} node[anchor=center] at (N5.text){$I_{G_1}$};
+  	\draw (17.5, 2.875) to[american current source, l_={$g_{m_1}v_{gs}$}] (17.5, 1.375);
+  	\draw (19, 2.875) to[european resistor, l_={$g_{o_1}$}] (19, 1.375);
+  	\draw (17.5, 1.375) -- (19, 1.375);
+  	\draw (19, 2.875) -- (17.5, 2.875);
+  	\draw (17.5, 1.375) -- (16.25, 1.375);
+  	\draw (16.25, 2.875) -- (15.5, 2.875);
+  	\node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (16.25, 2.625){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (16.25, 2.625){\footnotesize G};
+  	\node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (16.25, 1.625){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (16.25, 1.625){\footnotesize S};
+  	\node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (19.5, 2.625){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (19.5, 2.625){\footnotesize D};
+  	\draw (15.5, 2.875) -- (14.75, 2.875);
+  	\draw (13.25, 2.875) to[american current source, l={$g_{m_0}v_{gs}$}] (13.25, 1.375);
+  	\draw (11.75, 2.875) to[european resistor, l={$g_{o_0}$}] (11.75, 1.375);
+  	\draw (13.25, 2.875) -- (11.75, 2.875);
+  	\draw (13.25, 1.375) -- (11.75, 1.375);
+  	\draw (11.75, 2.875) -| (11.75, 4.375);
+  	\draw (14.75, 1.375) -- (13.25, 1.375);
+  	\node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (14.75, 2.625){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (14.75, 2.625){\footnotesize G};
+  	\node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (14.75, 1.625){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (14.75, 1.625){\footnotesize S};
+  	\node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (11.25, 2.625){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (11.25, 2.625){\footnotesize D};
+  	\draw (11.75, 8.687) to[european resistor, l={$G_4$}] (11.75, 7.187);
+  	\draw (11.75, 7.187) -| (11.75, 6.687);
+  	\draw (11.75, 8.687) -| (11.75, 9.187) -- (12.5, 9.187) -| (12.5, 8.937);
+  	\draw (19, 7.875) to[european resistor, l={\textcolor{rgb,255:red,255;green,0;blue,0}{$G_5$}}] (19, 6.375);
+  	\draw (19, 6.375) -| (19, 5.875);
+  	\draw (19, 7.875) -| (19, 8.375) |- (18.25, 8.375) -| (18.25, 8.125);
+  	\draw[dash pattern={on 0.4pt off 0.8pt}, -stealth] (19, 5.875) -- (19.538, 5.875);
+  	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.465cm](N6) at (19.875, 3.625){} node[anchor=center] at (N6.text){$V_{x}$};
+  	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N7) at (20.038, 5.875){} node[anchor=center] at (N7.text){$V_{out}$};
+  	\node[ground] at (14.75, 1.375){};
+  	\node[ground] at (16.25, 1.375){};
+  	\node[ground] at (12.5, 8.937){};
+  	\node[ground] at (18.25, 8.125){};
+  	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N8) at (14.5, 3.625){} node[anchor=center] at (N8.text){$I_{G_1}$};
+  	\node[shape=rectangle, minimum width=4.215cm, minimum height=1.09cm] at (15.25, 10){} node[anchor=north, align=center, text width=3.827cm, inner sep=6pt] at (15.25, 10.563){Small Signal Schematic\\(Sink)};
   	\draw (6, 3.52) -| (6, 3.71);
-  	\node[nmos, arrowmos](N14) at (6, 4.48){} node[anchor=west] at (N14.text){$M_2$};
-  	\draw (15, 6.398) |- (14.77, 6.25);
-  	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N15) at (2.5, 3.71){} node[anchor=center] at (N15.text){$V_{y}$};
-  	\draw (3, 3.71) |- (3.5, 3.71);
-  	\node[pmos, arrowmos](N16) at (15, 5.48){} node[anchor=west] at (N16.text){$M_2$};
-  	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N17) at (11.5, 6.25){} node[anchor=center] at (N17.text){$V_{y}$};
-  	\draw (12, 6.25) |- (12.5, 6.25);
-  	\draw (12.5, -4.063) to[american current source, l_={$g_{m_2}v_{gs}$}] (12.5, -5.563);
-  	\draw (14, -4.063) to[european resistor, l_={$g_{o_2}$}] (14, -5.563);
-  	\draw (12.5, -5.563) -- (14, -5.563);
-  	\draw (14, -4.063) -- (12.5, -4.063);
-  	\draw (12.5, -5.563) -- (11.25, -5.563);
-  	\draw (11.25, -4.063) -- (10.5, -4.063);
-  	\node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (11.25, -4.313){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (11.25, -4.313){\footnotesize G};
-  	\node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (11.25, -5.313){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (11.25, -5.313){\footnotesize S};
-  	\draw (14, -5.563) -- (14, -7.063);
-  	\draw (10.5, -7.063) -| (10.5, -6.313) -- (14, -6.313);
-  	\draw (14, -6.313) -- (14.5, -6.313);
-  	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.465cm](N18) at (5.875, -6.25){} node[anchor=center] at (N18.text){$V_{y}$};
-  	\draw (6.25, -6.25) -- (6.75, -6.25);
-  	\node[nmos, arrowmos, xscale=-1](N19) at (3.5, 4.48){} node[anchor=east] at (N19.text){$M_3$};
+  	\node[nmos, arrowmos](N9) at (6, 4.48){} node[anchor=west] at (N9.text){$M_2$};
+  	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N10) at (2.5, 3.71){} node[anchor=center] at (N10.text){$V_{y}$};
+  	\draw[dash pattern={on 0.4pt off 0.8pt}, -stealth] (3.5, 3.71) -- (3, 3.71);
+  	\draw (17.5, 5.875) to[american current source, l_={$g_{m_2}v_{gs}$}] (17.5, 4.375);
+  	\draw (19, 5.875) to[european resistor, l_={$g_{o_2}$}] (19, 4.375);
+  	\draw (17.5, 4.375) -- (19, 4.375);
+  	\draw (19, 5.875) -- (17.5, 5.875);
+  	\draw (17.5, 4.375) -- (16.25, 4.375);
+  	\draw (16.25, 5.875) -- (15.5, 5.875);
+  	\node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (16.25, 5.625){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (16.25, 5.625){\footnotesize G};
+  	\node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (16.25, 4.625){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (16.25, 4.625){\footnotesize S};
+  	\draw (19, 4.375) -- (19, 2.875);
+  	\draw (15.5, 2.875) -| (15.5, 3.625) -- (19, 3.625);
+  	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.465cm](N11) at (10.875, 3.687){} node[anchor=center] at (N11.text){$V_{y}$};
+  	\node[nmos, arrowmos, xscale=-1](N12) at (3.5, 4.48){} node[anchor=east] at (N12.text){$M_3$};
   	\draw (3.5, 3.71) -| (3.5, 3.52);
   	\draw (4.48, 4.48) -- (5.02, 4.48);
   	\draw (4.75, 4.5) |- (3.5, 5.5);
   	\draw (3.5, 5.25) -| (3.5, 5.5);
   	\draw (3.5, 6.04) -| (3.5, 5.5);
-  	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N20) at (2.5, 5.5){} node[anchor=center] at (N20.text){$V_{z}$};
-  	\draw (3, 5.5) |- (3.5, 5.5);
-  	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N21) at (4.75, 5.75){} node[anchor=center] at (N21.text){$I_{G_2}$};
-  	\node[pmos, arrowmos, xscale=-1](N22) at (12.5, 5.48){} node[anchor=east] at (N22.text){$M_3$};
-  	\draw (13.48, 5.48) -- (14.02, 5.48);
-  	\draw (12.5, 4.562) -- (12.5, 4.71);
-  	\draw (12.5, 6.25) |- (12.5, 6.398);
-  	\draw (13.75, 5.5) |- (12.5, 4.562);
-  	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N23) at (13.75, 4.312){} node[anchor=center] at (N23.text){$I_{G_2}$};
-  	\draw (10.5, -4.063) -- (9.75, -4.063);
-  	\draw (8.25, -4.063) to[american current source, l={$g_{m_3}v_{gs}$}] (8.25, -5.563);
-  	\draw (6.75, -4.063) to[european resistor, l={$g_{o_3}$}] (6.75, -5.563);
-  	\draw (8.25, -4.063) -- (6.75, -4.063);
-  	\draw (8.25, -5.563) -- (6.75, -5.563);
-  	\draw (9.75, -5.563) -- (8.25, -5.563);
-  	\node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (9.75, -4.313){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (9.75, -4.313){\footnotesize G};
-  	\node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (9.75, -5.313){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (9.75, -5.313){\footnotesize S};
-  	\node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (6.25, -4.313){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (6.25, -4.313){\footnotesize D};
-  	\draw (10.5, -4.063) |- (6.75, -3.25) |- (6.75, -4.063);
-  	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N24) at (11.5, 4.562){} node[anchor=center] at (N24.text){$V_{z}$};
-  	\draw (12, 4.562) |- (12.5, 4.562);
-  	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.465cm](N25) at (5.875, -3.25){} node[anchor=center] at (N25.text){$V_{z}$};
-  	\draw (6.25, -3.25) -- (6.75, -3.25);
-  	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N26) at (10.5, -3){} node[anchor=center] at (N26.text){$I_{G_2}$};
+  	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N13) at (2.5, 5.5){} node[anchor=center] at (N13.text){$V_{z}$};
+  	\draw[dash pattern={on 0.4pt off 0.8pt}, -stealth] (3.5, 5.5) |- (3, 5.5);
+  	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N14) at (4.75, 6){} node[anchor=center] at (N14.text){$I_{G_2}$};
+  	\draw (15.5, 5.875) -- (14.75, 5.875);
+  	\draw (13.25, 5.875) to[american current source, l={$g_{m_3}v_{gs}$}] (13.25, 4.375);
+  	\draw (11.75, 5.875) to[european resistor, l={$g_{o_3}$}] (11.75, 4.375);
+  	\draw (13.25, 5.875) -- (11.75, 5.875);
+  	\draw (13.25, 4.375) -- (11.75, 4.375);
+  	\draw (14.75, 4.375) -- (13.25, 4.375);
+  	\node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (14.75, 5.625){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (14.75, 5.625){\footnotesize G};
+  	\node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (14.75, 4.625){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (14.75, 4.625){\footnotesize S};
+  	\node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (11.25, 5.625){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (11.25, 5.625){\footnotesize D};
+  	\draw (15.5, 5.875) |- (11.75, 6.687) |- (11.75, 5.875);
+  	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.465cm](N15) at (10.875, 6.687){} node[anchor=center] at (N15.text){$V_{z}$};
+  	\draw[dash pattern={on 0.4pt off 0.8pt}, -stealth] (11.75, 6.687) -- (11.25, 6.687);
+  	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N16) at (16.538, 6.687){} node[anchor=center] at (N16.text){$I_{G_2}$};
+  	\draw[dash pattern={on 0.4pt off 0.8pt}, -stealth] (4.75, 3.71) -- (4.75, 4);
+  	\draw[dash pattern={on 0.4pt off 0.8pt}, -stealth] (4.75, 5.5) -- (4.75, 5.79);
+  	\draw[dash pattern={on 0.4pt off 0.8pt}, -stealth] (19, 3.625) -- (19.538, 3.625);
+  	\draw[dash pattern={on 0.4pt off 0.8pt}, -stealth] (11.75, 3.687) -- (11.25, 3.687);
+  	\draw[dash pattern={on 0.4pt off 0.8pt}, -stealth] (15.5, 3.625) -- (15, 3.625);
+  	\draw[dash pattern={on 0.4pt off 0.8pt}, -stealth] (15.5, 6.687) -- (16.038, 6.687);
+  	\node[shape=rectangle, draw={rgb,255:red,255;green,0;blue,0}, line width=1pt, dash pattern={on 4pt off 2pt on 1pt off 2pt on 1pt off 2pt}, minimum width=1.34cm, minimum height=2.195cm] at (19.187, 7.49){};
   \end{tikzpicture}
 \end{center}
 
 \subsubsection{Transfer Function}
-Applying KCL at $V_{out}$ on Full Schematic (for Sink):
-\begin{align*}
-  (V_{out} - V_{cc})G_5 + I_{M_2} &= 0 \\
-  V_{out}G_5 - V_{cc}G_5 + I_{M_2} &= 0 \\
-  V_{out} &= \frac{V_{cc}G_5 - I_{M_2}}{G_5} \tag{i}
-\end{align*}
-Applying KCL at $V_{x}$ on Full Schematic (for Sink):
-\begin{align*}
-  I_{M_1} + I_{G_1} - I_{M_2} &= 0 \\
-  I_{M_1} + I_{G_1} &= I_{M_2} \\
-  I_{M_1} &\approx I_{M_2} \quad \text{[assuming } I_{G_1} \approx 0 \text{ by MOS physics]} \tag{ii}
-\end{align*}
-Applying KCL at $V_{y}$ on Full Schematic (for Sink):
-\begin{align*}
-  I_{M_0} - I_{M_3} &= 0 \\
-  I_{M_0} &= I_{M_3} \tag{iii}
-\end{align*}
-Applying KCL at $V_{z}$ on Full Schematic (for Sink):
-\begin{align*}
-  (V_{z} - V_{cc})G_4 + I_{M_3} + I_{G_2} &= 0 \\
-  V_{z}G_4 - V_{cc}G_4 + (I_{M_3} + I_{G_2}) &= 0 \\
-  V_{z}G_4 &= V_{cc}G_4 - (I_{M_3} + I_{G_2}) \\
-  V_{z} &= V_{cc} - \frac{(I_{M_3} + I_{G_2})}{G_4} \tag{iv}
-\end{align*}
 Here's a table of the voltages at each terminal of the
 transistors:\\
-\begin{tabularx}{\linewidth}{|X|X|X|X|} \hline
-  Transistor & Gate (G) & Source (S) & Drain (D) \\ \hline
-  $M_0$ & $V_{x}$ & $V_{ee}$ & $V_{y}$ \\ \hline
-  $M_1$ & $V_{x}$ & $V_{ee}$ & $V_{x}$ \\ \hline
-  $M_2$ & $V_{z}$ & $V_{x}$ & $V_{out}$ \\ \hline
-  $M_3$ & $V_{z}$ & $V_{y}$ & $V_{z}$ \\ \hline
+\begin{tabularx}{\linewidth}{|X|X|X|X|X|X|} \hline
+  Transistor & Gate (G) & Source (S) & Drain (D) & $V_{gs}$ & $V_{ds}$ \\ \hline
+  $M_0$ & $V_{x}$ & $V_{ee}$ & $V_{y}$ & $V_{x} - V_{ee}$ & $V_{y} - V_{ee}$ \\ \hline
+  $M_1$ & $V_{x}$ & $V_{ee}$ & $V_{x}$ & $V_{x} - V_{ee}$ & $V_{x} - V_{ee}$ \\ \hline
+  $M_2$ & $V_{z}$ & $V_{x}$ & $V_{out}$ & $V_{z} - V_{x}$ & $V_{out} - V_{x}$ \\ \hline
+  $M_3$ & $V_{z}$ & $V_{y}$ & $V_{z}$ & $V_{z} - V_{y}$ & $V_{z} - V_{y}$ \\ \hline
 \end{tabularx}\\
-Here's a table of $V_{gs}$ and $V_{ds}$ for each transistor:\\
-\begin{tabularx}{\linewidth}{|X|X|X|} \hline
-  Transistor & $V_{gs}$ & $V_{ds}$ \\ \hline
-  $M_0$ & $V_{x} - V_{ee}$ & $V_{y} - V_{ee}$ \\ \hline
-  $M_1$ & $V_{x} - V_{ee}$ & $V_{x} - V_{ee}$ \\ \hline
-  $M_2$ & $V_{z} - V_{x}$ & $V_{out} - V_{x}$ \\ \hline
-  $M_3$ & $V_{z} - V_{y}$ & $V_{z} - V_{y}$ \\ \hline
-\end{tabularx}\\
-Using the above tables, we can express the currents through
-each transistor as follows:
-\begin{align*}
-  I_{M_0} &= k_{n_0}(V_{gs_0} - V_{th})^2 \cdot (1 + \lambda V_{ds_0}) \\
-          &= k_{n_0}((V_{x} - V_{ee}) - V_{th})^2 \cdot (1 + \lambda (V_{y} - V_{ee})) \\
-          &= k_{n_0}(V_{x} - V_{ee} - V_{th})^2 \quad \text{[assuming } \lambda = 0 \text{]} \tag{v} \\ \\
-  I_{M_1} &= k_{n_1}(V_{gs_1} - V_{th})^2 \cdot (1 + \lambda V_{ds_1}) \\
-          &= k_{n_1}((V_{x} - V_{ee}) - V_{th})^2 \cdot (1 + \lambda (V_{x} - V_{ee})) \\
-          &= k_{n_1}(V_{x} - V_{ee} - V_{th})^2 \quad \text{[assuming } \lambda = 0 \text{]} \tag{vi} \\ \\
-  I_{M_2} &= k_{n_2}(V_{gs_2} - V_{th})^2 \cdot (1 + \lambda V_{ds_2}) \\
-          &= k_{n_2}((V_{z} - V_{x}) - V_{th})^2 \cdot (1 + \lambda (V_{out} - V_{x})) \\
-          &= k_{n_2}\left(\left(V_{cc} - \frac{(I_{M_3} + I_{G_2})}{G_4}\right) - V_{x} - V_{th}\right)^2 \cdot \left(1 + \lambda\left(\frac{V_{cc}G_5 - I_{M_2}}{G_5}\right) - V_{x}\right) \\
-          &= k_{n_2}\left(\left(V_{cc} - \frac{(I_{M_3} + I_{G_2})}{G_4}\right) - V_{x} - V_{th}\right)^2 \quad \text{[assuming } \lambda = 0 \text{]} \tag{vii} \\ \\
-  I_{M_3} &= k_{n_3}(V_{gs_3} - V_{th})^2 \cdot (1 + \lambda V_{ds_3}) \\
-          &= k_{n_3}((V_{z} - V_{y}) - V_{th})^2 \cdot (1 + \lambda (V_{z} - V_{y})) \\
-          &= k_{n_3}\left(\left(V_{cc} - \frac{(I_{M_3} + I_{G_2})}{G_4}\right) - V_{y} - V_{th}\right)^2 \codt \left(1 + \lambda\left(\left(V_{cc} - \frac{(I_{M_3} + I_{G_2})}{G_4}\right) - V_{y}\right)\right) \\
-          &= k_{n_3}\left(\left(V_{cc} - \frac{(I_{M_3} + I_{G_2})}{G_4}\right) - V_{y} - V_{th}\right)^2 \quad \text{[assuming } \lambda = 0 \text{]} \tag{viii}
-\end{align*}
-It can be seen that,
-\begin{align*}
-  I_{in} &= I_{M_3} = I_{M_0} \quad \text{[from (iii)]} \\
-  I_{out} &= I_{M_2} = I_{M_1} \quad \text{[from (ii)]} \\
-  I_{M_0} &= I_{M_1} \quad \text{[from (v) and (vi) and assuming } k_{n_0} = k_{n_1} \text{]} \\
-  \therefore  I_{out} &= I_{in}
-\end{align*}
-Thus,
-\begin{align*}
-  \boxed{\frac{I_{out}}{I_{in}} \approx \frac{I_{M_2}}{I_{M_3}} \approx \frac{I_{M_1}}{I_{M_0}} \approx \frac{k_{n_1}}{k_{n_0}} = \frac{\frac{\mu_n C_{ox} W_1}{L_1}}{\frac{\mu_n C_{ox} W_0}{L_0}} = \frac{\frac{W_1}{L_1}}{\frac{W_0}{L_0}} = \frac{W_1 L_0}{L_1 W_0}}
-\end{align*}
-The analysis is exactly the same for the Source
-configuration, with the only difference being the
-use of PMOS transistors instead of NMOS transistors.
+
+\begin{enumerate}
+  \item \textbf{Large Signal Analysis}:\\
+    Applying KCL at $V_{out}$:
+    \begin{align*}
+      (V_{out} - V_{cc})G_5 + I_{M_2} &= 0 \\
+      V_{out}G_5 - V_{cc}G_5 + I_{M_2} &= 0 \\
+      V_{out} &= \frac{V_{cc}G_5 - I_{M_2}}{G_5} \tag{1}
+    \end{align*}
+    Applying KCL at $V_{x}$:
+    \begin{align*}
+      I_{M_1} + I_{G_1} - I_{M_2} &= 0 \\
+      I_{M_1} + I_{G_1} &= I_{M_2} \\
+      I_{M_1} &\approx I_{M_2} \quad \text{[assuming } I_{G_1} \approx 0 \text{ by MOS physics]} \tag{2}
+    \end{align*}
+    Applying KCL at $V_{y}$:
+    \begin{align*}
+      I_{M_0} - I_{M_3} &= 0 \\
+      I_{M_0} &= I_{M_3} \tag{3}
+    \end{align*}
+    Applying KCL at $V_{z}$:
+    \begin{align*}
+      (V_{z} - V_{cc})G_4 + I_{M_3} + I_{G_2} &= 0 \\
+      V_{z}G_4 - V_{cc}G_4 + (I_{M_3} + I_{G_2}) &= 0 \\
+      V_{z}G_4 &= V_{cc}G_4 - (I_{M_3} + I_{G_2}) \\
+      V_{z} &= V_{cc} - \frac{(I_{M_3} + I_{G_2})}{G_4} \tag{4}
+    \end{align*}
+    Using transistor equations for $I_{M_0}$, $I_{M_1}$, $I_{M_2}$ and $I_{M_3}$
+    and applying the voltages:
+    \begin{align*}
+      I_{M_0} &= k_{n_0}(V_{gs_0} - V_{th})^2 \cdot (1 + \lambda V_{ds_0}) \\
+              &= k_{n_0}((V_{x} - V_{ee}) - V_{th})^2 \cdot (1 + \lambda (V_{y} - V_{ee})) \\
+              &= k_{n_0}(V_{x} - V_{ee} - V_{th})^2 \quad \text{[assuming } \lambda = 0 \text{]} \tag{5} \\ \\
+      I_{M_1} &= k_{n_1}(V_{gs_1} - V_{th})^2 \cdot (1 + \lambda V_{ds_1}) \\
+              &= k_{n_1}((V_{x} - V_{ee}) - V_{th})^2 \cdot (1 + \lambda (V_{x} - V_{ee})) \\
+              &= k_{n_1}(V_{x} - V_{ee} - V_{th})^2 \quad \text{[assuming } \lambda = 0 \text{]} \tag{6} \\ \\
+      I_{M_2} &= k_{n_2}(V_{gs_2} - V_{th})^2 \cdot (1 + \lambda V_{ds_2}) \\
+              &= k_{n_2}((V_{z} - V_{x}) - V_{th})^2 \cdot (1 + \lambda (V_{out} - V_{x})) \\
+              &= k_{n_2}\left(\left(V_{cc} - \frac{(I_{M_3} + I_{G_2})}{G_4}\right) - V_{x} - V_{th}\right)^2 \cdot \left(1 + \lambda\left(\frac{V_{cc}G_5 - I_{M_2}}{G_5}\right) - V_{x}\right) \\
+              &= k_{n_2}\left(\left(V_{cc} - \frac{(I_{M_3} + I_{G_2})}{G_4}\right) - V_{x} - V_{th}\right)^2 \quad \text{[assuming } \lambda = 0 \text{]} \tag{7} \\ \\
+      I_{M_3} &= k_{n_3}(V_{gs_3} - V_{th})^2 \cdot (1 + \lambda V_{ds_3}) \\
+              &= k_{n_3}((V_{z} - V_{y}) - V_{th})^2 \cdot (1 + \lambda (V_{z} - V_{y})) \\
+              &= k_{n_3}\left(\left(V_{cc} - \frac{(I_{M_3} + I_{G_2})}{G_4}\right) - V_{y} - V_{th}\right)^2 \codt \left(1 + \lambda\left(\left(V_{cc} - \frac{(I_{M_3} + I_{G_2})}{G_4}\right) - V_{y}\right)\right) \\
+              &= k_{n_3}\left(\left(V_{cc} - \frac{(I_{M_3} + I_{G_2})}{G_4}\right) - V_{y} - V_{th}\right)^2 \quad \text{[assuming } \lambda = 0 \text{]} \tag{8}
+    \end{align*}
+    It can be seen that,
+    \begin{align*}
+      I_{in} &= I_{M_3} = I_{M_0} \quad \text{[from (3)]} \\
+      I_{out} &= I_{M_2} = I_{M_1} \quad \text{[from (2)]} \\
+      I_{M_0} &= I_{M_1} \quad \text{[from (5) and (6) and assuming } k_{n_0} = k_{n_1} \text{]} \\
+      \therefore  I_{out} &= I_{in}
+    \end{align*}
+    Thus,
+    \begin{align*}
+      \boxed{\frac{I_{out}}{I_{in}} \approx \frac{I_{M_2}}{I_{M_3}} \approx \frac{I_{M_1}}{I_{M_0}} \approx \frac{k_{n_1}}{k_{n_0}} = \frac{\frac{\mu_n C_{ox} W_1}{L_1}}{\frac{\mu_n C_{ox} W_0}{L_0}} = \frac{\frac{W_1}{L_1}}{\frac{W_0}{L_0}} = \frac{W_1 L_0}{L_1 W_0}}
+    \end{align*}
+  \item \textbf{Small Signal Analysis}:\\
+    Applying KCL at $V_{out}$:
+    \begin{align*}
+      V_{out}G_5 + (V_{out} - V_{x})g_{o_2} + g_{m_2}(V_{z} - V_{x}) &= 0 \\
+      V_{out}G_5 + V_{out}g_{o_2} - V_{x}g_{o_2} + g_{m_2}V_{z} - g_{m_2}V_{x} &= 0 \\
+      V_{out}(G_5 + g_{o_2}) - V_{x}(g_{o_2} + g_{m_2}) + g_{m_2}V_{z} &= 0 \tag{9}
+    \end{align*}
+    Applying KCL at $V_{x}$:
+    \begin{align*}
+      (V_{x} - V_{out})g_{o_2} + V_{x}g_{o_1} + g_{m_1}V_{x} - g_{m_2}(V_{z} - V_{x}) &= 0 \\
+      V_{x}g_{o_2} - V_{out}g_{o_2} + V_{x}g_{o_1} + g_{m_1}V_{x} - g_{m_2}V_{z} + g_{m_2}V_{x} &= 0 \\
+      V_{x}(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) - V_{out}g_{o_2} - g_{m_2}V_{z} &= 0 \tag{10}
+    \end{align*}
+    Applying KCL at $V_{y}$:
+    \begin{align*}
+      (V_{y} - V_{z})g_{o_3} - g_{m_3}(V_{z} - V_{y}) + V_{y}g_{o_0} + g_{m_0}V_{x} &= 0 \\
+      V_{y}g_{o_3} - V_{z}g_{o_3} - g_{m_3}V_{z} + g_{m_3}V_{y} + V_{y}g_{o_0} + g_{m_0}V_{x} &= 0 \\
+      V_{y}(g_{o_3} + g_{m_3} + g_{o_0}) - V_{z}(g_{o_3} + g_{m_3}) + g_{m_0}V_{x} &= 0 \tag{11}
+    \end{align*}
+    Applying KCL at $V_{z}$:
+    \begin{align*}
+      V_{z}G_4 + (V_{z} - V_{y})g_{o_3} + g_{m_3}(V_{z} - V_{y}) &= 0 \\
+      V_{z}G_4 + V_{z}g_{o_3} - V_{y}g_{o_3} + g_{m_3}V_{z} - g_{m_3}V_{y} &= 0 \\
+      V_{z}(G_4 + g_{o_3} + g_{m_3}) - V_{y}(g_{o_3} + g_{m_3}) &= 0 \tag{12}
+    \end{align*}
+    Adding voltage source $V_s$ at $V_z$ that supplies
+    a current $I_s$ into $V_z$, we get:
+    \begin{align*}
+      V_{z}(G_4 + g_{o_3} + g_{m_3}) - V_{y}(g_{o_3} + g_{m_3}) - I_s &= 0 \tag{13}
+    \end{align*}
+    Fifth equation arises from Voltage source:
+    \begin{align*}
+      V_{z} &= V_{s} \tag{14}
+    \end{align*}
+    Equations (9), (10), (1), (13) and (14) can now be
+    solved analytically, but it's cumbersome, so I'll give the
+    solution directly from Octave:
+    \begin{align*}
+      \frac{V_{out}}{V_{s}} = \frac{-g_{m_2}(g_{m_1} + g_{o_1})}{G_5(g_{m_1} + g_{m_2} + g_{o_1} + g_{o_2}) + g_{o_2}(g_{m_1} + g_{o_1})} \tag{15}
+    \end{align*}
+\end{enumerate}
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \textbf{Setting Current to be Mirrored}:
-    \begin{enumerate}
-      \item Choose appropriate transistor dimensions
-        ($W$ and $L$) for transistors $M_0$ and $M_1$
-        to achieve the desired current gain.
-        \begin{align*}
-          \frac{I_{out}}{I_{in}} &= \frac{W_1 L_0}{L_1 W_0}
-        \end{align*}
-      \item Choose a suitable overdrive voltage value
-        ($V_{ov}$) for computing the bias voltages at
-        nodes $V_{x}$, $V_{y}$, and $V_{z}$.
-        \begin{align*}
-          V_{ov_0} &= V_{gs_0} - V_{th} \\
-          V_{ov_0} &= V_{x} - V_{ee} - V_{th} \\
-          V_{x} &= V_{ov_0} + V_{ee} + V_{th} \\
-          \\
-          V_{ov_2} &= V_{gs_2} - V_{th} \\
-          V_{ov_2} &= V_{z} - V_{x} - V_{th} \\
-          V_{z} &= V_{ov_2} + V_{x} + V_{th} \\
-          \\
-          V_{ov_3} &= V_{gs_3} - V_{th} \\
-          V_{ov_3} &= V_{z} - V_{y} - V_{th} \\
-          V_{y} &= V_{z} - V_{ov_3} - V_{th}
-        \end{align*}
-      \item Using the chosen $V_{ov}$, compute $W_0$
-          to set the required bias current $I_{in}$.
-          \begin{align*}
-            I_{in} = I_{M_0} &= \frac{1}{2} \mu_n C_{ox} \frac{W_0}{L_0} V_{ov_0}^2 \\
-            \therefore W_0 &= \frac{2 I_{in} L_0}{\mu_n C_{ox} V_{ov_0}^2}
-          \end{align*}
-          $W_1$ can then be computed using the current
-          gain relation from step (a).
-      \item Compute the required value of $G_4$ (or
-          $R_4$) to ensure that the voltage at node
-          $V_{z}$ is as calculated in step (b).
-          \begin{align*}
-            V_{z} &= V_{cc} - \frac{(I_{M_3} + I_{G_2})}{G_4} \\
-            V_{z} &\approx V_{cc} - \frac{I_{M_3}}{G_4} \quad \text{[assuming } I_{G_2} \approx 0 \text{ by MOS physics]} \\
-            V_{z} - V_{cc} &\approx - \frac{I_{M_3}}{G_4} \\
-            \frac{(I_{M_3})}{(V_{cc} - V_{z})} &\approx G_4 \\
-            \frac{(I_{in})}{(V_{cc} - V_{z})} &\approx G_4 \quad \text{[} I_{in} = I_{M_3} = I_{M_0} \text{]} \\
-            \therefore R_4 &\approx \frac{V_{cc} - V_{z}}{I_{in}}
-          \end{align*}
-    \end{enumerate}
-  \item \textbf{Output Load Limit}: Maximum possible
+  \item \textbf{Output Load (Max)}: Maximum possible
     load that can be connected at the output before
     the transistor $M_2$ goes out of saturation can
     be calculated as follows:
@@ -280,36 +234,100 @@ use of PMOS transistors instead of NMOS transistors.
       R_{out, max} &= \frac{V_{L, max}}{I_{M_2}} \quad \text{[where, } V_{ee} \leq V_{L, max} \leq V_{cc} \text{]}
     \end{align*}
   \item \textbf{Impedances}:
-    \paragraph{At Input:} \textbf{Ignoring $G_4$
-      which is used to set the current,} the input
-      impedance is simply the output resistance of
-      transistor $M_0$ scaled by the gain of
-      transistor $M_3$.
+    \paragraph{At Input:}Applying a test current $I_{test}$
+      at $V_{z}$, from equation (12),
       \begin{align*}
-        Z_{in} &\approx \frac{1}{g_{o_0}\frac{g_{o_3}}{g_{m_3}}} \\
-        &\approx \frac{1}{(\lambda_{M_0} I_{M_0}) \cdot \frac{(\lambda_{M_3} I_{M_3})}{\left(\frac{2 I_{M_3}}{V_{ov_3}}\right)}} \\
-        &\approx \frac{1}{\lambda_{M_0} I_{M_0}} \cdot \frac{1}{\frac{\lambda_{M_3} V_{ov_3}}{2}} \\
-        &\approx \frac{1}{\lambda_{M_0} I_{M_0}} \cdot \frac{2}{\lambda_{M_3} V_{ov_3}}\\
-        &\approx \frac{2}{\lambda_{M_0} \lambda_{M_3} I_{M_0} (V_{gs_3} - V_{th})} \\
-        &\approx \frac{2}{\lambda_{M_0} \lambda_{M_3} I_{M_0} ((V_{z} - V_{y}) - V_{th})}
+        V_{z}(G_4 + g_{o_3} + g_{m_3}) - V_{y}(g_{o_3} + g_{m_3}) - I_{test} &= 0 \tag{16}
       \end{align*}
-    \paragraph{At Output:} \textbf{Ignoring $G_5$
-      which is used as a load,} the output impedance
-      is the output resistance of transistor $M_1$
-      scaled by the gain of transistor $M_2$.
+      From equation (11),
       \begin{align*}
-        Z_{out} &\approx \frac{1}{g_{o_1}\frac{g_{o_2}}{g_{m_2}}} \\
-        &\approx \frac{1}{(\lambda_{M_1} I_{M_1}) \cdot \frac{(\lambda_{M_2} I_{M_2})}{\left(\frac{2 I_{M_2}}{V_{ov_2}}\right)}} \\
-        &\approx \frac{1}{\lambda_{M_1} I_{M_1}} \cdot \frac{1}{\frac{\lambda_{M_2} V_{ov_2}}{2}} \\
-        &\approx \frac{1}{\lambda_{M_1} I_{M_1}} \cdot \frac{2}{\lambda_{M_2} V_{ov_2}}\\
-        &\approx \frac{2}{\lambda_{M_1} \lambda_{M_2} I_{M_1} (V_{gs_2} - V_{th})} \\
-        &\approx \frac{2}{\lambda_{M_1} \lambda_{M_2} I_{M_1} ((V_{z} - V_{x}) - V_{th})}
+        V_{y}(g_{o_3} + g_{m_3} + g_{o_0}) - V_{z}(g_{o_3} + g_{m_3}) + g_{m_0}V_{x} &= 0 \\
+        V_{y} &= \frac{V_{z}(g_{o_3} + g_{m_3}) - g_{m_0}V_{x}}{(g_{o_3} + g_{m_3} + g_{o_0})} \tag{17}
       \end{align*}
+      From equation (10),
+      \begin{align*}
+        V_{x}(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) - V_{out}g_{o_2} - g_{m_2}V_{z} &= 0 \\
+        V_{x} &= \frac{V_{out}g_{o_2} + g_{m_2}V_{z}}{(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2})} \tag{18}
+      \end{align*}
+      From equation (15),
+      \begin{align*}
+        V_{out} &= \frac{-g_{m_2}(g_{m_1} + g_{o_1})}{G_5(g_{m_1} + g_{m_2} + g_{o_1} + g_{o_2}) + g_{o_2}(g_{m_1} + g_{o_1})} V_{z} \tag{19}
+      \end{align*}
+      Substitute (19) into (18), result into (17), result into (16)
+      to eliminate $V_{y}$ and finally rearranging the result
+      for $\frac{V_{z}}{I_{test}}$ would give the input impedance.
+      However, the result is incredibly large, so run Input Impedance
+      Code from Code section to get the result.
+    \paragraph{At Output:} Applying a test current $I_{test}$
+      at $V_{out}$, from equation (9),
+      \begin{align*}
+        V_{out}(G_5 + g_{o_2}) - V_{x}(g_{o_2} + g_{m_2}) + g_{m_2}V_{z} - I_{test} &= 0 \tag{20}
+      \end{align*}
+      From equation (10),
+      \begin{align*}
+        V_{x}(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) - V_{out}g_{o_2} - g_{m_2}V_{z} &= 0 \\
+        V_{x} &= \frac{V_{out}g_{o_2} + g_{m_2}V_{z}}{(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2})} \tag{21}
+      \end{align*}
+      From equation (15),
+      \begin{align*}
+        V_{z} &= \frac{-G_5(g_{m_1} + g_{m_2} + g_{o_1} + g_{o_2}) + g_{o_2}(g_{m_1} + g_{o_1})}{g_{m_2}(g_{m_1} + g_{o_1})} V_{out} \tag{22}
+      \end{align*}
+      Substitute (22) into (21), result into (20) to eliminate
+      $V_{x}$, Substituting (22) into (20) to eliminate $V_{z}$
+      and finally rearranging the result for $\frac{V_{out}}{I_{test}}$
+      would give the output impedance. However, the result
+      is incredibly large, so run Output Impedance Code from
+      Code section to get the result.
 \end{enumerate}
 
-\subsubsection{Example Design}
+\subsubsection{Design}
+Large Signal Analysis can be used to set the bias
+currents and voltages in this circuit.
+\begin{enumerate}
+  \item Choose appropriate transistor dimensions
+    ($W$ and $L$) for transistors $M_0$ and $M_1$
+    to achieve the desired current gain.
+    \begin{align*}
+      \frac{I_{out}}{I_{in}} &= \frac{W_1 L_0}{L_1 W_0}
+    \end{align*}
+  \item Choose a suitable overdrive voltage value
+    ($V_{ov}$) for computing the bias voltages at
+    nodes $V_{x}$, $V_{y}$, and $V_{z}$.
+    \begin{align*}
+      V_{ov_0} &= V_{gs_0} - V_{th} \\
+      V_{ov_0} &= V_{x} - V_{ee} - V_{th} \\
+      V_{x} &= V_{ov_0} + V_{ee} + V_{th} \\
+      \\
+      V_{ov_2} &= V_{gs_2} - V_{th} \\
+      V_{ov_2} &= V_{z} - V_{x} - V_{th} \\
+      V_{z} &= V_{ov_2} + V_{x} + V_{th} \\
+      \\
+      V_{ov_3} &= V_{gs_3} - V_{th} \\
+      V_{ov_3} &= V_{z} - V_{y} - V_{th} \\
+      V_{y} &= V_{z} - V_{ov_3} - V_{th}
+    \end{align*}
+  \item Using the chosen $V_{ov}$, compute $W_0$
+    to set the required bias current $I_{in}$.
+    \begin{align*}
+      I_{in} = I_{M_0} &= \frac{1}{2} \mu_n C_{ox} \frac{W_0}{L_0} V_{ov_0}^2 \\
+      \therefore W_0 &= \frac{2 I_{in} L_0}{\mu_n C_{ox} V_{ov_0}^2}
+    \end{align*}
+    $W_1$ can then be computed using the current
+    gain relation from step (a).
+  \item Compute the required value of $G_4$ (or
+    $R_4$) to ensure that the voltage at node
+    $V_{z}$ is as calculated in step (b).
+    \begin{align*}
+      V_{z} &= V_{cc} - \frac{(I_{M_3} + I_{G_2})}{G_4} \\
+      V_{z} &\approx V_{cc} - \frac{I_{M_3}}{G_4} \quad \text{[assuming } I_{G_2} \approx 0 \text{ by MOS physics]} \\
+      V_{z} - V_{cc} &\approx - \frac{I_{M_3}}{G_4} \\
+      \frac{(I_{M_3})}{(V_{cc} - V_{z})} &\approx G_4 \\
+      \frac{(I_{in})}{(V_{cc} - V_{z})} &\approx G_4 \quad \text{[} I_{in} = I_{M_3} = I_{M_0} \text{]} \\
+      \therefore R_4 &\approx \frac{V_{cc} - V_{z}}{I_{in}}
+    \end{align*}
+\end{enumerate}
 
-\paragraph{Question:}
+\subsubsection{Question}
 Design a Modified Wilson Current Mirror in
 Sink configuration to achieve a current gain of
 2, with an input bias current of $I_{in} =
@@ -376,3 +394,60 @@ assuming $V_{L,max} = V_{cc}$
               &= 2.78 G\Omega
     \end{align*}
 \end{enumerate}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms Vx Vy Vz Vout Vs Is Itest
+  syms G5 G4 go0 gm0 go1 gm1 go2 gm2 go3 gm3
+
+  eq1 = Vout*(G5 + go2) - Vx*(go2 + gm2) + gm2*Vz == 0; % KCL at Vout
+  eq2 = Vx*(go2 + go1 + gm1 + gm2) - Vout*go2 - Vz*gm2 == 0; % KCL at Vx
+  eq3 = Vy*(go3 + gm3 + go0) - Vz*(go3 + gm3) + Vx*gm0 == 0; % KCL at Vy
+  eq4 = Vz*(G4 + go3 + gm3) - Vy*(go3 + gm3) == 0; % KCL at Vz
+
+  % voltage transfer function: Vs forced at Vz
+  eq4_vt = Vz*(G4 + go3 + gm3) - Vy*(go3 + gm3) - Is == 0;
+  eq5_vt = Vz == Vs;
+  sol_vt = solve([eq1, eq2, eq3, eq4_vt, eq5_vt], [Vout, Vx, Vy, Vz, Vs]);
+  volt_transfer = simplify(sol_vt.Vout/sol_vt.Vs);
+  % volt_transfer = collect(volt_transfer, G5);
+  % volt_transfer = subs(volt_transfer, 'G4', 0);
+  % volt_transfer = subs(volt_transfer, 'G5', 0);
+  printf('=== Voltage Transfer Results ===\n');
+  pretty(volt_transfer)
+  printf('\n');
+
+  % current transfer function: Is injected into Vz
+  sol_ct = solve([eq1, eq2, eq3, eq4_vt], [Vout, Vx, Vy, Vz]);
+  Iout = sol_ct.Vout * G5;
+  curr_transfer = simplify(Iout/Is);
+  curr_transfer = collect(curr_transfer, G4*G5);
+  printf('=== Current Transfer Results ===\n');
+  pretty(curr_transfer)
+  printf('\n');
+
+  % input impedence: Itest injected into Vz
+  eq4_zin = Vz*(G4 + go3 + gm3) - Vy*(go3 + gm3) - Itest == 0;
+  sol_zin = solve([eq1, eq2, eq3, eq4_zin], [Vout, Vx, Vy, Vz]);
+  zin = simplify(sol_zin.Vz/Itest);
+  % zin = collect(zin, G4*G5);
+  % zin = subs(zin, 'G4', 0);
+  % zin = subs(zin, 'G5', 0);
+  printf('=== Input Impedence Results ===\n');
+  pretty(zin);
+  printf('\n');
+
+  % output impedence: Itest injected into Vout
+  eq1_zout = Vout*(G5 + go2) - Vx*(go2 + gm2) + gm2*Vz - Itest == 0;
+  sol_zout = solve([eq1_zout, eq2, eq3, eq4], [Vout, Vx, Vy, Vz]);
+  zout = simplify(sol_zout.Vout/Itest);
+  % zout = collect(zout, G4*G5);
+  % zout = subs(zout, 'G4', 0);
+  % zout = subs(zout, 'G5', 0);
+  printf('=== Output Impedence Results ===\n');
+  pretty(zout)
+  printf('\n');
+\end{lstlisting}

@@ -1,4 +1,4 @@
-\subsection{RC Low Pass Filter}
+\subsubsection{RC Low Pass Filter}
 
 \paragraph{Overview:}
 Constructed from a resistor and capacitor in series, a RC
@@ -6,7 +6,6 @@ Low Pass Filter allows low frequency signals to pass while
 attenuating high frequency signals. It is a single pole
 filter but can be used in multiple stages to create higher
 order filters.
-
 \paragraph{Schematic:}
 \begin{center}
   \begin{circuitikz}
@@ -45,7 +44,7 @@ order filters.
   \end{circuitikz}
 \end{center}
 
-\subsubsection{Transfer Function}
+\subsubsubsection{Transfer Function}
 Applying KCL at $V_{out}$ on Full Schematic, we get:
 \[
   (V_{out} - V_{in}){G_1} + (V_{out} - V_{ee}){sC_1} = 0
@@ -60,7 +59,6 @@ Applying KCL at $V_{out}$ on Full Schematic, we get:
       V_{out}(G_1 + sC_1) &= V_{in}G_1 \\
       \boxed{H_1(s) = \frac{N_1(s)}{D_1(s)} = \frac{V_{out_1}}{V_{in}} = \frac{G_1}{G_1 + sC_1}}
     \end{align*}
-
   \item Due to \(V_{ee}\) alone (\(V_{in} = 0V\)):
     \begin{align*}
       (V_{out} - 0){G_1} + (V_{out} - V_{ee}){sC_1} &= 0 \\
@@ -77,7 +75,7 @@ Applying KCL at $V_{out}$ on Full Schematic, we get:
   V_{out} &= \frac{V_{in}G_1}{G_1 + sC_1} + \frac{V_{ee}sC_1}{G_1 + sC_1}
 \end{align*}
 
-\subsubsection{Analysis}
+\subsubsubsection{Analysis}
 \begin{enumerate}
   \item \textbf{Poles (\(D(s) = 0\)):} \\
     For both \(H_1(s)\) and \(H_2(s)\):
@@ -145,14 +143,11 @@ Applying KCL at $V_{out}$ on Full Schematic, we get:
       \end{align*}
 \end{enumerate}
 
-\subsubsection{Example Design}
-
-\paragraph{Question:}
+\subsubsubsection{Question}
 Design a RC Low Pass Filter with a cutoff frequency of
 \(f_p = 45kHz\) using a capacitor value of \(C_1 = 1\mu F\).
 Also compute the input and output impedances at
 \(f = 10kHz\).
-
 \paragraph{Solution:}
 \begin{enumerate}
   \item Calculating \(R_1\):

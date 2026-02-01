@@ -1,43 +1,95 @@
 \chapter{Current Mirrors}
 \label{ch:Current_Mirrors}
 
+\section{Overview}
 This chapter covers various types of current mirrors,
 which are circuits designed to copy (or "mirror") a current
-from one it's branch to another. Current mirrors are
-widely used in analog integrated circuits for biasing and
-active load applications.
+from one it's branch to another (amplifying or attenuating
+it the process).
 
-\subsubsection{Non-Idealities}
-All current mirrors are subject to non-idealities that
-can affect their performance. Some common non-idealities
-include:
+\subsection{Behavior}
+\paragraph{Ideal:}
+An ideal current mirror has the following characteristics:
 \begin{itemize}
-  \item \textbf{Component Tolerances:} Refer to \ref{sec:theory_general_tolerances}.
-  \item \textbf{Parasitics:} Refer to \ref{sec:theory_general_parasitics}.
-  \item \textbf{Loading Effects:} Refer to \ref{sec:theory_general_loading}.
+  \item \textbf{Perfect Current Replication:} The output
+    current is exactly equal to the reference current,
+    regardless of the load connected to the output.
+  \item \textbf{Infinite Output Resistance:} The output
+    resistance is infinite, meaning that the output current
+    does not change with variations in the output voltage.
+  \item \textbf{Zero Input Resistance:} The input resistance
+    is zero, meaning that the reference current is not
+    affected by the voltage at the input node.
+  \item \textbf{No Voltage Drop:} There is no voltage drop
+    across the current mirror, meaning that the voltage at
+    the output node is equal to the voltage at the input
+    node.
+\end{itemize}
+\paragraph{Non-Ideal:}
+The characteristics of real current mirrors deviate from
+the ideal due to various effects, including:
+\begin{itemize}
+  \item \textbf{Component Tolerances:} Refer to
+    \ref{sec:theory_general_tolerances}.
+  \item \textbf{Component Parasitics:} Refer to
+    \ref{sec:theory_general_parasitics}.
+  \item \textbf{Loading Effects:} Refer to
+    \ref{sec:theory_general_loading}.
   \item \textbf{(MOSFET) Channel Length Modulation:} Generally
-    we assume $\lambda = 0$ for mathematical simplication but
-    in reality, $\lambda$ is non-zero which causes the output
-    current to vary with changes in the output voltage,
-    affecting the accuracy of the current mirroring. You can
-    reduce this effect by using cascode current mirrors.
-  \item \textbf{(BJT) Base Width Modulation:} The Early effect can
-    cause variations in the mirrored current due to changes in
-    the collector-emitter voltage. Using cascode configurations
-    can help mitigate this effect.
+    we assume $\lambda = 0$ in MOSFET equations when analyzing
+    transistor behaviour for simplicity. In real circuits,
+    however, this is not the case. When $\lambda$ is non-zero,
+    the drain current varies with changes in the drain-source
+    voltage by a factor of $(1 + \lambda V_{DS})$. This affects
+    the accuracy of current mirroring as the output current
+    will vary with changes in the output voltage. Cascoding
+    can help reduce the impact of channel length modulation.
+  \item \textbf{(BJT) Base Width Modulation:} Similar to channel length
+    modulation in MOSFETs, BJTs also exhibit a phenomenon
+    known as base width modulation (or Early effect). This
+    effect causes the collector current to vary with changes
+    in the collector-emitter voltage, leading to inaccuracies
+    in current mirroring.
   \item \textbf{Temperature Variations:} Changes in temperature
-    can affect the characteristics of the transistors used in
-    current mirrors, leading to variations in the mirrored current.
+    can affect the characteristics of transistors and other
+    components, leading to variations in the mirrored current.
 \end{itemize}
 
 \subsection{Technology}
-All current mirrors discussed in this chapter are
-implemented using MOSFETs but you can build them
-with any other transistor technology like BJTs
-or JFETs as well.
+All mirrors discussed in this chapter are implemented
+using N-Channel MOSFETs. You can also easily adapt the
+designs BJTs, or other transistor types regardless of
+technology. Refer to \ref{sec:theory_general_complementary}
+for more information on converting circuits to their
+complementary forms.
 
-\section{Basic Topologies}
+\section{Usages}
+The primary use of current mirrors is to provide a
+stable current source or sink in analog circuits. They
+are commonly used in various applications, including:
+\begin{itemize}
+  \item \textbf{Biasing:} Current mirrors are often used
+    to provide bias currents for transistors in amplifiers
+    and other analog circuits.
+  \item \textbf{Multipliers/Dividers:} By adjusting
+    the ratios of transistors in the mirror, current
+    mirrors can be used to create current multipliers
+    or dividers.
+  \item \textbf{Load To Active Device:} Current mirrors
+    can replace resistive loads in amplifiers and other
+    circuits, since the output impedance of a current
+    mirror is typically very high. This results in
+    significantly higher voltage gain compared to
+    resistive loads.
+  \item \textbf{Steering Currents:} Current mirrors can
+    be used to provide a very stable current source or
+    sink which can then be steered by other control
+    circuitry into various branches of a circuit as
+    needed.
+\end{itemize}
+
+\section{Topologies}
+The section discusses various current mirror topologies.
 \input{03_Current_Mirrors/Widlar_Mirror}
 \input{03_Current_Mirrors/Wilson_Mirror}
-\section{Improved Topologies}
 \input{03_Current_Mirrors/Modified_Wilson_Mirror}

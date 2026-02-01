@@ -1,11 +1,10 @@
 \subsection{Wilson Mirror}
 
 \paragraph{Overview:}
-Constructed from transistors and resistors, a Wilson
-Current Mirror is an improved version of the Widlar
-Current Mirror that offers better output resistance
-and accuracy in current mirroring.
-
+Constructed from three transistors, It improves
+upon Widlar Mirror by providing a higher output
+impedance which results in better current
+source/sink performance.
 
 \paragraph{Schematic:}
 \begin{center}
@@ -106,31 +105,28 @@ and accuracy in current mirroring.
 \subsubsection{Transfer Function}
 Here's a table of the voltages at each terminal of the
 transistors:\\
-\begin{center}
 \begin{tabularx}{\linewidth}{|X|X|X|X|X|X|} \hline
   Transistor & Gate (G) & Source (S) & Drain (D) & $V_{gs}$ & $V_{ds}$ \\ \hline
   $M_0$ & $V_{x}$ & $V_{ee}$ & $V_{y}$ & $V_{x} - V_{ee}$ & $V_{y} - V_{ee}$ \\ \hline
   $M_1$ & $V_{x}$ & $V_{ee}$ & $V_{x}$ & $V_{x} - V_{ee}$ & $V_{x} - V_{ee}$ \\ \hline
   $M_2$ & $V_{y}$ & $V_{x}$ & $V_{out}$ & $V_{y} - V_{x}$ & $V_{out} - V_{x}$ \\ \hline
-\end{tabularx}
-\end{center}
-
+\end{tabularx}\\
 \begin{enumerate}
   \item \textbf{Large Signal Analysis}:\\
     Applying KCL at $V_{out}$:
     \begin{align*}
       (V_{out} - V_{cc})G_4 + I_{M_2} &= 0 \\
-      V_{out} &= V_{cc} - \frac{I_{M_2}}{G_4} \tag{i}
+      V_{out} &= V_{cc} - \frac{I_{M_2}}{G_4} \tag{1}
     \end{align*}
     Applying KCL at $V_{y}$:
     \begin{align*}
       (V_{y} - V_{cc})G_3 + I_{M_0} &= 0 \\
-      V_{y} &= V_{cc} - \frac{I_{M_0}}{G_3} \tag{ii}
+      V_{y} &= V_{cc} - \frac{I_{M_0}}{G_3} \tag{2}
     \end{align*}
     Applying KCL at $V_{x}$:
     \begin{align*}
       I_{M_1} + I_{G} - I_{M_2} &= 0 \\
-      I_{M_1} + I_{G} &= I_{M_2} \tag{iii}
+      I_{M_1} + I_{G} &= I_{M_2} \tag{3}
     \end{align*}
     Using transistor equations for $I_{M_0}$, $I_{M_1}$ and $I_{M_2}$
     and applying the voltages:
@@ -138,15 +134,15 @@ transistors:\\
       I_{M_0} &= k_{n_0}(V_{gs_0} - V_{th})^2 \cdot (1 + \lambda V_{ds_0}) \\
               &= k_{n_0}((V_{x} - V_{ee}) - V_{th})^2 \cdot (1 + \lambda (V_{y} - V_{ee})) \\
               &= k_{n_0}\left(V_{x} - V_{ee} - V_{th}\right)^2 \cdot \left(1 + \lambda \left(V_{cc} - \frac{I_{M_0}}{G_3} - V_{ee}\right)\right) \\
-              &= k_{n_0}\left(V_{x} - V_{ee} - V_{th}\right)^2 \quad \text{[assuming } \lambda = 0 \text{]} \tag{iv} \\ \\
+              &= k_{n_0}\left(V_{x} - V_{ee} - V_{th}\right)^2 \quad \text{[assuming } \lambda = 0 \text{]} \tag{4} \\ \\
       I_{M_1} &= k_{n_1}(V_{gs_1} - V_{th})^2 \cdot (1 + \lambda V_{ds_1}) \\
               &= k_{n_1}((V_{x} - V_{ee}) - V_{th})^2 \cdot (1 + \lambda (V_{x} - V_{ee})) \\
               &= k_{n_1}\left(V_{x} - V_{ee} - V_{th}\right)^2 \cdot \left(1 + \lambda (V_{x} - V_{ee})\right) \\
-              &= k_{n_1}\left(V_{x} - V_{ee} - V_{th}\right)^2 \quad \text{[assuming } \lambda = 0 \text{]} \tag{v} \\ \\
+              &= k_{n_1}\left(V_{x} - V_{ee} - V_{th}\right)^2 \quad \text{[assuming } \lambda = 0 \text{]} \tag{5} \\ \\
       I_{M_2} &= k_{n_2}(V_{gs_2} - V_{th})^2 \cdot (1 + \lambda V_{ds_2}) \\
               &= k_{n_2}((V_{y} - V_{x}) - V_{th})^2 \cdot (1 + \lambda (V_{out} - V_{x})) \\
               &= k_{n_2}\left(V_{y} - V_{x} - V_{th}\right)^2 \cdot \left(1 + \lambda \left(V_{cc} - \frac{I_{M_2}}{G_4} - V_{x}\right)\right) \\
-              &= k_{n_2}\left(V_{y} - V_{x} - V_{th}\right)^2 \quad \text{[assuming } \lambda = 0 \text{]} \tag{vi} \\
+              &= k_{n_2}\left(V_{y} - V_{x} - V_{th}\right)^2 \quad \text{[assuming } \lambda = 0 \text{]} \tag{6} \\
     \end{align*}
     It can be seen that,
     \begin{align*}
@@ -161,40 +157,40 @@ transistors:\\
     Applying KCL at $V_{out}$:
     \begin{align*}
       V_{out}G_4 + (V_{out} - V_{x})g_{o_2} + g_{m_2}(V_{y} - V_{x}) &= 0 \\
-      V_{out}(G_4 + g_{o_2}) - V_{x}(g_{o_2} + g_{m_2}) + g_{m_2}V_{y} &= 0 \tag{vii} \\
+      V_{out}(G_4 + g_{o_2}) - V_{x}(g_{o_2} + g_{m_2}) + g_{m_2}V_{y} &= 0 \tag{7} \\
     \end{align*}
     Applying KCL at $V_{x}$:
     \begin{align*}
       (V_{x} - V_{out})g_{o_2} + V_{x}g_{o_1} + g_{m_1}V_{x} - g_{m_2}(V_{y} - V_{x}) + I_{G} &= 0 \\
       (V_{x} - V_{out})g_{o_2} + V_{x}g_{o_1} + g_{m_1}V_{x} - g_{m_2}(V_{y} - V_{x}) &= 0 \quad \text{[as } I_{G} \approx 0 \text{ by MOS physics]} \\
       V_{x}g_{o_2} - V_{out}g_{o_2} + V_{x}g_{o_1} + g_{m_1}V_{x} - g_{m_2}V_{y} + g_{m_2}V_{x} &= 0 \\
-      V_{x}(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) - V_{out}g_{o_2} - g_{m_2}V_{y} &= 0 \tag{viii}
+      V_{x}(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) - V_{out}g_{o_2} - g_{m_2}V_{y} &= 0 \tag{8}
     \end{align*}
     Applying KCL at $V_{y}$:
     \begin{align*}
       V_{y}G_3 + V_{y}g_{o_0} + g_{m_0}V_{x} &= 0 \\
-      V_{y}(G_3 + g_{o_0}) + g_{m_0}V_{x} &= 0 \tag{ix}
+      V_{y}(G_3 + g_{o_0}) + g_{m_0}V_{x} &= 0 \tag{9}
     \end{align*}
     Adding voltage source $V_s$ at $V_y$ that supplies
     a current $I_s$ into $V_y$, we get:
     \begin{align*}
-      V_{y}(G_3 + g_{o_0}) + g_{m_0}V_{x} - I_{s} &= 0 \tag{ix'}
+      V_{y}(G_3 + g_{o_0}) + g_{m_0}V_{x} - I_{s} &= 0 \tag{10}
     \end{align*}
     Fourth equation arises from Voltage source:
     \begin{align*}
-      V_{y} &= V_{s} \tag{x}
+      V_{y} &= V_{s} \tag{11}
     \end{align*}
-    Solving equations (vii), (viii), (ix') and (x),
+    Solving equations (7), (8), (10) and (11),
     \begin{align*}
       V_{out}(G_4 + g_{o_2}) - V_{x}(g_{o_2} + g_{m_2}) + g_{m_2}V_{y} &= 0 \\
-      V_{out}(G_4 + g_{o_2}) - V_{x}(g_{o_2} + g_{m_2}) + g_{m_2}V_{s} &= 0 \quad \text{[from (x)]} \tag{xi} \\
+      V_{out}(G_4 + g_{o_2}) - V_{x}(g_{o_2} + g_{m_2}) + g_{m_2}V_{s} &= 0 \quad \text{[from (11)]} \tag{12} \\
       \\
       V_{x}(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) - V_{out}g_{o_2} - g_{m_2}V_{y} &= 0 \\
-      V_{x}(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) - V_{out}g_{o_2} - g_{m_2}V_{s} &= 0 \quad \text{[from (x)]} \\
+      V_{x}(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) - V_{out}g_{o_2} - g_{m_2}V_{s} &= 0 \quad \text{[from (11)]} \\
       V_{x}(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) &= V_{out}g_{o_2} + g_{m_2}V_{s} \\
-      V_{x} &= \frac{V_{out}g_{o_2} + g_{m_2}V_{s}}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}} \tag{xii} \\
+      V_{x} &= \frac{V_{out}g_{o_2} + g_{m_2}V_{s}}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}} \tag{13} \\
     \end{align*}
-    Putting (xii) in (xi),
+    Putting (13) in (12),
     \begin{align*}
       V_{out}(G_4 + g_{o_2}) - \left(\frac{V_{out}g_{o_2} + g_{m_2}V_{s}}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}}\right)(g_{o_2} + g_{m_2}) + g_{m_2}V_{s} &= 0 \\
       V_{out}(G_4 + g_{o_2}) - \frac{V_{out}g_{o_2}(g_{o_2} + g_{m_2})}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}} - \frac{g_{m_2}V_{s}(g_{o_2} + g_{m_2})}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}} + g_{m_2}V_{s} &= 0 \\
@@ -208,53 +204,13 @@ transistors:\\
       V_{out}(G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})) \\ \qquad \, = -V_{s}(g_{m_2}g_{o_2} + g_{m_2}g_{o_1} + g_{m_2}g_{m_1} + g_{m_2}^2 - g_{m_2}g_{o_2} - g_{m_2}^2) \\\\
       V_{out}(G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})) \\ \qquad \, = -V_{s}(g_{m_2}g_{o_1} + g_{m_2}g_{m_1}) \\\\
       V_{out}(G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})) \\ \qquad \, = -V_{s}(g_{m_2}(g_{o_1} + g_{m_1})) \\\\
-      \therefore \frac{V_{out}}{V_s} = \frac{-g_{m_2}(g_{o_1} + g_{m_1})}{G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})} \tag{xiii} \\
+      \therefore \frac{V_{out}}{V_s} = \frac{-g_{m_2}(g_{o_1} + g_{m_1})}{G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})} \tag{14} \\
     \end{align*}
 \end{enumerate}
-The analysis is exactly the same for the Source
-configuration, with the only difference being the
-use of PMOS transistors instead of NMOS transistors.
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \textbf{Setting Current to be Mirrored}:
-    \begin{enumerate}
-      \item Choose appropriate transistor dimensions
-        ($W$ and $L$) for transistors $M_0$ and $M_1$
-        to achieve the desired current gain.
-        \begin{align*}
-          \frac{I_{out}}{I_{in}} &= \frac{W_1 L_0}{L_1 W_0}
-        \end{align*}
-      \item Choose a suitable overdrive voltage value
-        ($V_{ov}$) for setting the bias voltages at
-        nodes $V_{x}$ and $V_{y}$.
-        \begin{align*}
-          V_{ov_0} &= V_{gs_0} - V_{th} \\
-          V_{ov_0} &= (V_{x} - V_{ee}) - V_{th} \\
-          V_{x} &= V_{ov_0} + V_{th} + V_{ee} \\
-          \\
-          V_{ov_2} &= V_{gs_2} - V_{th} \\
-          V_{ov_2} &= (V_{y} - V_{x}) - V_{th} \\
-          V_{y} &= V_{ov_2} + V_{th} + V_{x}
-        \end{align*}
-      \item Using the chosen $V_{ov}$, compute $W_0$
-        to set the required bias current $I_{in}$.
-        \begin{align*}
-          I_{in} = I_{M_0} &= \frac{1}{2} \mu_n C_{ox} \frac{W_0}{L_0} V_{ov_0}^2 \\
-          \therefore W_0 &= \frac{2 I_{in} L_0}{\mu_n C_{ox} V_{ov_0}^2}
-        \end{align*}
-        $W_1$ can then be computed using the current
-        gain relation from step (a).
-      \item Compute the required value of $G_3$ (or
-        $R_3$) to ensure that the voltage at node
-        $V_{y}$ is as calculated in step (b).
-        \begin{align*}
-          (V_{y} - V_{cc})G_3 + I_{M_0} &= 0 \\
-          \therefore G_3 &= \frac{I_{in}}{V_{cc} - V_{y}} \quad \text{[}I_{M_0} = I_{in} \text{]} \\
-          R_3 &= \frac{1}{G_3} = \frac{V_{cc} - V_{y}}{I_{in}}
-        \end{align*}
-    \end{enumerate}
-  \item \textbf{Output Load Limit}: Maximum possible
+  \item \textbf{Output Load (Max)}: Maximum possible
     load that can be connected at the output before
     the transistor $M_2$ goes out of saturation can
     be calculated as follows:
@@ -263,11 +219,11 @@ use of PMOS transistors instead of NMOS transistors.
     \end{align*}
   \item \textbf{Impedance}:
     \paragraph{At Input:} Applying a test current $I_{test}$
-      at $V_{y}$, from equation (ix),
+      at $V_{y}$, from equation (9):
       \begin{align*}
         V_{y}(G_3 + g_{o_0}) + g_{m_0}V_{x} &= I_{test} \\
       \end{align*}
-      Substituting (xiii) into (xii):
+      Substituting (14) into (13):
       \begin{align*}
         V_{x} &= \frac{V_{out}g_{o_2} + g_{m_2}V_{y}}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}} \\
               &= \frac{\left(V_{y} \cdot \frac{-g_{m_2}(g_{o_1} + g_{m_1})}{G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})}\right)g_{o_2} + g_{m_2}V_{y}}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}} \\
@@ -275,9 +231,9 @@ use of PMOS transistors instead of NMOS transistors.
               &= V_{y} \cdot \frac{g_{m_2} - \frac{g_{m_2}g_{o_2}(g_{o_1} + g_{m_1})}{G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})}}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}} \\
               &= V_{y} \cdot \frac{g_{m_2}G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{m_2}g_{o_2}(g_{o_1} + g_{m_1}) - g_{m_2}g_{o_2}(g_{o_1} + g_{m_1})}{(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2})G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2})} \\
               &= V_{y} \cdot \frac{g_{m_2}G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2})}{(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2})G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2})} \\
-              &= V_{y} \cdot \frac{g_{m_2}G_4}{G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})} \tag{xiv} \\
+              &= V_{y} \cdot \frac{g_{m_2}G_4}{G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})} \tag{15} \\
       \end{align*}
-      Substituting (xiv) into the KCL equation at $V_y$,
+      Substituting (15) into (9):
       \begin{align*}
         V_{y}(G_3 + g_{o_0}) + g_{m_0}\left(V_{y} \cdot \frac{g_{m_2}G_4}{G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})}\right) &= I_{test} \\
         V_{y}\left((G_3 + g_{o_0}) + \frac{g_{m_0}g_{m_2}G_4}{G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})}\right) &= I_{test} \\
@@ -285,14 +241,14 @@ use of PMOS transistors instead of NMOS transistors.
         \therefore Z_{in} = \frac{V_{y}}{I_{test}} = \frac{G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})}{(G_3 + g_{o_0})(G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})) + g_{m_0}g_{m_2}G_4} \\
       \end{align*}
     \paragraph{At Output:} Applying a test current $I_{test}$
-      at $V_{out}$, from equation (vii),
+      at $V_{out}$, from equation (7):
       \begin{align*}
         V_{out}(G_4 + g_{o_2}) - V_{x}(g_{o_2} + g_{m_2}) + g_{m_2}V_{y} &= I_{test} \\
-        V_{out}(G_4 + g_{o_2}) - V_{x}(g_{o_2} + g_{m_2}) + g_{m_2}\left(\frac{-g_{m_0}V_{x}}{G_3 + g_{o_0}}\right) &= I_{test} \quad \text{[rearraning (ix)]} \\
+        V_{out}(G_4 + g_{o_2}) - V_{x}(g_{o_2} + g_{m_2}) + g_{m_2}\left(\frac{-g_{m_0}V_{x}}{G_3 + g_{o_0}}\right) &= I_{test} \quad \text{[rearraning (9)]} \\
         V_{out}(G_4 + g_{o_2}) - V_{x}\left((g_{o_2} + g_{m_2}) + \frac{g_{m_2}g_{m_0}}{G_3 + g_{o_0}}\right) &= I_{test} \\
-        V_{out}(G_4 + g_{o_2}) - V_{x}\left(\frac{(g_{o_2} + g_{m_2})(G_3 + g_{o_0}) + g_{m_2}g_{m_0}}{G_3 + g_{o_0}}\right) &= I_{test}
+        V_{out}(G_4 + g_{o_2}) - V_{x}\left(\frac{(g_{o_2} + g_{m_2})(G_3 + g_{o_0}) + g_{m_2}g_{m_0}}{G_3 + g_{o_0}}\right) &= I_{test} \tag{16}
       \end{align*}
-      Substituting (xiii) into (xii):
+      Substituting (14) into (13):
       \begin{align*}
         V_{x} &= \frac{V_{out}g_{o_2} + g_{m_2}V_{y}}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}} \\
               &= \frac{V_{out}g_{o_2} + g_{m_2}\left(V_{out}\left(\frac{G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})}{-g_{m_2}(g_{o_1} + g_{m_1})}\right)\right)}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}} \\
@@ -300,9 +256,9 @@ use of PMOS transistors instead of NMOS transistors.
               &= V_{out} \left(\frac{g_{o_2} - \left(\frac{G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})}{(g_{o_1} + g_{m_1})}\right)}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}}\right) \\
               &= V_{out} \left(\frac{\frac{g_{o_2}(g_{o_1} + g_{m_1}) - G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) - g_{o_2}(g_{o_1} + g_{m_1})}{(g_{o_1} + g_{m_1})}}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}}\right) \\
               &= V_{out} \left(\frac{- G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2})}{(g_{o_1} + g_{m_1})(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2})}\right) \\
-              &= V_{out} \left(\frac{- G_4}{(g_{o_1} + g_{m_1})}\right) \tag{xvi}
-      \end{align*}
-      Substituting (xvi) into the KCL equation at $V_{out}$:
+              &= V_{out} \left(\frac{- G_4}{(g_{o_1} + g_{m_1})}\right) \tag{17}
+      \end{align*}`
+      Substituting (17) into (16):
       \begin{align*}
         V_{out}(G_4 + g_{o_2}) - \left(V_{out} \left(\frac{-G_4}{(g_{o_1} + g_{m_1})}\right)\right)\left(\frac{(g_{o_2} + g_{m_2})(G_3 + g_{o_0}) + g_{m_2}g_{m_0}}{G_3 + g_{o_0}}\right) &= I_{test} \\
         V_{out}(G_4 + g_{o_2}) + \left(V_{out} \cdot \frac{G_4(g_{o_2} + g_{m_2})(G_3 + g_{o_0}) + G_4g_{m_2}g_{m_0}}{(g_{o_1} + g_{m_1})(G_3 + g_{o_0})} \right) &= I_{test} \\
@@ -315,18 +271,57 @@ use of PMOS transistors instead of NMOS transistors.
       \end{align*}
 \end{enumerate}
 
-\subsubsection{Example Design}
+\subsubsection{Design}
+Large Signal Analysis can be used to set the bias
+currents and voltages in this circuit.
+\begin{enumerate}
+  \item Choose appropriate transistor dimensions
+    ($W$ and $L$) for transistors $M_0$ and $M_1$
+    to achieve the desired current gain.
+    \begin{align*}
+      \frac{I_{out}}{I_{in}} &= \frac{W_1 L_0}{L_1 W_0}
+    \end{align*}
+  \item Choose a suitable overdrive voltage value
+    ($V_{ov}$) for setting the bias voltages at
+    nodes $V_{x}$ and $V_{y}$.
+    \begin{align*}
+      V_{ov_0} &= V_{gs_0} - V_{th} \\
+      V_{ov_0} &= (V_{x} - V_{ee}) - V_{th} \\
+      V_{x} &= V_{ov_0} + V_{th} + V_{ee} \\
+      \\
+      V_{ov_2} &= V_{gs_2} - V_{th} \\
+      V_{ov_2} &= (V_{y} - V_{x}) - V_{th} \\
+      V_{y} &= V_{ov_2} + V_{th} + V_{x}
+    \end{align*}
+  \item Using the chosen $V_{ov}$, compute $W_0$
+    to set the required bias current $I_{in}$.
+    \begin{align*}
+      I_{in} = I_{M_0} &= \frac{1}{2} \mu_n C_{ox} \frac{W_0}{L_0} V_{ov_0}^2 \\
+      \therefore W_0 &= \frac{2 I_{in} L_0}{\mu_n C_{ox} V_{ov_0}^2}
+    \end{align*}
+    $W_1$ can then be computed using the current
+    gain relation from step (a).
+  \item Compute the required value of $G_3$ (or
+    $R_3$) to ensure that the voltage at node
+    $V_{y}$ is as calculated in step (b).
+    \begin{align*}
+      (V_{y} - V_{cc})G_3 + I_{M_0} &= 0 \\
+      \therefore G_3 &= \frac{I_{in}}{V_{cc} - V_{y}} \quad \text{[}I_{M_0} = I_{in} \text{]} \\
+      R_3 &= \frac{1}{G_3} = \frac{V_{cc} - V_{y}}{I_{in}}
+    \end{align*}
+\end{enumerate}
 
-\paragraph{Question:}
-Design a Wilson Current Mirror (Sink) such that it
-mirrors a current of $I_{in} = 100\mu A$ with a current
-gain of 5. Assume $V_{cc} = 5V$, $V_{ee} = 0V$,
-$V_{th} = 1V$, $\lambda = 0.02 V^{-1}$,
+\subsubsection{Question}
+Design a Wilson Current Mirror (Sink) that meets the
+following requirements. The mirror must provide a current
+gain at the output of 5. The input current must be
+$I_{in} = 100 \mu A$. The mirror must operate with
+$V_{cc} = 5V$ and $V_{ee} = 0V$. Assume the following
+transistor parameters: $V_{th} = 1V$, $\lambda = 0.02 V^{-1}$,
 $\frac{1}{2} \mu_n C_{ox} = 100 \mu A/V^2$ and
-$L = 1 \mu m$ for all transistors. Find the
-output impedance and the maximum possible load
-that can be connected at the output assuming $V_{L,
-max} = V_{cc}$
+$L = 1 \mu m$ for all transistors. Find the output impedance
+and the maximum possible load that can be connected at the
+output assuming $V_{L, max} = V_{cc}$.
 \paragraph{Solution:}
 \begin{enumerate}
   \item \textbf{Choose appropriate transistor dimensions:}
@@ -368,3 +363,60 @@ max} = V_{cc}$
                    &= 10 k\Omega
     \end{align*}
 \end{enumerate}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms Vy Vx Vout Vs Is Itest
+  syms G3 G4 go0 gm0 go1 gm1 go2 gm2
+
+  % system kcl
+  eq1 = Vout*(G4 + go2) - Vx*(go2 + gm2) + gm2*Vy == 0; % KCL @ Vout
+  eq2 = -Vout*go2 + Vx*(go2 + go1 + gm1 + gm2) - gm2*Vy == 0; % KCL @ Vx
+  eq3 = Vy*(G3 + go0) + gm0*Vx == 0; % KCL @ Vy
+
+  % voltage transfer function: Vs forced at Vy & Is injected into Vy
+  eq3_vt = Vy*(G3 + go0) + gm0*Vx - Is == 0;
+  eq4_vt = Vy == Vs;
+  sol_vt = solve([eq1, eq2, eq3_vt, eq4_vt], [Vout, Vx, Vy, Vs]);
+  volt_transfer = simplify(sol_vt.Vout/sol_vt.Vs);
+  % volt_transfer = collect(volt_transfer, G4);
+  % volt_transfer = subs(volt_transfer, 'G3', 0);
+  % volt_transfer = subs(volt_transfer, 'G4', 0);
+  printf('=== Voltage Transfer Results ===\n');
+  pretty(volt_transfer)
+  printf('\n');
+
+  % current transfer function: Is injected into Vy
+  sol_ct = solve([eq1, eq2, eq3_vt], [Vout, Vx, Vy]);
+  Iout = sol_ct.Vout * G4;
+  curr_transfer = simplify(Iout/Is);
+  % curr_transfer = collect(curr_transfer, G3*G4);
+  printf('=== Current Transfer Results ===\n');
+  pretty(curr_transfer)
+  printf('\n');
+
+  % input impedence: Itest injected into Vy
+  eq3_zin = Vy*(G3 + go0) + gm0*Vx - Itest == 0;
+  sol_zin = solve([eq1, eq2, eq3_zin], [Vout, Vx, Vy]);
+  zin = simplify(sol_zin.Vy/Itest);
+  % zin = collect(zin, G3*G4);
+  % zin = subs(zin, 'G3', 0);
+  % zin = subs(zin, 'G4', 0);
+  printf('=== Input Impedence Results ===\n');
+  pretty(zin)
+  printf('\n');
+
+  % output impedence: Itest injected into Vout
+  eq1_zout = Vout*(G4 + go2) - Vx*(go2 + gm2) + gm2*Vy - Itest == 0;
+  sol_zout = solve([eq1_zout, eq2, eq3], [Vout, Vx, Vy]);
+  zout = simplify(sol_zout.Vout/Itest);
+  % zout = collect(zout, G3*G4);
+  % zout = subs(zout, 'G3', 0);
+  % zout = subs(zout, 'G4', 0);
+  printf('=== Output Impedence Results ===\n');
+  pretty(zout)
+  printf('\n');
+\end{lstlisting}
