@@ -1,4 +1,4 @@
-\subsubsection{LC High Pass Filter}
+\subsection{LC High Pass Filter}
 
 \paragraph{Overview:}
 Constructed from an inductor and capacitor in series, a LC
@@ -44,7 +44,7 @@ single pole filters (-20 dB/decade).
   \end{circuitikz}
 \end{center}
 
-\subsubsubsection{Transfer Function}
+\subsubsection{Transfer Function}
 Applying KCL at $V_{out}$ on Full Schematic, we get:
 \[
   (V_{out} - V_{in})sC_1 + \frac{(V_{out} - V_{ee})}{sL_1} = 0
@@ -81,7 +81,7 @@ Applying KCL at $V_{out}$ on Full Schematic, we get:
   V_{out} &= \frac{s^2C_1L_1}{s^2C_1L_1 + 1}V_{in} + \frac{1}{s^2C_1L_1 + 1}V_{ee} \\
 \end{align*}
 
-\subsubsubsection{Analysis}
+\subsubsection{Analysis}
 \begin{enumerate}
   \item \textbf{Poles (\(D(s) = 0\)):} \\
     For both \(H_1(s)\) and \(H_2(s)\):
@@ -135,7 +135,7 @@ Applying KCL at $V_{out}$ on Full Schematic, we get:
     Same as the LC Low Pass Filter.
 \end{enumerate}
 
-\subsubsubsection{Question}
+\subsubsection{Question}
 Design a LC High Pass Filter with a cutoff frequency of
 \(f_c = 10 kHz\). Choose standard component values for \(L_1\)
 and \(C_1\).

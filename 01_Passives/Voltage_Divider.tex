@@ -1,4 +1,4 @@
-\subsubsection{Voltage Divider}
+\subsection{Voltage Divider}
 
 \paragraph{Overview:}
 Constructed from two resistors in series, a voltage
@@ -42,7 +42,7 @@ into a smaller one.
   \end{circuitikz}
 \end{center}
 
-\subsubsubsection{Transfer Function}
+\subsubsection{Transfer Function}
 Applying KCL at $V_{out}$ of Full Schematic, we get:
 \[
   (V_{out} - V_{in}){G_1} + (V_{out} - V_{ee}){G_2} = 0
@@ -72,7 +72,7 @@ Applying KCL at $V_{out}$ of Full Schematic, we get:
   V_{out} &= V_{in} \frac{G_1}{G_1 + G_2} + V_{ee} \frac{G_2}{G_1 + G_2}
 \end{align*}
 
-\subsubsubsection{Analysis}
+\subsubsection{Analysis}
 \begin{enumerate}
   \item \textbf{Resistor Ratio (\(\frac{R_2}{R_1}\)):}
     From KCL at \(V_{out}\) of Full Schematic:
@@ -98,7 +98,7 @@ Applying KCL at $V_{out}$ of Full Schematic, we get:
       \end{align*}
 \end{enumerate}
 
-\subsubsubsection{Question}
+\subsubsection{Question}
 Design a voltage divider to step down a \(10V\) supply
 to \(3.3V\). Calculate the input and output impedances
 of the voltage divider.
@@ -135,7 +135,7 @@ of the voltage divider.
       \]
 \end{enumerate}
 
-\subsubsubsection{Non-Idealities}
+\subsubsection{Non-Idealities}
 \begin{itemize}
   \item \textbf{Component Tolerances:} Refer to \ref{sec:theory_general_tolerances}.
   \item \textbf{Parasitics:} Refer to \ref{sec:theory_general_parasitics}.
