@@ -1,11 +1,12 @@
 \subsection{RLC Band Pass Filter}
 
-\paragraph{Overview:}
+\subsubsection{Overview}
 Constructed from a resistor, inductor, and capacitor in series
 or parallel, a RLC Band Pass Filter allows a specific band of
 frequencies to pass while attenuating frequencies outside this
 band. It is a second order filter.
-\paragraph{Schematic:}
+
+\subsubsection{Schematic}
 \begin{center}
   \begin{circuitikz}
     % Paths, nodes and wires:
@@ -183,213 +184,213 @@ band. It is a second order filter.
 \subsubsection{Analysis}
 \begin{enumerate}
   \item \textbf{Poles (\(D(s) = 0\)):} \\
-      \begin{enumerate}
-        \item \textbf{Parallel Configuration:}
-          For both \(H_1(s)\) and \(H_2(s)\):
-          \begin{align*}
-            G_1 + \frac{1}{sL_1} + sC_1 &= 0 \\
-            \frac{s L_1 G_1 + 1 + s^2 L_1 C_1}{s L_1} &= 0 \\
-            s^2 L_1 C_1 + s L_1 G_1 + 1 &= 0 \\
-            s^2 + s \frac{G_1}{C_1} + \frac{1}{L_1 C_1} &= 0 \tag{4}
-          \end{align*}
-          Applying Shree Dharacharya's Formula:
-          \begin{align*}
-            s &= \frac{-\frac{G_1}{C_1} \pm \sqrt{\left(\frac{G_1}{C_1}\right)^2 - 4 \cdot 1 \cdot \frac{1}{L_1 C_1}}}{2 \cdot 1} \\
-            s &= \frac{-\frac{G_1}{C_1} \pm \sqrt{\frac{G_1^2}{C_1^2} - \frac{4}{L_1 C_1}}}{2} \\
-            \boxed{s = \frac{-G_1 \pm \sqrt{G_1^2 - \frac{4 C_1}{L_1}}}{2 C_1}}
-          \end{align*}
-          While the nature of the poles depends on the value of the
-          discriminant \(\left(G_1^2 - \frac{4 C_1}{L_1}\right)\).
-          We can still make a comparison of equation (iv) with natural
-          second order system equation.\\ \\
-          \begin{tabularx}{\linewidth}{|X|X|X|X|} \hline
-            Type & Term A & Term B & Term C \\ \hline
-            Equation (iv) & \(s^2\) & \(\frac{G_1}{C_1} s\) & \(\frac{1}{L_1 C_1}\) \\ \hline
-            Natural & \(s^2\) & \(2 \zeta \omega_n s\) & \(\omega_n^2\) \\ \hline
-          \end{tabularx}\\ \\
-          We get:
-          \begin{enumerate}
-            \item Natural Frequency:
-              \begin{align*}
-                \omega_n = \sqrt{\frac{1}{L_1 C_1}} \\
-                f_p = \frac{\omega_n}{2\pi} = \frac{1}{2\pi \sqrt{L_1 C_1}}
-              \end{align*}
-            \item Damping Ratio:
-              \[
-                2 \zeta \omega_n = \frac{G_1}{C_1} \implies \zeta = \frac{G_1}{2C_1 \omega_n} = \frac{G_1}{2 C_1} \sqrt{L_1 C_1}
-              \]
-            \item Q Factor:
-              \[
-                Q = \frac{1}{2\zeta} = \frac{C_1}{G_1} \sqrt{\frac{1}{L_1 C_1}}
-              \]
-          \end{enumerate}
-        \item \textbf{Series Configuration:}
-          For both \(H_3(s)\) and \(H_4(s)\):
-          \begin{align*}
-            sC_1 + G_1(1 + s^2 L_1 C_1) &= 0 \\
-            G_1 s^2 L_1 C_1 + sC_1 + G_1 &= 0 \\
-            s^2 L_1 C_1 G_1 + s C_1 + G_1 &= 0 \\
-            s^2 + s \frac{1}{L_1 G_1} + \frac{1}{L_1 C_1} &= 0 \tag{5}
-          \end{align*}
-          Applying Shree Dharacharya's Formula:
-          \begin{align*}
-            s &= \frac{-\frac{1}{L_1 G_1} \pm \sqrt{\left(\frac{1}{L_1 G_1}\right)^2 - 4 \cdot 1 \cdot \frac{1}{L_1 C_1}}}{2 \cdot 1} \\
-            s &= \frac{-\frac{1}{L_1 G_1} \pm \sqrt{\frac{1}{L_1^2 G_1^2} - \frac{4}{L_1 C_1}}}{2} \\
-            s &= \frac{-\frac{1}{L_1 G_1} \pm \sqrt{\frac{1}{L_1^2 G_1^2} \left(1 - \frac{4 G_1^2 L_1}{C_1}\right)}}{2} \\
-            \boxed{s = \frac{-1 \pm \sqrt{1 - \frac{4 G_1^2 L_1}{C_1}}}{2 L_1 G_1}}
-          \end{align*}
-          While the nature of the poles depends on the value of the
-          discriminant \(\left(1 - \frac{4 G_1^2 L_1}{C_1}\right)\).
-          We can still make a comparison of equation (v) with natural
-          second order system equation.\\ \\
-          \begin{tabularx}{\linewidth}{|X|X|X|X|} \hline
-            Type & Term A & Term B & Term C \\ \hline
-            Equation (v) & \(s^2\) & \(\frac{1}{L_1 G_1} s\) & \(\frac{1}{L_1 C_1}\) \\ \hline
-            Natural & \(s^2\) & \(2 \zeta \omega_n s\) & \(\omega_n^2\) \\ \hline
-          \end{tabularx}\\ \\
-          We get,
-          \begin{enumerate}
-            \item Natural Frequency:
-              \begin{align*}
-                \omega_n = \sqrt{\frac{1}{L_1 C_1}} \\
-                f_p = \frac{\omega_n}{2\pi} = \frac{1}{2\pi \sqrt{L_1 C_1}}
-              \end{align*}
-            \item Damping Ratio:
-              \[
-                2 \zeta \omega_n = \frac{1}{L_1 G_1} \implies \zeta = \frac{1}{2 L_1 G_1 \omega_n} = \frac{1}{2 G_1} \sqrt{\frac{C_1}{L_1}}
-              \]
-            \item Q Factor:
-              \[
-                Q = \frac{1}{2\zeta} = G_1 \sqrt{\frac{L_1}{C_1}}
-              \]
-          \end{enumerate}
-      \end{enumerate}
-    \item \textbf{Zeros (\(N(s) = 0\)):} \\
-      \begin{enumerate}
-        \item \textbf{Parallel Configuration:}\\
-          For \(H_1(s)\):
+    \begin{enumerate}
+      \item \textbf{Parallel Configuration:}
+        For both \(H_1(s)\) and \(H_2(s)\):
+        \begin{align*}
+          G_1 + \frac{1}{sL_1} + sC_1 &= 0 \\
+          \frac{s L_1 G_1 + 1 + s^2 L_1 C_1}{s L_1} &= 0 \\
+          s^2 L_1 C_1 + s L_1 G_1 + 1 &= 0 \\
+          s^2 + s \frac{G_1}{C_1} + \frac{1}{L_1 C_1} &= 0 \tag{4}
+        \end{align*}
+        Applying Shree Dharacharya's Formula:
+        \begin{align*}
+          s &= \frac{-\frac{G_1}{C_1} \pm \sqrt{\left(\frac{G_1}{C_1}\right)^2 - 4 \cdot 1 \cdot \frac{1}{L_1 C_1}}}{2 \cdot 1} \\
+          s &= \frac{-\frac{G_1}{C_1} \pm \sqrt{\frac{G_1^2}{C_1^2} - \frac{4}{L_1 C_1}}}{2} \\
+          \boxed{s = \frac{-G_1 \pm \sqrt{G_1^2 - \frac{4 C_1}{L_1}}}{2 C_1}}
+        \end{align*}
+        While the nature of the poles depends on the value of the
+        discriminant \(\left(G_1^2 - \frac{4 C_1}{L_1}\right)\).
+        We can still make a comparison of equation (iv) with natural
+        second order system equation.\\ \\
+        \begin{tabularx}{\linewidth}{|X|X|X|X|} \hline
+          Type & Term A & Term B & Term C \\ \hline
+          Equation (iv) & \(s^2\) & \(\frac{G_1}{C_1} s\) & \(\frac{1}{L_1 C_1}\) \\ \hline
+          Natural & \(s^2\) & \(2 \zeta \omega_n s\) & \(\omega_n^2\) \\ \hline
+        \end{tabularx}\\ \\
+        We get:
+        \begin{enumerate}
+          \item Natural Frequency:
             \begin{align*}
-              G_1 &= 0 \\
+              \omega_n = \sqrt{\frac{1}{L_1 C_1}} \\
+              f_p = \frac{\omega_n}{2\pi} = \frac{1}{2\pi \sqrt{L_1 C_1}}
             \end{align*}
-            No zeros for \(H_1(s)\). \\
-          For \(H_2(s)\):
+          \item Damping Ratio:
+            \[
+              2 \zeta \omega_n = \frac{G_1}{C_1} \implies \zeta = \frac{G_1}{2C_1 \omega_n} = \frac{G_1}{2 C_1} \sqrt{L_1 C_1}
+            \]
+          \item Q Factor:
+            \[
+              Q = \frac{1}{2\zeta} = \frac{C_1}{G_1} \sqrt{\frac{1}{L_1 C_1}}
+            \]
+        \end{enumerate}
+      \item \textbf{Series Configuration:}
+        For both \(H_3(s)\) and \(H_4(s)\):
+        \begin{align*}
+          sC_1 + G_1(1 + s^2 L_1 C_1) &= 0 \\
+          G_1 s^2 L_1 C_1 + sC_1 + G_1 &= 0 \\
+          s^2 L_1 C_1 G_1 + s C_1 + G_1 &= 0 \\
+          s^2 + s \frac{1}{L_1 G_1} + \frac{1}{L_1 C_1} &= 0 \tag{5}
+        \end{align*}
+        Applying Shree Dharacharya's Formula:
+        \begin{align*}
+          s &= \frac{-\frac{1}{L_1 G_1} \pm \sqrt{\left(\frac{1}{L_1 G_1}\right)^2 - 4 \cdot 1 \cdot \frac{1}{L_1 C_1}}}{2 \cdot 1} \\
+          s &= \frac{-\frac{1}{L_1 G_1} \pm \sqrt{\frac{1}{L_1^2 G_1^2} - \frac{4}{L_1 C_1}}}{2} \\
+          s &= \frac{-\frac{1}{L_1 G_1} \pm \sqrt{\frac{1}{L_1^2 G_1^2} \left(1 - \frac{4 G_1^2 L_1}{C_1}\right)}}{2} \\
+          \boxed{s = \frac{-1 \pm \sqrt{1 - \frac{4 G_1^2 L_1}{C_1}}}{2 L_1 G_1}}
+        \end{align*}
+        While the nature of the poles depends on the value of the
+        discriminant \(\left(1 - \frac{4 G_1^2 L_1}{C_1}\right)\).
+        We can still make a comparison of equation (v) with natural
+        second order system equation.\\ \\
+        \begin{tabularx}{\linewidth}{|X|X|X|X|} \hline
+          Type & Term A & Term B & Term C \\ \hline
+          Equation (v) & \(s^2\) & \(\frac{1}{L_1 G_1} s\) & \(\frac{1}{L_1 C_1}\) \\ \hline
+          Natural & \(s^2\) & \(2 \zeta \omega_n s\) & \(\omega_n^2\) \\ \hline
+        \end{tabularx}\\ \\
+        We get,
+        \begin{enumerate}
+          \item Natural Frequency:
             \begin{align*}
-              \frac{1}{sL_1} + sC_1 &= 0 \\
-              s^2 C_1 L_1 + 1 &= 0 \\
-              s^2 + \frac{1}{L_1 C_1} &= 0 \\
-              s &= \pm j\sqrt{\frac{1}{L_1 C_1}} \quad \text{[let \(s = s_z\)]} \\
-              \boxed{f_z = \frac{|s_z|}{2\pi} = \frac{\sqrt{\frac{1}{L_1 C_1}}}{2\pi} = \frac{1}{2\pi \sqrt{L_1 C_1}}}
+              \omega_n = \sqrt{\frac{1}{L_1 C_1}} \\
+              f_p = \frac{\omega_n}{2\pi} = \frac{1}{2\pi \sqrt{L_1 C_1}}
             \end{align*}
-            Zero at natural frequency for \(H_2(s)\).
-          \item \textbf{Series Configuration:}\\
-          For \(H_3(s)\):
-            \begin{align*}
-              sC_1 &= 0 \\
-              s &= 0
-            \end{align*}
-            Zero at origin for \(H_3(s)\). \\
-          For \(H_4(s)\):
-            \begin{align*}
-              G_1(1 + s^2 L_1 C_1) &= 0 \\
-              1 + s^2 L_1 C_1 &= 0 \\
-              s^2 + \frac{1}{L_1 C_1} &= 0 \\
-              s &= \pm j\sqrt{\frac{1}{L_1 C_1}} \quad \text{[let \(s = s_z\)]} \\
-              \boxed{f_z = \frac{|s_z|}{2\pi} = \frac{\sqrt{\frac{1}{L_1 C_1}}}{2\pi} = \frac{1}{2\pi \sqrt{L_1 C_1}}}
-            \end{align*}
-           Zero at natural frequency for \(H_4(s)\).
-      \end{enumerate}
-    \item \textbf{DC Gain (\(H(0)\)):} \\
-      \begin{enumerate}
+          \item Damping Ratio:
+            \[
+              2 \zeta \omega_n = \frac{1}{L_1 G_1} \implies \zeta = \frac{1}{2 L_1 G_1 \omega_n} = \frac{1}{2 G_1} \sqrt{\frac{C_1}{L_1}}
+            \]
+          \item Q Factor:
+            \[
+              Q = \frac{1}{2\zeta} = G_1 \sqrt{\frac{L_1}{C_1}}
+            \]
+        \end{enumerate}
+    \end{enumerate}
+  \item \textbf{Zeros (\(N(s) = 0\)):} \\
+    \begin{enumerate}
       \item \textbf{Parallel Configuration:}\\
-          For \(H_1(s)\):
+        For \(H_1(s)\):
           \begin{align*}
-            H_1(0) &= \frac{G_1}{G_1 + \frac{1}{0 \cdot L_1} + 0 \cdot C_1} = \frac{G_1}{G_1 + \infty} = 0
+            G_1 &= 0 \\
           \end{align*}
-          Zero DC gain for \(H_1(s)\). \\
-          For \(H_2(s)\):
+          No zeros for \(H_1(s)\). \\
+        For \(H_2(s)\):
           \begin{align*}
-            H_2(0) &= \frac{\frac{1}{0 \cdot L_1} + 0 \cdot C_1}{G_1 + \frac{1}{0 \cdot L_1} + 0 \cdot C_1} = \frac{\infty + 0}{G_1 + \infty} = 1
+            \frac{1}{sL_1} + sC_1 &= 0 \\
+            s^2 C_1 L_1 + 1 &= 0 \\
+            s^2 + \frac{1}{L_1 C_1} &= 0 \\
+            s &= \pm j\sqrt{\frac{1}{L_1 C_1}} \quad \text{[let \(s = s_z\)]} \\
+            \boxed{f_z = \frac{|s_z|}{2\pi} = \frac{\sqrt{\frac{1}{L_1 C_1}}}{2\pi} = \frac{1}{2\pi \sqrt{L_1 C_1}}}
           \end{align*}
-          Unity DC gain for \(H_2(s)\).
+          Zero at natural frequency for \(H_2(s)\).
         \item \textbf{Series Configuration:}\\
-          For \(H_3(s)\):
+        For \(H_3(s)\):
           \begin{align*}
-            H_3(0) &= \frac{0 \cdot C_1}{0 \cdot C_1 + G_1(1 + 0^2 \cdot L_1 C_1)} = 0
+            sC_1 &= 0 \\
+            s &= 0
           \end{align*}
-          Zero DC gain for \(H_3(s)\). \\
-          For \(H_4(s)\):
+          Zero at origin for \(H_3(s)\). \\
+        For \(H_4(s)\):
           \begin{align*}
-            H_4(0) &= \frac{G_1(1 + 0^2 \cdot L_1 C_1)}{0 \cdot C_1 + G_1(1 + 0^2 \cdot L_1 C_1)} = \frac{G_1(1 + 0)}{0 + G_1(1 + 0)} = 1 \\
+            G_1(1 + s^2 L_1 C_1) &= 0 \\
+            1 + s^2 L_1 C_1 &= 0 \\
+            s^2 + \frac{1}{L_1 C_1} &= 0 \\
+            s &= \pm j\sqrt{\frac{1}{L_1 C_1}} \quad \text{[let \(s = s_z\)]} \\
+            \boxed{f_z = \frac{|s_z|}{2\pi} = \frac{\sqrt{\frac{1}{L_1 C_1}}}{2\pi} = \frac{1}{2\pi \sqrt{L_1 C_1}}}
           \end{align*}
-          Unity DC gain for \(H_4(s)\).
-      \end{enumerate}
-    \item \textbf{Gain-Bandwidth Product (\(GBW\)):}
-      We know that,
-      \begin{align*}
-        GBW &\approx \frac{f_0}{Q} \\
-        \text{where } f_0 &= \frac{1}{2\pi \sqrt{L_1 C_1}} \quad \text{(resonant frequency)} \\
-      \end{align*}
-      \begin{enumerate}
-        \item \textbf{Parallel Configuration:}
-          \[
-            GBW_{parallel} \approx \frac{\frac{1}{2\pi \sqrt{L_1 C_1}}}{\frac{C_1}{G_1} \sqrt{\frac{1}{L_1 C_1}}} = \frac{G_1}{2\pi C_1}
-          \]
-        \item \textbf{Series Configuration:}
-          \[
-            GBW_{series} \approx \frac{\frac{1}{2\pi \sqrt{L_1 C_1}}}{G_1 \sqrt{\frac{L_1}{C_1}}} = \frac{1}{2\pi G_1 L_1}
-          \]
-      \end{enumerate}
-    \item \textbf{Impedances:}
-      Substituting \(G_1 = \frac{1}{R_1}\) and \(s = j \omega\):
-      \begin{enumerate}
-        \item \textbf{Parallel Configuration:}
-          \begin{enumerate}
-            \item At Input:
-              \(L_1\) and \(C_1\) are in parallel with each other and
-              their combination is in series with \(R_1\):
-              \begin{align*}
-                Z_{LC} &= \frac{j \omega L_1 \cdot \frac{1}{j \omega C_1}}{j \omega L_1 + \frac{1}{j \omega C_1}} \\
-                Z_{LC} &= \frac{L_1}{C_1} \cdot \frac{j \omega C_1}{1 - \omega^2 L_1 C_1} \\
-                Z_{LC} &= \frac{L_1 j \omega}{1 - \omega^2 L_1 C_1} \\
-                Z_{in} &= R_1 + Z_{LC} \\
-                \boxed{Z_{in} = R_1 + \frac{L_1 j \omega}{1 - \omega^2 L_1 C_1}}
-              \end{align*}
-            \item At Output:
-              \(L_1\) and \(C_1\) are in parallel with each other and
-              their combination is in parallel with \(R_1\):
-              \begin{align*}
-                Z_{LC} &= \frac{j \omega L_1 \cdot \frac{1}{j \omega C_1}}{j \omega L_1 + \frac{1}{j \omega C_1}} \\
-                Z_{LC} &= \frac{L_1}{C_1} \cdot \frac{j \omega C_1}{1 - \omega^2 L_1 C_1} \\
-                Z_{LC} &= \frac{L_1 j \omega}{1 - \omega^2 L_1 C_1} \\
-                Z_{out} &= \frac{R_1 \cdot Z_{LC}}{R_1 + Z_{LC}} \\
-                Z_{out} &= \frac{R_1 \cdot \frac{L_1 j \omega}{1 - \omega^2 L_1 C_1}}{R_1 + \frac{L_1 j \omega}{1 - \omega^2 L_1 C_1}} \\
-                Z_{out} &= \frac{\frac{R_1 L_1 j \omega}{1 - \omega^2 L_1 C_1}}{\frac{R_1(1 - \omega^2 L_1 C_1) + L_1 j \omega}{1 - \omega^2 L_1 C_1}} \\
-                Z_{out} &= \frac{R_1 L_1 j \omega}{R_1(1 - \omega^2 L_1 C_1) + L_1 j \omega} \\
-                \boxed{Z_{out} = \frac{R_1 L_1 j \omega}{R_1(1 - \omega^2 L_1 C_1) + L_1 j \omega}}
-              \end{align*}
+         Zero at natural frequency for \(H_4(s)\).
+    \end{enumerate}
+  \item \textbf{DC Gain (\(H(0)\)):} \\
+    \begin{enumerate}
+    \item \textbf{Parallel Configuration:}\\
+        For \(H_1(s)\):
+        \begin{align*}
+          H_1(0) &= \frac{G_1}{G_1 + \frac{1}{0 \cdot L_1} + 0 \cdot C_1} = \frac{G_1}{G_1 + \infty} = 0
+        \end{align*}
+        Zero DC gain for \(H_1(s)\). \\
+        For \(H_2(s)\):
+        \begin{align*}
+          H_2(0) &= \frac{\frac{1}{0 \cdot L_1} + 0 \cdot C_1}{G_1 + \frac{1}{0 \cdot L_1} + 0 \cdot C_1} = \frac{\infty + 0}{G_1 + \infty} = 1
+        \end{align*}
+        Unity DC gain for \(H_2(s)\).
+      \item \textbf{Series Configuration:}\\
+        For \(H_3(s)\):
+        \begin{align*}
+          H_3(0) &= \frac{0 \cdot C_1}{0 \cdot C_1 + G_1(1 + 0^2 \cdot L_1 C_1)} = 0
+        \end{align*}
+        Zero DC gain for \(H_3(s)\). \\
+        For \(H_4(s)\):
+        \begin{align*}
+          H_4(0) &= \frac{G_1(1 + 0^2 \cdot L_1 C_1)}{0 \cdot C_1 + G_1(1 + 0^2 \cdot L_1 C_1)} = \frac{G_1(1 + 0)}{0 + G_1(1 + 0)} = 1 \\
+        \end{align*}
+        Unity DC gain for \(H_4(s)\).
+    \end{enumerate}
+  \item \textbf{Gain-Bandwidth Product (\(GBW\)):}
+    We know that,
+    \begin{align*}
+      GBW &\approx \frac{f_0}{Q} \\
+      \text{where } f_0 &= \frac{1}{2\pi \sqrt{L_1 C_1}} \quad \text{(resonant frequency)} \\
+    \end{align*}
+    \begin{enumerate}
+      \item \textbf{Parallel Configuration:}
+        \[
+          GBW_{parallel} \approx \frac{\frac{1}{2\pi \sqrt{L_1 C_1}}}{\frac{C_1}{G_1} \sqrt{\frac{1}{L_1 C_1}}} = \frac{G_1}{2\pi C_1}
+        \]
+      \item \textbf{Series Configuration:}
+        \[
+          GBW_{series} \approx \frac{\frac{1}{2\pi \sqrt{L_1 C_1}}}{G_1 \sqrt{\frac{L_1}{C_1}}} = \frac{1}{2\pi G_1 L_1}
+        \]
+    \end{enumerate}
+  \item \textbf{Impedances:}
+    Substituting \(G_1 = \frac{1}{R_1}\) and \(s = j \omega\):
+    \begin{enumerate}
+      \item \textbf{Parallel Configuration:}
+        \begin{enumerate}
+          \item At Input:
+            \(L_1\) and \(C_1\) are in parallel with each other and
+            their combination is in series with \(R_1\):
+            \begin{align*}
+              Z_{LC} &= \frac{j \omega L_1 \cdot \frac{1}{j \omega C_1}}{j \omega L_1 + \frac{1}{j \omega C_1}} \\
+              Z_{LC} &= \frac{L_1}{C_1} \cdot \frac{j \omega C_1}{1 - \omega^2 L_1 C_1} \\
+              Z_{LC} &= \frac{L_1 j \omega}{1 - \omega^2 L_1 C_1} \\
+              Z_{in} &= R_1 + Z_{LC} \\
+              \boxed{Z_{in} = R_1 + \frac{L_1 j \omega}{1 - \omega^2 L_1 C_1}}
+            \end{align*}
+          \item At Output:
+            \(L_1\) and \(C_1\) are in parallel with each other and
+            their combination is in parallel with \(R_1\):
+            \begin{align*}
+              Z_{LC} &= \frac{j \omega L_1 \cdot \frac{1}{j \omega C_1}}{j \omega L_1 + \frac{1}{j \omega C_1}} \\
+              Z_{LC} &= \frac{L_1}{C_1} \cdot \frac{j \omega C_1}{1 - \omega^2 L_1 C_1} \\
+              Z_{LC} &= \frac{L_1 j \omega}{1 - \omega^2 L_1 C_1} \\
+              Z_{out} &= \frac{R_1 \cdot Z_{LC}}{R_1 + Z_{LC}} \\
+              Z_{out} &= \frac{R_1 \cdot \frac{L_1 j \omega}{1 - \omega^2 L_1 C_1}}{R_1 + \frac{L_1 j \omega}{1 - \omega^2 L_1 C_1}} \\
+              Z_{out} &= \frac{\frac{R_1 L_1 j \omega}{1 - \omega^2 L_1 C_1}}{\frac{R_1(1 - \omega^2 L_1 C_1) + L_1 j \omega}{1 - \omega^2 L_1 C_1}} \\
+              Z_{out} &= \frac{R_1 L_1 j \omega}{R_1(1 - \omega^2 L_1 C_1) + L_1 j \omega} \\
+              \boxed{Z_{out} = \frac{R_1 L_1 j \omega}{R_1(1 - \omega^2 L_1 C_1) + L_1 j \omega}}
+            \end{align*}
+        \end{enumerate}
+      \item \textbf{Series Configuration:}
+        \begin{enumerate}
+          \item At Input:
+            \(L_1\) and \(C_1\) are in series with each other and
+            their combination is in series with \(R_1\):
+            \begin{align*}
+              Z_{LC} &= j \omega L_1 + \frac{1}{j \omega C_1} \\
+              Z_{LC} &= j \left(\omega L_1 - \frac{1}{\omega C_1}\right) \\
+              Z_{in} &= R_1 + Z_{LC} \\
+              \boxed{Z_{in} = R_1 + j \left(\omega L_1 - \frac{1}{\omega C_1}\right)}
+            \end{align*}
+          \item At Output:
+            \(L_1\) and \(C_1\) are in series with each other and
+            their combination is in parallel with \(R_1\):
+            \begin{align*}
+              Z_{LC} &= j \omega L_1 + \frac{1}{j \omega C_1} \\
+              Z_{LC} &= j \left(\omega L_1 - \frac{1}{\omega C_1}\right) \\
+              Z_{out} &= \frac{R_1 \cdot Z_{LC}}{R_1 + Z_{LC}} \\
+              \boxed{Z_{out} = \frac{R_1 \cdot j \left(\omega L_1 - \frac{1}{\omega C_1}\right)}{R_1 + j \left(\omega L_1 - \frac{1}{\omega C_1}\right)}}
+            \end{align*}
           \end{enumerate}
-        \item \textbf{Series Configuration:}
-          \begin{enumerate}
-            \item At Input:
-              \(L_1\) and \(C_1\) are in series with each other and
-              their combination is in series with \(R_1\):
-              \begin{align*}
-                Z_{LC} &= j \omega L_1 + \frac{1}{j \omega C_1} \\
-                Z_{LC} &= j \left(\omega L_1 - \frac{1}{\omega C_1}\right) \\
-                Z_{in} &= R_1 + Z_{LC} \\
-                \boxed{Z_{in} = R_1 + j \left(\omega L_1 - \frac{1}{\omega C_1}\right)}
-              \end{align*}
-            \item At Output:
-              \(L_1\) and \(C_1\) are in series with each other and
-              their combination is in parallel with \(R_1\):
-              \begin{align*}
-                Z_{LC} &= j \omega L_1 + \frac{1}{j \omega C_1} \\
-                Z_{LC} &= j \left(\omega L_1 - \frac{1}{\omega C_1}\right) \\
-                Z_{out} &= \frac{R_1 \cdot Z_{LC}}{R_1 + Z_{LC}} \\
-                \boxed{Z_{out} = \frac{R_1 \cdot j \left(\omega L_1 - \frac{1}{\omega C_1}\right)}{R_1 + j \left(\omega L_1 - \frac{1}{\omega C_1}\right)}}
-              \end{align*}
-            \end{enumerate}
-      \end{enumerate}
+    \end{enumerate}
 \end{enumerate}
 
 \subsubsection{Question}
