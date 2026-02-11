@@ -30,7 +30,7 @@ Below I've shown the model of a real resistor including its
 parasitic elements whose ideal resistance should've been just
 \(R_2\).
 \begin{center}
-  \begin{circuitikz}
+  \begin{tikzpicture}
     % Paths, nodes and wires:
 	  \draw (8.75, 7) to[european resistor, l={$R_2$}] (10.5, 7);
 	  \draw (8.75, 7) to[european inductor, l_={$L_2$}] (7, 7);
@@ -46,7 +46,7 @@ parasitic elements whose ideal resistance should've been just
 	  \node[shape=rectangle, draw, line width=3pt, dash pattern={on 3pt off 6pt}, minimum width=4.394cm, minimum height=1.644cm] at (8.75, 7.125){};
 	  \node[shape=rectangle, draw, line width=3pt, dash pattern={on 3pt off 6pt}, minimum width=3.644cm, minimum height=1.144cm] at (4.625, 7.125){};
 	  \node[shape=rectangle, draw, line width=3pt, dash pattern={on 3pt off 6pt}, minimum width=3.644cm, minimum height=1.144cm] at (12.75, 7.125){};
-  \end{circuitikz}
+  \end{tikzpicture}
 \end{center}
 
 The total impedance of the resistor can be calculated as:

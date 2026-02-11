@@ -9,7 +9,7 @@ single pole filters (-20 dB/decade).
 
 \subsubsection{Schematic}
 \begin{center}
-  \begin{circuitikz}
+  \begin{tikzpicture}
     % Paths, nodes and wires:
 	  \draw (5.5, 5.25) to[american voltage source, l_={$V_{ee}$}] (5.5, 6.5);
 	  \node[ground] at (5.5, 8){};
@@ -42,7 +42,7 @@ single pole filters (-20 dB/decade).
 	  \draw (11, 6.75) to[american inductor, l={$L_1$}] (11, 5.25);
 	  \draw (7, 7.75) to[capacitor, l_={$C_1$}] (7, 9.25);
 	  \draw (11, 7.75) to[capacitor, l_={$C_1$}] (11, 9.25);
-  \end{circuitikz}
+  \end{tikzpicture}
 \end{center}
 
 \subsubsection{Transfer Function}

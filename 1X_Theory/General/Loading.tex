@@ -6,7 +6,7 @@ below. Each box has an input impedance and an output impedance.
 The output voltage of Box 1 is connected to the input of Box 2,
 and the output of Box 2 is connected to the input of Box 3.
 \begin{center}
-  \begin{circuitikz}
+  \begin{tikzpicture}
     % Paths, nodes and wires:
     \node[shape=rectangle, draw={rgb,255:red,255;green,0;blue,0}, line width=1pt, minimum width=2.465cm, minimum height=1.715cm](N1) at (6.75, 6.625){} node[anchor=center] at (N1.text){\textcolor{rgb,255:red,255;green,0;blue,0}{$Box_1$}};
     \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N2) at (8.25, 8){} node[anchor=center] at (N2.text){\textcolor{rgb,255:red,255;green,0;blue,0}{$Z_{out_1}$}};
@@ -21,7 +21,7 @@ and the output of Box 2 is connected to the input of Box 3.
     \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N9) at (9.5, 8){} node[anchor=center] at (N9.text){$Z_{in_3}$};
     \draw[line width=1pt, dash pattern={on 4pt off 4pt}] (8.75, 4.25) -| (8.75, 9);
     \draw[line width=1pt, dash pattern={on 4pt off 4pt}] (12.5, 4.25) -| (12.5, 9);
-  \end{circuitikz}
+  \end{tikzpicture}
 \end{center}
 If the output impedance of Box 1 (\(Z_{out_1}\)) is not negligible
 compared to the input impedance of Box 2 (\(Z_{in_2}\)), then Box 1

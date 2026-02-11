@@ -7,7 +7,7 @@ into a smaller one.
 
 \subsubsection{Schematic}
 \begin{center}
-  \begin{circuitikz}
+  \begin{tikzpicture}
     % Paths, nodes and wires:
 	  \draw (5.5, 5.25) to[american voltage source, l_={$V_{ee}$}] (5.5, 6.5);
 	  \node[ground] at (5.5, 8){};
@@ -40,7 +40,7 @@ into a smaller one.
 	  \node[shape=rectangle, minimum width=2.715cm, minimum height=0.465cm] at (10.375, 4.25){} node[anchor=north, align=center, text width=2.327cm, inner sep=6pt] at (10.375, 4.5){Small-Signal\\Schematic};
 	  \draw (7, 6.75) to[european resistor, l={$G_2$}] (7, 5.25);
 	  \draw (11, 6.75) to[european resistor, l={$G_2$}] (11, 5.25);
-  \end{circuitikz}
+  \end{tikzpicture}
 \end{center}
 
 \subsubsection{Transfer Function}

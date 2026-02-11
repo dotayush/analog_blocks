@@ -9,7 +9,7 @@ order filters.
 
 \subsubsection{Schematic}
 \begin{center}
-  \begin{circuitikz}
+  \begin{tikzpicture}
     % Paths, nodes and wires:
 	  \draw (5.5, 5.25) to[american voltage source, l_={$V_{ee}$}] (5.5, 6.5);
 	  \node[ground] at (5.5, 8){};
@@ -42,7 +42,7 @@ order filters.
 	  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N2) at (12.25, 7.25){} node[anchor=center] at (N2.text){$V_{out}$};
 	  \node[shape=rectangle, minimum width=3.215cm, minimum height=0.465cm] at (6.125, 4.25){} node[anchor=north, align=center, text width=2.827cm, inner sep=6pt] at (6.125, 4.5){Full Schematic};
 	  \node[shape=rectangle, minimum width=2.715cm, minimum height=0.465cm] at (10.375, 4.25){} node[anchor=north, align=center, text width=2.327cm, inner sep=6pt] at (10.375, 4.5){Small-Signal\\Schematic};
-  \end{circuitikz}
+  \end{tikzpicture}
 \end{center}
 
 \subsubsection{Transfer Function}

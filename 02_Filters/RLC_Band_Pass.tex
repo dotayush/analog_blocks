@@ -8,7 +8,7 @@ band. It is a second order filter.
 
 \subsubsection{Schematic}
 \begin{center}
-  \begin{circuitikz}
+  \begin{tikzpicture}
     % Paths, nodes and wires:
 	  \draw (7.5, 5.75) to[american voltage source, l_={$V_{ee}$}] (6.25, 5.75);
 	  \node[ground] at (4.75, 6.75){};
@@ -80,7 +80,7 @@ band. It is a second order filter.
 	  \draw (14.25, 3.25) -| (14.25, 3.75) -- (13.75, 3.75);
 	  \draw (12.5, 3.75) -| (12.5, 3);
 	  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N6) at (12.5, 2.75){} node[anchor=center] at (N6.text){$V_{x}$};
-  \end{circuitikz}
+  \end{tikzpicture}
 \end{center}
 
 \subsubsection{Transfer Function}
