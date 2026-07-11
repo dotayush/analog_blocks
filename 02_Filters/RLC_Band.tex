@@ -1,0 +1,530 @@
+\subsection{RLC Band Filter}
+
+\subsubsection{Overview}
+Constructed from a resistor, inductor, and capacitor in series
+or parallel. An RLC Band Filter can be broken down into two types:
+\begin{itemize}
+  \item \textbf{Band Pass Filter:} Allows a certain range of
+    frequencies to pass while attenuating frequencies outside
+    that range.
+  \item \textbf{Band Stop Filter:} Attenuates a certain range of
+    frequencies while allowing frequencies outside that range
+    to pass.
+\end{itemize}
+
+\subsubsection{Schematic}
+\begin{center}
+  \begin{tikzpicture}[transform shape]
+  	% Paths, nodes and wires:
+  	\node[shape=rectangle, minimum width=2.965cm, minimum height=0.965cm] at (12.221, 10.029){} node[anchor=center, align=center, text width=2.577cm, inner sep=6pt] at (12.221, 10.029){\Large Band Pass};
+  	\node[ground] at (9.846, 6.779){};
+  	\node[ground, rotate=-90] at (11.346, 5.779){};
+  	\draw (9.846, 8.029) -| (9.846, 8.279);
+  	\draw (13.346, 8.279) -- (14.096, 8.279);
+  	\draw (9.846, 6.779) to[sinusoidal voltage source, l_={$V_{1}$}] (9.846, 8.029);
+  	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N1) at (14.596, 8.279){} node[anchor=center] at (N1.text){$V_{out}$};
+  	\draw (12.846, 6.279) to[american inductor, l={$L_1$}] (12.846, 7.529);
+  	\draw (13.846, 6.279) to[capacitor, l_={$C_1$}] (13.846, 7.529);
+  	\draw (13.846, 6.279) -- (13.846, 6.029) |- (13.346, 6.029);
+  	\draw (13.346, 6.029) |- (12.846, 6.029) -- (12.846, 6.279);
+  	\draw (12.846, 7.529) -- (12.846, 7.779) |- (13.346, 7.779);
+  	\draw (13.846, 7.529) |- (13.346, 7.779);
+  	\draw (9.846, 8.279) -- (10.846, 8.279);
+  	\draw (12.596, 8.279) to[european resistor, l={$G_1$}] (10.846, 8.279);
+  	\draw (13.346, 7.779) -| (13.346, 8.279) -- (12.596, 8.279);
+  	\node[ground] at (9.846, 2.279){};
+  	\node[ground, rotate=-90] at (11.346, 1.279){};
+  	\draw (9.846, 3.529) -| (9.846, 3.779);
+  	\draw (13.346, 3.779) -- (14.096, 3.779);
+  	\draw (9.846, 2.279) to[sinusoidal voltage source, l_={$V_{1}$}] (9.846, 3.529);
+  	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N2) at (14.596, 3.779){} node[anchor=center] at (N2.text){$V_{out}$};
+  	\draw (10.346, 3.779) to[american inductor, l={$L_1$}] (11.596, 3.779);
+  	\draw (11.596, 3.779) to[capacitor, l={$C_1$}] (12.846, 3.779);
+  	\draw (9.846, 3.779) -- (10.346, 3.779);
+  	\draw (13.346, 3.279) to[european resistor, l={$G_1$}] (13.346, 1.529);
+  	\draw (13.346, 3.279) -| (13.346, 3.779) -- (12.846, 3.779);
+  	\draw (11.596, 3.779) -| (11.596, 3.029);
+  	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N3) at (11.596, 2.779){} node[anchor=center] at (N3.text){$V_{x}$};
+  	\draw (15.221, 11.029) -- (15.221, 0.529);
+  	\draw (13.346, 1.529) |- (12.822, 1.279);
+  	\draw (12.846, 5.779) -| (13.346, 6.029);
+  	\node[shape=rectangle, minimum width=2.965cm, minimum height=0.965cm] at (17.721, 10.029){} node[anchor=center, align=center, text width=2.577cm, inner sep=6pt] at (17.721, 10.029){\Large Band Stop};
+  	\draw (5.197, 1.279) to[sinusoidal voltage source, l={$V_2$}] (6.697, 1.279);
+  	\node[ground] at (3.721, 6.779){};
+  	\node[ground, rotate=-90] at (5.221, 5.779){};
+  	\draw (3.721, 8.029) -| (3.721, 8.279);
+  	\draw (7.221, 8.279) -- (7.971, 8.279);
+  	\draw (3.721, 6.779) to[sinusoidal voltage source, l_={$V_{1}$}] (3.721, 8.029);
+  	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N4) at (8.471, 8.279){} node[anchor=center] at (N4.text){$V_{out}$};
+  	\draw (6.721, 6.279) to[american inductor, l={$L_1$}] (6.721, 7.529);
+  	\draw (7.721, 6.279) to[capacitor, l_={$C_1$}] (7.721, 7.529);
+  	\draw (7.721, 6.279) -- (7.721, 6.029) |- (7.221, 6.029);
+  	\draw (7.221, 6.029) |- (6.721, 6.029) -- (6.721, 6.279);
+  	\draw (6.721, 7.529) -- (6.721, 7.779) |- (7.221, 7.779);
+  	\draw (7.721, 7.529) |- (7.221, 7.779);
+  	\draw (3.721, 8.279) -- (4.721, 8.279);
+  	\draw (6.471, 8.279) to[european resistor, l={$G_1$}] (4.721, 8.279);
+  	\draw (7.221, 7.779) -| (7.221, 8.279) -- (6.471, 8.279);
+  	\node[ground] at (3.721, 2.279){};
+  	\node[ground, rotate=-90] at (5.221, 1.279){};
+  	\draw (3.721, 3.529) -| (3.721, 3.779);
+  	\draw (7.221, 3.779) -- (7.971, 3.779);
+  	\draw (3.721, 2.279) to[sinusoidal voltage source, l_={$V_{1}$}] (3.721, 3.529);
+  	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N5) at (8.471, 3.779){} node[anchor=center] at (N5.text){$V_{out}$};
+  	\draw (4.221, 3.779) to[american inductor, l={$L_1$}] (5.471, 3.779);
+  	\draw (5.471, 3.779) to[capacitor, l={$C_1$}] (6.721, 3.779);
+  	\draw (3.721, 3.779) -- (4.221, 3.779);
+  	\draw (7.221, 3.279) to[european resistor, l={$G_1$}] (7.221, 1.529);
+  	\draw (7.221, 3.279) -| (7.221, 3.779) -- (6.721, 3.779);
+  	\draw (5.471, 3.779) -| (5.471, 3.029);
+  	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N6) at (5.471, 2.779){} node[anchor=center] at (N6.text){$V_{x}$};
+  	\draw (7.221, 1.529) |- (6.697, 1.279);
+  	\draw (5.221, 5.779) to[sinusoidal voltage source, l={$V_2$}] (6.721, 5.779);
+  	\draw (6.721, 5.779) -| (7.221, 6.029);
+  	\node[shape=rectangle, minimum width=3.965cm, minimum height=0.965cm] at (5.5, 10){} node[anchor=center, align=center, text width=3.577cm, inner sep=6pt] at (5.5, 10){\Large Full Schematic};
+  	\draw (12.846, 5.779) -- (11.346, 5.779);
+  	\draw (12.822, 1.279) |- (11.346, 1.279);
+  	\node[ground] at (15.971, 6.779){};
+  	\node[ground, rotate=-90] at (17.471, 5.779){};
+  	\draw (19.471, 8.279) -- (20.221, 8.279);
+  	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N7) at (20.721, 8.279){} node[anchor=center] at (N7.text){$V_{out}$};
+  	\draw (18.971, 6.279) to[american inductor, l={$L_1$}] (18.971, 7.529);
+  	\draw (19.971, 6.279) to[capacitor, l_={$C_1$}] (19.971, 7.529);
+  	\draw (19.971, 6.279) -- (19.971, 6.029) |- (19.471, 6.029);
+  	\draw (19.471, 6.029) |- (18.971, 6.029) -- (18.971, 6.279);
+  	\draw (18.971, 7.529) -- (18.971, 7.779) |- (19.471, 7.779);
+  	\draw (19.971, 7.529) |- (19.471, 7.779);
+  	\draw (15.971, 8.279) -- (16.971, 8.279);
+  	\draw (18.721, 8.279) to[european resistor, l={$G_1$}] (16.971, 8.279);
+  	\draw (19.471, 7.779) -| (19.471, 8.279) -- (18.721, 8.279);
+  	\node[ground] at (15.971, 2.279){};
+  	\node[ground, rotate=-90] at (17.471, 1.279){};
+  	\draw (19.471, 3.779) -- (20.221, 3.779);
+  	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N8) at (20.721, 3.779){} node[anchor=center] at (N8.text){$V_{out}$};
+  	\draw (16.471, 3.779) to[american inductor, l={$L_1$}] (17.721, 3.779);
+  	\draw (17.721, 3.779) to[capacitor, l={$C_1$}] (18.971, 3.779);
+  	\draw (15.971, 3.779) -- (16.471, 3.779);
+  	\draw (19.471, 3.279) to[european resistor, l={$G_1$}] (19.471, 1.529);
+  	\draw (19.471, 3.279) -| (19.471, 3.779) -- (18.971, 3.779);
+  	\draw (17.721, 3.779) -| (17.721, 3.029);
+  	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N9) at (17.721, 2.779){} node[anchor=center] at (N9.text){$V_{x}$};
+  	\draw (19.471, 1.529) |- (18.947, 1.279);
+  	\draw (18.971, 5.779) -| (19.471, 6.029);
+  	\draw (15.971, 8.279) -| (15.971, 8.029);
+  	\draw (15.971, 8.029) -- (15.971, 6.779);
+  	\draw (15.971, 3.779) -- (15.971, 2.279);
+  	\draw (9.221, 0.529) -- (9.221, 11.029);
+  	\draw (17.471, 5.779) to[sinusoidal voltage source, l={$V_2$}] (18.971, 5.779);
+  	\draw (17.471, 1.279) to[sinusoidal voltage source, l={$V_2$}] (18.971, 1.279);
+  	\draw (3, 5) -- (21, 5);
+  	\node[shape=rectangle, rotate=90, minimum width=2.965cm, minimum height=0.965cm] at (2.5, 7.5){} node[anchor=center, align=center, text width=2.577cm, inner sep=6pt, rotate=90] at (2.5, 7.5){\Large Parallel};
+  	\node[shape=rectangle, rotate=90, minimum width=2.965cm, minimum height=0.965cm] at (2.5, 3){} node[anchor=center, align=center, text width=2.577cm, inner sep=6pt, rotate=90] at (2.5, 3){\Large Series};
+  \end{tikzpicture}
+\end{center}
+
+\subsubsection{Transfer Function}
+\begin{enumerate}
+  \item \textbf{Parallel Configuration:}
+    Applying KCL on Full Schematic of Parallel Configuration, \\
+    At \(V_{out}\), we get:
+    \begin{align*}
+      (V_{out} - V_{1}){G_1} + \frac{(V_{out} - V_{2})}{sL_1} + (V_{out} - V_{2}){sC_1} &= 0 \\
+      V_{out}G_1 - V_{1}G_1 + \frac{V_{out}}{sL_1} - \frac{V_{2}}{sL_1} + V_{out}sC_1 - V_{2}sC_1 &= 0 \\
+    \end{align*}
+    \paragraph{Superposition:}
+      \begin{enumerate}
+        \item Due to \(V_{1}\) alone (\(V_{2} = 0V\)):
+          This is the band pass characteristic of the RLC Band Filter.
+          \begin{align*}
+            V_{out}G_1 - V_{1}G_1 + \frac{V_{out}}{sL_1} + V_{out}sC_1 &= 0 \\
+            V_{out}(G_1 + \frac{1}{sL_1} + sC_1) - V_{1}G_1 &= 0 \\
+            V_{out}(G_1 + \frac{1}{sL_1} + sC_1) &= V_{1}G_1 \\
+            \boxed{H_1(s) = \frac{N_1(s)}{D_1(s)} = \frac{V_{out_1}}{V_{1}} = \frac{G_1}{G_1 + \frac{1}{sL_1} + sC_1}}
+          \end{align*}
+        \item Due to \(V_{2}\) alone (\(V_{1} = 0V\)):
+          This is the band stop characteristic of the RLC Band Filter.
+          \begin{align*}
+            V_{out}G_1 + \frac{V_{out}}{sL_1} - \frac{V_{2}}{sL_1} + V_{out}sC_1 - V_{2}sC_1 &= 0 \\
+            V_{out}(G_1 + \frac{1}{sL_1} + sC_1) - V_{2}(\frac{1}{sL_1} + sC_1) &= 0 \\
+            V_{out}(G_1 + \frac{1}{sL_1} + sC_1) &= V_{2}(\frac{1}{sL_1} + sC_1) \\
+            \boxed{H_2(s) = \frac{N_2(s)}{D_2(s)} = \frac{V_{out_2}}{V_{2}} = \frac{\frac{1}{sL_1} + sC_1}{G_1 + \frac{1}{sL_1} + sC_1}}
+          \end{align*}
+      \end{enumerate}
+    \paragraph{Total Parallel Response:}
+      \begin{align*}
+        V_{out} &= V_{out_1} + V_{out_2} \\
+                &= H_1(s)V_{1} + H_2(s)V_{2} \\
+                &= \left(\frac{G_1}{G_1 + \frac{1}{sL_1} + sC_1}\right)V_{1} + \left(\frac{\frac{1}{sL_1} + sC_1}{G_1 + \frac{1}{sL_1} + sC_1}\right)V_{2} \\
+        V_{out} &= \underbrace{\frac{G_1}{G_1 + \frac{1}{sL_1} + sC_1}V_{1}}_{\text{Band Pass Character}} + \underbrace{\frac{\frac{1}{sL_1} + sC_1}{G_1 + \frac{1}{sL_1} + sC_1}V_{2}}_{\text{Band Stop Character}}
+      \end{align*}
+  \item \textbf{Series Configuration:}
+    Applying KCL on Full Schematic of Series Configuration, we get: \\
+    At \(V_{out}\):
+    \begin{align*}
+      (V_{out} - V_{x})sC_1 + (V_{out} - V_{2}){G_1} &= 0 \tag{1}
+    \end{align*}
+    At \(V_{x}\):
+    \begin{align*}
+      \frac{(V_{x} - V_{1})}{sL_1} + (V_{x} - V_{out})sC_1 &= 0 \tag{2}
+    \end{align*}
+    From equation (2):
+    \begin{align*}
+      \frac{V_{x}}{sL_1} - \frac{V_{1}}{sL_1} + V_{x}sC_1 - V_{out}sC_1 &= 0 \\
+      V_{x}(\frac{1}{sL_1} + sC_1) - \frac{V_{1}}{sL_1} - V_{out}sC_1 &= 0 \\
+      V_{x}(\frac{1}{sL_1} + sC_1) &= \frac{V_{1}}{sL_1} + V_{out}sC_1 \\
+      V_{x} &= \frac{\frac{V_{1}}{sL_1} + V_{out}sC_1}{\frac{1}{sL_1} + sC_1} \\
+      V_{x} &= \frac{\left(\frac{V_{1} + V_{out}s^2 L_1 C_1}{s L_1}\right)}{\left(\frac{1 + s^2 L_1 C_1}{s L_1}\right)} \\
+      V_{x} &= \frac{V_{1} + V_{out}s^2 L_1 C_1}{1 + s^2 L_1 C_1} \tag{3}
+    \end{align*}
+    \paragraph{Superposition:}
+      \begin{enumerate}
+        \item Due to \(V_{1}\) alone (\(V_{2} = 0V\)):
+          This is the band pass characteristic of the RLC Band Filter.\\
+          Substituting equation (3) into equation (1):
+          \begin{align*}
+            \left(V_{out} - \left(\frac{V_{1} + V_{out}s^2 L_1 C_1}{1 + s^2 L_1 C_1}\right)\right) \cdot sC_1 + (V_{out} - 0){G_1} &= 0 \\
+            \left(V_{out}(1 + s^2 L_1 C_1) - (V_{1} + V_{out}s^2 L_1 C_1)\right) \cdot \frac{sC_1}{1 + s^2 L_1 C_1} + V_{out}G_1 &= 0 \\
+            \left(V_{out} + V_{out}s^2 L_1 C_1 - V_{1} - V_{out}s^2 L_1 C_1\right) \cdot \frac{sC_1}{1 + s^2 L_1 C_1} + V_{out}G_1 &= 0 \\
+            \left(V_{out} - V_{1}\right) \cdot \frac{sC_1}{1 + s^2 L_1 C_1} + V_{out}G_1 &= 0 \\
+            \frac{V_{out} sC_1}{1 + s^2 L_1 C_1} - \frac{V_{1} sC_1}{1 + s^2 L_1 C_1} + V_{out}G_1 &= 0 \\
+            V_{out}\left(\frac{sC_1}{1 + s^2 L_1 C_1} + G_1\right) &= \frac{V_{1} sC_1}{1 + s^2 L_1 C_1} \\
+            V_{out}\left(\frac{sC_1 + G_1(1 + s^2 L_1 C_1)}{1 + s^2 L_1 C_1}\right) &= \frac{V_{1} sC_1}{1 + s^2 L_1 C_1} \\
+            V_{out} &= \frac{\frac{V_{1} sC_1}{1 + s^2 L_1 C_1}}{\frac{sC_1 + G_1(1 + s^2 L_1 C_1)}{1 + s^2 L_1 C_1}} \\
+            V_{out} = \frac{V_{1} sC_1}{sC_1 + G_1(1 + s^2 L_1 C_1)}
+          \end{align*}
+          This results in:
+          \[
+            \boxed{H_3(s) = \frac{N_3(s)}{D_3(s)} = \frac{V_{out_3}}{V_{1}} = \frac{sC_1}{sC_1 + G_1(1 + s^2 L_1 C_1)}}
+          \]
+        \item Due to \(V_{2}\) alone (\(V_{1} = 0V\)):
+          This is the band stop characteristic of the RLC Band Filter.\\
+          Substituting equation (3) into equation (1):
+          \begin{align*}
+            \left(V_{out} - \left(\frac{0 + V_{out}s^2 L_1 C_1}{1 + s^2 L_1 C_1}\right)\right) \cdot sC_1 + (V_{out} - V_{2}){G_1} &= 0 \\
+            \left(V_{out}(1 + s^2 L_1 C_1) - V_{out}s^2 L_1 C_1\right) \cdot \frac{sC_1}{1 + s^2 L_1 C_1} + (V_{out} - V_{2}){G_1} &= 0 \\
+            \left(V_{out} + V_{out}s^2 L_1 C_1 - V_{out}s^2 L_1 C_1\right) \cdot \frac{sC_1}{1 + s^2 L_1 C_1} + (V_{out} - V_{2}){G_1} &= 0 \\
+            V_{out} \cdot \frac{sC_1}{1 + s^2 L_1 C_1} + (V_{out} - V_{2}){G_1} &= 0 \\
+            \frac{V_{out} sC_1}{1 + s^2 L_1 C_1} + V_{out}G_1 - V_{2}G_1 &= 0 \\
+            V_{out}\left(\frac{sC_1}{1 + s^2 L_1 C_1} + G_1\right) &= V_{2}G_1 \\
+            V_{out}\left(\frac{sC_1 + G_1(1 + s^2 L_1 C_1)}{1 + s^2 L_1 C_1}\right) &= V_{2}G_1 \\
+            V_{out} &= \frac{V_{2}G_1}{\frac{sC_1 + G_1(1 + s^2 L_1 C_1)}{1 + s^2 L_1 C_1}} \\
+            V_{out} = \frac{V_{2}G_1(1 + s^2 L_1 C_1)}{sC_1 + G_1(1 + s^2 L_1 C_1)}
+          \end{align*}
+          This results in:
+          \[
+            \boxed{H_4(s) = \frac{N_4(s)}{D_4(s)} = \frac{V_{out_4}}{V_{2}} = \frac{G_1(1 + s^2 L_1 C_1)}{sC_1 + G_1(1 + s^2 L_1 C_1)}}
+          \]
+      \end{enumerate}
+    \paragraph{Total Series Response:}
+      \begin{align*}
+        V_{out} &= V_{out_3} + V_{out_4} \\
+                &= H_3(s)V_{1} + H_4(s)V_{2} \\
+                = \left(\frac{sC_1}{sC_1 + G_1(1 + s^2 L_1 C_1)}\right)V_{1} + \left(\frac{G_1(1 + s^2 L_1 C_1)}{sC_1 + G_1(1 + s^2 L_1 C_1)}\right)V_{2} \\
+        V_{out} = \underbrace{\frac{sC_1}{sC_1 + G_1(1 + s^2 L_1 C_1)}V_{1}}_{\text{Band Pass Character}} + \underbrace{\frac{G_1(1 + s^2 L_1 C_1)}{sC_1 + G_1(1 + s^2 L_1 C_1)}V_{2}}_{\text{Band Stop Character}}
+      \end{align*}
+\end{enumerate}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Poles (\(D(s) = 0\)):} \\
+    \begin{enumerate}
+      \item \textbf{Parallel Configuration:}
+        For both band pass \(H_1(s)\) and band stop \(H_2(s)\):
+        \begin{align*}
+          G_1 + \frac{1}{sL_1} + sC_1 &= 0 \\
+          sL_1 \times \left( G_1 + \frac{1}{sL_1} + sC_1 \right) &= 0 \times sL_1 \hspace{1cm} \text{(Multiplying both sides by \(sL_1\))} \\
+          sL_1 G_1 + 1 + s^2 L_1 C_1 &= 0 \\
+          s^2 L_1 C_1 + s L_1 G_1 + 1 &= 0 \hspace{1cm} \text{(Rearranging the terms)} \\
+          \frac{1}{L_1 C_1} \times \left( s^2 L_1 C_1 + s L_1 G_1 + 1 \right) &= 0 \times \frac{1}{L_1 C_1} \hspace{1cm} \text{(Multiplying both sides by \(\frac{1}{L_1 C_1}\))} \\
+          s^2 + s \frac{G_1}{C_1} + \frac{1}{L_1 C_1} &= 0 \tag{4}
+        \end{align*}
+        Applying Shree Dharacharya's Formula:
+        \begin{align*}
+          s &= \frac{-\frac{G_1}{C_1} \pm \sqrt{\left(\frac{G_1}{C_1}\right)^2 - 4 \cdot 1 \cdot \frac{1}{L_1 C_1}}}{2 \cdot 1} \\
+          s &= \frac{-\frac{G_1}{C_1} \pm \sqrt{\frac{G_1^2}{C_1^2} - \frac{4}{L_1 C_1}}}{2} \\
+          \boxed{s = \frac{-G_1 \pm \sqrt{G_1^2 - \frac{4 C_1}{L_1}}}{2 C_1}}
+        \end{align*}
+        While the nature of the poles depends on the value of the
+        discriminant \(\left(G_1^2 - \frac{4 C_1}{L_1}\right)\).
+        We can still make a comparison of equation (iv) with natural
+        second order system equation.\\ \\
+        \begin{tabularx}{\linewidth}{|X|X|X|X|} \hline
+          Type & Term A & Term B & Term C \\ \hline
+          Equation (iv) & \(s^2\) & \(\frac{G_1}{C_1} s\) & \(\frac{1}{L_1 C_1}\) \\ \hline
+          Natural & \(s^2\) & \(2 \zeta \omega_n s\) & \(\omega_n^2\) \\ \hline
+        \end{tabularx}\\ \\
+        We get:
+        \begin{enumerate}
+          \item Natural Frequency:
+            \begin{align*}
+              \omega_n = \sqrt{\frac{1}{L_1 C_1}} \\
+              f_p = \frac{\omega_n}{2\pi} = \frac{1}{2\pi \sqrt{L_1 C_1}}
+            \end{align*}
+          \item Damping Ratio:
+            \[
+              2 \zeta \omega_n = \frac{G_1}{C_1} \implies \zeta = \frac{G_1}{2C_1 \omega_n} = \frac{G_1}{2 C_1} \sqrt{L_1 C_1}
+            \]
+          \item Q Factor:
+            \[
+              Q = \frac{1}{2\zeta} = \frac{C_1}{G_1} \sqrt{\frac{1}{L_1 C_1}}
+            \]
+        \end{enumerate}
+      \item \textbf{Series Configuration:}
+        For both \(H_3(s)\) and \(H_4(s)\):
+        \begin{align*}
+          sC_1 + G_1(1 + s^2 L_1 C_1) &= 0 \\
+          sC_1 + G_1 + G_1 s^2 L_1 C_1 &= 0 \\
+          s^2 L_1 C_1 G_1 + s C_1 + G_1 &= 0 \hspace{1cm} \text{(Rearranging the terms)} \\
+          \frac{1}{G_1 L_1 C_1} \times \left(s^2 L_1 C_1 G_1 + sC_1 + G_1\right) &= 0 \times \frac{1}{G_1 L_1 C_1} \hspace{1cm} \text{(Multiplying both sides by \(\frac{1}{G_1 L_1 C_1}\))} \\
+          s^2 + s \frac{1}{L_1 G_1} + \frac{1}{L_1 C_1} &= 0 \tag{5}
+        \end{align*}
+        Applying Shree Dharacharya's Formula:
+        \begin{align*}
+          s &= \frac{-\frac{1}{L_1 G_1} \pm \sqrt{\left(\frac{1}{L_1 G_1}\right)^2 - 4 \cdot 1 \cdot \frac{1}{L_1 C_1}}}{2 \cdot 1} \\
+          s &= \frac{-\frac{1}{L_1 G_1} \pm \sqrt{\frac{1}{L_1^2 G_1^2} - \frac{4}{L_1 C_1}}}{2} \\
+          s &= \frac{-\frac{1}{L_1 G_1} \pm \sqrt{\frac{1}{L_1^2 G_1^2} \left(1 - \frac{4 G_1^2 L_1}{C_1}\right)}}{2} \\
+          \boxed{s = \frac{-1 \pm \sqrt{1 - \frac{4 G_1^2 L_1}{C_1}}}{2 L_1 G_1}}
+        \end{align*}
+        While the nature of the poles depends on the value of the
+        discriminant \(\left(1 - \frac{4 G_1^2 L_1}{C_1}\right)\).
+        We can still make a comparison of equation (v) with natural
+        second order system equation.\\ \\
+        \begin{tabularx}{\linewidth}{|X|X|X|X|} \hline
+          Type & Term A & Term B & Term C \\ \hline
+          Equation (v) & \(s^2\) & \(\frac{1}{L_1 G_1} s\) & \(\frac{1}{L_1 C_1}\) \\ \hline
+          Natural & \(s^2\) & \(2 \zeta \omega_n s\) & \(\omega_n^2\) \\ \hline
+        \end{tabularx}\\ \\
+        We get,
+        \begin{enumerate}
+          \item Natural Frequency:
+            \begin{align*}
+              \omega_n = \sqrt{\frac{1}{L_1 C_1}} \\
+              f_p = \frac{\omega_n}{2\pi} = \frac{1}{2\pi \sqrt{L_1 C_1}}
+            \end{align*}
+          \item Damping Ratio:
+            \[
+              2 \zeta \omega_n = \frac{1}{L_1 G_1} \implies \zeta = \frac{1}{2 L_1 G_1 \omega_n} = \frac{1}{2 G_1} \sqrt{\frac{C_1}{L_1}}
+            \]
+          \item Q Factor:
+            \[
+              Q = \frac{1}{2\zeta} = G_1 \sqrt{\frac{L_1}{C_1}}
+            \]
+        \end{enumerate}
+    \end{enumerate}
+  \item \textbf{Zeros (\(N(s) = 0\)):} \\
+    \begin{enumerate}
+      \item \textbf{Parallel Configuration:}\\
+        For band pass \(H_1(s)\):
+          \begin{align*}
+            N(s) &= 0 \\
+            G_1 &\neq 0 \\
+          \end{align*}
+          No zeros for \(H_1(s)\) means the filter will have non-zero output
+          at all frequencies. \\
+        For band stop \(H_2(s)\):
+          \begin{align*}
+            N(s) &= 0 \\
+            \frac{1}{sL_1} + sC_1 &= 0 \\
+            s^2 C_1 L_1 + 1 &= 0 \\
+            s^2 + \frac{1}{L_1 C_1} &= 0 \\
+            s &= \pm j\sqrt{\frac{1}{L_1 C_1}} \quad \text{[let \(s = s_z\)]} \\
+            \boxed{f_z = \frac{|s_z|}{2\pi} = \frac{\sqrt{\frac{1}{L_1 C_1}}}{2\pi} = \frac{1}{2\pi \sqrt{L_1 C_1}}}
+          \end{align*}
+          Zero at natural frequency for \(H_2(s)\) lets the filter have zero
+          output which is what we expect. \\
+        \item \textbf{Series Configuration:}\\
+        For \(H_3(s)\):
+          \begin{align*}
+            sC_1 &= 0 \\
+            s &= 0
+          \end{align*}
+          Zero at origin for \(H_3(s)\) means at DC the filter will have
+          zero output.
+        For \(H_4(s)\):
+          \begin{align*}
+            G_1(1 + s^2 L_1 C_1) &= 0 \\
+            1 + s^2 L_1 C_1 &= 0 \\
+            s^2 + \frac{1}{L_1 C_1} &= 0 \\
+            s &= \pm j\sqrt{\frac{1}{L_1 C_1}} \quad \text{[let \(s = s_z\)]} \\
+            \boxed{f_z = \frac{|s_z|}{2\pi} = \frac{\sqrt{\frac{1}{L_1 C_1}}}{2\pi} = \frac{1}{2\pi \sqrt{L_1 C_1}}}
+          \end{align*}
+         Zero at natural frequency for \(H_4(s)\) means the filter will have zero
+         output which is what we expect.
+    \end{enumerate}
+  \item \textbf{DC Gain (\(H(0)\)):} \\
+    \begin{enumerate}
+    \item \textbf{Parallel Configuration:}\\
+        For band pass \(H_1(s)\):
+        \begin{align*}
+          H_1(0) &= \frac{G_1}{G_1 + \frac{1}{0 \cdot L_1} + 0 \cdot C_1} = \frac{G_1}{G_1 + \infty} = 0
+        \end{align*}
+        Zero DC gain for \(H_1(s)\). \\
+        For band stop \(H_2(s)\):
+        \begin{align*}
+          H_2(0) &= \frac{\frac{1}{0 \cdot L_1} + 0 \cdot C_1}{G_1 + \frac{1}{0 \cdot L_1} + 0 \cdot C_1} = \frac{\infty + 0}{G_1 + \infty} = 1
+        \end{align*}
+        Unity DC gain for \(H_2(s)\).
+      \item \textbf{Series Configuration:}\\
+        For band pass \(H_3(s)\):
+        \begin{align*}
+          H_3(0) &= \frac{0 \cdot C_1}{0 \cdot C_1 + G_1(1 + 0^2 \cdot L_1 C_1)} = 0
+        \end{align*}
+        Zero DC gain for \(H_3(s)\). \\
+        For band stop \(H_4(s)\):
+        \begin{align*}
+          H_4(0) &= \frac{G_1(1 + 0^2 \cdot L_1 C_1)}{0 \cdot C_1 + G_1(1 + 0^2 \cdot L_1 C_1)} = \frac{G_1(1 + 0)}{0 + G_1(1 + 0)} = 1 \\
+        \end{align*}
+        Unity DC gain for \(H_4(s)\).
+    \end{enumerate}
+  \item \textbf{Gain-Bandwidth Product (\(GBW\)):}
+    We know that,
+    \begin{align*}
+      GBW &\approx \frac{f_0}{Q} \\
+      \text{where } f_0 &= \frac{1}{2\pi \sqrt{L_1 C_1}} \quad \text{(resonant frequency)} \\
+    \end{align*}
+    \begin{enumerate}
+      \item \textbf{Parallel Configuration:}
+        \[
+          GBW_{parallel} \approx \frac{\frac{1}{2\pi \sqrt{L_1 C_1}}}{\frac{C_1}{G_1} \sqrt{\frac{1}{L_1 C_1}}} = \frac{G_1}{2\pi C_1}
+        \]
+      \item \textbf{Series Configuration:}
+        \[
+          GBW_{series} \approx \frac{\frac{1}{2\pi \sqrt{L_1 C_1}}}{G_1 \sqrt{\frac{L_1}{C_1}}} = \frac{1}{2\pi G_1 L_1}
+        \]
+    \end{enumerate}
+  \item \textbf{Impedances:}
+    Substituting \(G_1 = \frac{1}{R_1}\), \(s = j \omega\) we'll
+    find that for both band pass and band stop configurations, we have:\\
+    \begin{enumerate}
+      \item \textbf{Parallel Configuration:}
+        \begin{enumerate}
+          \item \textbf{At Input}:
+            \(L_1\) and \(C_1\) are in parallel with each other and
+            their combination is in series with \(R_1\):
+            \begin{align*}
+              Z_{LC} &= \frac{j \omega L_1 \cdot \frac{1}{j \omega C_1}}{j \omega L_1 + \frac{1}{j \omega C_1}} \\
+              Z_{LC} &= \frac{L_1}{C_1} \cdot \frac{j \omega C_1}{1 - \omega^2 L_1 C_1} \\
+              Z_{LC} &= \frac{L_1 j \omega}{1 - \omega^2 L_1 C_1} \\
+              Z_{in} &= R_1 + Z_{LC} \\
+              \boxed{Z_{in} = R_1 + \frac{L_1 j \omega}{1 - \omega^2 L_1 C_1}}
+            \end{align*}
+          \item \textbf{At Output}:
+            \(L_1\) and \(C_1\) are in parallel with each other and
+            their combination is in parallel with \(R_1\):
+            \begin{align*}
+              Z_{LC} &= \frac{j \omega L_1 \cdot \frac{1}{j \omega C_1}}{j \omega L_1 + \frac{1}{j \omega C_1}} \\
+              Z_{LC} &= \frac{L_1}{C_1} \cdot \frac{j \omega C_1}{1 - \omega^2 L_1 C_1} \\
+              Z_{LC} &= \frac{L_1 j \omega}{1 - \omega^2 L_1 C_1} \\
+              Z_{out} &= \frac{R_1 \cdot Z_{LC}}{R_1 + Z_{LC}} \\
+              Z_{out} &= \frac{R_1 \cdot \frac{L_1 j \omega}{1 - \omega^2 L_1 C_1}}{R_1 + \frac{L_1 j \omega}{1 - \omega^2 L_1 C_1}} \\
+              Z_{out} &= \frac{\frac{R_1 L_1 j \omega}{1 - \omega^2 L_1 C_1}}{\frac{R_1(1 - \omega^2 L_1 C_1) + L_1 j \omega}{1 - \omega^2 L_1 C_1}} \\
+              Z_{out} &= \frac{R_1 L_1 j \omega}{R_1(1 - \omega^2 L_1 C_1) + L_1 j \omega} \\
+              \boxed{Z_{out} = \frac{R_1 L_1 j \omega}{R_1(1 - \omega^2 L_1 C_1) + L_1 j \omega}}
+            \end{align*}
+        \end{enumerate}
+      \item \textbf{Series Configuration:}
+        \begin{enumerate}
+          \item \textbf{At Input}:
+            \(L_1\) and \(C_1\) are in series with each other and
+            their combination is in series with \(R_1\):
+            \begin{align*}
+              Z_{LC} &= j \omega L_1 + \frac{1}{j \omega C_1} \\
+              Z_{LC} &= j \left(\omega L_1 - \frac{1}{\omega C_1}\right) \\
+              Z_{in} &= R_1 + Z_{LC} \\
+              \boxed{Z_{in} = R_1 + j \left(\omega L_1 - \frac{1}{\omega C_1}\right)}
+            \end{align*}
+          \item \textbf{At Output}:
+            \(L_1\) and \(C_1\) are in series with each other and
+            their combination is in parallel with \(R_1\):
+            \begin{align*}
+              Z_{LC} &= j \omega L_1 + \frac{1}{j \omega C_1} \\
+              Z_{LC} &= j \left(\omega L_1 - \frac{1}{\omega C_1}\right) \\
+              Z_{out} &= \frac{R_1 \cdot Z_{LC}}{R_1 + Z_{LC}} \\
+              \boxed{Z_{out} = \frac{R_1 \cdot j \left(\omega L_1 - \frac{1}{\omega C_1}\right)}{R_1 + j \left(\omega L_1 - \frac{1}{\omega C_1}\right)}}
+            \end{align*}
+          \end{enumerate}
+    \end{enumerate}
+\end{enumerate}
+
+\subsubsection{Question}
+Design a Band-Pass Filter using both Series and Parallel RLC
+Configurations with the following specifications:
+\begin{enumerate}
+  \item Center Frequency (\(f_0\)): 1 kHz
+  \item Quality Factor (\(Q\)): 10
+  \item Gain at Center Frequency: Unity (1)
+\end{enumerate}
+\paragraph{Solution:}
+\begin{enumerate}
+  \item \textbf{Parallel RLC Configuration:}
+    \begin{align*}
+      f_0 &= \frac{1}{2\pi \sqrt{L_1 C_1}} = 1 \text{ kHz} \\
+      \implies L_1 C_1 &= \frac{1}{(2\pi \cdot 1000)^2} = 2.533 \times 10^{-8} \text{ H-F} \tag{6} \\
+      Q &= \frac{C_1}{G_1} \sqrt{\frac{1}{L_1 C_1}} = 10 \\
+      \implies G_1 &= \frac{C_1}{10} \sqrt{\frac{1}{L_1 C_1}} = \frac{C_1}{10} \cdot 2\pi \cdot 1000 = 628.32 C_1 \text{ S} \tag{7}
+    \end{align*}
+    Assuming \(C_1 = 1 \mu F = 1 \times 10^{-6} F\):
+    \begin{align*}
+      \text{From (6): } L_1 &= \frac{2.533 \times 10^{-8}}{1 \times 10^{-6}} = 0.02533 H = 25.33 mH \\
+      \text{From (7): } G_1 &= 628.32 \times 1 \times 10^{-6} = 0.00062832 S \\
+      \implies R_1 &= \frac{1}{G_1} = \frac{1}{0.00062832} = 1591.55 \Omega
+    \end{align*}
+    We find the values as:
+    \[
+      L_1 = 25.33 mH, \quad C_1 = 1 \mu F, \quad R_1 = 1591.55 \Omega
+    \]
+  \item \textbf{Series RLC Configuration:}
+    \begin{align*}
+      f_0 &= \frac{1}{2\pi \sqrt{L_1 C_1}} = 1 \text{ kHz} \\
+      \implies L_1 C_1 &= \frac{1}{(2\pi \cdot 1000)^2} = 2.533 \times 10^{-8} \text{ H-F} \tag{8} \\
+      Q &= G_1 \sqrt{\frac{L_1}{C_1}} = 10 \\
+      \implies G_1 &= 10 \sqrt{\frac{C_1}{L_1}} \tag{9} \\
+    \end{align*}
+    Assuming \(C_1 = 1 \mu F = 1 \times 10^{-6} F\):
+    \begin{align*}
+      \text{From (8): } L_1 &= \frac{2.533 \times 10^{-8}}{1 \times 10^{-6}} = 0.02533 H = 25.33 mH \\
+      \text{From (9): } G_1 &= 10 \sqrt{\frac{1 \times 10^{-6}}{0.02533}} \approx 0.0628319 S \\
+      \implies R_1 &= \frac{1}{G_1} = \frac{1}{0.0628319} \approx 15.9155 \Omega
+    \end{align*}
+    We find the values as:
+    \[
+      L_1 = 25.33 mH, \quad C_1 = 1 \mu F, \quad R_1 = 15.9155 \Omega
+    \]
+\end{enumerate}
+Design a RLC Band Stop Filter with a center frequency of
+\(f_0 = 1kHz\), bandwidth of \(BW = 100Hz\). Use \(C_1 = 0.1\mu F\).
+Compute their input and output impedances at \(f_0\).
+\paragraph{Solution:}
+\begin{enumerate}
+  \item \textbf{Calculate \(L_1\):}
+    \begin{align*}
+      f_0 &= \frac{1}{2\pi\sqrt{L_1 C_1}} \\
+      L_1 &= \frac{1}{(2\pi f_0)^2 C_1} \\
+      L_1 &= \frac{1}{(2\pi (1000))^2 (0.1 \times 10^{-6})} \\
+      L_1 &\approx 0.2533 H
+    \end{align*}
+  \item \textbf{Calculate \(R_1\):}
+    \begin{align*}
+      Q &= \frac{f_0}{BW} = \frac{1000}{100} = 10 \\
+      Q &= R_1 \sqrt{\frac{C_1}{L_1}} \\
+      R_1 &= Q \sqrt{\frac{L_1}{C_1}} \\
+      R_1 &= 10 \sqrt{\frac{0.2533}{0.1 \times 10^{-6}}} \\
+      R_1 &\approx 15915.49 \Omega
+    \end{align*}
+  \item \textbf{Calculate Input and Output Impedance at \(f_0\):}
+    Using the Parallel Configuration:
+    \begin{align*}
+      Z_{in} = R_1 + \frac{L_1 j \omega}{1 - \omega^2 L_1 C_1}
+      \quad \text{and} \quad
+      Z_{out} &= \frac{R_1 L_1 j \omega}{R_1(1 - \omega^2 L_1 C_1) + L_1 j \omega}
+    \end{align*}
+    where \(\omega = 2 \pi f_0 = 6283.19 \, rad/s\).
+    \begin{align*}
+      Z_{in} &\approx 15915.49 + \frac{0.2533 j (6283.19)}{1 - (6283.19)^2 (0.2533)(0.1 \times 10^{-6})} \\
+              &\approx 15915.49 - j 7167.704 \times 10^{15} \Omega \\
+      Z_{out} &\approx \frac{15915.49 \times 0.2533 j (6283.19)}{15915.49(1 - (6283.19)^2 (0.2533)(0.1 \times 10^{-6})) + 0.2533 j (6283.19)} \\
+              &\approx \frac{25330295.91 j}{-3.533 \times 10^{-12} + j 1591.54} \\
+              &\approx \frac{(25330295.91 j)(3.533 \times 10^{-12} - j 1591.54)}{(-3.533 \times 10^{-12} + j 1591.54)(3.533 \times 10^{-12} - j 1591.54)} \\
+              &\approx 1.24 \times 10^{-22} - j 15915.5 \Omega
+    \end{align*}
+\end{enumerate}

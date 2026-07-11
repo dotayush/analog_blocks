@@ -1,24 +1,31 @@
 \chapter{Passives}
 
-\section{Overview}
 This chapter covers fundamental passive building blocks
-built from resistors, capacitors, inductors that perform
-a special function, are general enough to not belong to
-a specific category and are widely used in analog circuit
-design.
+built from resistors, capacitors, inductors. The blocks
+perform a special function which makes them hard to group
+in a single category. The blocks are widely used in
+analog circuit design.
 
-\section{Behavior}
-It's hard to classify the behavior here due to the
-diversity of building blocks within this chapter. If
-required to be known, each building block will have
-its own behavior section.
-
-\section{Usages}
-Similar to behavior, usages are specific to each building
-block. Each building block will have its own usages
-section if required.
+\section{Resistors, Capacitors and Inductors}
+This section covers the basic properties of resistors,
+capacitors and inductors. The three passive components are the
+fundamental building blocks of all analog electronics.
+Each of the three components share some common properties such
+as being two-port devices,
+\input{01_Passives/Resistor_Capacitor_Inductor}
 
 \section{Dividers}
-This section covers passive dividers including
-voltage dividers and current dividers.
-\input{01_Passives/Voltage_Divider}
+This section covers passive dividers built from resistors,
+capacitors and inductors. All dividers suffer from several
+non-ideal effects such as loading, parasitic, tolerances
+and temperature effects.
+
+\textbf{A voltage divider and a current divider are dual of each
+other.}
+
+\input{01_Passives/Resistive_Voltage_Divider}
+\input{01_Passives/Capacitive_Voltage_Divider}
+\input{01_Passives/Inductive_Voltage_Divider}
+\input{01_Passives/Resistive_Current_Divider}
+\input{01_Passives/Capacitive_Current_Divider}
+\input{01_Passives/Inductive_Current_Divider}

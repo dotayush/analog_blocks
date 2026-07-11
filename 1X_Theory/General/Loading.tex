@@ -1,10 +1,17 @@
-\subsection{Loading}
+\subsection{Loading Effect}
 \label{sec:theory_general_loading}
 
-Consider three generic boxes connected to each other as shown
-below. Each box has an input impedance and an output impedance.
-The output voltage of Box 1 is connected to the input of Box 2,
-and the output of Box 2 is connected to the input of Box 3.
+Two adjacent circuit stages can load each other if the adjoining
+impedances (output -> input or input -> output) are within the same
+order of magnitude (say, within a factor of 10 of each other). This
+can cause the voltage or current levels to drop significantly as
+the adjacent stages form a voltage or current divider. \textbf{Loading
+is a pseudo rule and doesn't hold true if under a few special cases
+as discussed below}.
+
+For example, Consider three generic circuit stages shown as boxes
+connected to each other as shown below. Each circuit stage/box has an
+input impedance and an output impedance.
 \begin{center}
   \begin{tikzpicture}
     % Paths, nodes and wires:
@@ -23,30 +30,36 @@ and the output of Box 2 is connected to the input of Box 3.
     \draw[line width=1pt, dash pattern={on 4pt off 4pt}] (12.5, 4.25) -| (12.5, 9);
   \end{tikzpicture}
 \end{center}
-If the output impedance of Box 1 (\(Z_{out_1}\)) is not negligible
-compared to the input impedance of Box 2 (\(Z_{in_2}\)), then Box 1
-and Box 2 will form a voltage divider and the voltage seen at the
-input of Box 2 will drop significantly. This effect is known as
-loading.
+Following our previous definition, If the output impedance of Box 1
+(\(Z_{out_1}\)) is negligible compared to the input impedance of Box
+2 (\(Z_{in_2}\)), then Box 1 and Box 2 will not load each other
+significantly.
 
-\textbf{This is a pseudo law and doesn't hold true if you're dealing
-with a few special cases.}
+
+Generally, A circuit stage might be a passive circuit, an active circuit,
+a mixed (passive and active) circuit, a current source, or an RF circuit.
+In these cases, we can summarize the loading effect as follows:
 \begin{enumerate}
-  \item \textbf{In Passive Circuits}, We want to maintain the voltage
-    levels without stages loading each other. Thus, We want the output
-    impedance of the driving stage to be very low compared to the input
-    impedance of the load. If Box 2 was a Passive Circuit, We would
-    want $Z_{out_2}$ to be much smaller than $Z_{in_3}$.
-  \item \textbf{In Active Circuits}, Please find What the Input and
-    Output Impedances are for the specific circuit stage you're using
-    or designing and then decide if loading is an issue or not.
-  \item \textbf{In Current Sources}, We want to maintain a constant current
-    regardless of the load. To do this, We want the output impedance
-    of the Current Source to be very high compared to the input
+  \item \textbf{Passive Circuits}: We want to maintain the voltage
+    levels without stages loading each other. Therefore, the output
+    impedance of the driving stage to be very low (at least 10x lesser)
+    than the input impedance of the driven stage. If Box 2 was a Passive
+    Circuit, Loading can be minimized if \(Z_{out_2} << 10 x Z_{in_3}\).
+  \item \textbf{Active Circuits}: You have to determine what the
+    input and output impedance of the specific circuit stage would
+    be and then decide if loading is an issue or not between two
+    adjacent circuit stages.
+  \item \textbf{Mixed Circuits}: Break the circuit down into its
+    passive and active components and analyze the loading effect between
+    the two adjacent circuit stages.
+  \item \textbf{Current Sources}: We want to maintain a constant current
+    regardless of the load. To achieve this the output impedance
+    of the Current Source should be very high compared to the input
     impedance of the load. Thus, If Box 2 was a Current Source, We would
     want $Z_{out_2}$ to be much larger than $Z_{in_3}$.
-  \item \textbf{In RF Circuits}, transmission line effects come into play,
-    and we usually want to match impedances to avoid reflections,
-    i.e., $Z_{out_2} = Z_{in_3}$. This is done by placing a matching
-    network between Box 2 and Box 3.
+  \item \textbf{RF Circuits}: Transmission lines require impedance matching
+    to avoid reflections and transfer power from Point A to Point B. In
+    this case, if Box 2 and Box 3 were an RF circuit, we would want
+    \(Z_{out_2} = Z_{in_3}\). If the impedance were not equal, we place a
+    matching network between Box 2 and Box 3 to ensure maximum power transfer.
 \end{enumerate}

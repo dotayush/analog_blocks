@@ -1,0 +1,128 @@
+\subsection{Inductive Voltage Divider}
+
+This block is constructed from two inductors in series and is used
+to attenuate a voltage signal.
+
+\subsubsection{Schematic}
+\begin{center}
+  \begin{tikzpicture}[transform shape]
+	  % Paths, nodes and wires:
+	  \node[ground, rotate=-90] at (5.5, 5.25){};
+	  \node[ground, rotate=-90] at (5.5, 4.75){};
+	  \draw (5.5, 6.75) to[sinusoidal voltage source, l={$V_{cc}$}] (5.5, 5.25);
+	  \draw (5.5, 4.75) to[sinusoidal voltage source, l={$V_{ee}$}] (5.5, 3.25);
+	  \draw (7, 5) -- (7.75, 5);
+	  \draw (7, 7) -| (5.5, 7) -| (5.5, 6.75);
+	  \node[shape=rectangle, minimum width=0.715cm, minimum height=0.465cm](N1) at (8.125, 5){} node[anchor=center] at (N1.text){$V_{out}$};
+	  \draw (7, 5.25) -| (7, 5);
+	  \draw (7, 4.75) -| (7, 5);
+	  \draw (5.5, 3.25) -| (5.5, 3) -- (7, 3);
+	  \draw (7, 7) to[american inductor, l={$L_1$}] (7, 5.25);
+	  \draw (7, 4.75) to[american inductor, l={$L_1$}] (7, 3);
+  \end{tikzpicture}
+\end{center}
+
+\subsubsection{Transfer Function}
+Applying KCL at $V_{out}$ we get:
+\[
+  \frac{V_{out} - V_{cc}}{sL_1} + \frac{V_{out} - V_{ee}}{sL_2} = 0
+\]
+
+\paragraph{Superposition:}
+\begin{enumerate}
+  \item Due to \(V_{cc}\) alone (\(V_{ee} = 0V\)):
+    \begin{align*}
+      \frac{V_{out} - V_{cc}}{sL_1} + \frac{V_{out} - 0}{sL_2} &= 0 \\
+      \frac{V_{out} - V_{cc}}{sL_1} + \frac{V_{out}}{sL_2} &= 0 \\
+      \frac{V_{out}}{sL_1} - \frac{V_{cc}}{sL_1} + \frac{V_{out}}{sL_2} &= 0 \\
+      V_{out}\left(\frac{1}{sL_1} + \frac{1}{sL_2}\right) - \frac{V_{cc}}{sL_1} &= 0 \\
+      V_{out}\left(\frac{L_2 + L_1}{sL_1 L_2}\right) - \frac{V_{cc}}{sL_1} &= 0 \\
+      V_{out}\left(\frac{L_2 + L_1}{sL_1 L_2}\right) &= \frac{V_{cc}}{sL_1} \\
+      V_{out}(L_2 + L_1) &= V_{cc} L_2 \\
+      V_{out} &= V_{cc} \frac{L_2}{L_1 + L_2} \\
+      \boxed{H_1(s) = \frac{N_1(s)}{D_1(s)} = \frac{V_{out_1}}{V_{cc}} = \frac{L_2}{L_1 + L_2}}
+    \end{align*}
+  \item Due to \(V_{ee}\) alone (\(V_{cc} = 0V\)):
+    \begin{align*}
+      \frac{V_{out} - 0}{sL_1} + \frac{V_{out} - V_{ee}}{sL_2} &= 0 \\
+      \frac{V_{out}}{sL_1} + \frac{V_{out} - V_{ee}}{sL_2} &= 0 \\
+      \frac{V_{out}}{sL_1} + \frac{V_{out}}{sL_2} - \frac{V_{ee}}{sL_2} &= 0 \\
+      V_{out}\left(\frac{1}{sL_1} + \frac{1}{sL_2}\right) - \frac{V_{ee}}{sL_2} &= 0 \\
+      V_{out}\left(\frac{L_2 + L_1}{sL_1 L_2}\right) - \frac{V_{ee}}{sL_2} &= 0 \\
+      V_{out}\left(\frac{L_2 + L_1}{sL_1 L_2}\right) &= \frac{V_{ee}}{sL_2} \\
+      V_{out}(L_2 + L_1) &= V_{ee} L_1 \\
+      V_{out} &= V_{ee} \frac{L_1}{L_1 + L_2} \\
+      \boxed{H_2(s) = \frac{N_2(s)}{D_2(s)} = \frac{V_{out_2}}{V_{ee}} = \frac{L_1}{L_1 + L_2}}
+    \end{align*}
+\end{enumerate}
+\paragraph{Total Output:}
+\begin{align*}
+  V_{out} &= V_{out_1} + V_{out_2} \\
+  V_{out} &= V_{cc} \frac{L_2}{L_1 + L_2} + V_{ee} \frac{L_1}{L_1 + L_2}
+\end{align*}
+
+
+\begin{enumerate}
+  \item \textbf{Inductor Ratio (\(\frac{L_1}{L_2}\)):}
+    From KCL at \(V_{out}\):
+    \begin{align*}
+      \frac{V_{out} - V_{cc}}{sL_1} - \frac{V_{ee} - V_{out}}{sL_2} &= 0 \\
+      \frac{V_{out} - V_{cc}}{sL_1} &= \frac{V_{ee} - V_{out}}{sL_2} \\
+      \frac{sL_2}{sL_1} &= \frac{V_{ee} - V_{out}}{V_{out} - V_{cc}} \\
+      \boxed{\frac{L_2}{L_1} = \frac{V_{ee} - V_{out}}{V_{out} - V_{cc}}}
+    \end{align*}
+  \item \textbf{Impedance's:}
+    \paragraph{At Input:}
+      \begin{align*}
+        Z_{in} &= sL_1 + sL_2 \\
+        \boxed{Z_{in} = s(L_1 + L_2)}
+      \end{align*}
+    \paragraph{At Output:}
+      \begin{align*}
+        Z_{out} &= \frac{1}{\frac{1}{sL_1} + \frac{1}{sL_2}} \\
+        Z_{out} &= \frac{1}{\frac{L_2 + L_1}{sL_1 L_2}} \\
+        \boxed{Z_{out} = \frac{sL_1 L_2}{L_1 + L_2}}
+      \end{align*}
+  \item \textbf{Loading Effect:} \\
+    Similar to resistive dividers.
+\end{enumerate}
+
+\subsubsection{Question}
+Design an inductive voltage divider that attenuates a 10V signal to 7V.
+Establish the ratio of the inductors and calculate the input and output
+impedance. If one of the inductors is 18 nH, calculate the other inductor's
+value.
+\paragraph{Solution:}
+\begin{enumerate}
+  \item Calculate the inductor ratio:
+    \begin{align*}
+      \frac{L_2}{L_1} &= \frac{V_{ee} - V_{out}}{V_{out} - V_{cc}} \\
+      \frac{L_2}{L_1} &= \frac{0V - 7V}{7V - 10V} \\
+      \frac{L_2}{L_1} &= \frac{-7V}{-3V} \\
+      \frac{L_2}{L_1} &= \frac{7}{3} \\
+      \boxed{\frac{L_2}{L_1} = 2.33}
+    \end{align*}
+  \item Calculate the input impedance:
+    \begin{align*}
+      Z_{in} &= s(L_1 + L_2) \\
+      Z_{in} &= s(L_1 + 2.33L_1) \hspace{1cm} \text{[substituting \(L_2 = 2.33L_1\)]} \\
+      Z_{in} &= sL_1(1 + 2.33) \\
+      Z_{in} &= s(3.33L_1)
+    \end{align*}
+  \item Calculate the output impedance:
+    \begin{align*}
+      Z_{out} &= \frac{sL_1 L_2}{L_1+L_2} \\
+      Z_{out} &= \frac{sL_1(2.33L_1)}{L_1 + 2.33L_1} \hspace{1cm} \text{[substituting \(L_2 = 2.33L_1\)]} \\
+      Z_{out} &= \frac{s(2.33L_1^2)}{L_1(1+2.33)} \\
+      Z_{out} &= \frac{s(2.33L_1^2)}{3.33L_1} \\
+      Z_{out} &= s(0.699L_1)
+    \end{align*}
+  \item Calculate the other inductor's value:
+    \begin{align*}
+      L_2 &= 2.33L_1 \\
+      L_2 &= 2.33(18nH) \\
+      L_2 &\approx 41.94nH
+    \end{align*}
+\end{enumerate}
+
+

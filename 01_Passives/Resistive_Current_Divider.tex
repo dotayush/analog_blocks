@@ -1,0 +1,138 @@
+\subsection{Resistive Current Divider}
+
+This block is constructed from two resistors in parallel and is used
+to attenuate a current signal. It is one of the simplest and most
+commonly used circuit in electronics.
+
+\subsubsection{Schematic}
+\begin{center}
+  \begin{tikzpicture}[transform shape]
+  	% Paths, nodes and wires:
+  	\draw (6.5, 4.75) to[european voltage source, mirror, v=$V_{in}$, i^>=$I_{in}$, current/distance=0.6] (6.5, 6.5);
+  	\draw (8, 6.5) to[european resistor, l_={$G_1$}] (8, 4.75);
+  	\draw (8, 6.5) to[european resistor, l={$G_2$}] (8, 8.25);
+  	\node[ground] at (6.5, 4.75){};
+  	\node[ground] at (8, 4.75){};
+  	\node[ground, xscale=-1, yscale=-1] at (8, 8.25){};
+  	\draw (6.5, 6.5) -- (8, 6.5) -- (8, 6.5);
+  	\draw[-latex] (8.5, 6.25) -- (8.5, 4.75);
+  	\draw[-latex] (8.5, 6.75) -- (8.5, 8.25);
+  	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.465cm](N1) at (8.875, 5.5){} node[anchor=center] at (N1.text){$I_{G_1}$};
+  	\node[shape=rectangle, xscale=-1, yscale=-1, minimum width=0.715cm, minimum height=0.465cm](N2) at (9.125, 7.5){} node[anchor=center] at (N2.text){$I_{G_2}$};
+  	\draw[dash pattern={on 1.6pt off 1.6pt}, -stealth] (8, 6.5) -- (9, 6.5);
+  	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.465cm](N3) at (9.375, 6.5){} node[anchor=center] at (N3.text){$Node$};
+  \end{tikzpicture}
+\end{center}
+
+\subsubsection{Transfer Function}
+Applying KCL at the node between \(G_1\) and \(G_2\) we get:
+\begin{align*}
+  I_{in} &= I_{G_1} + I_{G_2} \\
+  I_{in} &= (V_{in} - 0)G_1 + (V_{in} - 0)G_2 \\
+  I_{in} &= V_{in}G_1 + V_{in}G_2 \\
+  I_{in} &= V_{in}(G_1 + G_2) \\
+  V_{in} &= \frac{I_{in}}{G_1 + G_2}
+\end{align*}
+For \(I_{G_1}\):
+\begin{align*}
+  I_{G_1} &= (V_{in} - 0)G_1 \\
+  I_{G_1} &= V_{in}G_1 \\
+  I_{G_1} &= \frac{I_{in}}{G_1 + G_2}G_1 \\
+  \frac{I_{G_1}}{I_{in}} &= \frac{G_1}{G_1 + G_2} \\
+  \boxed{H_1(s) = \frac{N_1(s)}{D_1(s)} = \frac{I_{G_1}}{I_{in}} = \frac{G_1}{G_1 + G_2}}
+\end{align*}
+For \(I_{G_2}\):
+\begin{align*}
+  I_{G_2} &= (V_{in} - 0)G_2 \\
+  I_{G_2} &= V_{in}G_2 \\
+  I_{G_2} &= \frac{I_{in}}{G_1 + G_2}G_2 \\
+  \frac{I_{G_2}}{I_{in}} &= \frac{G_2}{G_1 + G_2} \\
+  \boxed{H_2(s) = \frac{N_2(s)}{D_2(s)} = \frac{I_{G_2}}{I_{in}} = \frac{G_2}{G_1 + G_2}}
+\end{align*}
+\paragraph{Total Output:}
+\begin{align*}
+  I_{in} &= I_{G_1} + I_{G_2} \\
+  I_{in} &= I_{in} \frac{G_1}{G_1 + G_2} + I_{in} \frac{G_2}{G_1 + G_2}
+\end{align*}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Resistor Ratio (\(\frac{G_1}{G_2}\)):}
+    We know,
+    \begin{align*}
+      I_{G_1} &= (V_{in} - 0)G_1 \\
+      I_{G_2} &= (V_{in} - 0)G_2
+    \end{align*}
+    Dividing both equations we get:
+    \begin{align*}
+      \frac{I_{G_1}}{I_{G_2}} = \frac{G_1}{G_2} \\
+      \frac{G_1}{G_2} = \frac{I_{G_1}}{I_{G_2}}
+    \end{align*}
+    Assume \(I_{G_1} = I_{out}\), then our KCL equation
+    becomes:
+    \begin{align*}
+      I_{in} &= I_{out} + I_{G_2} \\
+      I_{G_2} &= I_{in} - I_{out}
+    \end{align*}
+    Substituting \(I_{G_2}\) in the previous equation
+    we get:
+    \[
+      \frac{G_1}{G_2} = \frac{I_{out}}{I_{in} - I_{out}}
+    \]
+  \item \textbf{Impedance's:}
+    \paragraph{At Input:}
+      \begin{align*}
+        Z_{in} &= \frac{1}{G_1 + G_2} \\
+        Z_{in} &= \frac{1}{\frac{1}{R_1} + \frac{1}{R_2}} \hspace{1cm} \text{(Substituting \(G_1 = \frac{1}{R_1}\) and \(G_2 = \frac{1}{R_2}\))} \\
+        Z_{in} &= \frac{1}{\frac{R_1 + R_2}{R_1 R_2}} \\
+        Z_{in} &= \frac{R_1 R_2}{R_1 + R_2}
+      \end{align*}
+    \paragraph{At Output:}
+      \begin{align*}
+        Z_{out} &= \frac{1}{G_1} + \frac{1}{G_2} \\
+        Z_{out} &= R_1 + R_2 \hspace{1cm} \text{(Substituting \(G_1 = \frac{1}{R_1}\) and \(G_2 = \frac{1}{R_2}\))}
+      \end{align*}
+  \item \textbf{Loading Effect:}
+    The output of the current divider is a current signal.
+    If we connect a load to the output, it will change the current flowing through
+    \(G_1\) and \(G_2\). The load will form a parallel combination with
+    \(G_1\) or \(G_2\), depending on where it is connected. This will
+    change the effective conductance seen by the input current, thus
+    altering the current division ratio. To minimize loading effects,
+    the load impedance should be at least 10 times larger than the output
+    impedance of the current divider.
+\end{enumerate}
+
+\subsubsection{Question}
+Design a resistive voltage divider to attenuate a 5A current signal to
+10mA. Establish the ratio of the resistors and calculate the input
+and output impedance.
+\paragraph{Solution:}
+\begin{enumerate}
+  \item Calculate the resistor ratio (\(\frac{G_1}{G_2}\)):
+    \begin{align*}
+      \frac{G_1}{G_2} &= \frac{I_{out}}{I_{in} - I_{out}} \\
+      \frac{G_1}{G_2} &= \frac{0.01A}{5A - 0.01A} \\
+      \frac{G_1}{G_2} &= 0.002002 \\
+      \frac{R_2}{R_1} &= 0.002002 \hspace{1cm} \text{(Substituting \(G_1 = \frac{1}{R_1}\) and \(G_2 = \frac{1}{R_2}\))}
+    \end{align*}
+  \item Calculate the resistor values:
+    Assume \(R_1 = 5k\Omega\), then:
+    \begin{align*}
+      R_2 &= 0.002002 \cdot R_1 \\
+      R_2 &= 0.002002 \cdot 5k\Omega \\
+      R_2 &\approx 10.01 \Omega
+    \end{align*}
+  \item Calculate the input impedance:
+    \begin{align*}
+      Z_{in} &= \frac{R_1 R_2}{R_1 + R_2} \\
+      Z_{in} &= \frac{5k\Omega \cdot 10.01 \Omega}{5k\Omega + 10.01 \Omega} \\
+      Z_{in} &\approx 9.99 \Omega
+    \end{align*}
+  \item Calculate the output impedance:
+    \begin{align*}
+      Z_{out} &= R_1 + R_2 \\
+      Z_{out} &= 5k\Omega + 10.01 \Omega \\
+      Z_{out} &\approx 5.01 k\Omega
+    \end{align*}
+\end{enumerate}

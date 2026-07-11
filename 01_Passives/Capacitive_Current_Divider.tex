@@ -1,0 +1,133 @@
+\subsection{Capacitive Current Divider}
+
+This block is constructed from two capacitors in parallel and is used
+to attenuate a current signal.
+
+\subsubsection{Schematic}
+\begin{center}
+  \begin{tikzpicture}[transform shape]
+  	% Paths, nodes and wires:
+  	\draw (6.5, 4.75) to[european voltage source, mirror, v=$V_{in}$, i^>=$I_{in}$, current/distance=0.6] (6.5, 6.5);
+  	\node[ground] at (6.5, 4.75){};
+  	\node[ground] at (8, 4.75){};
+  	\node[ground, xscale=-1, yscale=-1] at (8, 8.25){};
+  	\draw (6.5, 6.5) -- (8, 6.5) -- (8, 6.5);
+  	\draw[-latex] (8.5, 6.25) -- (8.5, 4.75);
+  	\draw[-latex] (8.5, 6.75) -- (8.5, 8.25);
+  	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.465cm](N1) at (9.125, 5.5){} node[anchor=center] at (N1.text){$I_{C_1}$};
+  	\node[shape=rectangle, xscale=-1, yscale=-1, minimum width=0.715cm, minimum height=0.465cm](N2) at (9.125, 7.5){} node[anchor=center] at (N2.text){$I_{C_2}$};
+  	\draw[dash pattern={on 1.6pt off 1.6pt}, -stealth] (8, 6.5) -- (9, 6.5);
+  	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.465cm](N3) at (9.375, 6.5){} node[anchor=center] at (N3.text){$Node$};
+  	\draw (8, 6.5) to[capacitor, l={$C_2$}] (8, 8.25);
+  	\draw (8, 6.5) to[capacitor, l_={$C_1$}] (8, 4.75);
+  \end{tikzpicture}
+\end{center}
+
+\subsubsection{Transfer Function}
+Applying KCL at the node between \(G_1\) and \(G_2\) we get:
+\begin{align*}
+  I_{in} &= I_{C_1} + I_{C_2} \\
+  I_{in} &= (V_{in} - 0)sC_1 + (V_{in} - 0)sC_2 \\
+  I_{in} &= V_{in}sC_1 + V_{in}sC_2 \\
+  I_{in} &= V_{in}s(C_1 + C_2) \\
+  V_{in} &= \frac{I_{in}}{s(C_1 + C_2)}
+\end{align*}
+For \(I_{C_1}\):
+\begin{align*}
+  I_{C_1} &= (V_{in} - 0)sC_1 \\
+  I_{C_1} &= V_{in}sC_1 \\
+  I_{C_1} &= \frac{I_{in}}{s(C_1 + C_2)}sC_1 \\
+  \frac{I_{C_1}}{I_{in}} &= \frac{sC_1}{s(C_1 + C_2)} \\
+  \frac{I_{C_1}}{I_{in}} &= \frac{C_1}{C_1 + C_2} \\
+  \boxed{H_1(s) = \frac{N_1(s)}{D_1(s)} = \frac{I_{C_1}}{I_{in}} = \frac{C_1}{C_1 + C_2}}
+\end{align*}
+For \(I_{C_2}\):
+\begin{align*}
+  I_{C_2} &= (V_{in} - 0)sC_2 \\
+  I_{C_2} &= V_{in}sC_2 \\
+  I_{C_2} &= \frac{I_{in}}{s(C_1 + C_2)}sC_2 \\
+  \frac{I_{C_2}}{I_{in}} &= \frac{sC_2}{s(C_1 + C_2)} \\
+  \frac{I_{C_2}}{I_{in}} &= \frac{C_2}{C_1 + C_2} \\
+  \boxed{H_2(s) = \frac{N_2(s)}{D_2(s)} = \frac{I_{C_2}}{I_{in}} = \frac{C_2}{C_1 + C_2}}
+\end{align*}
+\paragraph{Total Output:}
+\begin{align*}
+  I_{in} &= I_{C_1} + I_{C_2} \\
+  I_{in} &= I_{in} \frac{C_1}{C_1 + C_2} + I_{in} \frac{C_2}{C_1 + C_2}
+\end{align*}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Capacitor Ratio (\(\frac{C_1}{C_2}\)):}
+    We know,
+    \begin{align*}
+      I_{C_1} &= (V_{in} - 0)sC_1 \\
+      I_{C_2} &= (V_{in} - 0)sC_2
+    \end{align*}
+    Dividing the two equations we get:
+    \begin{align*}
+      \frac{I_{C_1}}{I_{C_2}} = \frac{C_1}{C_2} \\
+      \frac{C_1}{C_2} = \frac{I_{C_1}}{I_{C_2}}
+    \end{align*}
+    Assume \(I_{C_1} = I_{out}\), then our KCL
+    equation becomes:
+    \begin{align*}
+      I_{in} &= I_{out} + I_{C_2} \\
+      I_{C_2} &= I_{in} - I_{out}
+    \end{align*}
+    Substituting \(I_{C_2}\) in the previous equation
+    we get:
+    \[
+      \frac{C_1}{C_2} = \frac{I_{out}}{I_{in} - I_{out}}
+    \]
+  \item \textbf{Impedance's:}
+    \paragraph{At Input:}
+      \begin{align*}
+        Z_{in} &= \frac{1}{sC_1} + \frac{1}{sC_2} \\
+        Z_{in} &= \frac{1}{s}\left(\frac{1}{C_1} + \frac{1}{C_2}\right) \\
+        Z_{in} &= \frac{1}{s}\left(\frac{C_1 + C_2}{C_1 C_2}\right) \\
+        \boxed{Z_{in} = \frac{C_1 + C_2}{s C_1 C_2}} = \frac{1}{sC_{eq}} \hspace{1cm} \text{(where \(C_{eq} = \frac{C_1 C_2}{C_1 + C_2}\))}
+      \end{align*}
+    \paragraph{At Output:}
+      \begin{align*}
+        Z_{out} &= \frac{1}{sC_1 + sC_2} \\
+        Z_{out} &= \frac{1}{s(C_1 + C_2)} \\
+        \boxed{Z_{out} = \frac{1}{s(C_1 + C_2)}}
+      \end{align*}
+\end{enumerate}
+
+\subsubsection{Question}
+Design a capacitive current divider to attenuate a current signal by
+a factor of 10. Assume \(C_1 = 1\mu F\).
+\paragraph{Solution:}
+\begin{enumerate}
+  \item \textbf{Capacitor Ratio (\(\frac{C_1}{C_2}\)):}
+    We know,
+    \begin{align*}
+      I_{C_1} &= (V_{in} - 0)sC_1 \\
+      I_{C_2} &= (V_{in} - 0)sC_2 \\
+      \frac{C_1}{C_2} &= \frac{I_{C_1}}{I_{C_2}}
+    \end{align*}
+    Assume \(I_{C_1} = I_{out}\), then our KCL equation becomes:
+    \begin{align*}
+      I_{in} &= I_{out} + I_{C_2} \\
+      I_{C_2} &= I_{in} - I_{out}
+    \end{align*}
+    Substituting \(I_{C_2}\) in the previous equation
+    we get:
+    \[
+      \frac{C_1}{C_2} = \frac{I_{out}}{I_{in} - I_{out}}
+    \]
+    We want to attenuate the current signal by a factor of 10, so we have
+    \[
+      \frac{I_{out}}{I_{in}} = \frac{1}{10}
+    \]
+    Substituting this into the previous equation we get:
+    \[
+      \frac{C_1}{C_2} = \frac{\frac{1}{10}}{1 - \frac{1}{10}} = \frac{\frac{1}{10}}{\frac{9}{10}} = \frac{1}{9}
+    \]
+    Therefore, we have
+    \[
+      C_2 = 9C_1 = 9 \mu F
+    \]
+\end{enumerate}

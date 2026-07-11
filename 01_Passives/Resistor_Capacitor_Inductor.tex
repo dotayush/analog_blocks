@@ -1,0 +1,138 @@
+\subsection{Resistor:}
+A resistor is a two-port passive device that opposes the flow of current,
+we call this property resistance. The unit of resistance is Ohm (\(\Omega\)).
+Everything has resistance. A good way to imagine resistance is to
+think about it's value as a constant of proportionality between voltage
+and current. The relationship is given by Ohm's law:
+\[
+  V = I_ \cdot R
+\]
+The inverse of resistance is called conductance (\(G\)) and is measured
+in Siemens (S). The relationship between resistance and conductance is:
+\[
+  G = \frac{1}{R}
+\]
+
+You'll notice when we apply KCL to circuits within this book, we'll mostly
+use conductance \(G\) to express the resistance, we do this as it
+simplifies the analysis a lot. The conductance version of Ohm's law is:
+\[
+  I = V \cdot G
+\]
+An ideal resistor is a linear (i.e. the r1elationship between voltage and
+current is a straight line) and time-invariant (i.e. the relationship
+between voltage and current does not change with time) of the three passive
+components. It is also the only device that in its ideal form does not
+store energy. This is why at low frequencies, if a resistor can be used
+in place of a capacitor or inductor, use it.
+
+\subsection{Capacitor:}
+A capacitor is a two-port passive device that stores energy in the form of
+an electric field. The property of a capacitor is called capacitance and is
+measured in Farads (F). The core relationship between charge, capacitance
+and voltage is given by:
+\begin{align*}
+  Q = C \cdot V
+  \frac{dQ}{dt} = C \cdot \frac{dV}{dt} \hspace{1cm} \text{(assuming \(C\) is constant)} \\
+  I = C \cdot \frac{dV}{dt} \hspace{1cm} [I = \frac{dQ}{dt}]
+\end{align*}
+This is the fundamental relationship between current and voltage in a
+capacitor or if you may call this the capacitor's version of Ohm's law.
+The inverse of capacitance is called elastance (\(S\)) and is measured in Farads
+inverse (F\(^{-1}\)).
+
+The impedance of a capacitor is given by:
+\[
+  Z_C = \frac{1}{j\omega C} = \frac{1}{j 2 \pi f C} = \frac{1}{s C}
+\]
+The inverse of impedance is called admittance (\(Y\)) and is measured in
+Siemens (S). The relationship between impedance and admittance is:
+\[
+  Y = \frac{1}{Z} = \frac{1}{\frac{1}{sC}} = sC
+\]
+You'll notice when we apply KCL to circuits within this book, we'll mostly
+use admittance \(Y\) to express the impedance, we do this as it simplifies
+the analysis a lot. The admittance version of Ohm's law is:
+\[
+  I = V \cdot Y
+\]
+The impedance of a capacitor is inversely proportional to frequency. This
+means that at low frequencies, the impedance of a capacitor is very high and
+at frequencies, the impedance of a capacitor is very low. This is why
+capacitor effects are more pronounced at high frequencies as their
+impedance drops enough to load the circuit. This is also why capacitors are
+used for decoupling (they act as a short circuit at high frequencies).
+
+An ideal capacitor is a linear (i.e. the relationship between voltage and
+current is a straight line) and time-invariant (i.e. the relationship
+between voltage and current does not change with time) of the three passive
+components. It is also the only device that in its ideal form does not
+dissipate energy.
+
+A capacitor can be formed anywhere two conductors are separated by an
+insulator. The charges are stored on the surface of the  conductors and the
+energy is stored in the electric field between the  conductors. The energy
+stored in a capacitor is given by:
+\begin{align*}
+  I &= C \cdot \frac{dV}{dt} \\
+  P &= V \cdot I \\
+  P &= V \cdot C \cdot \frac{dV}{dt} \\
+  P &= C \cdot V \cdot \frac{dV}{dt} \\
+  P &= C \cdot \frac{1}{2} \cdot \frac{d(V^2)}{dt} \hspace{1cm} [\frac{d(V^2)}{dt} = 2V \cdot \frac{dV}{dt}] \\
+  \int P dt &= \int C \cdot \frac{1}{2} \cdot \frac{d(V^2)}{dt} dt \\
+  E &= \frac{1}{2} C V^2
+\end{align*}
+
+\subsection{Inductor:}
+An inductor is a two-port passive device that stores energy in the form of
+a magnetic field. The property of an inductor is called inductance and is
+measured in Henrys (H). The core relationship between flux, inductance
+and current is given by:
+\begin{align*}
+  \Phi &= L \cdot I \\
+  \frac{d\Phi}{dt} &= L \cdot \frac{dI}{dt} \hspace{1cm} \text{(assuming \(L\) is constant)} \\
+  V &= L \cdot \frac{dI}{dt} \hspace{1cm} [V = \frac{d\Phi}{dt}]
+\end{align*}
+This is the fundamental relationship between voltage and current in an
+inductor or if you may call this the inductor's version of Ohm's law.
+The inverse of inductance is called reluctance (\(R\)) and is measured in
+Henrys inverse (H\(^{-1}\)).
+\[
+  R = \frac{1}{L}
+\]
+The impedance of an inductor is given by:
+\[
+  Z_L = j\omega L = j 2 \pi f L = s L
+\]
+The inverse of impedance is called admittance (\(Y\)) and is measured in
+Siemens (S). The relationship between impedance and admittance is:
+\[
+  Y = \frac{1}{Z} = \frac{1}{sL}
+\]
+You'll notice when we apply KCL to circuits within this book, we'll mostly
+use admittance \(Y\) to express the impedance, we do this as it simplifies
+the analysis a lot. The admittance version of Ohm's law is:
+\[
+  I = V \cdot Y
+\]
+The impedance of an inductor is directly proportional to frequency. At low
+frequencies, the impedance of an inductor is very low and at high frequencies,
+the impedance of an inductor is very high. This is why inductor effects are
+more pronounced at low frequencies as their impedance rises enough to load
+the circuit. This is also why inductors are used for filtering (they act as
+a short circuit at low frequencies).
+
+An ideal inductor is a linear (i.e. the relationship between voltage and
+current is a straight line) and time-invariant (i.e. the relationship
+between voltage and current does not change with time) of the three passive
+components. It is also the only device that in its ideal form does not
+dissipate energy. The energy stored in an inductor is given by:
+\begin{align*}
+  V &= L \cdot \frac{dI}{dt} \\
+  P &= V \cdot I \\
+  P &= L \cdot \frac{dI}{dt} \cdot I \\
+  P &= L \cdot I \cdot \frac{dI}{dt} \\
+  P &= L \cdot \frac{1}{2} \cdot \frac{d(I^2)}{dt} \hspace{1cm} [\frac{d(I^2)}{dt} = 2I \cdot \frac{dI}{dt}] \\
+  \int P dt &= \int L \cdot \frac{1}{2} \cdot \frac{d(I^2)}{dt} dt \\
+  E &= \frac{1}{2} L I^2
+\end{align*}

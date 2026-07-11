@@ -1,0 +1,123 @@
+\subsection{Resistive Voltage Divider}
+
+The block is constructed from two resistors in series and is used
+to attenuate a voltage signal. It is one of the simplest and most
+commonly used circuit in electronics.
+
+\subsubsection{Schematic}
+\begin{center}
+  \begin{tikzpicture}[transform shape]
+	  % Paths, nodes and wires:
+	  \node[ground, rotate=-90] at (5.5, 5.25){};
+	  \node[ground, rotate=-90] at (5.5, 4.75){};
+	  \draw (5.5, 6.75) to[sinusoidal voltage source, l={$V_{cc}$}] (5.5, 5.25);
+	  \draw (5.5, 4.75) to[sinusoidal voltage source, l={$V_{ee}$}] (5.5, 3.25);
+	  \draw (7, 5.25) to[european resistor, l_={$G_{1}$}] (7, 7);
+	  \draw (7, 3) to[european resistor, l_={$G_{2}$}] (7, 4.75);
+	  \draw (7, 5) -- (7.75, 5);
+	  \draw (7, 7) -| (5.5, 7) -| (5.5, 6.75);
+	  \node[shape=rectangle, minimum width=0.715cm, minimum height=0.465cm](N1) at (8.125, 5){} node[anchor=center] at (N1.text){$V_{out}$};
+	  \draw (7, 5.25) -| (7, 5);
+	  \draw (7, 4.75) -| (7, 5);
+	  \draw (5.5, 3.25) -| (5.5, 3) -- (7, 3);
+  \end{tikzpicture}
+\end{center}
+
+\subsubsection{Transfer Function}
+Applying KCL at $V_{out}$ we get:
+\[
+  (V_{out} - V_{cc}){G_1} + (V_{out} - V_{ee}){G_2} = 0
+\]
+\paragraph{Superposition:}
+\begin{enumerate}
+  \item Due to \(V_{cc}\) alone (\(V_{ee} = 0V\)):
+    \begin{align*}
+      (V_{out} - V_{cc}){G_1} + (V_{out} - 0){G_2} &= 0 \\
+      V_{out}G_1 - V_{cc}G_1 + V_{out}G_2 &= 0 \\
+      V_{out}(G_1 + G_2) - V_{cc}G_1 &= 0 \\
+      V_{out}(G_1 + G_2) &= V_{cc}G_1 \\
+      \boxed{H_1(s) = \frac{N_1(s)}{D_1(s)} = \frac{V_{out_1}}{V_{cc}} = \frac{G_1}{G_1 + G_2}}
+    \end{align*}
+  \item Due to \(V_{ee}\) alone (\(V_{cc} = 0V\)):
+    \begin{align*}
+      (V_{out} - 0){G_1} + (V_{out} - V_{ee}){G_2} &= 0 \\
+      V_{out}G_1 + V_{out}G_2 - V_{ee}G_2 &= 0 \\
+      V_{out}(G_1 + G_2) - V_{ee}G_2 &= 0 \\
+      V_{out}(G_1 + G_2) &= V_{ee}G_2 \\
+      \boxed{H_2(s) = \frac{N_2(s)}{D_2(s)} = \frac{V_{out_2}}{V_{ee}} = \frac{G_2}{G_1 + G_2}}
+    \end{align*}
+\end{enumerate}
+\paragraph{Total Output:}
+\begin{align*}
+  V_{out} &= V_{out_1} + V_{out_2} \\
+  V_{out} &= V_{cc} \frac{G_1}{G_1 + G_2} + V_{ee} \frac{G_2}{G_1 + G_2}
+\end{align*}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Resistor Ratio (\(\frac{G_1}{G_2}\)):}
+    From KCL at \(V_{out}\):
+    \begin{align*}
+      (V_{out} - V_{cc})G_1 - (V_{ee} - V_{out})G_2 &= 0 \\
+      (V_{out} - V_{cc})G_1 &= (V_{ee} - V_{out})G_2 \\
+      \frac{G_1}{G_2} &= \frac{V_{ee} - V_{out}}{V_{out} - V_{cc}} \\
+      \frac{R_2}{R_1} &= \frac{V_{ee} - V_{out}}{V_{out} - V_{cc}} \hspace{1cm} \text{(Substituting \(G_1 = \frac{1}{R_1}\) and \(G_2 = \frac{1}{R_2}\))}
+    \end{align*}
+  \item \textbf{Impedance's:}
+    \paragraph{At Input:}
+      \begin{align*}
+        Z_{in} &= \frac{1}{G_1} + \frac{1}{G_2} \\
+        Z_{in} &= R_1 + R_2 \hspace{1cm} \text{(Substituting \(G_1 = \frac{1}{R_1}\) and \(G_2 = \frac{1}{R_2}\))}
+      \end{align*}
+    \paragraph{At Output:}
+      \begin{align*}
+        Z_{out} &= \frac{1}{G_1 + G2} \\
+        Z_{out} &= \frac{1}{\frac{1}{R_1} + \frac{1}{R_2}} \hspace{1cm} \text{(Substituting \(G_1 = \frac{1}{R_1}\) and \(G_2 = \frac{1}{R_2}\))} \\
+        Z_{out} &= \frac{1}{\frac{R_1 + R_2}{R_1 R_2}} \\
+        Z_{out} &= \frac{R_1 R_2}{R_1 + R_2}
+      \end{align*}
+  \item \textbf{Loading Effect:}
+    Consider a load impedance \(Z_L\) connected to the output of the voltage
+    divider. This impedance will itself form a voltage divider with our
+    resistive divider. It is thus recommended to keep the output impedance
+    of the divider at least 10 times smaller than the load impedance at the
+    respective frequency of operation or If you can control the load,
+    keep the load impedance at least 10 times larger than the output
+    impedance of the divider.
+\end{enumerate}
+
+\subsubsection{Question}
+Design a resistive voltage divider to step down a \(10V\) supply to
+\(3.3V\). Calculate the input and output impedance of the voltage divider.
+\paragraph{Solution:}
+\begin{enumerate}
+  \item Calculate the resistor ratio (\(\frac{R_2}{R_1}\)):
+    \begin{align*}
+      \frac{R_2}{R_1} &= \frac{V_{ee} - V_{out}}{V_{out} - V_{cc}} \\
+      &= \frac{0V - 3.3V}{3.3V - 10V} \\
+      &= \frac{-3.3V}{-6.7V} \\
+    \frac{R_2}{R_1} &\approx 0.4925
+    \end{align*}
+  \item Fix one of the resistors (\(R_2 = 10 k\Omega\)) to a standard
+    value and calculate the other resistor (\(R_1\)):
+    \begin{align*}
+      R_1 &= \frac{R_2}{0.4925} \\
+      &= \frac{10 k\Omega}{0.4925} \\
+      R_1 &\approx 20.3 k\Omega
+    \end{align*}
+  \item Calculating Input and Output Impedances:
+    \[
+        \begin{aligned}
+        Z_{in} &= R_1 + R_2 \\
+        &= 20.3 k\Omega + 10 k\Omega \\
+        Z_{in} &\approx 30.3 k\Omega
+        \end{aligned}
+      \]
+      \[
+        \begin{aligned}
+          Z_{out} &= \frac{R_1 R_2}{R_1 + R_2} \\
+          Z_{out} &= \frac{(20.3 k\Omega)(10 k\Omega)}{20.3 k\Omega + 10 k\Omega} \\
+          Z_{out} &\approx 6.77 k\Omega
+        \end{aligned}
+      \]
+\end{enumerate}

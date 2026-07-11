@@ -1,0 +1,220 @@
+\subsection{LC Pass Filter}
+
+\subsubsection{Overview}
+Constructed from an inductor and capacitor in series. An LC
+Pass Filter can be broken down into two types:
+\begin{itemize}
+  \item \textbf{Low Pass Filter:} Allows low frequency
+    signals to pass while attenuating high frequency signals.
+  \item \textbf{High Pass Filter:} Allows high frequency
+    signals to pass while attenuating low frequency signals.
+\end{itemize}
+
+An LC filter differs from an RC or RL filter in that it is a
+second order filter. Each order adds -20 dB/decade to the
+roll-off rate which gives us a steeper transition between
+the pass band and stop band. Thus, a second order filter has a
+roll-off rate of -40 dB/decade.
+
+\subsubsection{Schematic}
+\begin{center}
+  \begin{tikzpicture}[transform shape]
+  	% Paths, nodes and wires:
+  	\draw (4.25, 6.5) -- (5.25, 6.5);
+  	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.465cm](N1) at (5.625, 6.5){} node[anchor=center] at (N1.text){$V_{out}$};
+  	\draw (2.75, 8.25) to[sinusoidal voltage source, l={$V_1$}] (2.75, 6.75);
+  	\draw (2.75, 4.75) to[sinusoidal voltage source, l_={$V_2$}] (2.75, 6.25);
+  	\node[ground, rotate=-90] at (2.75, 6.75){};
+  	\node[ground, rotate=-90] at (2.75, 6.25){};
+  	\draw (2.75, 4.75) -- (4.25, 4.75);
+  	\draw (2.75, 8.25) -- (4.25, 8.25);
+  	\node[shape=rectangle, minimum width=2.965cm, minimum height=0.465cm] at (3.5, 4.25){} node[anchor=north, align=center, text width=2.577cm, inner sep=6pt] at (3.5, 4.5){Full Schematic};
+  	\draw (8.625, 6.5) -- (9.625, 6.5);
+  	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.465cm](N2) at (10, 6.5){} node[anchor=center] at (N2.text){$V_{out}$};
+  	\draw (7.125, 8.25) to[sinusoidal voltage source, l={$V_1$}] (7.125, 6.75);
+  	\node[ground, rotate=-90] at (7.125, 6.75){};
+  	\node[ground, rotate=-90] at (7.125, 4.75){};
+  	\draw (7.125, 4.75) -- (8.625, 4.75);
+  	\draw (7.125, 8.25) -- (8.625, 8.25);
+  	\node[shape=rectangle, minimum width=2.965cm, minimum height=0.465cm] at (7.875, 4.25){} node[anchor=north, align=center, text width=2.577cm, inner sep=6pt] at (7.875, 4.5){Low Pass};
+  	\draw (13, 6.5) -- (14, 6.5);
+  	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.465cm](N3) at (14.375, 6.5){} node[anchor=center] at (N3.text){$V_{out}$};
+  	\draw (11.5, 4.75) to[sinusoidal voltage source, l_={$V_2$}] (11.5, 6.25);
+  	\node[ground, rotate=-90] at (11.5, 8.25){};
+  	\node[ground, rotate=-90] at (11.5, 6.25){};
+  	\draw (11.5, 4.75) -- (13, 4.75);
+  	\draw (11.5, 8.25) -- (13, 8.25);
+  	\node[shape=rectangle, minimum width=2.965cm, minimum height=0.465cm] at (12.25, 4.25){} node[anchor=north, align=center, text width=2.577cm, inner sep=6pt] at (12.25, 4.5){High Pass};
+  	\draw (4.25, 8.25) to[american inductor, l={$L_1$}] (4.25, 6.5);
+  	\draw (8.625, 8.25) to[american inductor, l={$L_1$}] (8.625, 6.5);
+  	\draw (13, 8.25) to[american inductor, l={$L_1$}] (13, 6.5);
+  	\draw (4.25, 6.5) to[capacitor, l={$C_1$}] (4.25, 4.75);
+  	\draw (8.625, 6.5) to[capacitor, l={$C_1$}] (8.625, 4.75);
+  	\draw (13, 6.5) to[capacitor, l={$C_1$}] (13, 4.75);
+  \end{tikzpicture}
+\end{center}
+
+\subsubsection{Transfer Function}
+Applying KCL at $V_{out}$ on Full Schematic, we get:
+\[
+  \frac{(V_{out} - V_{1})}{sL_1} + (V_{out} - V_{2}){sC_1} = 0
+\]
+\paragraph{Superposition:}
+\begin{enumerate}
+  \item Due to \(V_{1}\) alone (\(V_{2} = 0V\)):
+    This is the low-pass characteristic of the LC Pass Filter.
+    \begin{align*}
+      \frac{(V_{out} - V_{1})}{sL_1} + (V_{out} - 0)sC_1 &= 0 \\
+      \frac{V_{out}}{sL_1} - \frac{V_{1}}{sL_1} + V_{out}sC_1 &= 0 \\
+      V_{out}(sC_1 + \frac{1}{sL_1}) - \frac{V_{1}}{sL_1} &= 0 \\
+      V_{out}(sC_1 + \frac{1}{sL_1}) &= \frac{V_{1}}{sL_1} \\
+      V_{out} &= \frac{\frac{V_{1}}{sL_1}}{(sC_1 + \frac{1}{sL_1})} \\
+      V_{out} &= \frac{\frac{V_{1}}{sL_1}}{\frac{s^2C_1L_1 + 1}{sL_1}} \\
+      V_{out} &= \frac{V_{1}}{s^2C_1L_1 + 1} \\
+      \boxed{H_1(s) = \frac{N_1(s)}{D_1(s)} = \frac{V_{out_1}}{V_{1}} = \frac{1}{s^2C_1L_1 + 1}}
+    \end{align*}
+  \item Due to \(V_{2}\) alone (\(V_{1} = 0V\)):
+    This is the high-pass characteristic of the LC Pass Filter.
+    \begin{align*}
+      \frac{(V_{out} - 0)}{sL_1} + (V_{out} - V_{2})sC_1 &= 0 \\
+      \frac{V_{out}}{sL_1} + V_{out}sC_1 - V_{2}sC_1 &= 0 \\
+      V_{out}(\frac{1}{sL_1} + sC_1) &= V_{2}sC_1 \\
+      V_{out} &= \frac{V_{2}sC_1}{(\frac{1}{sL_1} + sC_1)} \\
+      V_{out} &= \frac{V_{2}sC_1}{\frac{s^2C_1L_1 + 1}{sL_1}} \\
+      V_{out} &= \frac{V_{2}s^2C_1L_1}{s^2C_1L_1 + 1} \\
+      \boxed{H_2(s) = \frac{N_2(s)}{D_2(s)} = \frac{V_{out_2}}{V_{2}} = \frac{s^2C_1L_1}{s^2C_1L_1 + 1}}
+    \end{align*}
+\end{enumerate}
+\paragraph{Total Output:}
+\begin{align*}
+  V_{out} &= V_{out_1} + V_{out_2} \\
+  V_{out} &= H_1(s)V_{1} + H_2(s)V_{2} \\
+  V_{out} &= \underbrace{\frac{1}{s^2C_1L_1 + 1}V_{1}}_{\text{Low Pass Character}} + \underbrace{\frac{s^2C_1L_1}{s^2C_1L_1 + 1}V_{2}}_{\text{High Pass Character}}
+\end{align*}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Poles (\(D(s) = 0\)):} \\
+    For both low pass \(H_1(s)\) and high pass \(H_2(s)\):
+    \begin{align*}
+      s^2C_1L_1 + 1 &= 0 \\
+      s^2C_1L_1 &= -1 \\
+      s^2 &= -\frac{1}{C_1L_1} \\
+      s &= -2 \pi f_p \\
+      (-2 \pi f_p)^2 &= -\frac{1}{C_1L_1} \hspace{1cm} \text{[let \(s = -2 \pi f_p\)]} \\
+      4 \pi^2 f_p^2 &= \frac{1}{C_1L_1} \\
+      f_p &= \frac{1}{2 \pi \sqrt{C_1L_1}}
+    \end{align*}
+    Complex conjugate poles on the imaginary axis indicate
+    a marginally stable second-order system.
+  \item \textbf{Zeroes (\(N(s) = 0\)):} \\
+    For low pass \(H_1(s)\):
+    \begin{align*}
+        N_1(s) = 0
+        1 \neq 0
+    \end{align*}
+    No zeroes for \(H_1(s)\). \\
+    For high pass \(H_2(s)\):
+    \begin{align*}
+        N_2(s) = 0 \\
+        s^2C_1L_1 = 0 \\
+        s_z &= 0 \hspace{1cm} \text{[let \(s = s_z\)]} \\
+        f_z &= \frac{|s_z|}{2\pi} = 0 Hz
+    \end{align*}
+    Zero at the origin for \(H_2(s)\).
+  \item \textbf{DC Gain \(A_{DC}\):} \\
+    For low pass \(H_1(s)\):
+    \begin{align*}
+      H_1(0) &= \frac{1}{0^2C_1L_1 + 1} = 1
+      \boxed{A_{DC_1} = 1 = 0 dB}
+    \end{align*}
+    Unity DC gain for \(H_1(s)\). \\
+    For low pass \(H_2(s)\):
+    \begin{align*}
+      H_2(0) &= \frac{0^2C_1L_1}{0^2C_1L_1 + 1} = 0
+      \boxed{A_{DC_2} = 0 = -\infty dB}
+    \end{align*}
+    Zero DC gain for \(H_2(s)\).
+  \item \textbf{Gain Bandwidth Product (GBW):}
+    For low pass \(H_1(s)\):
+    \begin{align*}
+      GBW &= |A_{DC_1} \cdot f_p| \\
+          &= 1 \cdot \frac{1}{2 \pi \sqrt{C_1L_1}} \\
+          &= \frac{1}{2 \pi \sqrt{C_1L_1}}
+    \end{align*}
+    For high pass \(H_2(s)\):
+    \begin{align*}
+      GBW &= |A_{DC_2} \cdot f_p| \\
+          &= 0 \cdot \frac{1}{2 \pi \sqrt{C_1L_1}} \\
+          &= 0
+    \end{align*}
+    The high pass filter has no gain at DC, so the GBW which
+    is a quantity measured from DC to the cutoff frequency is
+    zero.
+  \item \textbf{Impedance:}
+    Both low pass and high pass filters have the same input
+    and output impedance.
+    Substituting \(G_1 = \frac{1}{R_1}\) and \(s = j \omega\):
+    \paragraph{At Input:}
+      \begin{align*}
+        Z_{in} &= sL_1 + \frac{1}{sC_1} \\
+        Z_{in} &= j \omega L_1 - j \frac{1}{\omega C_1} \\
+        \boxed{Z_{in} = j \left( \omega L_1 - \frac{1}{\omega C_1} \right)}
+      \end{align*}
+    \paragraph{At Output:}
+      \begin{align*}
+        Z_{out} &= \frac{1}{sC_1} || sL_1 \\
+        Z_{out} &= \frac{\left( \frac{1}{sC_1} \cdot sL_1 \right)}{\left( \frac{1}{sC_1} + sL_1 \right)} \\
+        Z_{out} &= \frac{\frac{L_1}{C_1}}{s^2 L_1 C_1 + 1} \\
+        Z_{out} &= \frac{\frac{L_1}{C_1}}{(j \omega)^2 L_1 C_1 + 1} \\
+        Z_{out} &= \frac{\frac{L_1}{C_1}}{- \omega^2 L_1 C_1 + 1} \\
+        \boxed{Z_{out} = \frac{\frac{L_1}{C_1}}{1 - \omega^2 L_1 C_1}}
+      \end{align*}
+\end{enumerate}
+
+\subsubsection{Question}
+Design a LC Low Pass Filter with a cutoff frequency of
+\(f_p = 1 kHz\) using standard component values.
+\paragraph{Solution:}
+\begin{enumerate}
+  \item Choosing \(C_1 = 1 \mu F\) (standard value).
+  \item Calculating \(L_1\):
+    \begin{align*}
+      f_p &= \frac{1}{2 \pi \sqrt{C_1L_1}} \\
+      1 kHz &= \frac{1}{2 \pi \sqrt{C_1L_1}} \\
+      \sqrt{C_1L_1} &= \frac{1}{2 \pi \cdot 1 kHz} \\
+      C_1L_1 &= \left( \frac{1}{2 \pi \cdot 1 kHz} \right)^2 \\
+      C_1L_1 &\approx 2.533 \times 10^{-8} \\
+      L_1 &= \frac{2.533 \times 10^{-8}}{C_1} = \frac{2.533 \times 10^{-8}}{1 \mu F} = 25.330 mH
+    \end{align*}
+    Standard value: \(L_1 = 22 mH\)
+  \item Verifying \(f_p\):
+    \begin{align*}
+      f_p &= \frac{1}{2 \pi \sqrt{C_1L_1}} \\
+      f_p &= \frac{1}{2 \pi \sqrt{1 \mu F \cdot 22 mH}} \\
+      f_p &\approx 1073 Hz \\
+    \end{align*}
+    Close to desired \(1 kHz\).
+\end{enumerate}
+Design a LC High Pass Filter with a cutoff frequency of
+\(f_c = 10 kHz\). Choose standard component values for \(L_1\)
+and \(C_1\).
+\paragraph{Solution:}
+\begin{enumerate}
+  \item Choosing standard value \(C_1 = 10 nF\).
+  \item Calculating $L_1$:
+    \begin{align*}
+      f_c &= \frac{1}{2 \pi \sqrt{C_1L_1}} \\
+      L_1 &= \frac{1}{(2 \pi f_c)^2 C_1} \\
+      L_1 &= \frac{1}{(2 \pi \cdot 10 \times 10^3)^2 \cdot 10 \times 10^{-9}} \\
+      L_1 &\approx 25.33 mH
+    \end{align*}
+    Choose standard value \(L_1 = 27 mH\).
+  \item Verifying $f_p$ with chosen values:
+    \begin{align*}
+      f_p &= \frac{1}{2 \pi \sqrt{C_1L_1}} \\
+      f_p &= \frac{1}{2 \pi \sqrt{0.01 \times 10^{-6} \cdot 27 \times 10^{-3}}} \\
+      f_p &\approx 9.685 kHz
+    \end{align*}
+    Close to desired pole frequency.
+\end{enumerate}

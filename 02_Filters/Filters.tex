@@ -3,82 +3,30 @@
 \section{Overview}
 This chapter covers various types of electronic filters,
 which are circuits designed to selectively allow or block
-certain frequency components of a signal.
+certain frequency components of a signal. A filter can
+be classified either by the type of frequency response it
+exhibits (low-pass, high-pass, band-pass, band-stop) or
+by the order of the filter (single-pole, double-pole, etc.).
+Filters are widely used.
 
-\section{Behavior}
-\paragraph{Ideal:}
-An ideal filter has the following characteristics:
-\begin{itemize}
-  \item \textbf{Perfect Frequency Selectivity:} Depending
-    on the type of filter (low-pass, high-pass, band-pass,
-    band-stop), it completely allows or blocks specific
-    frequency ranges with 90-degree sharp cutoffs.
-  \item \textbf{No Signal Distortion:} The filter does not
-    introduce any distortion to the signal within the
-    passband.
-  \item \textbf{Linear Phase Response:} The phase response
-    is linear within the passband, ensuring that all
-    frequency components are delayed by the same amount.
-\end{itemize}
-\paragraph{Non-Ideal:}
-The characteristics of real filters deviate from
-the ideal due to various effects, including:
-\begin{itemize}
-  \item \textbf{Finite Roll-Off Rate:} Real filters have
-    a gradual transition between the passband and stopband,
-    characterized by a finite roll-off rate (e.g., 20 dB/decade
-    for a first-order filter).
-  \item \textbf{Passband Ripple:} Some filters exhibit
-    variations in amplitude within the passband, known
-    as ripple.
-  \item \textbf{Stopband Attenuation:} The filter does not
-    completely block signals in the stopband, resulting
-    in finite attenuation.
-  \item \textbf{Non-Linear Phase Response:} Real filters
-    often have a non-linear phase response, leading to
-    phase distortion of the signal.
-  \item \textbf{Component Tolerances:} Refer to
-    \ref{sec:theory_general_tolerances}.
-  \item \textbf{Component Parasitics:} Refer to
-    \ref{sec:theory_general_parasitics}.
-  \item \textbf{Loading Effects:} Refer to
-    \ref{sec:theory_general_loading}.
-  \item \textbf{Temperature Variations:} Changes in
-    temperature can affect the characteristics of
-    components, leading to variations in filter
-    performance.
-\end{itemize}
+Ideally a filter should have perfect frequency selectivity
+i.e. (\(-\infty dB\) roll-off in the stop band and \(0 dB\)
+attenuation in the pass band), no signal distortion and a
+linear phase response. However, real filters deviate from
+the ideal due to various non-ideal effects, including finite
+roll-off rate, pass band ripple, limited stop band
+attenuation, non-linear phase response, component tolerances,
+component parasitics, loading effects and temperature
+variations.
 
-
-\section{Usages}
-The primary purpose of filters is to manipulate
-the frequency content of signals for various applications,
-including:
-\begin{itemize}
-  \item \textbf{Signal Conditioning:} Filters are used
-    to remove unwanted noise or interference from signals,
-    improving signal quality for further processing.
-  \item \textbf{Audio Processing:} Filters are used
-    in audio systems to shape the frequency response,
-    such as bass and treble adjustments.
-  \item \textbf{Communication Systems:} Filters are
-    used to separate different frequency channels,
-    enabling multiplexing and demultiplexing of signals.
-  \item \textbf{Data Acquisition:} Filters are used
-    to prevent aliasing by removing high-frequency
-    components before analog-to-digital conversion.
-  \item \textbf{Control Systems:} Filters are used
-    to smooth sensor signals and reduce noise in feedback
-    loops.
-\end{itemize}
+A filter can be used to remove unwanted frequency components
+from a signal such as noise or interference, or to extract
+desired frequency components from a signal for further
+processing.
 
 \section{Single Pole Filters}
-\input{02_Filters/RC_Low_Pass}
-\input{02_Filters/RC_High_Pass}
-\input{02_Filters/RL_Low_Pass}
-\input{02_Filters/RL_High_Pass}
+\input{02_Filters/RC_Pass}
+\input{02_Filters/RL_Pass}
 \section{Double Pole Filters}
-\input{02_Filters/LC_Low_Pass}
-\input{02_Filters/LC_High_Pass}
-\input{02_Filters/RLC_Band_Pass}
-\input{02_Filters/RLC_Band_Stop}
+\input{02_Filters/LC_Pass}
+\input{02_Filters/RLC_Band}

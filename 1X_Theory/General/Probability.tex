@@ -83,11 +83,18 @@ mitigate the impact of variations:
   \item \textbf{Common Centroid Layout:} A common centroid layout
     technique can help reduce the impact of systematic variations
     by averaging out the effects across multiple components.
+    In other words, placing components in a symmetrical pattern
+    can help reduce the impact of variations caused by gradients
+    in temperature, doping concentration, or other factors across
+    the chip.
   \item \textbf{Area Scaling:} M. Pelgrom discovered that many
     variations decrease as the area of the component increases.
     This is known as Pelgrom's Law. By increasing the size of
     components, you can reduce the impact of random variations
-    (by approximately the square root of the area).
+    (by approximately the square root of the area). The down
+    side is that larger components take up more space and may
+    have higher parasitic capacitances, which can affect circuit
+    performance.
   \item \textbf{Dummy Structures:} Adding dummy structures around
     critical components can help create a more uniform manufacturing
     environment, reducing variations caused by edge effects.

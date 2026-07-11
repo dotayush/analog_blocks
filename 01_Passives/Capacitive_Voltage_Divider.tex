@@ -1,0 +1,125 @@
+\subsection{Capacitive Voltage Divider}
+
+This block is constructed from two capacitors in series and is used
+to attenuate a voltage signal.
+
+\subsubsection{Schematic}
+\begin{center}
+  \begin{tikzpicture}[transform shape]
+  	% Paths, nodes and wires:
+  	\node[ground, rotate=-90] at (5.5, 5.25){};
+  	\node[ground, rotate=-90] at (5.5, 4.75){};
+  	\draw (5.5, 6.75) to[sinusoidal voltage source, l={$V_{cc}$}] (5.5, 5.25);
+  	\draw (5.5, 4.75) to[sinusoidal voltage source, l={$V_{ee}$}] (5.5, 3.25);
+  	\draw (7, 5) -- (7.75, 5);
+  	\draw (7, 7) -| (5.5, 7) -| (5.5, 6.75);
+  	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.465cm](N1) at (8.125, 5){} node[anchor=center] at (N1.text){$V_{out}$};
+  	\draw (7, 5.25) -| (7, 5);
+  	\draw (7, 4.75) -| (7, 5);
+  	\draw (5.5, 3.25) -| (5.5, 3) -- (7, 3);
+  	\draw (7, 7) to[capacitor, l={$C_1$}] (7, 5.25);
+  	\draw (7, 4.75) to[capacitor, l={$C_1$}] (7, 3);
+  \end{tikzpicture}
+\end{center}
+
+\subsubsection{Transfer Function}
+Applying KCL at $V_{out}$ we get:
+\[
+  (V_{out} - V_{cc}){sC_1} + (V_{out} - V_{ee}){sC_2} = 0
+\]
+\paragraph{Superposition:}
+\begin{enumerate}
+  \item Due to \(V_{cc}\) alone (\(V_{ee} = 0V\)):
+    \begin{align*}
+      (V_{out} - V_{cc}){sC_1} + (V_{out} - 0){sC_2} &= 0 \\
+      (V_{out} - V_{cc}){sC_1} + V_{out}{sC_2} &= 0 \\
+      V_{out}sC_1 - V_{cc}sC_1 + V_{out}sC_2 &= 0 \\
+      V_{out}(sC_1 + sC_2) - V_{cc}sC_1 &= 0 \\
+      V_{out}(sC_1 + sC_2) &= V_{cc}sC_1 \\
+      \frac{V_{out}}{V_{cc}} &= \frac{sC_1}{sC_1 + sC_2} \\
+      \frac{V_{out}}{V_{cc}} &= \frac{sC_1}{s(C_1 + C_2)} \\
+      \frac{V_{out}}{V_{cc}} &= \frac{C_1}{C_1 + C_2} \\
+      \boxed{H_1(s) = \frac{N_1(s)}{D_1(s)} = \frac{V_{out_1}}{V_{cc}} = \frac{C_1}{C_1 + C_2}}
+    \end{align*}
+  \item Due to \(V_{ee}\) alone (\(V_{cc} = 0V\)):
+    \begin{align*}
+      (V_{out} - 0){sC_1} + (V_{out} - V_{ee}){sC_2} &= 0 \\
+      V_{out}sC_1 + (V_{out} - V_{ee}){sC_2} &= 0 \\
+      V_{out}sC_1 + V_{out}sC_2 - V_{ee}sC_2 &= 0 \\
+      V_{out}(sC_1 + sC_2) - V_{ee}sC_2 &= 0 \\
+      V_{out}(sC_1 + sC_2) &= V_{ee}sC_2 \\
+      \frac{V_{out}}{V_{ee}} &= \frac{sC_2}{sC_1 + sC_2} \\
+      \frac{V_{out}}{V_{ee}} &= \frac{sC_2}{s(C_1 + C_2)} \\
+      \frac{V_{out}}{V_{ee}} &= \frac{C_2}{C_1 + C_2} \\
+      \boxed{H_2(s) = \frac{N_2(s)}{D_2(s)} = \frac{V_{out_2}}{V_{ee}} = \frac{C_2}{C_1 + C_2}}
+    \end{align*}
+\end{enumerate}
+
+\paragraph{Total Output:}
+\begin{align*}
+  V_{out} &= V_{out_1} + V_{out_2} \\
+  V_{out} &= V_{cc} \frac{C_1}{C_1 + C_2} + V_{ee} \frac{C_2}{C_1 + C_2}
+\end{align*}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Capacitor Ratio (\(\frac{C_1}{C_2}\)):}
+    From KCL at \(V_{out}\):
+    \begin{align*}
+      (V_{out} - V_{cc})sC_1 + (V_{out} - V_{ee})sC_2 &= 0 \\
+      (V_{out} - V_{cc})sC_1 &= -(V_{out} - V_{ee})sC_2 \\
+      C_1(V_{out} - V_{cc}) &= -C_2(V_{out} - V_{ee}) \\
+      \frac{C_1}{C_2} &= -\frac{V_{out} - V_{ee}}{V_{out} - V_{cc}}
+    \end{align*}
+  \item \textbf{Impedance's:}
+    \paragraph{At Input:}
+      \begin{align*}
+        Z_{in} &= \frac{1}{sC_1} + \frac{1}{sC_2} \\
+        Z_{in} &= \frac{1}{s}\left(\frac{1}{C_1} + \frac{1}{C_2}\right) \\
+        Z_{in} &= \frac{1}{s}\left(\frac{C_1 + C_2}{C_1 C_2}\right) \\
+        \boxed{Z_{in} = \frac{C_1 + C_2}{s C_1 C_2}} = \frac{1}{sC_{eq}} \hspace{1cm} \text{(where \(C_{eq} = \frac{C_1 C_2}{C_1 + C_2}\))}
+      \end{align*}
+    \paragraph{At Output:}
+      \begin{align*}
+        Z_{out} &= \frac{1}{sC_1 + sC_2} \\
+        Z_{out} &= \frac{1}{s(C_1 + C_2)} \\
+        \boxed{Z_{out} = \frac{1}{s(C_1 + C_2)}} = \frac{1}{sC_{eq}} \hspace{1cm} \text{(where \(C_{eq} = C_1 + C_2\))}
+      \end{align*}
+  \item \textbf{Loading Effect:} \\
+    Similar to resistive dividers.
+\end{enumerate}
+
+\subsubsection{Question}
+Design a capacitive voltage divider to attenuate 100V to 5V.
+Assume \(C_1 = 10nF\) and \(V_{ee} = 0V\). Calculate the input
+and output impedance of the divider.
+\paragraph{Solution:}
+\begin{enumerate}
+  \item Calculate the capacitor ratio:
+    \begin{align*}
+      \frac{C_1}{C_2} &= -\frac{V_{out} - V_{ee}}{V_{out} - V_{cc}} \\
+      \frac{C_1}{C_2} &= -\frac{5V - 0V}{5V - 100V} \\
+      \frac{C_1}{C_2} &= 0.05263
+    \end{align*}
+  \item Calculate \(C_2\):
+    \begin{align*}
+      C_2 &= \frac{C_1}{0.05263} \\
+      C_2 &= \frac{10nF}{0.05263} \\
+      C_2 &= 190nF
+    \end{align*}
+  \item Calculate the input impedance:
+    \begin{align*}
+      Z_{in} &= \frac{C_1 + C_2}{s C_1 C_2} \\
+      Z_{in} &= \frac{10nF + 190nF}{s (10nF)(190nF)} \\
+      Z_{in} &= \frac{200nF}{s (1900nF^2)} \\
+      Z_{in} &= \frac{2}{s 19nF} \\
+      Z_{in} &= \frac{2}{j 2 \pi f 19nF} \hspace{1cm} \text{(substituting \(s = j \omega = j 2 \pi f\))}
+    \end{align*}
+  \item Calculate the output impedance:
+    \begin{align*}
+      Z_{out} &= \frac{1}{s(C_1 + C_2)} \\
+      Z_{out} &= \frac{1}{s(10nF + 190nF)} \\
+      Z_{out} &= \frac{1}{s(200nF)} \\
+      Z_{out} &= \frac{1}{j 2 \pi f (200nF)} \hspace{1cm} \text{(substituting \(s = j \omega = j 2 \pi f\))}
+    \end{align*}
+\end{enumerate}

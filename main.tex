@@ -1,7 +1,7 @@
-\documentclass[12pt]{book}
+\documentclass[openany,12pt]{book}
 
 % packages
-\usepackage{amath, amssymb, array, float, breqn}
+\usepackage{amsmath, amssymb, array, float, breqn}
 \usepackage{tabularx, circuitikz, listings}
 \usepackage[left=1cm, top=2.54cm, bottom=2.54cm, right=1cm]{geometry}
 
@@ -20,17 +20,13 @@
 % document
 \begin{document}
 
-\frontmatter
-\pagenumbering{alph}
+\pagenumbering{arabic}
 \title{Analog Blocks}
 \author{Ayush Gupta}
 \date{January 2026}
 \maketitle
 \tableofcontents
 \include{00_Introduction/Introduction}
-
-\mainmatter
-\setcounter{page}{1}
 \include{01_Passives/Passives}
 \include{02_Filters/Filters}
 \include{03_Current_Mirrors/Current_Mirrors}
