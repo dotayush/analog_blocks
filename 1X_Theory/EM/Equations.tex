@@ -1,0 +1,250 @@
+\subsection{Equations}
+\label{sec:theory_em_equations}
+
+Each equation can be expressed in either integral or differential form.
+I'll present them in their differential form. We'll use 3D Cartesian
+coordinates \((x,y,z)\) and time \(t\) to describe the functions.
+
+\subsubsection{Faraday's Law of Induction}
+Faraday's Law of Induction states that a time-varying magnetic function
+induces an electric function. It is expressed as:
+\begin{align*}
+  -\nabla \times \mathbf{E(x,y,z,t)} = \frac{\partial \mathbf{B(x,y,z,t)}}{\partial t} + \mathbf{J_m(x,y,z,t)} \tag{1}
+\end{align*}
+where
+\begin{itemize}
+  \item \( \nabla \):
+    \begin{align*}
+      \nabla = \left( \frac{\partial}{\partial x}, \frac{\partial}{\partial y}, \frac{\partial}{\partial z} \right)
+    \end{align*}
+  \item \( \mathbf{E(x,y,z,t)} \): electric function. \( \frac{V}{m} \)
+  \item \( \mathbf{B(x,y,z,t)} \): magnetic flux density function.
+    \( \frac{Wb}{m^2} \)
+  \item \( \mathbf{J_m(x,y,z,t)} \): magnetic current density function.
+    \( \frac{A}{m^2} \). In nature, \( \mathbf{J_m(x,y,z,t)} = 0 \) since
+    magnetic monopoles i.e. charges haven't been observed.
+\end{itemize}
+Let's have some fun with this equation.
+\begin{align*}
+  \text{[Divergence of both sides]} \\
+  -\nabla \cdot (\nabla \times \mathbf{E(x,y,z,t)}) &= \nabla \cdot \left(\frac{\partial \mathbf{B(x,y,z,t)}}{\partial t} + \mathbf{J_m(x,y,z,t)}\right) \\
+  -\nabla \cdot (\nabla \times \mathbf{E(x,y,z,t)}) &= \nabla \cdot \frac{\partial \mathbf{B(x,y,z,t)}}{\partial t} + \nabla \cdot \mathbf{J_m(x,y,z,t)} \\
+  -\nabla \cdot (\nabla \times \mathbf{E(x,y,z,t)}) &= \frac{\partial}{\partial t} (\nabla \cdot \mathbf{B(x,y,z,t)}) + \nabla \cdot \mathbf{J_m(x,y,z,t)} \\
+  0 &= \frac{\partial}{\partial t} (\nabla \cdot \mathbf{B(x,y,z,t)}) + \nabla \cdot \mathbf{J_m(x,y,z,t)} \\
+  - \frac{\partial}{\partial t} (\nabla \cdot \mathbf{B(x,y,z,t)}) &= \nabla \cdot \mathbf{J_m(x,y,z,t)} \\
+  \text{[Integrating both sides over time]} \\
+  \int_{t_0}^{t_1} - \frac{\partial}{\partial t} (\nabla \cdot \mathbf{B(x,y,z,t)}) \, dt &= \int_{t_0}^{t_1} \nabla \cdot \mathbf{J_m(x,y,z,t)} \, dt \\
+  - \left[\nabla \cdot \mathbf{B(x,y,z,t)}\right]_{t_0}^{t_1} &= \int_{t_0}^{t_1} \nabla \cdot \mathbf{J_m(x,y,z,t)} \, dt \\
+  - \left[\nabla \cdot \mathbf{B(x,y,z,t_1)} - \nabla \cdot \mathbf{B(x,y,z,t_0)}\right] &= \int_{t_0}^{t_1} \nabla \cdot \mathbf{J_m(x,y,z,t)} \, dt \\
+  - \nabla \cdot \mathbf{B(x,y,z,t_1)} + \nabla \cdot \mathbf{B(x,y,z,t_0)} &=  \int_{t_0}^{t_1} \nabla \cdot \mathbf{J_m(x,y,z,t)} \, dt \\
+  - \nabla \cdot \mathbf{B(x,y,z,t_1)} &= - \nabla \cdot \mathbf{B(x,y,z,t_0)} + \int_{t_0}^{t_1} \nabla \cdot \mathbf{J_m(x,y,z,t)} \, dt \\
+  - \nabla \cdot \mathbf{B(x,y,z,t_1)} &= - \left[\nabla \cdot \mathbf{B(x,y,z,t_0)} - \int_{t_0}^{t_1} \nabla \cdot \mathbf{J_m(x,y,z,t)} \, dt\right] \\
+  \nabla \cdot \mathbf{B(x,y,z,t_1)} &= \nabla \cdot \mathbf{B(x,y,z,t_0)} - \int_{t_0}^{t_1} \nabla \cdot \mathbf{J_m(x,y,z,t)} \, dt \\
+  \text{[Since \( \mathbf{J_m(x,y,z,t)} = 0 \) in nature]} \\
+  \nabla \cdot \mathbf{B(x,y,z,t_1)} &= \nabla \cdot \mathbf{B(x,y,z,t_0)} - \int_{t_0}^{t_1} 0 \, dt \\
+  \nabla \cdot \mathbf{B(x,y,z,t_1)} &= \nabla \cdot \mathbf{B(x,y,z,t_0)}
+\end{align*}
+\textbf{This proves that the divergence of the magnetic flux density function
+is constant over time}. Since \( J_m(x,y,z,t_0) = 0 \) in nature, we can conclude
+\( \frac{\partial}{\partial t} \rho_m(x,y,z,t_0) = 0 \) and subsequently
+\( \nabla \cdot \mathbf{B(x,y,z,t_0)} = 0 \). This is \textbf{the origin of Gauss's Law
+of Magnetism}.
+
+\subsubsection{Ampere's Law}
+
+Ampere's Law states that a time-varying electric function induces a magnetic
+function. It is expressed as:
+\begin{align*}
+  \nabla \times \mathbf{H(x,y,z,t)} = \frac{\partial \mathbf{D(x,y,z,t)}}{\partial t} + \mathbf{J_e(x,y,z,t)} \tag{3}
+\end{align*}
+where
+\begin{itemize}
+  \item \( \mathbf{H(x,y,z,t)} \): magnetic function. \( \frac{A}{m} \)
+  \item \( \mathbf{D(x,y,z,t)} \): electric flux density function.
+    \( \frac{C}{m^2} \)
+  \item \( \mathbf{J_e(x,y,z,t)} \): electric current density function.
+    \( \frac{A}{m^2} \). In nature, \( \mathbf{J_e(x,y,z,t) \neq 0 } \) since
+    electric monopoles i.e. charges have been observed. It is defined as
+    \( \mathbf{J_e(x,y,z,t)} = \rho_e(x,y,z,t) \mathbf{v(x,y,z,t)} \) where
+    \( \rho_e(x,y,z,t) \) is the charge density function and
+    \( \mathbf{v(x,y,z,t)} \) is the velocity function of the charge.
+\end{itemize}
+Let's have some fun with this equation.
+\begin{align*}
+  \text{[Divergence of both sides]} \\
+  \nabla \cdot (\nabla \times \mathbf{H(x,y,z,t)}) &= \nabla \cdot \left(\frac{\partial \mathbf{D(x,y,z,t)}}{\partial t} + \mathbf{J_e(x,y,z,t)}\right) \\
+  \nabla \cdot (\nabla \times \mathbf{H(x,y,z,t)}) &= \nabla \cdot \frac{\partial \mathbf{D(x,y,z,t)}}{\partial t} + \nabla \cdot \mathbf{J_e(x,y,z,t)} \\
+  \nabla \cdot (\nabla \times \mathbf{H(x,y,z,t)}) &= \frac{\partial}{\partial t} (\nabla \cdot \mathbf{D(x,y,z,t)}) + \nabla \cdot \mathbf{J_e(x,y,z,t)} \\
+  0 &= \frac{\partial}{\partial t} (\nabla \cdot \mathbf{D(x,y,z,t)}) + \nabla \cdot \mathbf{J_e(x,y,z,t)} \\
+  - \frac{\partial}{\partial t} (\nabla \cdot \mathbf{D(x,y,z,t)}) &= \nabla \cdot \mathbf{J_e(x,y,z,t)} \\
+  \text{[Integrating both sides over time]} \\
+  \int_{t_0}^{t_1} - \frac{\partial}{\partial t} (\nabla \cdot \mathbf{D(x,y,z,t)}) \, dt &= \int_{t_0}^{t_1} \nabla \cdot \mathbf{J_e(x,y,z,t)} \, dt \\
+  - \left[\nabla \cdot \mathbf{D(x,y,z,t)}\right]_{t_0}^{t_1} &= \int_{t_0}^{t_1} \nabla \cdot \mathbf{J_e(x,y,z,t)} \, dt \\
+  - \left[\nabla \cdot \mathbf{D(x,y,z,t_1)} - \nabla \cdot \mathbf{D(x,y,z,t_0)}\right] &= \int_{t_0}^{t_1} \nabla \cdot \mathbf{J_e(x,y,z,t)} \, dt \\
+  - \nabla \cdot \mathbf{D(x,y,z,t_1)} + \nabla \cdot \mathbf{D(x,y,z,t_0)} &=  \int_{t_0}^{t_1} \nabla \cdot \mathbf{J_e(x,y,z,t)} \, dt \\
+  - \nabla \cdot \mathbf{D(x,y,z,t_1)} &= - \nabla \cdot \mathbf{D(x,y,z,t_0)} + \int_{t_0}^{t_1} \nabla \cdot \mathbf{J_e(x,y,z,t)} \, dt \\
+  - \nabla \cdot \mathbf{D(x,y,z,t_1)} &= - \left[\nabla \cdot \mathbf{D(x,y,z,t_0)} - \int_{t_0}^{t_1} \nabla \cdot \mathbf{J_e(x,y,z,t)} \, dt \right] \\
+  \nabla \cdot \mathbf{D(x,y,z,t_1)} &= \nabla \cdot \mathbf{D(x,y,z,t_0)} - \int_{t_0}^{t_1} \nabla \cdot \mathbf{J_e(x,y,z,t)} \, dt \\
+\end{align*}
+\textbf{This proves that the divergence of the electric flux density function
+changes over time}. To find anything meaningful we must find more information
+about the divergence of the electric current density function. This is given
+to us by the \textbf{charge continuity equation}:
+\begin{align*}
+  Q(t) &= \int_V \rho_e(x,y,z,t) \, dV \hspace{1cm} \text{[Total Charge in a Volume]} \\
+  \text{[Rate of Change of Total Charge]} \\
+  \frac{dQ(t)}{dt} &= \int_V \frac{\partial \rho_e(x,y,z,t)}{\partial t} \, dV \hspace{1cm} \text{[In a Volume]} \\
+  \frac{dQ(t)}{dt} &= - \oint_S \mathbf{J_e(x,y,z,t)} \cdot d\mathbf{S} \hspace{1cm} \text{[Out of a Volume]} \\
+  \text{[Continuity; In = Out]} \\
+  - \oint_S \mathbf{J_e(x,y,z,t)} \cdot d\mathbf{S} &= \int_V \frac{\partial \rho_e(x,y,z,t)}{\partial t} \, dV \\
+  - \int_V \nabla \cdot \mathbf{J_e(x,y,z,t)} \, dV &= \int_V \frac{\partial \rho_e(x,y,z,t)}{\partial t} \, dV \hspace{1cm} \left[\oint_S \mathbf{J_e} \cdot d\mathbf{S} = \int_V \nabla \cdot \mathbf{J_e} \, dV\right] \\
+  \text{[Differentiating both sides with respect to Volume]} \\
+  \frac{\partial}{\partial V} \left(- \int_V \nabla \cdot \mathbf{J_e(x,y,z,t)} \, dV\right) &= \frac{\partial}{\partial V} \left(\int_V \frac{\partial \rho_e(x,y,z,t)}{\partial t} \, dV\right) \\
+  - \nabla \cdot \mathbf{J_e(x,y,z,t)} &= \frac{\partial \rho_e(x,y,z,t)}{\partial t} \tag{4}
+\end{align*}
+Substituting (4) into (3), we get
+\begin{align*}
+  \nabla \cdot \mathbf{D(x,y,z,t_1)} &= \nabla \cdot \mathbf{D(x,y,z,t_0)} - \int_{t_0}^{t_1} \nabla \cdot \mathbf{J_e(x,y,z,t)} \, dt \\
+  \nabla \cdot \mathbf{D(x,y,z,t_1)} &= \nabla \cdot \mathbf{D(x,y,z,t_0)} - \int_{t_0}^{t_1} - \frac{\partial \rho_e(x,y,z,t)}{\partial t} \, dt \\
+  \nabla \cdot \mathbf{D(x,y,z,t_1)} &= \nabla \cdot \mathbf{D(x,y,z,t_0)} + [\rho_e(x,y,z,t_1) - \rho_e(x,y,z,t_0)] \\
+  \nabla \cdot \mathbf{D(x,y,z,t_1)} &= \nabla \cdot \mathbf{D(x,y,z,t_0)} + \rho_e(x,y,z,t_1) - \rho_e(x,y,z,t_0)
+\end{align*}
+We find that the divergence of the electric flux density function changes as
+the charge density function changes over time \( \nabla \cdot \mathbf{D(x,y,z,t)} =
+\rho_e(x,y,z,t) \). This is \textbf{the origin of Gauss's Law of Electricity}.
+
+\subsection{Statics and Quasi-Statics}
+
+Faraday's and Ampere's Law (alongisde Gauss) fully define any electromagnetic system
+at all times and space. Both equations are \textbf{first order partial differential
+equations (PDEs)} which \textbf{are coupled with each other}. Sadly, for solving the
+full system is mathematically very expensive. One therefore wonders, \textbf{Is it
+possible to simplify and dumb down?}
+
+
+\textbf{Yes, but only under conditions}. This is where Statics and Quasi-Statics
+come into play. We need to make some assumptions.
+\begin{enumerate}
+  \item \textbf{Statics}: We assume that all functions are frozen in time. This is the
+    strongest assumption we can make and it reduces our PDEs to \textbf{ordinary
+    differential equations (ODEs)} in space only. This is the DC regime where all functions
+    are time-independent. To achieve this, the rate of change of all functions must
+    be zero:
+    \begin{align*}
+      \frac{\partial \mathbf{B(x,y,z,t)}}{\partial t} = 0 \\
+      \frac{\partial \mathbf{D(x,y,z,t)}}{\partial t} = 0 \\
+      \frac{\partial \mathbf{E(x,y,z,t)}}{\partial t} = 0 \\
+      \frac{\partial \mathbf{H(x,y,z,t)}}{\partial t} = 0 \\
+      \frac{\partial \mathbf{J_e(x,y,z,t)}}{\partial t} = 0 \\
+      \frac{\partial \mathbf{J_m(x,y,z,t)}}{\partial t} = 0
+    \end{align*}
+  \item \textbf{Quasi-Statics}: We assume that the flux functions [\(\mathbf{B}\) \&
+    \(\mathbf{D}\)] do not change with time but we allow other functions [\(\mathbf{E}\),
+    \(\mathbf{H}\), \(\mathbf{J}_e\), and \(\mathbf{J}_m\)] to change with time. This is
+    a weaker assumption and it reduces our PDEs to ODEs in space only for the flux
+    functions. This is the quasi-static regime. To achieve this, we can set the time
+    derivatives of the flux functions to zero:
+    \begin{align*}
+      \frac{\partial \mathbf{B(x,y,z,t)}}{\partial t} = 0 \\
+      \frac{\partial \mathbf{D(x,y,z,t)}}{\partial t} = 0
+    \end{align*}
+\end{enumerate}
+In either case, we can simplify Faraday's and Ampere's Law to:
+\begin{align*}
+    -\nabla \times \mathbf{E(x,y,z,t)} &= \frac{\partial \mathbf{B(x,y,z,t)}}{\partial t} + \mathbf{J_m(x,y,z,t)} \hspace{1cm} \text{[Faraday's Law]} \\
+                                       &= 0 + \mathbf{J_m(x,y,z,t)} \hspace{1cm} \left[\frac{\partial \mathbf{B(x,y,z,t)}}{\partial t} = 0\right] \\
+                                       &= \mathbf{J_m(x,y,z,t)} \\
+     &= 0  \hspace{1cm} \text{[since \( \mathbf{J_m(x,y,z,t)} = 0 \)]} \tag{5} \\\\
+    \nabla \times \mathbf{H(x,y,z,t)} &= \frac{\partial \mathbf{D(x,y,z,t)}}{\partial t} + \mathbf{J_e(x,y,z,t)} \hspace{1cm} \text{[Ampere's Law]} \\
+                                      &= 0 + \mathbf{J_e(x,y,z,t)} \hspace{1cm} \left[\frac{\partial \mathbf{D(x,y,z,t)}}{\partial t} = 0\right] \\
+                                      &= \mathbf{J_e(x,y,z,t)} \tag{6}
+\end{align*}
+
+Equations (5) and (6) are \textbf{instantaneous spatial statements}. They hold at every
+value of \(t\) individually but say nothing about how \(\mathbf{E}\) or \(\mathbf{H}\)
+behave \emph{between} t's. A function can satisfy \(\nabla\times\mathbf{E}=0\) at
+every instant and still change with time. For example \(\mathbf{E} = \sin(\omega t)\,
+\nabla\phi(x,y,z)\) has zero curl for all \(t\), yet clearly changes with time. So (5)
+and (6) do not, by themselves, let us drop \(t\) from \(\mathbf{E}\), \(\mathbf{H}\),
+or \(\mathbf{J}_e\) (\& \(\mathbf{J}_m\)).
+
+\begin{enumerate}
+  \item \textbf{Equation 5}: At every instant (t), the electric function  has zero
+    curl = it is irrotational = it is conservative = the potential difference between
+    two points does not depend on the path taken between them = total work done by
+    the electric function on a charge moving from point a to point b and back to
+    point a is zero, \emph{at that instant}.
+    \begin{align*}
+      \text{[At every instant \(t\)]} \\
+      -\nabla \times \mathbf{E(x,y,z,t)} &= 0 \\
+      \nabla \times (\nabla V(x,y,z,t)) &= 0 \hspace{1cm} \left[\nabla \times (\nabla F) = 0 \right] \\
+      -\nabla \times \mathbf{E(x,y,z,t)} &= \nabla \times (\nabla V(x,y,z,t)) \\
+      \mathbf{E(x,y,z,t)} &= -\nabla V(x,y,z,t) \\
+      \text{[Line Integral of Electric Function A to B to A]} \\
+      \oint_a^b \mathbf{E(x,y,z,t)} \cdot d\mathbf{l} &= \oint_a^b -\nabla V(x,y,z,t) \cdot d\mathbf{l} \\
+                                                &= \int_a^b -\nabla V(x,y,z,t) \cdot d\mathbf{l} + \int_b^a -\nabla V(x,y,z,t) \cdot d\mathbf{l} \\
+                                                &= -\left[ V(b,t) - V(a,t) \right] - \left[ V(a,t) - V(b,t) \right] \\
+                                                &= 0
+    \end{align*}
+    This is the origin of Kirchhoff's Voltage Law (KVL): the total potential difference
+    around any closed loop is zero. Notice this did not require \(\mathbf{E}\) or \(V\)
+    to be time-independent, only that \(\nabla\times\mathbf{E}=0\) holds instant by
+    instant. This is precisely why KVL remains valid in the quasi-static (slowly
+    time-varying, \(L \lll \lambda\)) regime, not just in true DC.
+
+  \item \textbf{Equation 6}: Taking the divergence of both sides of
+    equation (9), at each instant \(t\):
+    \begin{align*}
+      \nabla \cdot (\nabla \times \mathbf{H(x,y,z,t)}) &= \nabla \cdot \mathbf{J_e(x,y,z,t)} \\
+      0 &= \nabla \cdot \mathbf{J_e(x,y,z,t)} \hspace{1cm} \text{[since divergence of a curl is always zero]} \tag{11}
+    \end{align*}
+
+    \begin{itemize}
+      \item \textbf{Charge Density Is Genuinely Time-Independent}:
+        Substituting (5) into (11):
+        \begin{align*}
+          0 &= -\frac{\partial \rho_e(x,y,z,t)}{\partial t} \tag{12}
+        \end{align*}
+        Unlike \(\mathbf{E}\), \(\mathbf{H}\), and \(\mathbf{J}_e\)
+        above, this is a genuine, non-instantaneous result: it says
+        \(\rho_e\)'s rate of change is zero \emph{for all} \(t\), not
+        just at a single instant. This is the one function we can
+        honestly write without \(t\):
+        \begin{align*}
+          \rho_e(x,y,z,t) = \rho_e(x,y,z) \tag{12a}
+        \end{align*}
+
+      \item \textbf{Zero Total Current Out of a Volume}: Integrating
+        both sides of equation (11) over a volume \(V\), at a fixed
+        instant \(t\):
+        \begin{align*}
+          \int_V \nabla \cdot \mathbf{J_e(x,y,z,t)} \, dV &= \int_V 0 \, dV \\
+          \int_V \nabla \cdot \mathbf{J_e(x,y,z,t)} \, dV &= 0 \\
+          \oint_S \mathbf{J_e(x,y,z,t)} \cdot d\mathbf{S} &= 0 \hspace{1cm} \text{[by Divergence Theorem]} \tag{13}
+        \end{align*}
+    \end{itemize}
+    Equation (13) shows that the total current flowing out of a
+    closed surface is zero \emph{at every instant \(t\)} -- again,
+    without requiring \(\mathbf{J}_e\) itself to be constant in
+    time. Equation (12) shows the total charge enclosed by that
+    surface genuinely does not change with time. Together, these
+    mean the current flowing into a volume equals the current
+    flowing out, at every instant. This is the origin of Kirchhoff's
+    Current Law (KCL).
+\end{enumerate}
+
+\subsubsection{E, D and H, B Functions}
+
+Electric Flux Density \( \mathbf{D(x,y,z,t)} \) and Electric Field \( \mathbf{E(x,y,z,t)} \)
+are related to each other by the permittivity of the medium \( \epsilon \)
+and the polarization of the medium \( \mathbf{P} \):
+\begin{align*}
+  \mathbf{D(x,y,z,t)} = \epsilon \mathbf{E(x,y,z,t)} + \mathbf{P}
+\end{align*}
+
+Magnetic Flux Density \( \mathbf{B(x,y,z,t)} \) and Magnetic Field \( \mathbf{H(x,y,z,t)} \)
+are related to each other by the permeability of the medium \( \mu \)
+and the magnetization of the medium \( \mathbf{M} \):
+\begin{align*}
+  \mathbf{B(x,y,z,t)} = \mu \mathbf{H(x,y,z,t)} + \mathbf{M}
+\end{align*}

@@ -4,24 +4,22 @@ This block is constructed from two inductors in parallel and is used
 to attenuate a voltage signal.
 
 \subsubsection{Schematic}
-\begin{center}
-  \begin{tikzpicture}[transform shape]
-  	% Paths, nodes and wires:
-  	\draw (6.5, 4.75) to[european voltage source, mirror, v=$V_{in}$, i^>=$I_{in}$, current/distance=0.6] (6.5, 6.5);
-  	\node[ground] at (6.5, 4.75){};
-  	\node[ground] at (8, 4.75){};
-  	\node[ground, xscale=-1, yscale=-1] at (8, 8.25){};
-  	\draw (6.5, 6.5) -- (8, 6.5) -- (8, 6.5);
-  	\draw[-latex] (8.5, 6.25) -- (8.5, 4.75);
-  	\draw[-latex] (8.5, 6.75) -- (8.5, 8.25);
-  	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.465cm](N1) at (8.875, 5.5){} node[anchor=center] at (N1.text){$I_{L_1}$};
-  	\node[shape=rectangle, xscale=-1, yscale=-1, minimum width=0.715cm, minimum height=0.465cm](N2) at (9.125, 7.5){} node[anchor=center] at (N2.text){$I_{L_2}$};
-  	\draw[dash pattern={on 1.6pt off 1.6pt}, -stealth] (8, 6.5) -- (9, 6.5);
-  	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.465cm](N3) at (9.375, 6.5){} node[anchor=center] at (N3.text){$Node$};
-  	\draw (8, 6.5) to[american inductor, mirror, l={$L_2$}] (8, 8.25);
-  	\draw (8, 6.5) to[american inductor, l_={$L_1$}] (8, 4.75);
-  \end{tikzpicture}
-\end{center}
+\begin{circuitfig}
+  % Paths, nodes and wires:
+  \draw (6.5, 4.75) to[european voltage source, mirror, v=$V_{in}$, i^>=$I_{in}$, current/distance=0.6] (6.5, 6.5);
+  \node[ground] at (6.5, 4.75){};
+  \node[ground] at (8, 4.75){};
+  \node[ground, xscale=-1, yscale=-1] at (8, 8.25){};
+  \draw (6.5, 6.5) -- (8, 6.5) -- (8, 6.5);
+  \draw[-latex] (8.5, 6.25) -- (8.5, 4.75);
+  \draw[-latex] (8.5, 6.75) -- (8.5, 8.25);
+  \node[shape=rectangle, minimum width=0.715cm, minimum height=0.465cm](N1) at (8.875, 5.5){} node[anchor=center] at (N1.text){$I_{L_1}$};
+  \node[shape=rectangle, xscale=-1, yscale=-1, minimum width=0.715cm, minimum height=0.465cm](N2) at (9.125, 7.5){} node[anchor=center] at (N2.text){$I_{L_2}$};
+  \draw[dash pattern={on 1.6pt off 1.6pt}, -stealth] (8, 6.5) -- (9, 6.5);
+  \node[shape=rectangle, minimum width=0.715cm, minimum height=0.465cm](N3) at (9.375, 6.5){} node[anchor=center] at (N3.text){$Node$};
+  \draw (8, 6.5) to[american inductor, mirror, l={$L_2$}] (8, 8.25);
+  \draw (8, 6.5) to[american inductor, l_={$L_1$}] (8, 4.75);
+\end{circuitfig}
 
 \subsubsection{Transfer Function}
 Applying KCL at the node between \(L_1\) and \(L_2\) we get:
@@ -120,3 +118,4 @@ Determine the output current \(I_{L_1}\) and \(I_{L_2}\) for the following value
       I_{L_2} &= 3.33mA
     \end{align*}
 \end{enumerate}
+

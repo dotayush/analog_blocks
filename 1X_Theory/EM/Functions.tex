@@ -1,0 +1,226 @@
+\subsection{Functions}
+
+A function is a mathematical object that takes one or more inputs to
+produce one or more outputs. Each input can be thought of as a dimension
+in an n-dimensional space where n is the total number of inputs.
+
+If the function produces a single output, it is called a scalar function.
+If the function produces multiple outputs, it is called a vector function.
+Similarly, the function produces a multidimensional  array  of outputs,
+it is called a tensor function.
+
+Here are some example functions:
+\begin{align*}
+  \mathbf{F}(x, y) = [f_1(x, y), f_2(x, y), \ldots, f_n(x, y)] = \text{vector result} \\
+  \mathbf{F}(x, y, z) = [f_1(x, y, z), f_2(x, y, z), \ldots, f_n(x, y, z)] = \text{vector result} \\
+  \mathbf{F}(x) =  12x^2 + 3x + 5 = \text{scalar result} \\
+  \mathbf{G}(x, y) = x^2 + y^2 = \text{scalar result} \\
+  \mathbf{H}(x, y, z) = \begin{bmatrix}
+    x + y + z & 2x - y + z & x - 2y + 3z \\
+    x - y + z & 3x + y - z & 2x + 2y + z \\
+    x + y - z & x - 3y + 2z & 4x + y + z
+  \end{bmatrix} = \text{tensor result}
+\end{align*}
+
+In functions of physics, the inputs are mostly spatial coordinates and
+time i.e. \((x, y, z, t)\) while the outputs are mostly scalars or
+vectors.
+
+Often times \( \mathbf{r} \) is used to represent the spatial coordinates
+such that,
+\begin{align*}
+  \mathbf{r} &= (x, y, z) \\
+  F(\mathbf{r}) &= F(x) \hspace{1cm} \text{[where r=(x); 1D function]} \\
+  F(\mathbf{r}, t) &= F(x, y, z, t) \hspace{1cm} \text{[where r=(x, y, z); 3D function]} \\
+  G(\mathbf{r}) &= G(a, b) \hspace{1cm} \text{[where r=(a, b); 2D function]}
+\end{align*}
+Functions are classified based on the number of output values they produce.
+\begin{enumerate}
+  \item Scalar Function: The output is a single value that can be
+    represented by a single number. Temperature, pressure, and density
+    are examples of scalar functions. Another example,
+    \begin{align*}
+      F(x, y, z) = 20 + 0.5x - 0.2y + 0.1z
+    \end{align*}
+  \item Vector Function: The output is a vector that can be represented
+    by multiple numbers. Wind velocity, electric function, and magnetic
+    function are examples of vector functions. Another example,
+    \begin{align*}
+      \mathbf{F}(x, y, z) = \begin{bmatrix}
+        2x - y + z \\
+        x + 3y - 2z \\
+        -x + y + 4z
+      \end{bmatrix}
+    \end{align*}
+  \item Tensor Function: The output is a tensor that can be represented
+    by a multidimensional array of numbers. Stress, strain, and moment
+    of inertia are examples of tensor functions. Another example,
+    \begin{align*}
+      \mathbf{F}(x, y, z) = \begin{bmatrix}
+        2x - y + z & x + 3y - 2z & -x + y + 4z \\
+        3x - 2y + z & 2x + y - z & -x + 2y + 3z \\
+        -2x + y + z & x - 3y + 2z & 4x + y - z
+      \end{bmatrix}
+    \end{align*}
+\end{enumerate}
+
+\subsubsection{Function Notation}
+
+Scalar functions are represented by normal font and Vector functions are
+represented by boldface font.
+
+\subsubsection{Operations on Function}
+
+We will work with scalar and vector functions in this section as they
+are encountered more often in physics. For a scalar function, operations
+are performed pointwise (f at a, b can only go with g at a, b). For a
+vector function, operations are performed component-wise (f at x goes
+with g at x, f at y goes with g at y, f at z goes with g at z...so on).
+
+Assume Scalar Functions \( V(x, y, z) \), \( W(x, y, z) \) and Vector
+Functions \( \mathbf{F}(x, y, z) \), \( \mathbf{G}(x, y, z) \).
+\textbf{How many ways do you think we can combine V, W, F and G}? There
+are three possibilities if we assume commutativity:
+\begin{enumerate}
+  \item Scalar on Scalar: \( V(x, y, z) \) \& \( W(x, y, z) \) |or| \( W(x, y, z) \) \& \( V(x, y, z) \)
+  \item Scalar on Vector: \( V(x, y, z) \) \& \( \mathbf{F}(x, y, z) \) |or| \( \mathbf{F}(x, y, z) \) \& \( V(x, y, z) \)
+  \item Vector on Vector: \( \mathbf{F}(x, y, z) \) \& \( \mathbf{G}(x, y, z) \) |or| \( \mathbf{G}(x, y, z) \) \& \( \mathbf{F}(x, y, z) \)
+\end{enumerate}
+
+\begin{enumerate}
+  \item \textbf{Addition and Subtraction:} This is straightforward. The
+    result is a new function of the same type as the input functions.
+    \begin{enumerate}
+      \item Scalar on Scalar:
+        \begin{align*}
+          R(x, y, z) &= V(x, y, z) + W(x, y, z) \\
+          R(x, y, z) &= V(x, y, z) - W(x, y, z) \\
+        \end{align*}
+      \item Scalar on Vector:
+        \begin{align*}
+          \mathbf{R}(x, y, z) = V(x, y, z) + \mathbf{F}(x, y, z)
+                              = \begin{bmatrix}
+                                  V(x, y, z) + F_x(x, y, z) \\
+                                  V(x, y, z) + F_y(x, y, z) \\
+                                  V(x, y, z) + F_z(x, y, z)
+                                \end{bmatrix} \\
+          \mathbf{R}(x, y, z) = V(x, y, z) - \mathbf{F}(x, y, z)
+                              = \begin{bmatrix}
+                                  V(x, y, z) - F_x(x, y, z) \\
+                                  V(x, y, z) - F_y(x, y, z) \\
+                                  V(x, y, z) - F_z(x, y, z)
+                                \end{bmatrix}
+        \end{align*}
+      \item Vector on Vector:
+        \begin{align*}
+          \mathbf{R}(x, y, z) = \mathbf{F}(x, y, z) + \mathbf{G}(x, y, z)
+                              = \begin{bmatrix}
+                                  F_x(x, y, z) + G_x(x, y, z) \\
+                                  F_y(x, y, z) + G_y(x, y, z) \\
+                                  F_z(x, y, z) + G_z(x, y, z)
+                                \end{bmatrix} \\
+          \mathbf{R}(x, y, z) = \mathbf{F}(x, y, z) - \mathbf{G}(x, y, z)
+                              = \begin{bmatrix}
+                                  F_x(x, y, z) - G_x(x, y, z) \\
+                                  F_y(x, y, z) - G_y(x, y, z) \\
+                                  F_z(x, y, z) - G_z(x, y, z)
+                                \end{bmatrix}
+        \end{align*}
+    \end{enumerate}
+    \item \textbf{Multiplication:} A bit more complex as the type of
+      functions matters. The result is a function of the same or
+      different type.
+      \begin{enumerate}
+        \item Scalar on Scalar: Results in a scalar function.
+          \begin{align*}
+            R(x, y, z) = V(x, y, z) \cdot W(x, y, z)
+          \end{align*}
+        \item Scalar on Vector: Results in a vector function.
+          \begin{align*}
+            \mathbf{R}(x, y, z) = V(x, y, z) \cdot \mathbf{F}(x, y, z)
+                                = \begin{bmatrix}
+                                    V(x, y, z) \cdot F_x(x, y, z) \\
+                                    V(x, y, z) \cdot F_y(x, y, z) \\
+                                    V(x, y, z) \cdot F_z(x, y, z)
+                                  \end{bmatrix} \\
+                  R(x, y, z) = \mathbf{F}(x, y, z) \cdot V(x, y, z)
+                                = \begin{bmatrix}
+                                    F_x(x, y, z) \cdot V(x, y, z) \\
+                                    F_y(x, y, z) \cdot V(x, y, z) \\
+                                    F_z(x, y, z) \cdot V(x, y, z)
+                                  \end{bmatrix}
+          \end{align*}
+        \item Vector on Vector: Results in either a scalar function
+          (dot product) or a vector function (cross product). \textbf{This
+          is worth reading about in more detail. It is used extensively
+          in electromagnetism.}
+          \begin{align*}
+            R(x, y, z) = \mathbf{F}(x, y, z) \cdot \mathbf{G}(x, y, z)
+            = F_x G_x + F_y G_y + F_z G_z \hspace{1em} \text{[Dot Product]} \\
+            \mathbf{R}(x, y, z) = \mathbf{F}(x, y, z) \times \mathbf{G}(x, y, z)
+                        = \begin{bmatrix}
+                            F_y G_z - F_z G_y \\
+                            F_z G_x - F_x G_z \\
+                            F_x G_y - F_y G_x
+                          \end{bmatrix} \hspace{1em} \text{[Cross Product]}
+          \end{align*}
+      \end{enumerate}
+\end{enumerate}
+
+\subsubsection{Del/Nabla}
+
+Del (\( \nabla \)) is a vector function. It is defined as:
+\begin{align*}
+  \nabla = \left[\frac{\partial}{\partial x}, \frac{\partial}{\partial y}, \frac{\partial}{\partial z}\right] = \hat{\mathbf{x}} \frac{\partial}{\partial x} + \hat{\mathbf{y}} \frac{\partial}{\partial y} + \hat{\mathbf{z}} \frac{\partial}{\partial z} \hspace{1em} \text{[3D]} \\
+  \nabla = \left[\frac{\partial}{\partial x}, \frac{\partial}{\partial y}\right] = \hat{\mathbf{x}} \frac{\partial}{\partial x} + \hat{\mathbf{y}} \frac{\partial}{\partial y} \hspace{1em} \text{[2D]}
+\end{align*}
+Think of it as just another vector function that can be combined with other
+functions. \textbf{At heart, nabla obeys the same rules of vector
+multiplication}.
+\begin{itemize}
+  \item \textbf{Gradient}: Acts on a scalar function \( V(x, y, z) \) to produce
+    a vector function. Intuitively, the \textbf{gradient points in the direction of
+    the greatest rate of increase of the scalar function and its magnitude
+    represents the rate of change in that direction}. It is defined as:
+    \begin{align*}
+      \nabla V(x,y,z) = \left[\frac{\partial V(x,y,z)}{\partial x}, \frac{\partial V(x,y,z)}{\partial y}, \frac{\partial V(x,y,z)}{\partial z}\right]
+    \end{align*}
+  \item \textbf{Divergence}:  Acts on a vector function \( \mathbf{F}(x, y, z) \)
+    to produce a scalar function. Intuitively, \textbf{the divergence
+    measures  the "outflow" (positive) or "inflow" (negative) of the
+    vector function at a given point}. It is defined as:
+    \begin{align*}
+      \nabla \cdot \mathbf{F}(x,y,z) = \frac{\partial F(x,y,z)}{\partial x} +
+      \frac{\partial F(x,y,z)}{\partial y} +
+      \frac{\partial F(x,y,z)}{\partial z}
+    \end{align*}
+  \item \textbf{Curl}: Acts on vector function \( \mathbf{F}(x, y, z) \) to
+    produce a new vector function that is orthogonal/normal/perpendicular to
+    the original vector function at each point in space. Intuitively, \textbf{
+    the curl measures the rotation or circulation of the vector function at a
+    given point}. It is defined as:
+    \begin{align*}
+      \nabla \times \mathbf{F}(x,y,z) &=
+      \begin{bmatrix}
+        \hat{\mathbf{x}} & \hat{\mathbf{y}} & \hat{\mathbf{z}}\\
+        \frac{\partial}{\partial x} &
+        \frac{\partial}{\partial y} &
+        \frac{\partial}{\partial z}\\
+        F(x,y,z) & F(x,y,z) & F(x,y,z)
+      \end{bmatrix}\\
+      &= \left[\frac{\partial F_z(x,y,z)}{\partial y} - \frac{\partial F_y(x,y,z)}{\partial z}, \frac{\partial F_x(x,y,z)}{\partial z} - \frac{\partial F_z(x,y,z)}{\partial x}, \frac{\partial F_y(x,y,z)}{\partial x} - \frac{\partial F_x(x,y,z)}{\partial y}\right]
+    \end{align*}
+\end{itemize}
+
+\subsubsection{Borrowing Vector Calculus Results}
+
+Several results from vector calculus are useful. Here are
+a few that we will use further down the line.
+\begin{enumerate}
+  \item Curl of Gradient \(\nabla \times (\nabla V)\) is always zero.
+  \item Divergence of Curl \(\nabla \cdot (\nabla \times \mathbf{F})\) is always zero.
+  \item Curl of Curl \(\nabla \times (\nabla \times \mathbf{F})\) is given by
+    \begin{align*}
+      \nabla \times (\nabla \times \mathbf{F}) = \nabla (\nabla \cdot \mathbf{F}) - \nabla^2 \mathbf{F}
+    \end{align*}
+\end{enumerate}

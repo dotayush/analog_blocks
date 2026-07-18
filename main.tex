@@ -4,6 +4,8 @@
 \usepackage{amsmath, amssymb, array, float, breqn}
 \usepackage{tabularx, circuitikz, listings}
 \usepackage[left=1cm, top=2.54cm, bottom=2.54cm, right=1cm]{geometry}
+\usepackage{lineno}
+\usepackage{silence}
 
 % custom stuff
 \newcolumntype{M}{>{$}c<{$}}
@@ -15,22 +17,23 @@
 \renewcommand{\le}{\textbackslash{}le }
 \renewcommand{\arraystretch}{1.5}
 \newcommand{\spc}{,\:}
+\newenvironment{circuitfig}{\par\medskip\noindent\hbox to \linewidth\bgroup\hss\begin{circuitikz}\tolerance=10000\emergencystretch=10pt}{\end{circuitikz}\hss\egroup\par\medskip}
 \setcounter{tocdepth}{2}
+\linenumbers
 
 % document
 \begin{document}
 
 \pagenumbering{arabic}
-\title{Analog Blocks}
+\title{Vidyutshashtra}
 \author{Ayush Gupta}
 \date{January 2026}
 \maketitle
 \tableofcontents
-\include{00_Introduction/Introduction}
-\include{01_Passives/Passives}
-\include{02_Filters/Filters}
-\include{03_Current_Mirrors/Current_Mirrors}
-\include{04_Amplifiers/Amplifiers}
-\include{1X_Theory/Theory}
-
+\include{00_Introduction/main}
+\include{01_Passives/main}
+\include{02_Filters/main}
+\include{03_Current_Mirrors/main}
+\include{04_Amplifiers/main}
+\include{1X_Theory/main}
 \end{document}
