@@ -65,7 +65,7 @@ Applying KCL at $V_{out}$ on Full Schematic, we get:
       V_{out}(G_1 + \frac{1}{sL_1}) &= \frac{V_{1}}{sL_1} \\
       V_{out} &= \frac{\frac{V_{1}}{sL_1}}{(G_1 + \frac{1}{sL_1})} \\
       V_{out} &= \frac{1}{L_1 s G_1 + 1}V_{1} \\
-      \boxed{H_1(s) = \frac{N_1(s)}{D_1(s)} = \frac{V_{out_1}}{V_{1}} = \frac{1}{L_1 s G_1 + 1}}
+      H_1(s) = \frac{N_1(s)}{D_1(s)} = \frac{V_{out_1}}{V_{1}} &= \frac{1}{L_1 s G_1 + 1}
     \end{align*}
   \item Due to \(V_{2}\) alone (\(V_{1} = 0V\)):
     This is the high-pass characteristic of the RL Pass Filter.
@@ -76,14 +76,14 @@ Applying KCL at $V_{out}$ on Full Schematic, we get:
       V_{out}(G_1 + \frac{1}{sL_1}) &= V_{2}G_1 \\
       V_{out} &= \frac{V_{2}G_1}{(G_1 + \frac{1}{sL_1})} \\
       V_{out} &= \frac{sL_1 G_1}{G_1 s L_1 + 1}V_{2} \\
-      \boxed{H_2(s) = \frac{N_2(s)}{D_2(s)} = \frac{V_{out_2}}{V_{2}} = \frac{sL_1 G_1}{G_1 s L_1 + 1}}
+      H_2(s) = \frac{N_2(s)}{D_2(s)} = \frac{V_{out_2}}{V_{2}} &= \frac{sL_1 G_1}{G_1 s L_1 + 1}
     \end{align*}
 \end{enumerate}
 \paragraph{Total Response:}
 \begin{align*}
   V_{out} &= V_{out_1} + V_{out_2} \\
   V_{out} &= H_1(s) V_{1} + H_2(s) V_{2} \\
-  \boxed{V_{out} = \underbrace{\frac{1}{L_1 s G_1 + 1}V_{1}}_{\text{Low Pass Character}} + \underbrace{\frac{sL_1 G_1}{G_1 s L_1 + 1}V_{2}}_{\text{High Pass Character}}}
+  V_{out} = \underbrace{\frac{1}{L_1 s G_1 + 1}V_{1}}_{\text{Low Pass Character}} + \underbrace{\frac{sL_1 G_1}{G_1 s L_1 + 1}V_{2}}_{\text{High Pass Character}}
 \end{align*}
 
 \subsubsection{Analysis}
@@ -121,13 +121,13 @@ Applying KCL at $V_{out}$ on Full Schematic, we get:
       For low pass \(H_1(s)\):
       \begin{align*}
         H_1(0) &= \frac{1}{L_1 (0) G_1 + 1} = 1 \\
-        \boxed{A_{DC_1} = 1 = 0 dB}
+        A_{DC_1} = 1 = 0 dB
       \end{align*}
       Unity DC gain for \(H_1(s)\). \\
       For high pass \(H_2(s)\):
       \begin{align*}
         H_2(0) &= \frac{(0) L_1 G_1}{G_1 (0) L_1 + 1} = 0 \\
-        \boxed{A_{DC_2} = 0 = -\infty dB}
+        A_{DC_2} = 0 = -\infty dB
       \end{align*}
       Zero DC gain for \(H_2(s)\).
     \item \textbf{Gain-Bandwidth Product (\(GBW\)):}
@@ -154,7 +154,7 @@ Applying KCL at $V_{out}$ on Full Schematic, we get:
         \begin{align*}
           Z_{in} &= \frac{1}{G_1} + s L_1 \\
           Z_{in} &= R_1 + j \omega L_1 \\
-          \boxed{Z_{in} = R_1 + j \omega L_1}
+          Z_{in} = R_1 + j \omega L_1
         \end{align*}
       \paragraph{At Output:}
         \begin{align*}
@@ -163,7 +163,7 @@ Applying KCL at $V_{out}$ on Full Schematic, we get:
           Z_{out} &= \frac{R_1 j \omega L_1}{R_1 + j \omega L_1} \\
           Z_{out} &= \frac{R_1 j \omega L_1 (R_1 - j \omega L_1)}{(R_1 + j \omega L_1)(R_1 - j \omega L_1)} \\
           Z_{out} &= \frac{j \omega R_1^2 L_1 + \omega^2 R_1 L_1^2}{R_1^2 + (\omega L_1)^2} \\
-          \boxed{Z_{out} = \frac{\omega^2 R_1 L_1^2}{R_1^2 + (\omega L_1)^2} + j \frac{\omega R_1^2 L_1}{R_1^2 + (\omega L_1)^2}}
+          Z_{out} = \frac{\omega^2 R_1 L_1^2}{R_1^2 + (\omega L_1)^2} + j \frac{\omega R_1^2 L_1}{R_1^2 + (\omega L_1)^2}
         \end{align*}
 \end{enumerate}
 
@@ -190,7 +190,7 @@ Also compute the input and output impedance at \(f = 10kHz\).
       f_p &= \frac{R_1}{2 \pi L_1} \\
       L_1 &= \frac{R_1}{2 \pi f_p} \\
       L_1 &= \frac{330}{2 \pi \cdot 45000} \\
-      \boxed{L_1 = 1.167 mH}
+      L_1 = 1.167 mH
     \end{align*}
   \item Calculate the input and output impedance at
     \(f = 10kHz\):
@@ -199,14 +199,14 @@ Also compute the input and output impedance at \(f = 10kHz\).
         Z_{in} &= R_1 + j \omega L_1 \\
         Z_{in} &= 330 + j 2 \pi (10000) (1.167 \times 10^{-3}) \\
         Z_{in} &= 330 + j 73.3 \\
-        \boxed{Z_{in} = 330 + j 73.3 \Omega}
+        Z_{in} = 330 + j 73.3 \Omega
       \end{align*}
     \paragraph{At Output:}
       \begin{align*}
         Z_{out} &= \frac{\omega^2 R_1 L_1^2}{R_1^2 + (\omega L_1)^2} + j \frac{\omega R_1^2 L_1}{R_1^2 + (\omega L_1)^2} \\
         Z_{out} &= \frac{(2 \pi (10000))^2 (330) (1.167 \times 10^{-3})^2}{(330)^2 + (2 \pi (10000) (1.167 \times 10^{-3}))^2} + j \frac{(2 \pi (10000)) (330)^2 (1.167 \times 10^{-3})}{(330)^2 + (2 \pi (10000) (1.167 \times 10^{-3}))^2} \\
         Z_{out} &= 6.94 + j 69.4 \\
-        \boxed{Z_{out} = 6.94 + j 69.4 \Omega}
+        Z_{out} = 6.94 + j 69.4 \Omega
       \end{align*}
 \end{enumerate}
 

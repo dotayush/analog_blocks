@@ -64,7 +64,7 @@ Applying KCL at $V_{out}$ on Full Schematic, we get:
       V_{out} &= \frac{\frac{V_{1}}{sL_1}}{(sC_1 + \frac{1}{sL_1})} \\
       V_{out} &= \frac{\frac{V_{1}}{sL_1}}{\frac{s^2C_1L_1 + 1}{sL_1}} \\
       V_{out} &= \frac{V_{1}}{s^2C_1L_1 + 1} \\
-      \boxed{H_1(s) = \frac{N_1(s)}{D_1(s)} = \frac{V_{out_1}}{V_{1}} = \frac{1}{s^2C_1L_1 + 1}}
+      H_1(s) = \frac{N_1(s)}{D_1(s)} = \frac{V_{out_1}}{V_{1}} &= \frac{1}{s^2C_1L_1 + 1}
     \end{align*}
   \item Due to \(V_{2}\) alone (\(V_{1} = 0V\)):
     This is the high-pass characteristic of the LC Pass Filter.
@@ -75,7 +75,7 @@ Applying KCL at $V_{out}$ on Full Schematic, we get:
       V_{out} &= \frac{V_{2}sC_1}{(\frac{1}{sL_1} + sC_1)} \\
       V_{out} &= \frac{V_{2}sC_1}{\frac{s^2C_1L_1 + 1}{sL_1}} \\
       V_{out} &= \frac{V_{2}s^2C_1L_1}{s^2C_1L_1 + 1} \\
-      \boxed{H_2(s) = \frac{N_2(s)}{D_2(s)} = \frac{V_{out_2}}{V_{2}} = \frac{s^2C_1L_1}{s^2C_1L_1 + 1}}
+      H_2(s) = \frac{N_2(s)}{D_2(s)} = \frac{V_{out_2}}{V_{2}} &= \frac{s^2C_1L_1}{s^2C_1L_1 + 1}
     \end{align*}
 \end{enumerate}
 \paragraph{Total Output:}
@@ -119,13 +119,13 @@ Applying KCL at $V_{out}$ on Full Schematic, we get:
     For low pass \(H_1(s)\):
     \begin{align*}
       H_1(0) &= \frac{1}{0^2C_1L_1 + 1} = 1
-      \boxed{A_{DC_1} = 1 = 0 dB}
+      A_{DC_1} = 1 = 0 dB
     \end{align*}
     Unity DC gain for \(H_1(s)\). \\
     For low pass \(H_2(s)\):
     \begin{align*}
       H_2(0) &= \frac{0^2C_1L_1}{0^2C_1L_1 + 1} = 0
-      \boxed{A_{DC_2} = 0 = -\infty dB}
+      A_{DC_2} = 0 = -\infty dB
     \end{align*}
     Zero DC gain for \(H_2(s)\).
   \item \textbf{Gain Bandwidth Product (GBW):}
@@ -152,7 +152,7 @@ Applying KCL at $V_{out}$ on Full Schematic, we get:
       \begin{align*}
         Z_{in} &= sL_1 + \frac{1}{sC_1} \\
         Z_{in} &= j \omega L_1 - j \frac{1}{\omega C_1} \\
-        \boxed{Z_{in} = j \left( \omega L_1 - \frac{1}{\omega C_1} \right)}
+        Z_{in} = j \left( \omega L_1 - \frac{1}{\omega C_1} \right)
       \end{align*}
     \paragraph{At Output:}
       \begin{align*}
@@ -161,7 +161,7 @@ Applying KCL at $V_{out}$ on Full Schematic, we get:
         Z_{out} &= \frac{\frac{L_1}{C_1}}{s^2 L_1 C_1 + 1} \\
         Z_{out} &= \frac{\frac{L_1}{C_1}}{(j \omega)^2 L_1 C_1 + 1} \\
         Z_{out} &= \frac{\frac{L_1}{C_1}}{- \omega^2 L_1 C_1 + 1} \\
-        \boxed{Z_{out} = \frac{\frac{L_1}{C_1}}{1 - \omega^2 L_1 C_1}}
+        Z_{out} = \frac{\frac{L_1}{C_1}}{1 - \omega^2 L_1 C_1}
       \end{align*}
 \end{enumerate}
 

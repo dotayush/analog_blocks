@@ -65,7 +65,7 @@ Applying KCL at $V_{out}$ on Full Schematic, we get:
       V_{out}G_1 - V_{1}G_1 + V_{out}sC_1 &= 0 \\
       V_{out}(G_1 + sC_1) - V_{1}G_1 &= 0 \\
       V_{out}(G_1 + sC_1) &= V_{1}G_1 \\
-      \boxed{H_1(s) = \frac{N_1(s)}{D_1(s)} = \frac{V_{out_1}}{V_{1}} = \frac{G_1}{G_1 + sC_1}}
+      H_1(s) = \frac{N_1(s)}{D_1(s)} = \frac{V_{out_1}}{V_{1}} &= \frac{G_1}{G_1 + sC_1}
     \end{align*}
   \item Due to \(V_{2}\) alone (\(V_{1} = 0V\)):
     This is the high-pass characteristic of the RC Pass Filter.
@@ -74,7 +74,7 @@ Applying KCL at $V_{out}$ on Full Schematic, we get:
       V_{out}G_1 + V_{out}sC_1 - V_{2}sC_1 &= 0 \\
       V_{out}(G_1 + sC_1) - V_{2}sC_1 &= 0 \\
       V_{out}(G_1 + sC_1) &= V_{2}sC_1 \\
-      \boxed{H_2(s) = \frac{N_2(s)}{D_2(s)} = \frac{V_{out_2}}{V_{2}} = \frac{sC_1}{G_1 + sC_1}}
+      H_2(s) = \frac{N_2(s)}{D_2(s)} = \frac{V_{out_2}}{V_{2}} &= \frac{sC_1}{G_1 + sC_1}
     \end{align*}
 \end{enumerate}
 
@@ -99,7 +99,7 @@ low-pass and high-pass characteristics.
     \begin{align*}
       s &= -2 \pi f_p \\
       -2 \pi f_p &= -\frac{G_1}{C_1} \\
-      \boxed{f_p = \frac{G_1}{2 \pi C_1} = \frac{1}{2 \pi R_1 C_1}}
+      f_p = \frac{G_1}{2 \pi C_1} = \frac{1}{2 \pi R_1 C_1}
     \end{align*}
   \item \textbf{Zeroes (\(N(s) = 0\)):} \\
     For low pass $H_1(s)$:
@@ -120,13 +120,13 @@ low-pass and high-pass characteristics.
     For low pass \(H_1(s)\):
       \begin{align*}
         H_1(0) &= \frac{G_1}{G_1 + 0 \cdot C_1} = 1 \\
-        \boxed{A_{DC_1} = 1 = 0 dB}
+        A_{DC_1} = 1 = 0 dB
       \end{align*}
     Unity DC gain for \(H_1(s)\). \\
     For high pass \(H_2(s)\):
       \begin{align*}
         H_2(0) &= \frac{0 \cdot C_1}{G_1 + 0 \cdot C_1} = 0 \\
-        \boxed{A_{DC_2} = 0 = -\infty dB}
+        A_{DC_2} = 0 = -\infty dB
       \end{align*}
     Zero DC gain for \(H_2(s)\).
   \item \textbf{Gain-Bandwidth Product (\(GBW\)):}
@@ -153,7 +153,7 @@ low-pass and high-pass characteristics.
       \begin{align*}
         Z_{in} = R_1 + \frac{1}{sC_1} \\
         \text{Substituting } s = j \omega &: \\
-        \boxed{Z_{in} = R_1 - j \frac{1}{\omega C_1}}
+        Z_{in} = R_1 - j \frac{1}{\omega C_1}
       \end{align*}
     \paragraph{At Output:}
       \begin{align*}
@@ -164,7 +164,7 @@ low-pass and high-pass characteristics.
         \text{Substituting } s = j \omega &: \\
         Z_{out} &= \frac{R_1}{1 + j \omega R_1 C_1} \cdot \frac{1 - j \omega R_1 C_1}{1 - j \omega R_1 C_1} \\
         Z_{out} &= \frac{R_1 - j \omega R_1^2 C_1}{1 + (\omega R_1 C_1)^2} \\
-        \boxed{Z_{out} = \frac{R_1}{1 + (\omega R_1 C_1)^2} - j \frac{\omega R_1^2 C_1}{1 + (\omega R_1 C_1)^2}}
+        Z_{out} = \frac{R_1}{1 + (\omega R_1 C_1)^2} - j \frac{\omega R_1^2 C_1}{1 + (\omega R_1 C_1)^2}
       \end{align*}
 \end{enumerate}
 
@@ -209,7 +209,7 @@ Also compute the input and output impedance at
       R_1 &= \frac{1}{2 \pi f_p C_1} \\
           &= \frac{1}{2 \pi (1kHz)(1\mu F)} \\
           &= 159.15 \Omega \\
-      \boxed{R_1 \approx 159 \Omega}
+      R_1 &\approx 159 \Omega
     \end{align*}
   \item Calculating \(Z_{in}\) and \(Z_{out}\) at \(f = 75Hz\):
     \begin{align*}

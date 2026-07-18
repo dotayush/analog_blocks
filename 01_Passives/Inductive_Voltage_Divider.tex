@@ -38,7 +38,7 @@ Applying KCL at $V_{out}$ we get:
       V_{out}\left(\frac{L_2 + L_1}{sL_1 L_2}\right) &= \frac{V_{cc}}{sL_1} \\
       V_{out}(L_2 + L_1) &= V_{cc} L_2 \\
       V_{out} &= V_{cc} \frac{L_2}{L_1 + L_2} \\
-      \boxed{H_1(s) = \frac{N_1(s)}{D_1(s)} = \frac{V_{out_1}}{V_{cc}} = \frac{L_2}{L_1 + L_2}}
+      H_1(s) = \frac{N_1(s)}{D_1(s)} = \frac{V_{out_1}}{V_{cc}} &= \frac{L_2}{L_1 + L_2}
     \end{align*}
   \item Due to \(V_{ee}\) alone (\(V_{cc} = 0V\)):
     \begin{align*}
@@ -50,7 +50,7 @@ Applying KCL at $V_{out}$ we get:
       V_{out}\left(\frac{L_2 + L_1}{sL_1 L_2}\right) &= \frac{V_{ee}}{sL_2} \\
       V_{out}(L_2 + L_1) &= V_{ee} L_1 \\
       V_{out} &= V_{ee} \frac{L_1}{L_1 + L_2} \\
-      \boxed{H_2(s) = \frac{N_2(s)}{D_2(s)} = \frac{V_{out_2}}{V_{ee}} = \frac{L_1}{L_1 + L_2}}
+      H_2(s) = \frac{N_2(s)}{D_2(s)} = \frac{V_{out_2}}{V_{ee}} &= \frac{L_1}{L_1 + L_2}
     \end{align*}
 \end{enumerate}
 \paragraph{Total Output:}
@@ -67,19 +67,19 @@ Applying KCL at $V_{out}$ we get:
       \frac{V_{out} - V_{cc}}{sL_1} - \frac{V_{ee} - V_{out}}{sL_2} &= 0 \\
       \frac{V_{out} - V_{cc}}{sL_1} &= \frac{V_{ee} - V_{out}}{sL_2} \\
       \frac{sL_2}{sL_1} &= \frac{V_{ee} - V_{out}}{V_{out} - V_{cc}} \\
-      \boxed{\frac{L_2}{L_1} = \frac{V_{ee} - V_{out}}{V_{out} - V_{cc}}}
+      \frac{L_2}{L_1} = \frac{V_{ee} - V_{out}}{V_{out} - V_{cc}}
     \end{align*}
   \item \textbf{Impedance's:}
     \paragraph{At Input:}
       \begin{align*}
         Z_{in} &= sL_1 + sL_2 \\
-        \boxed{Z_{in} = s(L_1 + L_2)}
+        Z_{in} = s(L_1 + L_2)
       \end{align*}
     \paragraph{At Output:}
       \begin{align*}
         Z_{out} &= \frac{1}{\frac{1}{sL_1} + \frac{1}{sL_2}} \\
         Z_{out} &= \frac{1}{\frac{L_2 + L_1}{sL_1 L_2}} \\
-        \boxed{Z_{out} = \frac{sL_1 L_2}{L_1 + L_2}}
+        Z_{out} = \frac{sL_1 L_2}{L_1 + L_2}
       \end{align*}
   \item \textbf{Loading Effect:} \\
     Similar to resistive dividers.
@@ -98,7 +98,7 @@ value.
       \frac{L_2}{L_1} &= \frac{0V - 7V}{7V - 10V} \\
       \frac{L_2}{L_1} &= \frac{-7V}{-3V} \\
       \frac{L_2}{L_1} &= \frac{7}{3} \\
-      \boxed{\frac{L_2}{L_1} = 2.33}
+      \frac{L_2}{L_1} = 2.33
     \end{align*}
   \item Calculate the input impedance:
     \begin{align*}

@@ -36,8 +36,7 @@ For \(I_{C_1}\):
   I_{C_1} &= V_{in}sC_1 \\
   I_{C_1} &= \frac{I_{in}}{s(C_1 + C_2)}sC_1 \\
   \frac{I_{C_1}}{I_{in}} &= \frac{sC_1}{s(C_1 + C_2)} \\
-  \frac{I_{C_1}}{I_{in}} &= \frac{C_1}{C_1 + C_2} \\
-  \boxed{H_1(s) = \frac{N_1(s)}{D_1(s)} = \frac{I_{C_1}}{I_{in}} = \frac{C_1}{C_1 + C_2}}
+  H_1(s) = \frac{N_1(s)}{D_1(s)} = \frac{I_{C_1}}{I_{in}} &= \frac{C_1}{C_1 + C_2}
 \end{align*}
 For \(I_{C_2}\):
 \begin{align*}
@@ -45,8 +44,7 @@ For \(I_{C_2}\):
   I_{C_2} &= V_{in}sC_2 \\
   I_{C_2} &= \frac{I_{in}}{s(C_1 + C_2)}sC_2 \\
   \frac{I_{C_2}}{I_{in}} &= \frac{sC_2}{s(C_1 + C_2)} \\
-  \frac{I_{C_2}}{I_{in}} &= \frac{C_2}{C_1 + C_2} \\
-  \boxed{H_2(s) = \frac{N_2(s)}{D_2(s)} = \frac{I_{C_2}}{I_{in}} = \frac{C_2}{C_1 + C_2}}
+  H_2(s) = \frac{N_2(s)}{D_2(s)} = \frac{I_{C_2}}{I_{in}} = \frac{C_2}{C_1 + C_2}
 \end{align*}
 \paragraph{Total Output:}
 \begin{align*}
@@ -84,13 +82,12 @@ For \(I_{C_2}\):
         Z_{in} &= \frac{1}{sC_1} + \frac{1}{sC_2} \\
         Z_{in} &= \frac{1}{s}\left(\frac{1}{C_1} + \frac{1}{C_2}\right) \\
         Z_{in} &= \frac{1}{s}\left(\frac{C_1 + C_2}{C_1 C_2}\right) \\
-        \boxed{Z_{in} = \frac{C_1 + C_2}{s C_1 C_2}} = \frac{1}{sC_{eq}} \hspace{1cm} \text{(where \(C_{eq} = \frac{C_1 C_2}{C_1 + C_2}\))}
+        Z_{in} &= \frac{C_1 + C_2}{s C_1 C_2} = \frac{1}{sC_{eq}} \hspace{1cm} \text{(where \(C_{eq} = \frac{C_1 C_2}{C_1 + C_2}\))}
       \end{align*}
     \paragraph{At Output:}
       \begin{align*}
         Z_{out} &= \frac{1}{sC_1 + sC_2} \\
         Z_{out} &= \frac{1}{s(C_1 + C_2)} \\
-        \boxed{Z_{out} = \frac{1}{s(C_1 + C_2)}}
       \end{align*}
 \end{enumerate}
 
