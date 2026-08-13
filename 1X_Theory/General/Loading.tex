@@ -1,5 +1,4 @@
-\subsection{Loading Effect}
-\label{sec:theory_general_loading}
+\subsection{Loading Effect}\label{sec:theory_general_loading}
 
 Two adjacent circuit stages can load each other if the adjoining
 impedances (output -> input or input -> output) are within the same
@@ -14,17 +13,17 @@ connected to each other as shown below. Each circuit stage/box has an
 input impedance and an output impedance.
 \begin{circuitfig}
   % Paths, nodes and wires:
-  \node[shape=rectangle, draw={rgb,255:red,255;green,0;blue,0}, line width=1pt, minimum width=2.465cm, minimum height=1.715cm](N1) at (6.75, 6.625){} node[anchor=center] at (N1.text){\textcolor{rgb,255:red,255;green,0;blue,0}{$Box_1$}};
-  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N2) at (8.25, 8){} node[anchor=center] at (N2.text){\textcolor{rgb,255:red,255;green,0;blue,0}{$Z_{out_1}$}};
-  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N3) at (5.5, 8){} node[anchor=center] at (N3.text){\textcolor{rgb,255:red,255;green,0;blue,0}{$Z_{in_1}$}};
-  \node[shape=rectangle, draw, line width=1pt, minimum width=2.465cm, minimum height=1.715cm](N4) at (10.75, 6.625){} node[anchor=center] at (N4.text){$Box_2$};
-  \node[shape=rectangle, draw={rgb,255:red,0;green,8;blue,255}, line width=1pt, minimum width=2.465cm, minimum height=1.715cm](N5) at (14.5, 6.625){} node[anchor=center] at (N5.text){$Box_3$};
+  \node[shape=rectangle, draw={rgb,255:red,255;green,0;blue,0}, line width=1pt, minimum width=2.465cm, minimum height=1.715cm] (N1) at (6.75, 6.625){} node[anchor=center] at (N1.text){\textcolor{rgb,255:red,255;green,0;blue,0}{$Box_1$}};
+  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N2) at (8.25, 8){} node[anchor=center] at (N2.text){\textcolor{rgb,255:red,255;green,0;blue,0}{$Z_{out_1}$}};
+  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N3) at (5.5, 8){} node[anchor=center] at (N3.text){\textcolor{rgb,255:red,255;green,0;blue,0}{$Z_{in_1}$}};
+  \node[shape=rectangle, draw, line width=1pt, minimum width=2.465cm, minimum height=1.715cm] (N4) at (10.75, 6.625){} node[anchor=center] at (N4.text){$Box_2$};
+  \node[shape=rectangle, draw={rgb,255:red,0;green,8;blue,255}, line width=1pt, minimum width=2.465cm, minimum height=1.715cm] (N5) at (14.5, 6.625){} node[anchor=center] at (N5.text){$Box_3$};
   \draw[stealth-] (9.5, 6.625) -- (8, 6.625);
   \draw[-stealth] (12, 6.625) -- (13.25, 6.625);
-  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N6) at (12, 8){} node[anchor=center] at (N6.text){\textcolor{rgb,255:red,0;green,0;blue,0}{$Z_{out_2}$}};
-  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N7) at (15.75, 8){} node[anchor=center] at (N7.text){\textcolor{rgb,255:red,30;green,0;blue,255}{$Z_{out_3}$}};
-  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N8) at (13.25, 8){} node[anchor=center] at (N8.text){\textcolor{rgb,255:red,0;green,8;blue,255}{$Z_{in_3}$}};
-  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N9) at (9.5, 8){} node[anchor=center] at (N9.text){$Z_{in_3}$};
+  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N6) at (12, 8){} node[anchor=center] at (N6.text){\textcolor{rgb,255:red,0;green,0;blue,0}{$Z_{out_2}$}};
+  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N7) at (15.75, 8){} node[anchor=center] at (N7.text){\textcolor{rgb,255:red,30;green,0;blue,255}{$Z_{out_3}$}};
+  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N8) at (13.25, 8){} node[anchor=center] at (N8.text){\textcolor{rgb,255:red,0;green,8;blue,255}{$Z_{in_3}$}};
+  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N9) at (9.5, 8){} node[anchor=center] at (N9.text){$Z_{in_3}$};
   \draw[line width=1pt, dash pattern={on 4pt off 4pt}] (8.75, 4.25) -| (8.75, 9);
   \draw[line width=1pt, dash pattern={on 4pt off 4pt}] (12.5, 4.25) -| (12.5, 9);
 \end{circuitfig}

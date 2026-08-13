@@ -8,8 +8,8 @@ current gain different from unity.
 \subsubsection{Schematic}
 \begin{circuitfig}
   \draw (2.98, 7.905) to[american voltage source, l_={$V_{cc}$}] (1.73, 7.905);
-	\node[nmos, arrowmos, xscale=-1](N1) at (3.25, 4.405){} node[anchor=east] at (N1.text){$M_0$};
-	\node[nmos, arrowmos](N2) at (5.75, 4.405){} node[anchor=west] at (N2.text){$M_1$};
+	\node[nmos, arrowmos, xscale=-1] (N1) at (3.25, 4.405){} node[anchor=east] at (N1.text){$M_0$};
+	\node[nmos, arrowmos] (N2) at (5.75, 4.405){} node[anchor=west] at (N2.text){$M_1$};
 	\draw (3.25, 7.405) to[european resistor, l={$G_2$}] (3.25, 5.905);
 	\draw (5.75, 5.655) -| (5.75, 5.175);
 	\draw (4.5, 4.405) |- (3.25, 5.405);
@@ -20,7 +20,7 @@ current gain different from unity.
 	\node[ground, rotate=-90] at (1.73, 7.905){};
 	\node[ground, rotate=-90] at (2.5, 2.655){};
 	\draw[dash pattern={on 1.6pt off 0.8pt}, -stealth] (5.75, 5.655) -- (6.25, 5.655);
-	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N3) at (6.75, 5.615){} node[anchor=center] at (N3.text){$V_{out}$};
+	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N3) at (6.75, 5.615){} node[anchor=center] at (N3.text){$V_{out}$};
 	\draw (5.75, 7.365) to[european resistor, l={\textcolor{rgb,255:red,255;green,0;blue,0}{$G_3$}}] (5.75, 5.865);
 	\draw (5.75, 5.655) -- (5.75, 5.885);
 	\draw (3.25, 7.405) |- (2.98, 7.905);
@@ -28,9 +28,9 @@ current gain different from unity.
 	\node[shape=rectangle, minimum width=4.965cm, minimum height=1.09cm] at (4.375, 9.928){} node[anchor=north, align=center, text width=4.577cm, inner sep=6pt] at (4.375, 10.49){Large Signal Schematic\\(Sink)};
 	\node[shape=rectangle, draw={rgb,255:red,255;green,0;blue,0}, line width=1pt, dash pattern={on 4pt off 2pt on 1pt off 2pt on 1pt off 2pt}, minimum width=1.465cm, minimum height=2.195cm] at (6, 7){};
 	\node[shape=rectangle, minimum width=3.09cm, minimum height=2.465cm] at (8.438, 6.865){} node[anchor=north west, align=left, text width=2.702cm, inner sep=6pt] at (6.875, 8.115){\textcolor{rgb,255:red,255;green,0;blue,0}{\footnotesize Exists Only For Analysis. In  Implementation take output directly from V\_\{out\}}};
-	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N4) at (2.25, 5.405){} node[anchor=center] at (N4.text){$V_{x}$};
+	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N4) at (2.25, 5.405){} node[anchor=center] at (N4.text){$V_{x}$};
 	\draw[dash pattern={on 1.6pt off 0.8pt}, -stealth] (3.25, 5.405) |- (2.75, 5.405);
-	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N5) at (4.5, 6.115){} node[anchor=center] at (N5.text){$I_{G}$};
+	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N5) at (4.5, 6.115){} node[anchor=center] at (N5.text){$I_{G}$};
 	\draw (3.25, 5.175) -| (3.25, 5.405);
 	\draw (3.25, 5.405) -| (3.25, 5.905);
 	\draw (10, 1.75) |- (10, 11);
@@ -59,13 +59,13 @@ current gain different from unity.
 	\draw (18.75, 6.063) -| (18.75, 5.562);
 	\draw (18.75, 7.563) -| (18.75, 8.062) |- (18, 8.062) -| (18, 7.812);
 	\draw[dash pattern={on 1.6pt off 0.8pt}, -stealth] (18.75, 5.563) -- (19.25, 5.563);
-	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.465cm](N6) at (10.625, 5.563){} node[anchor=center] at (N6.text){$V_{x}$};
-	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N7) at (19.75, 5.563){} node[anchor=center] at (N7.text){$V_{out}$};
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.465cm] (N6) at (10.625, 5.563){} node[anchor=center] at (N6.text){$V_{x}$};
+	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N7) at (19.75, 5.563){} node[anchor=center] at (N7.text){$V_{out}$};
 	\node[ground] at (14.5, 4.063){};
 	\node[ground] at (16, 4.063){};
 	\node[ground] at (12.25, 7.812){};
 	\node[ground] at (18, 7.812){};
-	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N8) at (15.25, 6.813){} node[anchor=center] at (N8.text){$I_{G}$};
+	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N8) at (15.25, 6.813){} node[anchor=center] at (N8.text){$I_{G}$};
 	\draw[dash pattern={on 1.6pt off 0.8pt}, -stealth] (11.5, 5.563) -- (11, 5.563);
 	\node[shape=rectangle, minimum width=4.215cm, minimum height=1.09cm] at (15.375, 9.937){} node[anchor=north, align=center, text width=3.827cm, inner sep=6pt] at (15.375, 10.5){Small Signal Schematic\\(Sink)};
 	\node[circ] at (3.25, 5.405){};
@@ -158,7 +158,7 @@ Here's a table of the voltages at each terminal of the transistors:
     the transistor $M_2$ goes out of saturation can
     be calculated as follows:
     \begin{align*}
-      R_{out, max} &= \frac{V_{L, max}}{I_{M_1}} \quad \text{[where, } V_{ee} \leq V_{L, max} \leq V_{cc} \text{]}
+      R_{out, \max} &= \frac{V_{L, \max}}{I_{M_1}} \quad \text{[where, } V_{ee} \leq V_{L, \max} \leq V_{cc} \text{]}
     \end{align*}
   \item \textbf{Impedances}:
     \paragraph{At Input:} Applying a test current $I_{test}$
@@ -234,7 +234,7 @@ $\lambda = 0.02 V^{-1}$, $\frac{1}{2} \mu_n C_{ox} =
 100 \mu A/V^2$ and $L = 1 \mu m$ for all transistors.
 Find the output impedance of the mirror and the
 maximum load that can be connected at the output
-if $V_{L, max} = 4V$.
+if $V_{L, \max} = 4V$.
 \paragraph{Solution:}
 \begin{enumerate}
   \item \textbf{Choose appropriate transistor dimensions:}
@@ -269,7 +269,7 @@ if $V_{L, max} = 4V$.
   \item \textbf{Compute the maximum load that can be connected
     at the output:}
     \begin{align*}
-      R_{out, max} &= \frac{V_{L, max}}{I_{M_1}} \\
+      R_{out, \max} &= \frac{V_{L, \max}}{I_{M_1}} \\
                    &= \frac{4V}{500 \mu A} \\
                    &= 8 k\Omega
     \end{align*}

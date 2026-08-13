@@ -19,7 +19,7 @@ down into two types: Low Pass and High Pass.
 \begin{circuitfig}
   % Paths, nodes and wires:
   \draw (4.25, 6.5) -- (5.25, 6.5);
-  \node[shape=rectangle, minimum width=0.715cm, minimum height=0.465cm](N1) at (5.625, 6.5){} node[anchor=center] at (N1.text){$V_{out}$};
+  \node[shape=rectangle, minimum width=0.715cm, minimum height=0.465cm] (N1) at (5.625, 6.5){} node[anchor=center] at (N1.text){$V_{out}$};
   \draw (4.25, 6.5) to[capacitor, l={$C_1$}] (4.25, 4.75);
   \draw (4.25, 6.5) to[european resistor, l_={$G_1$}, label distance=0.03cm] (4.25, 8.25);
   \draw (2.75, 8.25) to[sinusoidal voltage source, l={$V_1$}] (2.75, 6.75);
@@ -30,7 +30,7 @@ down into two types: Low Pass and High Pass.
   \draw (2.75, 8.25) -- (4.25, 8.25);
   \node[shape=rectangle, minimum width=2.965cm, minimum height=0.465cm] at (3.5, 4.25){} node[anchor=north, align=center, text width=2.577cm, inner sep=6pt] at (3.5, 4.5){Full Schematic};
   \draw (8.625, 6.5) -- (9.625, 6.5);
-  \node[shape=rectangle, minimum width=0.715cm, minimum height=0.465cm](N2) at (10, 6.5){} node[anchor=center] at (N2.text){$V_{out}$};
+  \node[shape=rectangle, minimum width=0.715cm, minimum height=0.465cm] (N2) at (10, 6.5){} node[anchor=center] at (N2.text){$V_{out}$};
   \draw (8.625, 6.5) to[capacitor, l={$C_1$}] (8.625, 4.75);
   \draw (8.625, 6.5) to[european resistor, l_={$G_1$}, label distance=0.03cm] (8.625, 8.25);
   \draw (7.125, 8.25) to[sinusoidal voltage source, l={$V_1$}] (7.125, 6.75);
@@ -40,7 +40,7 @@ down into two types: Low Pass and High Pass.
   \draw (7.125, 8.25) -- (8.625, 8.25);
   \node[shape=rectangle, minimum width=2.965cm, minimum height=0.465cm] at (7.875, 4.25){} node[anchor=north, align=center, text width=2.577cm, inner sep=6pt] at (7.875, 4.5){Low Pass};
   \draw (13, 6.5) -- (14, 6.5);
-  \node[shape=rectangle, minimum width=0.715cm, minimum height=0.465cm](N3) at (14.375, 6.5){} node[anchor=center] at (N3.text){$V_{out}$};
+  \node[shape=rectangle, minimum width=0.715cm, minimum height=0.465cm] (N3) at (14.375, 6.5){} node[anchor=center] at (N3.text){$V_{out}$};
   \draw (13, 6.5) to[capacitor, l={$C_1$}] (13, 4.75);
   \draw (13, 6.5) to[european resistor, l_={$G_1$}, label distance=0.03cm] (13, 8.25);
   \draw (11.5, 4.75) to[sinusoidal voltage source, l_={$V_2$}] (11.5, 6.25);

@@ -11,8 +11,8 @@ source/sink performance.
   % Paths, nodes and wires:
   \node[shape=rectangle, draw={rgb,255:red,255;green,0;blue,0}, line width=1pt, dash pattern={on 4pt off 2pt on 1pt off 2pt on 1pt off 2pt}, minimum width=1.465cm, minimum height=2.195cm] at (6.25, 7.135){};
   \draw (3.23, 8.04) to[american voltage source, l_={$V_{cc}$}] (1.98, 8.04);
-  \node[nmos, arrowmos, xscale=-1](N1) at (3.5, 2.75){} node[anchor=east] at (N1.text){$M_0$};
-  \node[nmos, arrowmos](N2) at (6, 2.75){} node[anchor=west] at (N2.text){$M_1$};
+  \node[nmos, arrowmos, xscale=-1] (N1) at (3.5, 2.75){} node[anchor=east] at (N1.text){$M_0$};
+  \node[nmos, arrowmos] (N2) at (6, 2.75){} node[anchor=west] at (N2.text){$M_1$};
   \draw (3.5, 7.54) to[european resistor, l={$G_3$}] (3.5, 6.04);
   \draw (6, 5.79) |- (6, 5.25);
   \draw (4.75, 2.75) |- (6, 3.71);
@@ -23,7 +23,7 @@ source/sink performance.
   \node[ground, rotate=-90] at (1.98, 8.04){};
   \node[ground, rotate=-90] at (2.75, 1){};
   \draw[dash pattern={on 0.4pt off 0.8pt}, -stealth] (6, 5.79) -- (6.5, 5.79);
-  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N3) at (7, 5.75){} node[anchor=center] at (N3.text){$V_{out}$};
+  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N3) at (7, 5.75){} node[anchor=center] at (N3.text){$V_{out}$};
   \draw (6, 7.5) to[european resistor, l={\textcolor{rgb,255:red,255;green,0;blue,0}{$G_4$}}] (6, 6);
   \draw (6, 5.79) -- (6, 6.02);
   \draw (3.5, 7.54) |- (3.23, 8.04);
@@ -31,7 +31,7 @@ source/sink performance.
   \draw (10.25, 10.75) -- (10.25, -0);
   \node[shape=rectangle, minimum width=4.59cm, minimum height=1.09cm] at (5.187, 9.813){} node[anchor=north, align=center, text width=4.202cm, inner sep=6pt] at (5.187, 10.375){Large Signal Schematic\\(Sink)};
   \node[shape=rectangle, minimum width=3.09cm, minimum height=2.465cm] at (8.687, 7){} node[anchor=north west, align=left, text width=2.702cm, inner sep=6pt] at (7.125, 8.25){\textcolor{rgb,255:red,255;green,0;blue,0}{\footnotesize Exists Only For Analysis. In  Implementation take output directly from V\_\{out\}}};
-  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N4) at (7, 3.71){} node[anchor=center] at (N4.text){$V_{x}$};
+  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N4) at (7, 3.71){} node[anchor=center] at (N4.text){$V_{x}$};
   \draw[dash pattern={on 0.4pt off 0.8pt}, -stealth] (6, 3.71) |- (6.5, 3.71);
   \draw (3.5, 4.5) -| (3.5, 6.04);
   \draw (17.625, 2.562) to[american current source, l_={$g_{m_1}v_{gs}$}] (17.625, 1.062);
@@ -64,9 +64,9 @@ source/sink performance.
   \node[ground] at (18.375, 7.812){};
   \node[shape=rectangle, minimum width=4.215cm, minimum height=1.09cm] at (15.5, 9.813){} node[anchor=north, align=center, text width=3.827cm, inner sep=6pt] at (15.5, 10.375){Small Signal Schematic\\(Sink)};
   \draw (6, 3.52) -| (6, 3.71);
-  \node[nmos, arrowmos](N5) at (6, 4.48){} node[anchor=west] at (N5.text){$M_2$};
+  \node[nmos, arrowmos] (N5) at (6, 4.48){} node[anchor=west] at (N5.text){$M_2$};
   \draw (5.02, 4.48) -| (3.5, 3.52);
-  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N6) at (2.5, 4.5){} node[anchor=center] at (N6.text){$V_{y}$};
+  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N6) at (2.5, 4.5){} node[anchor=center] at (N6.text){$V_{y}$};
   \draw[dash pattern={on 0.4pt off 0.8pt}, -stealth] (3.5, 4.48) -- (3, 4.48);
   \draw (17.625, 5.562) to[american current source, l_={$g_{m_2}v_{gs}$}] (17.625, 4.062);
   \draw (19.125, 5.562) to[european resistor, l_={$g_{o_2}$}] (19.125, 4.062);
@@ -86,15 +86,15 @@ source/sink performance.
   \node[circ] at (15.625, 2.562){};
   \node[circ] at (19.125, 3.313){};
   \draw (11.875, 2.562) |- (15.625, 5.562);
-  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N7) at (10.875, 5.582){} node[anchor=center] at (N7.text){$V_{y}$};
+  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N7) at (10.875, 5.582){} node[anchor=center] at (N7.text){$V_{y}$};
   \draw[dash pattern={on 0.4pt off 0.8pt}, -stealth] (11.875, 5.562) |- (11.375, 5.562);
   \node[circ] at (11.875, 5.562){};
   \draw[dash pattern={on 0.4pt off 0.8pt}, -stealth] (19.125, 5.562) -- (19.625, 5.562);
-  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N8) at (20.125, 5.522){} node[anchor=center] at (N8.text){$V_{out}$};
-  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N9) at (14.625, 3.333){} node[anchor=center] at (N9.text){$I_G$};
-  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N10) at (20.125, 3.313){} node[anchor=center] at (N10.text){$V_{x}$};
+  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N8) at (20.125, 5.522){} node[anchor=center] at (N8.text){$V_{out}$};
+  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N9) at (14.625, 3.333){} node[anchor=center] at (N9.text){$I_G$};
+  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N10) at (20.125, 3.313){} node[anchor=center] at (N10.text){$V_{x}$};
   \draw[dash pattern={on 0.4pt off 0.8pt}, -stealth] (19.125, 3.313) |- (19.625, 3.313);
-  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N11) at (3.75, 3.73){} node[anchor=center] at (N11.text){$I_G$};
+  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N11) at (3.75, 3.73){} node[anchor=center] at (N11.text){$I_G$};
   \node[shape=rectangle, draw={rgb,255:red,255;green,0;blue,0}, line width=1pt, dash pattern={on 4pt off 2pt on 1pt off 2pt on 1pt off 2pt}, minimum width=1.59cm, minimum height=2.527cm] at (19.312, 7.094){};
   \draw[dash pattern={on 0.4pt off 0.8pt}, -stealth] (4.75, 3.71) -- (4.25, 3.71);
   \draw[dash pattern={on 0.4pt off 0.8pt}, -stealth] (15.625, 3.313) -- (15.125, 3.313);
@@ -208,7 +208,7 @@ Here's a table of the voltages at each terminal of the transistors:
     the transistor $M_2$ goes out of saturation can
     be calculated as follows:
     \begin{align*}
-      R_{out, max} &= \frac{V_{L, max}}{I_{M_2}} \quad \text{[where, } V_{ee} \leq V_{L, max} \leq V_{cc} \text{]}
+      R_{out, \max} &= \frac{V_{L, \max}}{I_{M_2}} \quad \text{[where, } V_{ee} \leq V_{L, \max} \leq V_{cc} \text{]}
     \end{align*}
   \item \textbf{Impedance}:
     \paragraph{At Input:} Applying a test current $I_{test}$
@@ -314,7 +314,7 @@ transistor parameters: $V_{th} = 1V$, $\lambda = 0.02 V^{-1}$,
 $\frac{1}{2} \mu_n C_{ox} = 100 \mu A/V^2$ and
 $L = 1 \mu m$ for all transistors. Find the output impedance
 and the maximum possible load that can be connected at the
-output assuming $V_{L, max} = V_{cc}$.
+output assuming $V_{L, \max} = V_{cc}$.
 \paragraph{Solution:}
 \begin{enumerate}
   \item \textbf{Choose appropriate transistor dimensions:}
@@ -351,7 +351,7 @@ output assuming $V_{L, max} = V_{cc}$.
   \item \textbf{Compute the maximum load that can be connected
     at the output:}
     \begin{align*}
-      R_{out, max} &= \frac{V_{L, max}}{I_{M_2}} \\
+      R_{out, \max} &= \frac{V_{L, \max}}{I_{M_2}} \\
                    &= \frac{5V}{500 \mu A} \\
                    &= 10 k\Omega
     \end{align*}
