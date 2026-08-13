@@ -1,0 +1,33 @@
+name: build and release
+on:
+  push:
+    branches:
+      - master
+permissions:
+  contents: write
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout.
+        uses: actions/checkout@v4
+      - name: install latex.
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y texlive-latex-base texlive-latex-recommended texlive-latex-extra latexmk
+      - name: compile pdf.
+        run: |
+          latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
+      - name: upload.
+        uses: actions/upload-artifact@v4
+        with:
+          name: book-pdf
+          path: main.pdf
+        if-no-files-found: error
+      - name: release.
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: "build-${{ github.run_number }}"
+          name: "Build #${{ github.run_number }}"
+          generate_release_notes: true
+          files: main.pdf

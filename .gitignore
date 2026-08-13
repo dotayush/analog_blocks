@@ -1,9 +1,27 @@
+# LaTeX build files
 *.aux
-*.fls
-*.log
-*.pdf
+*.bbl
+*.bcf
+*.blg
 *.fdb_latexmk
+*.fls
+*.lof
+*.log
+*.lot
+*.out
+*.run.xml
 *.synctex.gz
 *.toc
-*.xdv
-/temp
+*.nav
+*.snm
+*.vrb
+*.pdf
+
+# Build output
+/build/
+/dist/
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store

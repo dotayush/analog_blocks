@@ -1,0 +1,22 @@
+name: lint and spell
+on:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  lint-and-spell:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout.
+        uses: actions/checkout@v4
+      - name: install tools.
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y chktex python3-pip
+          python3 -m pip install --user codespell
+      - name: check
+        run: |
+          ~/.local/bin/codespell --skip='*.aux,*.bbl,*.bcf,*.blg,*.fdb_latexmk,*.fls,*.log,*.out,*.run.xml,*.synctex.gz,*.toc'
+      - name: run chktex.
+        run: |
+          chktex -q -n1 -n8 -n13 main.tex
