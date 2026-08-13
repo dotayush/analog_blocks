@@ -1,0 +1,197 @@
+\subsection{Medium}
+
+A medium is any material that can exist naturally or artificially. Air,
+Water, Copper, Iron, Wood, Helium, and Vacuum are all different media.
+In relation to electromagnetics, a medium is characterized by how it responds
+to an electric or magnetic function: an applied field induces a response in
+the medium's constituent charges (electric dipoles, fictional magnetic
+dipoles), and this response in turn modifies the total electric and magnetic
+flux density functions. The two functions describing this response are the
+\textbf{polarization function} \( \mathbf{P(x,y,z,t)} \), measured in
+\( \frac{C}{m^2} \), and the \textbf{magnetization function}
+\( \mathbf{M(x,y,z,t)} \), measured in \( \frac{A}{m} \). By definition,
+regardless of what the medium is doing physically, the flux density functions
+are:
+\begin{align*}
+  \mathbf{D(x,y,z,t)} &= \epsilon_0 \mathbf{E(x,y,z,t)} + \mathbf{P(x,y,z,t)} \\
+  \mathbf{B(x,y,z,t)} &= \mu_0 \left[\mathbf{H(x,y,z,t)} + \mathbf{M(x,y,z,t)}\right]
+\end{align*}
+Here \( \epsilon_0 \approx 8.854 \times 10^{-12} \, \frac{F}{m} \) and
+\( \mu_0 = 4\pi \times 10^{-7} \, \frac{H}{m} \) are fixed, universal
+constants describing vacuum, a medium with no matter in it and hence no
+polarization or magnetization response (\( \mathbf{P} = \mathbf{0} \),
+\( \mathbf{M} = \mathbf{0} \)). These two equations above are always true. Note,
+no physics about a specific medium has been assumed yet. They simply define
+what \( \mathbf{D} \) and \( \mathbf{B} \) mean in terms of the fields and
+the medium's response.
+
+\subsubsection{Constitutive Relation}
+
+To actually solve for the fields in a given medium, we need to know how
+\( \mathbf{P} \) depends on \( \mathbf{E} \) (and \( \mathbf{M} \) on
+\( \mathbf{H} \)). This dependence is called the \textbf{constitutive
+relation} of the medium, and in full generality it is written as:
+\begin{align*}
+  \mathbf{D(x,y,z,t)} &= \boldsymbol{\epsilon}(x,y,z,t) \cdot \mathbf{E(x,y,z,t)} \\
+  \mathbf{B(x,y,z,t)} &= \boldsymbol{\mu}(x,y,z,t) \cdot \mathbf{H(x,y,z,t)}
+\end{align*}
+where \( \boldsymbol{\epsilon} \) (\textbf{permittivity}) and
+\( \boldsymbol{\mu} \) (\textbf{permeability}) are generally
+\textbf{rank-2 tensors} which are \( 3 \times 3 \) matrices with 9 elements each:
+\begin{align*}
+  \boldsymbol{\epsilon}(x,y,z,t) = \begin{bmatrix}
+    \epsilon_{xx} & \epsilon_{xy} & \epsilon_{xz} \\
+    \epsilon_{yx} & \epsilon_{yy} & \epsilon_{yz} \\
+    \epsilon_{zx} & \epsilon_{zy} & \epsilon_{zz}
+  \end{bmatrix}, \qquad
+  \boldsymbol{\mu}(x,y,z,t) = \begin{bmatrix}
+    \mu_{xx} & \mu_{xy} & \mu_{xz} \\
+    \mu_{yx} & \mu_{yy} & \mu_{yz} \\
+    \mu_{zx} & \mu_{zy} & \mu_{zz}
+  \end{bmatrix}
+\end{align*}
+and written out fully,
+\begin{align*}
+  D_x &= \epsilon_{xx}E_x + \epsilon_{xy}E_y + \epsilon_{xz}E_z \\
+  D_y &= \epsilon_{yx}E_x + \epsilon_{yy}E_y + \epsilon_{yz}E_z \\
+  D_z &= \epsilon_{zx}E_x + \epsilon_{zy}E_y + \epsilon_{zz}E_z
+\end{align*}
+and identically for \( \mathbf{B} \) in terms of \( \mathbf{H} \) and
+\( \boldsymbol{\mu} \). Notice that in general, \( D_x \) can depend on
+\emph{all three} components of \( \mathbf{E} \), not just \( E_x \) — this
+is the mathematical statement that \( \mathbf{D} \) and \( \mathbf{E} \) need
+not point in the same direction.
+
+\subsubsection{Classifying a Medium}
+
+Every medium's \( \boldsymbol{\epsilon} \) and \( \boldsymbol{\mu} \) can be
+classified along (at least) five independent axes, each describing what the
+9 tensor elements are allowed to depend on:
+\begin{itemize}
+  \item \textbf{Homogeneity} [dependence on position]: A medium is
+    \textbf{homogeneous} if no element of \( \boldsymbol{\epsilon} \) or
+    \( \boldsymbol{\mu} \) depends on \( (x,y,z) \). It is
+    \textbf{inhomogeneous} if the elements are functions of position,
+    \( \epsilon_{ij}(x,y,z) \). A single crystal of pure quartz, block
+    of solid copper or air inside a room are examples of homogenous media.
+    Metamaterails like Graded Index (GRIN) lenses, Earth's Atmosphere
+    (Ionosphere), Biological tissue are examples of inhomogeneous media.
+  \item \textbf{Isotropy} [dependence on direction]: A medium is
+    \textbf{isotropic} if its tensor is diagonal with all three diagonal
+    elements equal \( \epsilon_{ij} = \epsilon \, \delta_{ij} \) (where
+    \( \delta_{ij} \) is the Kronecker delta: 1 if \( i=j \), 0 otherwise or
+    identity in matrix terms). This collapses the tensor to a single scalar
+    \( \epsilon \), and \( \mathbf{D} \) and \( \mathbf{E} \) become
+    collinear. A medium is \textbf{anisotropic} if the diagonal elements
+    are unequal and/or any off-diagonal element is nonzero. Glass, Water
+    and Air are Isotropic media. Calcite and Quartz Crystal are examples
+    of Anisotropic media.
+  \item \textbf{Linearity} [dependence on field magnitude]: A medium is
+    \textbf{linear} if \( \boldsymbol{\epsilon} \) and \( \boldsymbol{\mu} \)
+    do not depend on the magnitude of \( \mathbf{E} \) or \( \mathbf{H} \)
+    themselves. It is \textbf{nonlinear} if they do, \( \epsilon_{ij}(\mathbf{E}) \).
+    All ordinary dielectrics are mostly linear. Kerr Media, Second-Harmonic Generation
+    Crystals and Ferromagnetic cores are examples of Nonlinear media.
+  \item \textbf{Dispersion} [dependence on frequency]: A medium is
+    \textbf{non-dispersive} if \( \boldsymbol{\epsilon} \) and
+    \( \boldsymbol{\mu} \) do not depend on frequency \( \omega \). It is
+    \textbf{dispersive} if they do, \( \epsilon_{ij}(\omega) \). Equivalently in
+    the time domain, the medium's response depends on the field's past
+    values (memory), not just its instantaneous value. Vacuum, Air
+    are examples of Non-Dispersive media. Glass, Water (in Microwave and
+    Optical frequencies) and Metals are examples of Dispersive media.
+  \item \textbf{Time-Variance} [dependence on time]: A medium is
+    \textbf{time-invariant} if \( \boldsymbol{\epsilon} \) and
+    \( \boldsymbol{\mu} \) do not explicitly depend on \( t \). It is
+    \textbf{time-varying} if the medium's own properties are being actively
+    modulated in time \( \epsilon_{ij}(t) \), distinct from dispersion,
+    which is memory of the field's past, not modulation of the medium
+    itself. All passive materials are time-invariant. Varactor Diode,
+    Plasma with time varying electron density and Space-Time Metamaterials
+    are examples of Time-Varying media.
+\end{itemize}
+These axes are independent of each other: a medium can be, for example,
+homogeneous, anisotropic, linear, dispersive, and time-invariant, all at once.
+
+\subsubsection{Vacuum as the Isotropic, Homogeneous Reference}
+
+Vacuum is chosen as the reference medium. It is homogeneous, isotropic,
+linear, non-dispersive, and time-invariant, so its tensor collapses
+to the constant, diagonal, equal-entry case:
+\begin{align*}
+  \boldsymbol{\epsilon}_{\text{vacuum}} = \epsilon_0 \, \mathbb{I} = \begin{bmatrix}
+    \epsilon_0 & 0 & 0 \\ 0 & \epsilon_0 & 0 \\ 0 & 0 & \epsilon_0
+  \end{bmatrix}, \qquad
+  \boldsymbol{\mu}_{\text{vacuum}} = \mu_0 \, \mathbb{I} = \begin{bmatrix}
+    \mu_0 & 0 & 0 \\ 0 & \mu_0 & 0 \\ 0 & 0 & \mu_0
+  \end{bmatrix}
+\end{align*}
+Since this tensor is proportional to the identity matrix \( \mathbb{I} \),
+writing it as the bare scalar \( \epsilon_0 \) (or \( \mu_0 \)) loses no
+information. Any other medium's tensor is compared to this reference by
+factoring it out:
+\begin{align*}
+  \boldsymbol{\epsilon}(x,y,z,t) &= \epsilon_0 \, \boldsymbol{\epsilon}_r(x,y,z,t) \\
+  \boldsymbol{\mu}(x,y,z,t) &= \mu_0 \, \boldsymbol{\mu}_r(x,y,z,t)
+\end{align*}
+where \( \boldsymbol{\epsilon}_r \) and \( \boldsymbol{\mu}_r \) are the
+dimensionless \textbf{relative permittivity} and \textbf{relative
+permeability} tensors, subject to the same classification above. Vacuum is
+recovered exactly when \( \boldsymbol{\epsilon}_r = \boldsymbol{\mu}_r =
+\mathbb{I} \).
+
+\subsubsection{Recovering P and M from the Tensor Form}
+
+The two forms of \( \mathbf{D} \) from the start of this section
+\( \mathbf{D} = \epsilon_0\mathbf{E} + \mathbf{P} \) and
+\( \mathbf{D} = \epsilon_0\boldsymbol{\epsilon}_r \cdot \mathbf{E} \) must
+be equal since both equal \( \mathbf{D} \). Equating them component-wise
+and solving for \( \mathbf{P} \):
+\begin{align*}
+  \epsilon_0 E_x + P_x &= \epsilon_0\left[(\epsilon_r)_{xx}E_x + (\epsilon_r)_{xy}E_y + (\epsilon_r)_{xz}E_z\right] \\
+  P_x &= \epsilon_0\left[\left((\epsilon_r)_{xx}-1\right)E_x + (\epsilon_r)_{xy}E_y + (\epsilon_r)_{xz}E_z\right]
+\end{align*}
+and identically for \( P_y, P_z \). Defining the \textbf{electric
+susceptibility tensor} \( \boldsymbol{\chi}_e \equiv \boldsymbol{\epsilon}_r -
+\mathbb{I} \) (subtract 1 from each diagonal entry only):
+\begin{align*}
+  \begin{bmatrix} P_x \\ P_y \\ P_z \end{bmatrix} = \epsilon_0
+  \begin{bmatrix}
+    (\chi_e)_{xx} & (\chi_e)_{xy} & (\chi_e)_{xz} \\
+    (\chi_e)_{yx} & (\chi_e)_{yy} & (\chi_e)_{yz} \\
+    (\chi_e)_{zx} & (\chi_e)_{zy} & (\chi_e)_{zz}
+  \end{bmatrix}
+  \begin{bmatrix} E_x \\ E_y \\ E_z \end{bmatrix}
+\end{align*}
+So \( \mathbf{P} \) is not lost or separate when we use
+\( \mathbf{D}=\boldsymbol{\epsilon}\cdot\mathbf{E} \). It is fully encoded
+inside \( \boldsymbol{\epsilon}_r - \mathbb{I} \) (Writing
+\( \mathbf{D} = \boldsymbol{\epsilon}\mathbf{E} + \mathbf{P} \) in the same
+equation double-counts the medium's response and must be avoided). One can
+use either the fundamental form (with \( \epsilon_0 \) and explicit
+\( \mathbf{P} \)) or the macroscopic form (with \( \boldsymbol{\epsilon} \)
+alone), never both.
+
+The magnetic case is identical in structure, with
+\( \boldsymbol{\chi}_m \equiv \boldsymbol{\mu}_r - \mathbb{I} \) and
+\( \mathbf{M} = \boldsymbol{\chi}_m \cdot \mathbf{H} \). Note the absence of
+a leading \( \mu_0 \) here, since \( \mathbf{M} \) was defined with units
+matching \( \mathbf{H} \) (\(\frac{A}{m}\)), unlike \( \mathbf{P} \), which
+was defined with units matching \( \epsilon_0\mathbf{E} \)
+(\(\frac{C}{m^2}\)). This is an asymmetry of SI convention.
+
+\paragraph{A Practical Note: Real Media Are Piecewise-Inhomogeneous}
+
+In practice no region of interest is a single, uniform medium. A block of
+space spanning open air may contain a concrete building, a glass window,
+and a person standing in a doorway. Thus the medium  is \textbf{piecewise-homogeneous}
+that is uniform within each material but genuinely a function of position,
+\( \boldsymbol{\epsilon}(x,y,z) \), \( \boldsymbol{\mu}(x,y,z) \), over the
+region as a whole typically discontinuous at material boundaries. This is
+the normal case for real propagation problems (indoor RF coverage, urban
+propagation, biomedical imaging) and it is why numerical solvers that time-march
+the fields on a spatial grid (say via the central-difference update
+equations of the FDTD method) assign \( \boldsymbol{\epsilon} \) and
+\( \boldsymbol{\mu} \) \emph{per grid cell} based on which physical material
+occupies that cell rather than treating them as global constants pulled outside the
+update equation.
