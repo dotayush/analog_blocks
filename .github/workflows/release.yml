@@ -23,7 +23,7 @@ jobs:
         with:
           name: book-pdf
           path: main.pdf
-        if-no-files-found: error
+          if-no-files-found: error
       - name: release.
         uses: softprops/action-gh-release@v2
         with:
