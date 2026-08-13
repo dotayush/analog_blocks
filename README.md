@@ -14,7 +14,7 @@ able to understand the block.
 
 ### access.
 
-Look at the [release page](../releases) to download the latest
+Look at the [release page](../../releases) to download the latest
 compiled version of the project. You can also build this project
 from source by compiling `main.tex` using `pdflatex` or `xelatex`.
 The project is written in LaTeX and requires a LaTeX distribution
