@@ -8,12 +8,16 @@ on:
         type: string
 permissions:
   contents: write
+  pages: write
+  id-token: write
 concurrency:
   group: release-${{ inputs.version }}
   cancel-in-progress: false
 jobs:
   release:
     runs-on: ubuntu-latest
+    outputs:
+      pdf-name: handbook-${{ inputs.version }}.pdf
     steps:
       - name: checkout.
         uses: actions/checkout@v4
@@ -50,3 +54,49 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh release create "${{ inputs.version }}" "handbook-${{ inputs.version }}.pdf" --title "${{ inputs.version }}" --generate-notes
+      - name: upload pdf for pages job.
+        uses: actions/upload-artifact@v4
+        with:
+          name: handbook-pdf
+          path: handbook-${{ inputs.version }}.pdf
+          retention-days: 1
+
+  deploy-pages:
+    needs: release
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: download pdf from release job.
+        uses: actions/download-artifact@v4
+        with:
+          name: handbook-pdf
+          path: site-src
+      - name: build site.
+        run: |
+          mkdir -p site
+          cp "site-src/handbook-${{ inputs.version }}.pdf" "site/handbook.pdf"
+          cp "site-src/handbook-${{ inputs.version }}.pdf" "site/handbook-${{ inputs.version }}.pdf"
+          cat > site/index.html <<EOF
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="utf-8">
+            <title>Analog Blocks - Ayush Gupta - ${{ inputs.version }}</title>
+            <meta http-equiv="refresh" content="0; url=./handbook.pdf">
+          </head>
+          <body>
+            <p>Redirecting to the <a href="./handbook.pdf">latest handbook (${{ inputs.version }})</a>.</p>
+          </body>
+          </html>
+          EOF
+
+          echo "eeng.isitayush.dev" > site/CNAME
+      - name: upload pages artifact.
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - name: deploy to github pages.
+        id: deployment
+        uses: actions/deploy-pages@v4
