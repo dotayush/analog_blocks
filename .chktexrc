@@ -6,4 +6,5 @@ CmdLine
     -n1 # command terminated with a space.
     -n44 # custom table rules
     -n36 # don't wanna put space before ()
+    -n12 # shut up about interword spacings.
 }
