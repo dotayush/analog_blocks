@@ -431,25 +431,25 @@ assuming $V_{L,max} = V_{cc}$
   pretty(curr_transfer)
   printf('\n');
 
-  % input impedence: Itest injected into Vz
+  % input impedance: Itest injected into Vz
   eq4_zin = Vz*(G4 + go3 + gm3) - Vy*(go3 + gm3) - Itest == 0;
   sol_zin = solve([eq1, eq2, eq3, eq4_zin], [Vout, Vx, Vy, Vz]);
   zin = simplify(sol_zin.Vz/Itest);
   % zin = collect(zin, G4*G5);
   % zin = subs(zin, 'G4', 0);
   % zin = subs(zin, 'G5', 0);
-  printf('=== Input Impedence Results ===\n');
+  printf('=== Input Impedance Results ===\n');
   pretty(zin);
   printf('\n');
 
-  % output impedence: Itest injected into Vout
+  % output impedance: Itest injected into Vout
   eq1_zout = Vout*(G5 + go2) - Vx*(go2 + gm2) + gm2*Vz - Itest == 0;
   sol_zout = solve([eq1_zout, eq2, eq3, eq4], [Vout, Vx, Vy, Vz]);
   zout = simplify(sol_zout.Vout/Itest);
   % zout = collect(zout, G4*G5);
   % zout = subs(zout, 'G4', 0);
   % zout = subs(zout, 'G5', 0);
-  printf('=== Output Impedence Results ===\n');
+  printf('=== Output Impedance Results ===\n');
   pretty(zout)
   printf('\n');
 \end{lstlisting}

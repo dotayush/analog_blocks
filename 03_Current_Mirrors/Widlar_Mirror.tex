@@ -306,23 +306,23 @@ if $V_{L, max} = 4V$.
   pretty(curr_transfer)
   printf('\n');
 
-  % input impedence: Itest injected into Vx
+  % input impedance: Itest injected into Vx
   eq2_zin = Vx*(G2 + go0 + gm0) + Itest == 0;
   sol_zin = solve([eq1, eq2_zin], [Vout, Vx]);
   zin = simplify(sol_zin.Vx/Itest);
   % zin = subs(zin, 'G2', 0);
   % zin = subs(zin, 'G3', 0);
-  printf('=== Input Impedence Results ===\n');
+  printf('=== Input Impedance Results ===\n');
   pretty(zin)
   printf('\n');
 
-  % output impedence: Itest injected into Vout
+  % output impedance: Itest injected into Vout
   eq1_zout = Vout*(G3 + go1) + Vx*gm1 + Itest == 0;
   sol_zout = solve([eq1_zout, eq2], [Vout, Vx]);
   zout = simplify(sol_zout.Vout/Itest);
   % zout = subs(zout, 'G2', 0);
   % zout = subs(zout, 'G3', 0);
-  printf('=== Output Impedence Results ===\n');
+  printf('=== Output Impedance Results ===\n');
   pretty(zout)
   printf('\n');
 \end{lstlisting}

@@ -237,7 +237,7 @@ Here's a table of the voltages at each terminal of the transistors:
       at $V_{out}$, from equation (7):
       \begin{align*}
         V_{out}(G_4 + g_{o_2}) - V_{x}(g_{o_2} + g_{m_2}) + g_{m_2}V_{y} &= I_{test} \\
-        V_{out}(G_4 + g_{o_2}) - V_{x}(g_{o_2} + g_{m_2}) + g_{m_2}\left(\frac{-g_{m_0}V_{x}}{G_3 + g_{o_0}}\right) &= I_{test} \quad \text{[rearraning (9)]} \\
+        V_{out}(G_4 + g_{o_2}) - V_{x}(g_{o_2} + g_{m_2}) + g_{m_2}\left(\frac{-g_{m_0}V_{x}}{G_3 + g_{o_0}}\right) &= I_{test} \quad \text{[rearranging (9)]} \\
         V_{out}(G_4 + g_{o_2}) - V_{x}\left((g_{o_2} + g_{m_2}) + \frac{g_{m_2}g_{m_0}}{G_3 + g_{o_0}}\right) &= I_{test} \\
         V_{out}(G_4 + g_{o_2}) - V_{x}\left(\frac{(g_{o_2} + g_{m_2})(G_3 + g_{o_0}) + g_{m_2}g_{m_0}}{G_3 + g_{o_0}}\right) &= I_{test} \tag{16}
       \end{align*}
@@ -391,25 +391,25 @@ output assuming $V_{L, max} = V_{cc}$.
   pretty(curr_transfer)
   printf('\n');
 
-  % input impedence: Itest injected into Vy
+  % input impedance: Itest injected into Vy
   eq3_zin = Vy*(G3 + go0) + gm0*Vx - Itest == 0;
   sol_zin = solve([eq1, eq2, eq3_zin], [Vout, Vx, Vy]);
   zin = simplify(sol_zin.Vy/Itest);
   % zin = collect(zin, G3*G4);
   % zin = subs(zin, 'G3', 0);
   % zin = subs(zin, 'G4', 0);
-  printf('=== Input Impedence Results ===\n');
+  printf('=== Input Impedance Results ===\n');
   pretty(zin)
   printf('\n');
 
-  % output impedence: Itest injected into Vout
+  % output impedance: Itest injected into Vout
   eq1_zout = Vout*(G4 + go2) - Vx*(go2 + gm2) + gm2*Vy - Itest == 0;
   sol_zout = solve([eq1_zout, eq2, eq3], [Vout, Vx, Vy]);
   zout = simplify(sol_zout.Vout/Itest);
   % zout = collect(zout, G3*G4);
   % zout = subs(zout, 'G3', 0);
   % zout = subs(zout, 'G4', 0);
-  printf('=== Output Impedence Results ===\n');
+  printf('=== Output Impedance Results ===\n');
   pretty(zout)
   printf('\n');
 \end{lstlisting}
