@@ -1,0 +1,26 @@
+name: build
+on:
+  push:
+    branches:
+      - master
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout.
+        uses: actions/checkout@v4
+      - name: install latex.
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y texlive-latex-base texlive-latex-recommended texlive-latex-extra latexmk
+      - name: compile pdf.
+        run: |
+          latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
+      - name: upload.
+        uses: actions/upload-artifact@v4
+        with:
+          name: book-pdf
+          path: main.pdf
+          if-no-files-found: error

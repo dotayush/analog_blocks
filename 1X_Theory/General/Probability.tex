@@ -1,5 +1,4 @@
-\subsection{Probability}
-\label{sec:theory_general_probability}
+\subsection{Probability}\label{sec:theory_general_probability}
 
 Probability is your best friend when dealing with real-world
 electronic components. All electronic device properties suffer
@@ -40,7 +39,7 @@ case!). One can use the following tools to analyze and
 interpret the data collected from measurements or simulations:
 \begin{itemize}
   \item \textbf{Mean (Average):} The mean is the average value
-    of all measured component values. $$\mu = \frac{1}{N} \sum_{i=1}^{N} x_i$$
+    of all measured component values.\[\mu = \frac{1}{N} \sum_{i=1}^{N} x_i\]
     where \(N\) is the total number of measurements and \(x_i\)
     represents each individual measurement. This gives a
     central value around which the component values are
@@ -48,14 +47,14 @@ interpret the data collected from measurements or simulations:
   \item \textbf{Variance (\(\sigma^2\)):} Variance measures how
     much the component values deviate from the mean. It is
     calculated as the average of the squared differences from
-    the mean. $$\sigma^2 = \frac{1}{N} \sum_{i=1}^{N} (x_i - \mu)^2$$
+    the mean.\[\sigma^2 = \frac{1}{N} \sum_{i=1}^{N} (x_i - \mu)^2\]
   \item \textbf{Standard Deviation (SD or \(\sigma\)):} The
     standard deviation is the square root of the variance and
     provides a measure of how tightly or loosely the
     component values are clustered around the mean. A smaller
     standard deviation indicates that the values are closely
     clustered, while a larger standard deviation indicates
-    more spread out values. $$\sigma = \sqrt{\sigma^2}$$
+    more spread out values.\[\sigma = \sqrt{\sigma^2}\]
   \item \textbf{Histogram:} A histogram is a graphical
     representation of the distribution of component values. It
     shows the frequency of occurrence of different values
@@ -65,12 +64,12 @@ interpret the data collected from measurements or simulations:
     represents the probability that a random variable takes on
     a value less than or equal to a specific value. It is useful
     for determining the likelihood of a component falling within
-    a certain range. $$F(x) = P(X \leq x)$$
+    a certain range. \[F(x) = P(X \leq x)\]
   \item \textbf{Probability Density Function (PDF):} The PDF
     describes the relative likelihood of a random variable to
     take on a specific value. It is the derivative of the CDF and
     provides insights into the distribution of component values.
-    $$f(x) = \frac{dF(x)}{dx}$$
+    \[f(x) = \frac{dF(x)}{dx}\]
 \end{itemize}
 
 \subsubsection{Variation Mitigations}

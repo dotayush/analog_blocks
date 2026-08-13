@@ -13,10 +13,10 @@ to attenuate a current signal.
   \draw (6.5, 6.5) -- (8, 6.5) -- (8, 6.5);
   \draw[-latex] (8.5, 6.25) -- (8.5, 4.75);
   \draw[-latex] (8.5, 6.75) -- (8.5, 8.25);
-  \node[shape=rectangle, minimum width=0.715cm, minimum height=0.465cm](N1) at (9.125, 5.5){} node[anchor=center] at (N1.text){$I_{C_1}$};
-  \node[shape=rectangle, xscale=-1, yscale=-1, minimum width=0.715cm, minimum height=0.465cm](N2) at (9.125, 7.5){} node[anchor=center] at (N2.text){$I_{C_2}$};
+  \node[shape=rectangle, minimum width=0.715cm, minimum height=0.465cm] (N1) at (9.125, 5.5){} node[anchor=center] at (N1.text){$I_{C_1}$};
+  \node[shape=rectangle, xscale=-1, yscale=-1, minimum width=0.715cm, minimum height=0.465cm] (N2) at (9.125, 7.5){} node[anchor=center] at (N2.text){$I_{C_2}$};
   \draw[dash pattern={on 1.6pt off 1.6pt}, -stealth] (8, 6.5) -- (9, 6.5);
-  \node[shape=rectangle, minimum width=0.715cm, minimum height=0.465cm](N3) at (9.375, 6.5){} node[anchor=center] at (N3.text){$Node$};
+  \node[shape=rectangle, minimum width=0.715cm, minimum height=0.465cm] (N3) at (9.375, 6.5){} node[anchor=center] at (N3.text){$Node$};
   \draw (8, 6.5) to[capacitor, l={$C_2$}] (8, 8.25);
   \draw (8, 6.5) to[capacitor, l_={$C_1$}] (8, 4.75);
 \end{circuitfig}

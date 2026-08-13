@@ -10,8 +10,8 @@ effects of channel length modulation.
   % Paths, nodes and wires:
   \node[shape=rectangle, draw={rgb,255:red,255;green,0;blue,0}, line width=1pt, dash pattern={on 4pt off 2pt on 1pt off 2pt on 1pt off 2pt}, minimum width=1.715cm, minimum height=2.195cm] at (6.125, 7.135){};
   \draw (3.23, 8.04) to[american voltage source, l_={$V_{cc}$}] (1.98, 8.04);
-  \node[nmos, arrowmos, xscale=-1](N1) at (3.5, 2.75){} node[anchor=east] at (N1.text){$M_0$};
-  \node[nmos, arrowmos](N2) at (6, 2.75){} node[anchor=west] at (N2.text){$M_1$};
+  \node[nmos, arrowmos, xscale=-1] (N1) at (3.5, 2.75){} node[anchor=east] at (N1.text){$M_0$};
+  \node[nmos, arrowmos] (N2) at (6, 2.75){} node[anchor=west] at (N2.text){$M_1$};
   \draw (3.5, 7.54) to[european resistor, l={$G_4$}] (3.5, 6.04);
   \draw (6, 5.79) |- (6, 5.25);
   \draw (5.02, 2.75) -- (4.48, 2.75);
@@ -21,7 +21,7 @@ effects of channel length modulation.
   \node[ground, rotate=-90] at (1.98, 8.04){};
   \node[ground, rotate=-90] at (2.75, 1){};
   \draw[dash pattern={on 0.4pt off 0.8pt}, -stealth] (6, 5.5) -- (6.5, 5.5);
-  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N3) at (7, 5.46){} node[anchor=center] at (N3.text){$V_{out}$};
+  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N3) at (7, 5.46){} node[anchor=center] at (N3.text){$V_{out}$};
   \draw (6, 7.5) to[european resistor, l={\textcolor{rgb,255:red,255;green,0;blue,0}{$G_5$}}] (6, 6);
   \draw (6, 5.79) -- (6, 6.02);
   \draw (3.5, 7.54) |- (3.23, 8.04);
@@ -29,9 +29,9 @@ effects of channel length modulation.
   \draw (10.25, 10.75) -- (10.25, -0);
   \node[shape=rectangle, minimum width=5.59cm, minimum height=1.09cm] at (5.438, 9.937){} node[anchor=north, align=center, text width=5.202cm, inner sep=6pt] at (5.438, 10.5){Large Signal Schematic\\(Sink)};
   \node[shape=rectangle, minimum width=3.09cm, minimum height=2.465cm] at (8.687, 7){} node[anchor=north west, align=left, text width=2.702cm, inner sep=6pt] at (7.125, 8.25){\textcolor{rgb,255:red,255;green,0;blue,0}{\footnotesize Exists Only For Analysis. In  Implementation take output directly from V\_\{out\}}};
-  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N4) at (7, 3.71){} node[anchor=center] at (N4.text){$V_{y}$};
+  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N4) at (7, 3.71){} node[anchor=center] at (N4.text){$V_{y}$};
   \draw[dash pattern={on 0.4pt off 0.8pt}, -stealth] (6, 3.71) |- (6.5, 3.71);
-  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N5) at (4.75, 4.25){} node[anchor=center] at (N5.text){$I_{G_1}$};
+  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N5) at (4.75, 4.25){} node[anchor=center] at (N5.text){$I_{G_1}$};
   \draw (17.625, 2.75) to[american current source, l_={$g_{m_1}v_{gs}$}] (17.625, 1.25);
   \draw (19.125, 2.75) to[european resistor, l_={$g_{o_1}$}] (19.125, 1.25);
   \draw (17.625, 1.25) -- (19.125, 1.25);
@@ -57,17 +57,17 @@ effects of channel length modulation.
   \draw (19.125, 7.75) to[european resistor, l={\textcolor{rgb,255:red,255;green,0;blue,0}{$G_5$}}] (19.125, 6.25);
   \draw (19.125, 6.25) -| (19.125, 5.75);
   \draw (19.125, 7.75) -| (19.125, 8.25) |- (18.375, 8.25) -| (18.375, 8);
-  \node[shape=rectangle, minimum width=0.715cm, minimum height=0.465cm](N6) at (20, 3.5){} node[anchor=center] at (N6.text){$V_{y}$};
-  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N7) at (20.125, 5.75){} node[anchor=center] at (N7.text){$V_{out}$};
+  \node[shape=rectangle, minimum width=0.715cm, minimum height=0.465cm] (N6) at (20, 3.5){} node[anchor=center] at (N6.text){$V_{y}$};
+  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N7) at (20.125, 5.75){} node[anchor=center] at (N7.text){$V_{out}$};
   \node[ground] at (14.875, 1.25){};
   \node[ground] at (16.375, 1.25){};
   \node[ground] at (12.625, 8.812){};
   \node[ground] at (18.375, 8){};
-  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N8) at (16.625, 3.563){} node[anchor=center] at (N8.text){$I_{G_1}$};
+  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N8) at (16.625, 3.563){} node[anchor=center] at (N8.text){$I_{G_1}$};
   \node[shape=rectangle, minimum width=4.84cm, minimum height=1.09cm] at (15.25, 9.937){} node[anchor=north, align=center, text width=4.452cm, inner sep=6pt] at (15.25, 10.5){Small Signal Schematic\\(Sink)};
   \draw (6, 3.52) -| (6, 3.71);
-  \node[nmos, arrowmos](N9) at (6, 4.48){} node[anchor=west] at (N9.text){$M_2$};
-  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N10) at (2.5, 3.71){} node[anchor=center] at (N10.text){$V_{x}$};
+  \node[nmos, arrowmos] (N9) at (6, 4.48){} node[anchor=west] at (N9.text){$M_2$};
+  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N10) at (2.5, 3.71){} node[anchor=center] at (N10.text){$V_{x}$};
   \draw[dash pattern={on 0.4pt off 0.8pt}, -stealth] (3.5, 3.71) |- (3, 3.71);
   \draw (17.625, 5.75) to[american current source, l_={$g_{m_2}v_{gs}$}] (17.625, 4.25);
   \draw (19.125, 5.75) to[european resistor, l_={$g_{o_2}$}] (19.125, 4.25);
@@ -79,17 +79,17 @@ effects of channel length modulation.
   \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (16.375, 4.5){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (16.375, 4.5){\footnotesize S};
   \draw (19.125, 4.25) -- (19.125, 2.75);
   \draw[dash pattern={on 0.4pt off 0.8pt}, -stealth] (19.125, 3.5) -- (19.625, 3.5);
-  \node[shape=rectangle, minimum width=0.715cm, minimum height=0.465cm](N11) at (11, 3.563){} node[anchor=center] at (N11.text){$V_{x}$};
+  \node[shape=rectangle, minimum width=0.715cm, minimum height=0.465cm] (N11) at (11, 3.563){} node[anchor=center] at (N11.text){$V_{x}$};
   \draw[dash pattern={on 0.4pt off 0.8pt}, -stealth] (11.875, 3.563) -- (11.375, 3.563);
-  \node[nmos, arrowmos, xscale=-1](N12) at (3.5, 4.48){} node[anchor=east] at (N12.text){$M_3$};
+  \node[nmos, arrowmos, xscale=-1] (N12) at (3.5, 4.48){} node[anchor=east] at (N12.text){$M_3$};
   \draw (3.5, 3.71) -| (3.5, 3.52);
   \draw (4.48, 4.48) -- (5.02, 4.48);
   \draw (4.75, 4.5) |- (3.5, 5.5);
   \draw (3.5, 5.25) -| (3.5, 5.5);
   \draw (3.5, 6.04) -| (3.5, 5.5);
-  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N13) at (2.5, 5.5){} node[anchor=center] at (N13.text){$V_{z}$};
+  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N13) at (2.5, 5.5){} node[anchor=center] at (N13.text){$V_{z}$};
   \draw[dash pattern={on 0.4pt off 0.8pt}, -stealth] (3.5, 5.5) |- (3, 5.5);
-  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N14) at (4.75, 6){} node[anchor=center] at (N14.text){$I_{G_2}$};
+  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N14) at (4.75, 6){} node[anchor=center] at (N14.text){$I_{G_2}$};
   \draw (15.625, 5.75) -- (14.875, 5.75);
   \draw (13.375, 5.75) to[american current source, l={$g_{m_3}v_{gs}$}] (13.375, 4.25);
   \draw (11.875, 5.75) to[european resistor, l={$g_{o_3}$}] (11.875, 4.25);
@@ -100,9 +100,9 @@ effects of channel length modulation.
   \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (14.875, 4.5){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (14.875, 4.5){\footnotesize S};
   \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (11.375, 5.5){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (11.375, 5.5){\footnotesize D};
   \draw (15.625, 5.75) |- (11.875, 6.562) |- (11.875, 5.75);
-  \node[shape=rectangle, minimum width=0.715cm, minimum height=0.465cm](N15) at (11, 6.562){} node[anchor=center] at (N15.text){$V_{z}$};
+  \node[shape=rectangle, minimum width=0.715cm, minimum height=0.465cm] (N15) at (11, 6.562){} node[anchor=center] at (N15.text){$V_{z}$};
   \draw[dash pattern={on 0.4pt off 0.8pt}, -stealth] (11.875, 6.562) -- (11.375, 6.562);
-  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N16) at (16.625, 6.562){} node[anchor=center] at (N16.text){$I_{G_2}$};
+  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N16) at (16.625, 6.562){} node[anchor=center] at (N16.text){$I_{G_2}$};
   \draw[dash pattern={on 0.4pt off 0.8pt}, -stealth] (19.125, 5.75) -- (19.625, 5.75);
   \draw[dash pattern={on 0.4pt off 0.8pt}, -stealth] (4.75, 5.5) -- (4.75, 5.75);
   \draw[dash pattern={on 0.4pt off 0.8pt}, -stealth] (4.75, 3.71) -- (4.75, 4);
@@ -233,7 +233,7 @@ Here's a table of the voltages at each terminal of the transistors:
     the transistor $M_2$ goes out of saturation can
     be calculated as follows:
     \begin{align*}
-      R_{out, max} &= \frac{V_{L, max}}{I_{M_2}} \quad \text{[where, } V_{ee} \leq V_{L, max} \leq V_{cc} \text{]}
+      R_{out, \max} &= \frac{V_{L, \max}}{I_{M_2}} \quad \text{[where, } V_{ee} \leq V_{L, \max} \leq V_{cc} \text{]}
     \end{align*}
   \item \textbf{Impedances}:
     \paragraph{At Input:}Applying a test current $I_{test}$
@@ -323,8 +323,8 @@ Assume the following specificiatons:
   \item $V_{th} = 0.7$ V
   \item $\mu_n C_{ox} = 100 \mu A/V^2$
   \item $\lambda = 0.02$ V$^{-1}$
-  \item $L_{min} = 1 \mu m$
-  \item $V_{L, max} = V_{cc}$
+  \item $L_{\min} = 1 \mu m$
+  \item $V_{L, \max} = V_{cc}$
   \item $V_{ov} = 0.2$ V for all transistors
 \end{enumerate}
 Find the following:
@@ -362,9 +362,9 @@ Find the following:
     \end{align*}
   \item Output voltage range and maximum output load:
     \begin{align*}
-      V_{out, min} &\approx V_{y} + V_{ov_2} = 0.9 + 0.2 = 1.1 \text{ V} \\
-      V_{out, max} &\approx V_{cc} = 5 \text{ V} \\
-      R_{out, max} &= \frac{V_{L, max}}{I_{M_2}} = \frac{5 - 0}{10 \times 10^{-6}} = 500 k\Omega
+      V_{out, \min} &\approx V_{y} + V_{ov_2} = 0.9 + 0.2 = 1.1 \text{ V} \\
+      V_{out, \max} &\approx V_{cc} = 5 \text{ V} \\
+      R_{out, \max} &= \frac{V_{L, \max}}{I_{M_2}} = \frac{5 - 0}{10 \times 10^{-6}} = 500 k\Omega
     \end{align*}
   \item Small signal output resistance:
     \begin{align*}
@@ -414,25 +414,25 @@ Find the following:
   pretty(curr_transfer)
   printf('\n');
 
-  % input impedence: Itest injected into Vz
+  % input impedance: Itest injected into Vz
   eq4_zin = Vz*(G4 + go3 + gm3) - Vx*(go3 + gm3) - Itest == 0;
   sol_zin = solve([eq1, eq2, eq3, eq4_zin], [Vout, Vx, Vy, Vz]);
   zin = simplify(sol_zin.Vz/Itest);
   % zin = collect(zin, G4*G5);
   % zin = collect(zin, G4);
   % zin = subs(zin, 'G5', 0);
-  printf('=== Input Impedence Results ===\n');
+  printf('=== Input Impedance Results ===\n');
   pretty(zin);
   printf('\n');
 
-  % output impedence: Itest injected into Vout
+  % output impedance: Itest injected into Vout
   eq1_zout = Vout*(G5 + go2) - Vy*(go2 + gm2) + Vz*gm2 - Itest == 0;
   sol_zout = solve([eq1_zout, eq2, eq3, eq4], [Vout, Vx, Vy, Vz]);
   zout = simplify(sol_zout.Vout/Itest);
   % zout = collect(zout, G4*G5);
   % zout = subs(zout, 'G4', 0);
   % zout = collect(zout, G5);
-  printf('=== Output Impedence Results ===\n');
+  printf('=== Output Impedance Results ===\n');
   pretty(zout)
   printf('\n');
 \end{lstlisting}

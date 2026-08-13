@@ -1,5 +1,4 @@
 \subsection{Equations}
-\label{sec:theory_em_equations}
 
 Each equation can be expressed in either integral or differential form.
 I'll present them in their differential form. We'll use 3D Cartesian
@@ -17,12 +16,12 @@ where
     \begin{align*}
       \nabla = \left( \frac{\partial}{\partial x}, \frac{\partial}{\partial y}, \frac{\partial}{\partial z} \right)
     \end{align*}
-  \item \( \mathbf{E(x,y,z,t)} \): electric function. \( \frac{V}{m} \)
+  \item \( \mathbf{E(x,y,z,t)} \): electric function.\( \frac{V}{m} \)
   \item \( \mathbf{B(x,y,z,t)} \): magnetic flux density function.
     \( \frac{Wb}{m^2} \)
   \item \( \mathbf{J_m(x,y,z,t)} \): magnetic current density function.
     \( \frac{A}{m^2} \). In nature, \( \mathbf{J_m(x,y,z,t)} = 0 \) since
-    magnetic monopoles i.e. charges haven't been observed.
+    magnetic monopoles that is, charges haven't been observed.
 \end{itemize}
 Let's have some fun with this equation.
 \begin{align*}
@@ -59,12 +58,12 @@ function. It is expressed as:
 \end{align*}
 where
 \begin{itemize}
-  \item \( \mathbf{H(x,y,z,t)} \): magnetic function. \( \frac{A}{m} \)
+  \item \( \mathbf{H(x,y,z,t)} \): magnetic function.\( \frac{A}{m} \)
   \item \( \mathbf{D(x,y,z,t)} \): electric flux density function.
     \( \frac{C}{m^2} \)
   \item \( \mathbf{J_e(x,y,z,t)} \): electric current density function.
     \( \frac{A}{m^2} \). In nature, \( \mathbf{J_e(x,y,z,t) \neq 0 } \) since
-    electric monopoles i.e. charges have been observed. It is defined as
+    electric monopoles that is, charges have been observed. It is defined as
     \( \mathbf{J_e(x,y,z,t)} = \rho_e(x,y,z,t) \mathbf{v(x,y,z,t)} \) where
     \( \rho_e(x,y,z,t) \) is the charge density function and
     \( \mathbf{v(x,y,z,t)} \) is the velocity function of the charge.
@@ -113,7 +112,7 @@ We find that the divergence of the electric flux density function changes as
 the charge density function changes over time \( \nabla \cdot \mathbf{D(x,y,z,t)} =
 \rho_e(x,y,z,t) \). This is \textbf{the origin of Gauss's Law of Electricity}.
 
-\subsection{Statics and Quasi-Statics}
+\subsection{Static and Quasi-Static}
 
 Faraday's and Ampere's Law (alongisde Gauss) fully define any electromagnetic system
 at all times and space. Both equations are \textbf{first order partial differential
@@ -122,10 +121,10 @@ full system is mathematically very expensive. One therefore wonders, \textbf{Is 
 possible to simplify and dumb down?}
 
 
-\textbf{Yes, but only under conditions}. This is where Statics and Quasi-Statics
+\textbf{Yes, but only under conditions}. This is where Static and Quasi-Static
 come into play. We need to make some assumptions.
 \begin{enumerate}
-  \item \textbf{Statics}: We assume that all functions are frozen in time. This is the
+  \item \textbf{Static}: We assume that all functions are frozen in time. This is the
     strongest assumption we can make and it reduces our PDEs to \textbf{ordinary
     differential equations (ODEs)} in space only. This is the DC regime where all functions
     are time-independent. To achieve this, the rate of change of all functions must
@@ -138,7 +137,7 @@ come into play. We need to make some assumptions.
       \frac{\partial \mathbf{J_e(x,y,z,t)}}{\partial t} = 0 \\
       \frac{\partial \mathbf{J_m(x,y,z,t)}}{\partial t} = 0
     \end{align*}
-  \item \textbf{Quasi-Statics}: We assume that the flux functions [\(\mathbf{B}\) \&
+  \item \textbf{Quasi-Static}: We assume that the flux functions [\(\mathbf{B}\) \&
     \(\mathbf{D}\)] do not change with time but we allow other functions [\(\mathbf{E}\),
     \(\mathbf{H}\), \(\mathbf{J}_e\), and \(\mathbf{J}_m\)] to change with time. This is
     a weaker assumption and it reduces our PDEs to ODEs in space only for the flux
@@ -190,8 +189,7 @@ or \(\mathbf{J}_e\) (\& \(\mathbf{J}_m\)).
     around any closed loop is zero. Notice this did not require \(\mathbf{E}\) or \(V\)
     to be time-independent, only that \(\nabla\times\mathbf{E}=0\) holds instant by
     instant. This is precisely why KVL remains valid in the quasi-static (slowly
-    time-varying, \(L \lll \lambda\)) regime, not just in true DC.
-
+    time-varying that is \(L \lll \lambda\)) regime and not just in true DC.\
   \item \textbf{Equation 6}: Taking the divergence of both sides of
     equation (9), at each instant \(t\):
     \begin{align*}

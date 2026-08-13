@@ -19,4 +19,4 @@ jobs:
           ~/.local/bin/codespell --skip='*.aux,*.bbl,*.bcf,*.blg,*.fdb_latexmk,*.fls,*.log,*.out,*.run.xml,*.synctex.gz,*.toc'
       - name: run chktex.
         run: |
-          chktex -q -n1 -n8 -n13 main.tex
+          chktex -q main.tex

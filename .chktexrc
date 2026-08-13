@@ -1,0 +1,10 @@
+CmdLine
+{
+    -n3 # says use {} instead of () in eqns. nuh.
+    -n9 # i like [] instead of {} for eqns
+    -n8 # tikz uses -- dashes
+    -n1 # command terminated with a space.
+    -n44 # custom table rules
+    -n36 # don't wanna put space before ()
+    -n12 # shut up about interword spacings.
+}
