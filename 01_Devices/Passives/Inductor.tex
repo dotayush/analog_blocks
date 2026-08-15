@@ -1,0 +1,53 @@
+\subsection{Inductor:}
+An inductor is a two-port passive device that stores energy in the form of
+a magnetic field. The property of an inductor is called inductance and is
+measured in Henrys (H). The core relationship between flux, inductance
+and current is given by:
+\begin{align*}
+  \Phi &= L \cdot I \\
+  \frac{d\Phi}{dt} &= L \cdot \frac{dI}{dt} \hspace{1cm} \text{(assuming \(L\) is constant)} \\
+  V &= L \cdot \frac{dI}{dt} \hspace{1cm} [V = \frac{d\Phi}{dt}]
+\end{align*}
+This is the fundamental relationship between voltage and current in an
+inductor or if you may call this the inductor's version of Ohm's law.
+The inverse of inductance is called reluctance (\(R\)) and is measured in
+Henrys inverse (H\(^{-1}\)).
+\[
+  R = \frac{1}{L}
+\]
+The impedance of an inductor is given by:
+\[
+  Z_L = j\omega L = j 2 \pi f L = s L
+\]
+The inverse of impedance is called admittance (\(Y\)) and is measured in
+Siemens (S). The relationship between impedance and admittance is:
+\[
+  Y = \frac{1}{Z} = \frac{1}{sL}
+\]
+You'll notice when we apply KCL to circuits within this book, we'll mostly
+use admittance \(Y\) to express the impedance, we do this as it simplifies
+the analysis a lot. The admittance version of Ohm's law is:
+\[
+  I = V \cdot Y
+\]
+The impedance of an inductor is directly proportional to frequency. At low
+frequencies, the impedance of an inductor is very low and at high frequencies,
+the impedance of an inductor is very high. This is why inductor effects are
+more pronounced at low frequencies as their impedance rises enough to load
+the circuit. This is also why inductors are used for filtering (they act as
+a short circuit at low frequencies).
+
+An ideal inductor is a linear (that is, the relationship between voltage and
+current is a straight line) and time-invariant (that is, the relationship
+between voltage and current does not change with time) of the three passive
+components. It is also the only device that in its ideal form does not
+dissipate energy. The energy stored in an inductor is given by:
+\begin{align*}
+  V &= L \cdot \frac{dI}{dt} \\
+  P &= V \cdot I \\
+  P &= L \cdot \frac{dI}{dt} \cdot I \\
+  P &= L \cdot I \cdot \frac{dI}{dt} \\
+  P &= L \cdot \frac{1}{2} \cdot \frac{d(I^2)}{dt} \hspace{1cm} [\frac{d(I^2)}{dt} = 2I \cdot \frac{dI}{dt}] \\
+  \int P dt &= \int L \cdot \frac{1}{2} \cdot \frac{d(I^2)}{dt} dt \\
+  E &= \frac{1}{2} L I^2
+\end{align*}
