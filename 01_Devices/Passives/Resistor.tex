@@ -1,27 +1,40 @@
 \subsection{Resistor}
-A resistor is a two-port passive device that opposes the flow of current,
-we call this property resistance. The unit of resistance is Ohm (\(\Omega\)).
-Everything has resistance. A good way to imagine resistance is to
-think about its value as a constant of proportionality between voltage
-and current. The relationship is given by Ohm's law:
-\[
-  V = I_ \cdot R
-\]
-The inverse of resistance is called conductance (\(G\)) and is measured
-in Siemens (S). The relationship between resistance and conductance is:
-\[
-  G = \frac{1}{R}
-\]
+An ideal resistor is a two-port, passive, linear and time-invariant
+device that opposes the flow of current.
 
-You'll notice when we apply KCL to circuits within this book, we'll mostly
-use conductance \(G\) to express the resistance, we do this as it
-simplifies the analysis a lot. The conductance version of Ohm's law is:
-\[
-  I = V \cdot G
-\]
-An ideal resistor is a linear (that is, the relationship between voltage and
-current is a straight line) and time-invariant (that is, the relationship
-between voltage and current does not change with time) of the three passive
-components. It is also the only device that in its ideal form does not
-store energy. This is why at low frequencies, if a resistor can be used
-in place of a capacitor or inductor, use it.
+\begin{itemize}
+  \item \textbf{Resistance:}
+    This act of opposition is called resistance and is measured in
+    Ohms (\(\Omega\)). A good way to imagine resistance is to think
+    about its value as a proportionality factor between voltage and
+    current. In fact, This is precisely the relationship that gives
+    us Ohm's law:
+    \[
+      V = I_ \cdot R
+    \]
+  \item \textbf{Conductance:}
+    The inverse of resistance is called conductance (\(G\)) and is
+    measured in Siemens (S). The relationship between resistance and
+    conductance is:
+    \[
+      G = \frac{1}{R}
+    \]
+    You'll notice when we apply KCL to circuits within this book
+    that contain resistors, we'll mostly use conductance \(G\) to
+    express the resistance. This simplifies the analysis a lot. The
+    ohms law can be rearranged for conductance:
+    \[
+      I = V \cdot G
+    \]
+  \item \textbf{Power Dissipation:}
+    A resistor dissipates energy in the form of heat. The power
+    dissipated by a resistor is given by:
+    \[
+      P = I^2 \cdot R = V^2 \cdot G
+    \]
+  \item \textbf{Non-Ideal Resistor:}
+    In practise, resistor's are not ideal and thus most of our
+    assumptions above (linear, time-invariant, dissipative) fall
+    apart at very high frequencies but for the most part, we can
+    treat resistors as ideal devices.
+\end{itemize}

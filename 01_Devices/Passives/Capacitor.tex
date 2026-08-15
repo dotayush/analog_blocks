@@ -1,56 +1,94 @@
 \subsection{Capacitor}
-A capacitor is a two-port passive device that stores energy in the form of
-an electric field. The property of a capacitor is called capacitance and is
-measured in Farads (F). The core relationship between charge, capacitance
-and voltage is given by:
-\begin{align*}
-  Q = C \cdot V \\
-  \frac{dQ}{dt} &= C \cdot \frac{dV}{dt} \hspace{1cm} \text{(assuming \(C\) is constant)} \\
-  I &= C \cdot \frac{dV}{dt} \hspace{1cm} [I = \frac{dQ}{dt}]
-\end{align*}
-This is the fundamental relationship between current and voltage in a
-capacitor or if you may call this the capacitor's version of Ohm's law.
-The inverse of capacitance is called elastance (\(S\)) and is measured in Farads
-inverse (F\(^{-1}\)).
+An ideal capacitor is a two-port, passive, linear, time-invariant,
+non-dissipative device that stores energy (\& thus charge) in the
+form of an electric field.
 
-The impedance of a capacitor is given by:
-\[
-  Z_C = \frac{1}{j\omega C} = \frac{1}{j 2 \pi f C} = \frac{1}{s C}
-\]
-The inverse of impedance is called admittance (\(Y\)) and is measured in
-Siemens (S). The relationship between impedance and admittance is:
-\[
-  Y = \frac{1}{Z} = \frac{1}{\frac{1}{sC}} = sC
-\]
-You'll notice when we apply KCL to circuits within this book, we'll mostly
-use admittance \(Y\) to express the impedance, we do this as it simplifies
-the analysis a lot. The admittance version of Ohm's law is:
-\[
-  I = V \cdot Y
-\]
-The impedance of a capacitor is inversely proportional to frequency. This
-means that at low frequencies, the impedance of a capacitor is very high and
-at frequencies, the impedance of a capacitor is very low. This is why
-capacitor effects are more pronounced at high frequencies as their
-impedance drops enough to load the circuit. This is also why capacitors are
-used for decoupling (they act as a short circuit at high frequencies).
+\begin{itemize}
+  \item \textbf{Capacitance:}
+    The relationship between charge and
+    voltage is expressed by a proportionality factor called capacitance
+    (\(C\)) and is measured in Farads (F). It also gives us the
+    capacitor's version of Ohm's law:
+    \begin{align*}
+      Q = C \cdot V \\
+      \frac{dQ}{dt} &= C \cdot \frac{dV}{dt} \hspace{1cm} \text{(assuming \(C\) is constant)} \\
+      I &= C \cdot \frac{dV}{dt} \hspace{1cm} [I = \frac{dQ}{dt}]
+    \end{align*}
+    The inverse of capacitance is called elastance (\(S\)) and is measured in Farads
+    inverse (F\(^{-1}\)).
+  \item \textbf{Impedance:}
+    Unlike resistor where a proportionality factor directly relates
+    voltage and current, a capacitor is different, the relationship
+    between voltage and current is related instead by a differential
+    equation. We thus can not describe resistance of a capacitor in the
+    same way we do for a resistor. We must somehow trick the above
+    capacitor relationship into giving us a proportionality factor
+    between voltage and current. Lapalace Transform can be used to
+    achieve this,
+    \begin{align*}
+      I &= C \cdot \frac{dV}{dt} \\
+      I(s) &= C \cdot s V(s) \\
+      V(s) &= \frac{1}{sC} I(s)
+    \end{align*}
+    We can now define the impedance of a capacitor as the ratio
+    of voltage to current in the Laplace domain:
+    \[
+      Z_C = \frac{1}{s C} = \frac{1}{j\omega C} = \frac{1}{j 2 \pi f C}
+    \]
+  \item \textbf{Admittance:}
+    The inverse of impedance is called admittance (\(Y\)) and
+    is measured in Siemens (S). The relationship between impedance
+    and admittance is:
+    \[
+      Y = \frac{1}{Z} = \frac{1}{\frac{1}{sC}} = sC
+    \]
 
-An ideal capacitor is a linear (that is, the relationship between voltage and
-current is a straight line) and time-invariant (that is, the relationship
-between voltage and current does not change with time) of the three passive
-components. It is also the only device that in its ideal form does not
-dissipate energy.
-
-A capacitor can be formed anywhere two conductors are separated by an
-insulator. The charges are stored on the surface of the  conductors and the
-energy is stored in the electric field between the  conductors. The energy
-stored in a capacitor is given by:
-\begin{align*}
-  I &= C \cdot \frac{dV}{dt} \\
-  P &= V \cdot I \\
-  P &= V \cdot C \cdot \frac{dV}{dt} \\
-  P &= C \cdot V \cdot \frac{dV}{dt} \\
-  P &= C \cdot \frac{1}{2} \cdot \frac{d(V^2)}{dt} \hspace{1cm} [\frac{d(V^2)}{dt} = 2V \cdot \frac{dV}{dt}] \\
-  \int P dt &= \int C \cdot \frac{1}{2} \cdot \frac{d(V^2)}{dt} dt \\
-  E &= \frac{1}{2} C V^2
-\end{align*}
+    You'll notice when we apply KCL to circuits within this book,
+    we'll mostly use admittance \(Y\) to express the impedance, we
+    do this as it simplifies the analysis a lot. The admittance
+    version of Ohm's law is:
+    \[
+      I = V \cdot Y
+    \]
+  \item \textbf{Frequency Response:}
+    The impedance of a capacitor is inversely proportional to
+    frequency. This means that at low frequencies, the impedance
+    of a capacitor is very high and at frequencies, the impedance
+    of a capacitor is very low. This is why at high frequencies,
+    the capacitor starts to load the circuit which is often a
+    very desirable effect in many applications. This is also why
+    capacitors are used for decoupling (they act as a short
+    circuit at high frequencies).
+  \item \textbf{Energy and Power:}
+    The energy and power stored in a capacitor is given by:
+    \begin{align*}
+      I &= C \cdot \frac{dV}{dt} \\
+      P &= V \cdot I \\
+      P &= V \cdot C \cdot \frac{dV}{dt} \\
+      P &= C \cdot V \cdot \frac{dV}{dt} \\
+      P &= C \cdot \frac{1}{2} \cdot \frac{d(V^2)}{dt} \hspace{1cm} [\frac{d(V^2)}{dt} = 2V \cdot \frac{dV}{dt}] \\
+      \int P dt &= \int C \cdot \frac{1}{2} \cdot \frac{d(V^2)}{dt} dt \\
+      E &= \frac{1}{2} C V^2
+    \end{align*}
+  \item \textbf{Types of Capacitors}:
+    There are many types of capacitors, some of the most common are:
+    \begin{itemize}
+      \item \textbf{Ceramic Capacitor}: Used for decoupling and filtering.
+        They are very useful in power supply circuits. Examples include
+        0805, 0603, 0402, etc.
+      \item \textbf{Electrolytic Capacitor}: Used for bulk capacitance.
+        They are very useful in power supply circuits. Examples include
+        10uF, 100uF, 1000uF, etc.
+      \item \textbf{Tantalum Capacitor}: Used for bulk capacitance.
+        They are very useful in power supply circuits. Examples include
+        10uF, 100uF, 1000uF, etc.
+      \item \textbf{Film Capacitor}: Used for decoupling and filtering.
+        They are very useful in power supply circuits. Examples include
+        10nF, 100nF, 1uF, etc.
+    \end{itemize}
+  \item \textbf{They're everywhere in the real world}:
+    A capacitor exists anywhere where you have two conductors
+    separated by an insulator. The charges are stored on the
+    surface of the conductors and the energy is stored in the
+    electric field between the conductors.
+\end{itemize}
