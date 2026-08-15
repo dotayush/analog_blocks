@@ -1,0 +1,27 @@
+\subsection{Resistor}
+A resistor is a two-port passive device that opposes the flow of current,
+we call this property resistance. The unit of resistance is Ohm (\(\Omega\)).
+Everything has resistance. A good way to imagine resistance is to
+think about its value as a constant of proportionality between voltage
+and current. The relationship is given by Ohm's law:
+\[
+  V = I_ \cdot R
+\]
+The inverse of resistance is called conductance (\(G\)) and is measured
+in Siemens (S). The relationship between resistance and conductance is:
+\[
+  G = \frac{1}{R}
+\]
+
+You'll notice when we apply KCL to circuits within this book, we'll mostly
+use conductance \(G\) to express the resistance, we do this as it
+simplifies the analysis a lot. The conductance version of Ohm's law is:
+\[
+  I = V \cdot G
+\]
+An ideal resistor is a linear (that is, the relationship between voltage and
+current is a straight line) and time-invariant (that is, the relationship
+between voltage and current does not change with time) of the three passive
+components. It is also the only device that in its ideal form does not
+store energy. This is why at low frequencies, if a resistor can be used
+in place of a capacitor or inductor, use it.
