@@ -1,0 +1,169 @@
+\subsection{Transistor:}
+
+A transistor is a device that can be used either as an amplifier or
+as a switch. Its three-port (has three terminals), active (requires
+an external power source to operate), non-linear (the relationship
+between the voltage and current is not a straight line) and
+time-variant (behaviour changes as their parameters drift due to
+temperature, age, etc.) device.
+
+The popular families are: Bipolar Junction Transistor (BJT)
+and Field Effect Transistor (FET). The underlying physics is different
+between them but their behaviour is similar. There are also many
+other types of transistors (like IGBT, JFET, pHEMT etc.) but they are
+often solutions to specific problems (like high voltage, high frequency,
+low noise, etc.).
+
+\subsubsection{Bipolar Junction Transistor (BJT):}
+
+A BJT is physically built from two PN junctions that share a single
+region, with the two junctions oriented oppositely. This shows up in
+its governing model. It is called a \emph{bipolar} device because
+both electrons and holes are involved in the conduction process.
+
+A BJT has three terminals: the base (B), the collector (C) and the
+emitter (E). It is often called a \emph{current controlled device}
+because of its base-collector current relationship. In reality, the
+base-emitter voltage controls the collector current.
+
+This family has two types of transistors: NPN and PNP.\ They are
+(in a sense) mirror images of each other.
+
+\begin{circuitfig}
+	% Paths, nodes and wires:
+	\node[npn] at (5.5, 7.02){};
+	\node[pnp, yscale=-1] at (9, 6.98){};
+	\node[shape=rectangle, minimum width=1.465cm, minimum height=0.465cm] at (5.5, 6){} node[anchor=north, align=center, text width=1.077cm, inner sep=6pt] at (5.5, 6.25){Emitter};
+	\node[shape=rectangle, minimum width=0.97cm, minimum height=0.465cm] at (4.157, 7.02){} node[anchor=north, align=center, text width=0.582cm, inner sep=6pt] at (4.157, 7.27){Base};
+	\node[shape=rectangle, minimum width=0.97cm, minimum height=0.465cm] at (7.657, 6.98){} node[anchor=north, align=center, text width=0.582cm, inner sep=6pt] at (7.657, 7.23){Base};
+	\node[shape=rectangle, minimum width=1.465cm, minimum height=0.465cm] at (5.5, 8.04){} node[anchor=north, align=center, text width=1.077cm, inner sep=6pt] at (5.5, 8.29){Collector};
+	\node[shape=rectangle, minimum width=1.465cm, minimum height=0.465cm] at (9, 8){} node[anchor=north, align=center, text width=1.077cm, inner sep=6pt] at (9, 8.25){Collector};
+	\node[shape=rectangle, minimum width=1.465cm, minimum height=0.465cm] at (9, 5.96){} node[anchor=north, align=center, text width=1.077cm, inner sep=6pt] at (9, 6.21){Emitter};
+	\node[shape=rectangle, minimum width=1.965cm, minimum height=0.755cm] at (5.5, 4.855){} node[anchor=north, align=center, text width=1.577cm, inner sep=6pt] at (5.5, 5.25){\Large NPN};
+	\node[shape=rectangle, minimum width=1.965cm, minimum height=0.755cm] at (9, 4.855){} node[anchor=north, align=center, text width=1.577cm, inner sep=6pt] at (9, 5.25){\Large PNP};
+\end{circuitfig}
+
+The behaviour of a BJT can be approximated well by the below equations.
+\begin{itemize}
+  \item \textbf{Current \& Relations}:
+    The currents flowing into and out of the terminals of a BJT are
+    related:
+    \begin{itemize}
+      \item \textbf{Collector Current (\(I_C\))}:
+        The Ebers-Moll Model approximately describe the collector current as
+        two coupled Shockley's diode equations:
+        \[
+          I_C = \underbrace{\alpha_F I_{FS} \left( e^{\frac{V_{BE}}{V_T}} - 1 \right)}_{\text{Forward Junction Contribution}} - \underbrace{\alpha_R I_{RS} \left( e^{\frac{V_{BC}}{V_T}} - 1 \right)}_{\text{Reverse Junction Contribution}}
+        \]
+        \begin{itemize}
+          \item \(I_C\) is the collector current
+          \item \(I_{FS}\) is the forward saturation current
+          \item \(\alpha_F\) is the forward common base current gain
+          \item \(V_{BE}\) is the base-emitter voltage
+          \item \(V_T\) is the thermal voltage
+          \item \(I_{RS}\) is the reverse saturation current
+          \item \(\alpha_R\) is the reverse common base current gain
+          \item \(V_{BC}\) is the base-collector voltage
+        \end{itemize}
+        In forward active mode, the base-collector voltage is reverse biased
+        (\(V_{BC} \ll 0\)) and thus \( e^{\frac{V_{BC}}{V_T}} \approx 0 \) and the
+        Ebers-Moll model simplifies,
+        \begin{align*}
+          I_C &= \alpha_F I_{FS} \left( e^{\frac{V_{BE}}{V_T}} - 1 \right) - \alpha_R I_{RS} \left( e^{\frac{V_{BC}}{V_T}} - 1 \right) \\
+          I_C &= \alpha_F I_{FS} \left( e^{\frac{V_{BE}}{V_T}} - 1 \right) - \alpha_R I_{RS}(-1) \\
+          I_C &= \alpha_F I_{FS} \left( e^{\frac{V_{BE}}{V_T}} - 1 \right) + \alpha_R I_{RS} \\
+          I_C &\approx \alpha_F I_{FS} \left( e^{\frac{V_{BE}}{V_T}} - 1 \right)
+        \end{align*}
+        Forward Saturation Current (\(I_{FS}\)) and Reverse Saturation Current (\(I_{RS}\))
+        can be related to each other by defining,
+        \[
+          \alpha_F I_{FS} = \alpha_R I_{RS} = I_S
+        \]
+        We'll use \(I_S\) as the saturation current in the rest of this document.
+      \item \textbf{Base Current (\(I_B\))}:
+        The base current is related to the collector current by the current gain
+        (\(\beta\)):
+        \[
+          I_B = \frac{I_C}{\beta}
+        \]
+        \(\beta\) is not constant and varies with temperature, collector current and
+        collector-emitter voltage. Use Ebers-Moll model instead.
+      \item \textbf{Emitter Current (\(I_E\))}:
+        The emitter current is the sum of the collector and base currents:
+        \begin{align*}
+          I_E &= I_C + I_B \\
+          I_E &= I_C + \frac{I_C}{\beta} \\
+          I_E &= I_C \left( 1 + \frac{1}{\beta} \right)
+        \end{align*}
+    \end{itemize}
+  \item \textbf{Voltages \& Relations}:
+    There are several important voltages in a BJT:\
+    \begin{itemize}
+      \item \textbf{Thermal/Boltzmann Voltage (\(V_T\))}:
+        The thermal voltage is given by:
+        \[
+          V_T = \frac{kT}{q}
+        \]
+        where \(k\) is the Boltzmann constant, \(T\) is the temperature in
+        Kelvin and \(q\) is the charge of an electron. At room temperature,
+        \(V_T \approx 26\,\mathrm{mV}\):
+      \item \textbf{Threshold Voltage (\(V_{th}\))}:
+        The threshold voltage is the minimum voltage required to bias a junction
+        such that it conducts. For a silicon junction (most common), the
+        threshold voltage is \(V_{th} \approx 0.6\text{--}0.7\,\mathrm{V}\).
+        Since we have two junctions in a BJT, we have two threshold voltages.
+        We define \(V_{Fth}\) for the forward junction threshold voltage and
+        \(V_{Rth}\) for the reverse junction threshold voltage.
+    \end{itemize}
+    They are also related to each other:
+    \begin{itemize}
+      \item \textbf{Base-Emitter \(V_{BE}\) and Base-Collector \(V_{BC}\) Voltages}:
+        If you rearranged Ebers-Moll model for \(V_{BE}\) or \(V_{BC}\) after
+        simplifying for forward active or reverse active mode, you get:
+        \begin{itemize}
+          \item \textbf{Under Forward Active Mode}:
+            \begin{align*}
+              V_{BE} = V_T \ln \left( \frac{I_C}{I_{S}} + 1 \right) \\
+              V_{BC} \ll 0
+            \end{align*}
+          \item \textbf{Under Reverse Active Mode}:
+            \begin{align*}
+              V_{BE} \ll 0 \\
+              V_{BC} = V_T \ln \left( \frac{I_C}{I_{S}} + 1 \right)
+            \end{align*}
+          \end{itemize}
+      \item \textbf{Collector-Emitter \(V_{CE}\) Voltage}:
+        The collector-emitter voltage is the voltage across the collector and
+        emitter terminals. It is given by:
+        \begin{align*}
+          V_{CE} &= V_{BE} - V_{BC} \\
+          V_{CE} &= V_B - V_E - (V_B - V_C) \\
+          V_{CE} &= V_B - V_E - V_B + V_C \\
+          V_{CE} &= V_C - V_E
+        \end{align*}
+    \end{itemize}
+  \item \textbf{Modes of Operation}:
+    A BJT can operate in four different modes depending on the biasing of
+    the base-emitter and base-collector junctions. Practically,\\
+    \begin{tabularx}{\linewidth}{|X|X|X|} \hline
+      Mode & Base-Emitter Voltage & Base-Collector Voltage \\ \hline
+      Cutoff         & $V_{BE} < V_{Fth} $       & $V_{BC} < V_{Rth}$       \\ \hline
+      Forward Active (Amplifier) & $V_{BE} \gtrsim V_{Fth} $ & $V_{BC} < V_{Rth}$       \\ \hline
+      Saturation (Switch) & $V_{BE} \gtrsim V_{Fth}$ & $V_{BC} \gtrsim V_{Rth}$ \\ \hline
+      Reverse Active & $V_{BE} < V_{Fth}$       & $V_{BC} \gtrsim V_{Rth}$ \\ \hline
+    \end{tabularx}
+  \item \textbf{Effects}:
+    BJTs are affected by many non-linear effects that are not captured by
+    the Ebers-Moll model. Sometimes they cause hard to diagnose problems.
+    \begin{itemize}
+        \item \textbf{Base Width Modulation}: Increasing \(V_{CE}\) shrinks the base
+          width physically. This increases the collector current and is captured
+          by the Early voltage (\(V_A\)) and produces the Early Effect.
+          \[
+            I_C = I_{S} \left( e^{\frac{V_{BE}}{V_T}} - 1 \right) \left( 1 + \frac{V_{CE}}{V_A} \right) \hspace{1cm} \text{[forward active]}
+          \]
+    \end{itemize}
+  \item \textbf{Noise}:
+      BJTs are also affected by noise namely, thermal noise, shot noise and flicker
+      noise. You can read more about these noises in~\ref{sec:theory_general_noise}.
+\end{itemize}
