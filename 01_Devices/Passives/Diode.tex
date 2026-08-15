@@ -2,8 +2,145 @@
 
 A diode is a two-terminal, active, non-linear and time-variant
 device that allows current to flow in one direction while blocking
-it in the opposite direction. The most common type of diode is the
-semiconductor diode, which is made from a piece of semiconductor
-material (usually silicon) that has been doped with impurities to create
-a p-n junction. Other types of diodes include Schottky diodes, Zener
-diodes, light-emitting diodes (LEDs) and photodiodes.
+it in the opposite direction.
+
+It is constructed from a semiconductor material where one side is doped
+with a material that has an excess of electrons and the other side
+is doped with a material that has a slightly less electrons that
+the first side. The region where the two side meet is called the
+PN junction \& due to recombinations there are no free charge
+carriers. For a voltage to cross the depletion region, it must be
+of greater than a known magnitude called the threshold voltage
+(determined by the material, doping and the depletion width) and
+is typically around 0.7V for silicon diodes and 0.3V for germanium
+diodes.
+
+\begin{enumerate}
+  \item \textbf{Types of Diodes}:
+    There are many types of diodes, some of the most common are:
+    \begin{itemize}
+      \item \textbf{Rectifier Diode}: Used to convert AC to DC.
+        They are very useful in power supply circuits. Examples include 1N4001,
+        1N4007, 1N5408, etc.
+      \item \textbf{Zener Diode}: Used to regulate voltage.
+      \item \textbf{Light Emitting Diode (LED)}: Used to emit
+        light when current flows through it.
+      \item \textbf{Schottky Diode}: Used for fast switching
+        applications.
+      \item \textbf{Photodiode}: Used to convert light into
+        electrical current.
+    \end{itemize}
+  \item \textbf{Diode Parameters}:
+    The parameters of a diode are:
+    \begin{itemize}
+      \item \textbf{Forward Voltage Drop (\(V_F\))}: The voltage drop
+        across the diode when it is forward biased.
+      \item \textbf{Reverse Breakdown Voltage (\(V_{BR}\))}: The voltage
+        at which the diode will conduct in reverse bias.
+      \item \textbf{Reverse Saturation Current (\(I_S\))}: The current
+        that flows through the diode when it is reverse biased.
+      \item \textbf{Maximum Forward Current (\(I_F\))}: The maximum
+        current that can flow through the diode when it is forward biased.
+      \item \textbf{Maximum Reverse Current (\(I_R\))}: The maximum
+        current that can flow through the diode when it is reverse biased.
+    \end{itemize}
+  \item \textbf{Diode Models}:
+    The models of a diode are:
+    \begin{itemize}
+      \item \textbf{Ideal Diode Model}: The ideal diode model assumes
+        that the diode has zero forward voltage drop and infinite reverse
+        resistance. It is a good approximation for low current applications.
+        It is given by the following equation:
+        \[
+          I = \begin{cases}
+            0 & \text{if } V_D < 0 \\
+            \infty & \text{if } V_D > 0
+          \end{cases}
+        \]
+      \item \textbf{Shockley Diode Model}: The Shockley diode model
+        is a more accurate model that takes into account the forward voltage
+        drop and the reverse saturation current. It is a good approximation
+        for high current applications.
+        \[
+          I = I_S \left( e^{\frac{V_D}{n V_T}} - 1 \right)
+        \]
+        where:
+        \begin{itemize}
+          \item \(I\) is the current through the diode.
+          \item \(I_S\) is the reverse saturation current.
+          \item \(V_D\) is the voltage across the diode.
+          \item \(n\) is the ideality factor (typically between 1
+            and 2).
+          \item \(V_T\) is the thermal voltage, given by \(V_T = \frac{kT}{q}\).
+        \end{itemize}
+        This model does not account for the reverse breakdown conduction of
+        the diode, nor does it account for the series or breakdown resistance
+        of the diode.
+      \item \textbf{Piecewise Linear Model}: The piecewise linear model
+        is a more accurate model that approximates the current-voltage
+        relationship as a series of linear segments. It is obtained by
+        asymptotically solving the Shockley Diode Model in two separate
+        voltage regimes: forward, cutoff. The breakdown regime is added as
+        an independent term to account for reverse breakdown conduction.
+        The model also includes the effects of series resistance and breakdown
+        resistance.
+        \begin{enumerate}
+          \item \textbf{Series Resistance:}
+            The Shockley Diode Model treats the entire applied voltage \(V_D\)
+            as appearing across the ideal exponential junction. In a real diode,
+            part of \(V_D\) drops across the bulk and contact series resistance
+            \(R_S\), so only the remainder, the junction voltage
+            \(V_j = V_D - I R_S\), drives the exponential term:
+            \[
+              I = I_S \left( e^{\frac{V_D - I R_S}{n V_T}} - 1 \right)
+            \]
+            This equation is transcendental in \(I\) and has no closed-form
+            solution. The piecewise linear model is obtained by solving it
+            asymptotically in three separate voltage regimes.
+          \item \textbf{Forward Regime:}
+            For \(I \gg I_S\), the \(-1\) term is negligible and
+            \(I \approx I_S e^{V_j / (nV_T)}\), so
+            \[
+              V_j \approx n V_T \ln\!\left(\frac{I}{I_S}\right)
+            \]
+            Because the logarithm varies slowly, \(V_j\) changes by only
+            \(n V_T \ln(10) \approx 60\,\text{mV}\) per decade of current, so
+            across a diode's typical operating range \(V_j\) is well
+            approximated as constant. Fixing \(V_j \approx V_{TH}\), the
+            junction voltage at some nominal operating current \(I_0\), and
+            substituting into \(V_j = V_D - I R_S\) gives
+            \[
+              I \approx \frac{V_D - V_{TH}}{R_S} \hspace{1cm} \text{if } V_D \geq V_{TH}
+            \]
+          \item \textbf{Cutoff Regime:}
+            For \(-V_{BR} \leq V_D < V_{TH}\), the current is small enough that
+            \(I R_S\) is negligible, so \(V_j \approx V_D\), and \(V_D\) is not
+            large enough for the exponential term to matter. The Shockley model
+            then reduces directly to
+            \[
+              I = I_S \left( e^{V_D / (nV_T)} - 1 \right) \approx -I_S \approx 0
+            \]
+            since \(I_S\) is typically \(10^{-9}\) to \(10^{-15}\,\text{A}\).
+          \item \textbf{Breakdown Regime:}
+            Reverse breakdown arises from avalanche multiplication or Zener
+            tunneling, mechanisms entirely absent from the minority-carrier
+            diffusion current that the Shockley equation models. No asymptotic
+            limit of the exponential term can reproduce this behavior, so it
+            must be introduced as an independent term. Modeled with the same
+            linear structure as the forward regime, using breakdown resistance
+            \(R_{ZK}\):
+            \[
+              I \approx \frac{V_D + V_{BR}}{R_{ZK}} \hspace{1cm} \text{if } V_D < -V_{BR}
+            \]
+          \item \textbf{Assembled Model}
+            \[
+              I \approx
+              \begin{cases}
+                \dfrac{V_D + V_{BR}}{R_{ZK}} & \text{if } V_D < -V_{BR} \\[2mm]
+                0 & \text{if } -V_{BR} \leq V_D < V_{TH} \\[2mm]
+                \dfrac{V_D - V_{TH}}{R_S} & \text{if } V_D \geq V_{TH}
+              \end{cases}
+            \]
+        \end{enumerate}
+    \end{itemize}
+\end{enumerate}

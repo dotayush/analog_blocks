@@ -5,18 +5,21 @@ Devices can be classified based on their functionality, characteristics,
 and behavior. In the context of analog circuits, devices are
 primarily classified into two categories: passive and active devices.
 \begin{itemize}
-    \item Passive Devices: These devices do not require an external
-      power source to operate. They can store or dissipate energy
-      but cannot generate it. Examples of passive devices include
-      resistors, capacitors, inductors, and transformers.
+    \item Passive Devices: These do not require an external power
+      source to operate. They can only attenuate, store or dissipate
+      energy.
     \item Active Devices: These devices require an external power
-      source to operate. They can amplify signals, control current
-      flow, and perform other functions that passive devices cannot.
-      Examples of active devices include transistors, and
-      operational amplifiers.
+      source to operate. Alongside attenuating, storing, or dissipating
+      energy, they can also amplify signals and provide gain to the
+      circuit.
 \end{itemize}
-We'll take a closer look at each device and its characteristics in the
-following sections.
+
+We'll often use the term "one-port", "two-port", or "three-port" to
+describe the number of terminals (pins/contacts) a device has. We'll
+also use terms like "linear" (the relationship between voltage and
+current is proportional by a factor), "time-invariant" (the relationship
+between voltage and current does not drift with time), dissipative
+(the device dissipates energy usually in the form of heat).
 
 \input{01_Devices/Passives/main}
 \input{01_Devices/Actives/main}

@@ -1,53 +1,108 @@
 \subsection{Inductor:}
-An inductor is a two-port passive device that stores energy in the form of
-a magnetic field. The property of an inductor is called inductance and is
-measured in Henrys (H). The core relationship between flux, inductance
-and current is given by:
-\begin{align*}
-  \Phi &= L \cdot I \\
-  \frac{d\Phi}{dt} &= L \cdot \frac{dI}{dt} \hspace{1cm} \text{(assuming \(L\) is constant)} \\
-  V &= L \cdot \frac{dI}{dt} \hspace{1cm} [V = \frac{d\Phi}{dt}]
-\end{align*}
-This is the fundamental relationship between voltage and current in an
-inductor or if you may call this the inductor's version of Ohm's law.
-The inverse of inductance is called reluctance (\(R\)) and is measured in
-Henrys inverse (H\(^{-1}\)).
-\[
-  R = \frac{1}{L}
-\]
-The impedance of an inductor is given by:
-\[
-  Z_L = j\omega L = j 2 \pi f L = s L
-\]
-The inverse of impedance is called admittance (\(Y\)) and is measured in
-Siemens (S). The relationship between impedance and admittance is:
-\[
-  Y = \frac{1}{Z} = \frac{1}{sL}
-\]
-You'll notice when we apply KCL to circuits within this book, we'll mostly
-use admittance \(Y\) to express the impedance, we do this as it simplifies
-the analysis a lot. The admittance version of Ohm's law is:
-\[
-  I = V \cdot Y
-\]
-The impedance of an inductor is directly proportional to frequency. At low
-frequencies, the impedance of an inductor is very low and at high frequencies,
-the impedance of an inductor is very high. This is why inductor effects are
-more pronounced at low frequencies as their impedance rises enough to load
-the circuit. This is also why inductors are used for filtering (they act as
-a short circuit at low frequencies).
+An ideal inductor is a two-port, passive, linear, time-invariant
+and dissipative device that stores energy in the form of a
+magnetic field.
 
-An ideal inductor is a linear (that is, the relationship between voltage and
-current is a straight line) and time-invariant (that is, the relationship
-between voltage and current does not change with time) of the three passive
-components. It is also the only device that in its ideal form does not
-dissipate energy. The energy stored in an inductor is given by:
-\begin{align*}
-  V &= L \cdot \frac{dI}{dt} \\
-  P &= V \cdot I \\
-  P &= L \cdot \frac{dI}{dt} \cdot I \\
-  P &= L \cdot I \cdot \frac{dI}{dt} \\
-  P &= L \cdot \frac{1}{2} \cdot \frac{d(I^2)}{dt} \hspace{1cm} [\frac{d(I^2)}{dt} = 2I \cdot \frac{dI}{dt}] \\
-  \int P dt &= \int L \cdot \frac{1}{2} \cdot \frac{d(I^2)}{dt} dt \\
-  E &= \frac{1}{2} L I^2
-\end{align*}
+\begin{itemize}
+  \item \textbf{Inductance:}
+    The relationship between flux and current is
+    expressed by a proportionality factor called inductance (\(L\))
+    and is measured in Henrys (H). It also gives us the inductor's
+    version of Ohm's law:
+    \begin{align*}
+      \Phi &= L \cdot I \\
+      \frac{d\Phi}{dt} &= L \cdot \frac{dI}{dt} \hspace{1cm} \text{(assuming \(L\) is constant)} \\
+      V &= L \cdot \frac{dI}{dt} \hspace{1cm} [V = \frac{d\Phi}{dt}]
+    \end{align*}
+    The inverse of inductance is called reluctance (\(R\)) and is
+    measured in Henrys inverse (H\(^{-1}\)).
+    \[
+      R = \frac{1}{L}
+    \]
+  \item \textbf{Impedance:}
+    In the same way we did for capacitors, we can use Laplace
+    Transform to  define the impedance of an inductor as the ratio
+    of voltage to current in the Laplace domain:
+    \begin{align*}
+      V &= L \cdot \frac{dI}{dt} \\
+      V(s) &= L \cdot s I(s) \\
+    \end{align*}
+    We can now define the impedance of an inductor as:
+    \[
+      Z_L = s L = j\omega L = j 2 \pi f L
+    \]
+  \item \textbf{Admittance:}
+    The inverse of impedance is called admittance (\(Y\)) and is
+    measured in Siemens (S). The relationship between impedance
+    and admittance is:
+    \[
+      Y = \frac{1}{Z} = \frac{1}{sL}
+    \]
+    You'll notice when we apply KCL to circuits within this book,
+    we'll mostly use admittance \(Y\) to express the impedance, we
+    do this as it simplifies the analysis a lot. The admittance
+    version of Ohm's law is:
+    \[
+      I = V \cdot Y
+    \]
+  \item \textbf{Frequency Response:}
+    The impedance of an inductor is directly proportional to
+    frequency. At low frequencies, the impedance of an inductor is
+    very low and at high frequencies, the impedance of an inductor
+    is very high. This means that at low frequencies, the inductor
+    does not load the circuit which is often a very desirable
+    effect  in many applications. This is also why inductors are
+    used for filtering/chokes (they act as a short circuit at low
+    frequencies but as an open circuit at high frequencies).
+  \item \textbf{Energy Stored in an Inductor:}
+    The energy and power stored in an inductor can be derived
+    from the voltage-current relationship of an inductor:
+    \begin{align*}
+      V &= L \cdot \frac{dI}{dt} \\
+      P &= V \cdot I \\
+      P &= L \cdot \frac{dI}{dt} \cdot I \\
+      P &= L \cdot I \cdot \frac{dI}{dt} \\
+      P &= L \cdot \frac{1}{2} \cdot \frac{d(I^2)}{dt} \hspace{1cm} [\frac{d(I^2)}{dt} = 2I \cdot \frac{dI}{dt}] \\
+      \int P dt &= \int L \cdot \frac{1}{2} \cdot \frac{d(I^2)}{dt} dt \\
+      E &= \frac{1}{2} L I^2
+    \end{align*}
+  \item \textbf{Types of Inductors}:
+    There are many types of inductors. Some common types include:
+    \begin{itemize}
+      \item Air Core Inductors: These inductors have no magnetic core and are
+        typically used in high-frequency applications.
+      \item Iron Core Inductors: These inductors have a magnetic core made of
+        iron or ferrite, which increases the inductance and allows for
+        higher current handling.
+      \item Toroidal Inductors: These inductors have a doughnut-shaped core,
+        which helps to reduce electromagnetic interference (EMI) and improve
+        efficiency.
+      \item Variable Inductors: These inductors allow for the adjustment of
+        inductance by changing the position of a movable core or by using a
+        variable capacitor in series with the inductor.
+    \end{itemize}
+    Some special inductors also exist to perform a unique function, such as:
+    \begin{itemize}
+      \item Chokes: These inductors are designed to block high-frequency
+        signals while allowing low-frequency signals to pass through.
+      \item Transformers: Two or more inductors that are magnetically coupled
+        to transfer energy between circuits. They are very important in power
+        (to step up or step down voltage) and signal (to isolate circuits)
+        applications.
+    \end{itemize}
+  \item \textbf{Advise:} These are some important things to keep in mind when
+    working with inductors.
+    \begin{itemize}
+      \item \textbf{Kickback Voltage:} When an inductor is suddenly disconnected
+        from a circuit, it can generate a high voltage spike (called a transient)
+        due to the collapsing magnetic field. This phenomenon is known as
+        "kickback" and can damage other components in the circuit. To prevent this,
+        a flyback diode is often placed across the inductor to safely dissipate
+        the energy.
+      \item \textbf{Saturation:} Inductors have a maximum current rating, beyond
+        which the core material can become saturated. When saturation occurs,
+        the inductance decreases significantly, and the inductor may not function
+        as intended. It is important to choose an inductor with an appropriate
+        current rating for the application.
+    \end{itemize}
+\end{itemize}
