@@ -72,19 +72,47 @@ form of an electric field.
     \end{align*}
   \item \textbf{Types of Capacitors}:
     There are many types of capacitors, some of the most common are:
-    \begin{itemize}
-      \item \textbf{Ceramic Capacitor}: Used for decoupling and filtering.
-        They are very useful in power supply circuits. Examples include
-        0805, 0603, 0402, etc.
-      \item \textbf{Electrolytic Capacitor}: Used for bulk capacitance.
-        They are very useful in power supply circuits. Examples include
-        10uF, 100uF, 1000uF, etc.
-      \item \textbf{Tantalum Capacitor}: Used for bulk capacitance.
-        They are very useful in power supply circuits. Examples include
-        10uF, 100uF, 1000uF, etc.
-      \item \textbf{Film Capacitor}: Used for decoupling and filtering.
-        They are very useful in power supply circuits. Examples include
-        10nF, 100nF, 1uF, etc.
+        \begin{itemize}
+      \item \textbf{Ceramic/MLCC Capacitor}: Small size, low cost \& a
+        very low equivalent series resistance (ESR) and inductance (ESL) make
+        them really good for high frequency applications. The downside
+        is that \textbf{capacitance varies greatly with applied DC voltage} (a plus
+        if you want to use them as cheap varactors) and it also
+        \textbf{varies greatly with temperature}. These usually have \textbf{low
+        capacitance values} for a given size. Ceramic capacitors are divided
+        into classes,
+        \begin{itemize}
+          \item Class 1: C0G/NP0 (high stability, low capacitance)
+          \item Class 2: X7R (moderate stability, moderate capacitance)
+          \item Class 3: Y5V (low stability, high capacitance)
+        \end{itemize}
+        Examples: 100 nF X7R 0603 ceramic capacitor across a supply pin, or
+        a C0G/NP0 capacitor in a precision timing or filter network.
+      \item \textbf{Electrolytic Capacitor}: High capacitance for a
+        given case size, low cost and good for bulk energy
+        storage. These usually have a \textbf{higher ESR and ESL, which
+        translates to poor high frequency behaviour}, and are \textbf{almost
+        always polarized} (reverse voltage may destroy the part). These
+        also have a \textbf{finite lifetime} (electrolyte evaporation, sped up
+        by heat and ripple current).
+        Example: 470uF aluminum electrolytic capacitor on the output
+        of a linear or switching power supply.
+      \item \textbf{Tantalum Capacitor}: Higher capacitance density
+        than ceramics and more stable over voltage and temperature
+        than electrolytics. These also have a lower ESR/ESL than
+        electrolytics. They are very \textbf{often polarized} (known for
+        failing short and igniting under fault) and \textbf{derating (keeping
+        applied voltage well below rated) is strongly recommended} if
+        you want reliability. These are often \textbf{expensive}. Example:
+        10uF tantalum capacitor used for bulk decoupling on a densely
+        populated board where space is at a premium.
+      \item \textbf{Film Capacitor}: Excellent stability over temperature
+        and voltage, very low dielectric absorption, and low ESR/ESL.
+        These are non-polarized but have \textbf{a larger and more expensive per
+        unit capacitance} than other types. They are also \textbf{limited to
+        lower capacitance values}. Usually used in high quality audio,
+        precision timing and filters. Example: 1uF polypropylene film
+        capacitor in a high quality audio crossover network.
     \end{itemize}
   \item \textbf{They're everywhere in the real world}:
     A capacitor exists anywhere where you have two conductors

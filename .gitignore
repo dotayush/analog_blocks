@@ -16,12 +16,15 @@
 *.snm
 *.vrb
 *.pdf
+*.xdv
 
 # Build output
 /build/
 /dist/
+/temp/
 
 # Editor / OS
 .vscode/
 .idea/
+.cptr
 .DS_Store
