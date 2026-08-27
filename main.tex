@@ -7,6 +7,29 @@
 \usepackage{lineno}
 \usepackage{silence}
 
+% --- footer & link setup ---
+\usepackage[colorlinks=true,allcolors=black]{hyperref}
+\usepackage{fancyhdr}
+
+% Define version once so it's easy to update
+\newcommand{\docversion}{v0.0.6}
+
+\pagestyle{fancy}
+\fancyhf{}                          % clear all headers/footers
+\fancyfoot[L]{\small\href{https://github.com/dotayush/analog_blocks}{github.com/dotayush/analog\_blocks}}
+\fancyfoot[R]{\small\docversion}
+\renewcommand{\headrulewidth}{0pt}  % remove header line (optional)
+\renewcommand{\footrulewidth}{0.4pt}% add a thin line above footer (optional)
+
+% Redefine 'plain' so chapter pages also get the footer
+\fancypagestyle{plain}{
+  \fancyhf{}
+  \fancyfoot[L]{\small\href{https://github.com/dotayush/analog_blocks}{github.com/dotayush/analog\_blocks}}
+  \fancyfoot[R]{\small\docversion}
+  \renewcommand{\headrulewidth}{0pt}
+  \renewcommand{\footrulewidth}{0.4pt}
+}
+
 % custom stuff
 \newcolumntype{M}{>{$}c<{$}}
 \newcommand{\lt}{\textbackslash{}lt}
@@ -21,15 +44,15 @@
 \setcounter{tocdepth}{2}
 % \linenumbers
 
-% document
 \begin{document}
-
 \pagenumbering{arabic}
-\title{Vidyutshashtra}
+\title{Handbook of Analog Electronics}
 \author{Ayush Gupta}
 \date{January 2026}
 \maketitle
+\thispagestyle{plain}  % ensure title page also gets the footer
 \tableofcontents
+
 \include{00_Introduction/main}
 \include{01_Devices/main}
 \include{02_General/main}
