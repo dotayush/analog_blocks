@@ -11,6 +11,7 @@ form of an electric field.
     capacitor's version of Ohm's law:
     \begin{align*}
       Q = C \cdot V \\
+      \text{Integrating both sides with respect to time:} \\
       \frac{dQ}{dt} &= C \cdot \frac{dV}{dt} \hspace{1cm} \text{(assuming \(C\) is constant)} \\
       I &= C \cdot \frac{dV}{dt} \hspace{1cm} [I = \frac{dQ}{dt}]
     \end{align*}
@@ -27,8 +28,8 @@ form of an electric field.
     achieve this,
     \begin{align*}
       I &= C \cdot \frac{dV}{dt} \\
-      I(s) &= C \cdot s V(s) \\
-      V(s) &= \frac{1}{sC} I(s)
+      I(s) &= C \cdot s (V(s) - V(0)) \hspace{1cm} [\text{Laplace Transform}] \\
+      V(s) &= \frac{1}{sC} I(s) \hspace{1cm} [\text{assuming \(V(0) = 0\)}]
     \end{align*}
     We can now define the impedance of a capacitor as the ratio
     of voltage to current in the Laplace domain:
@@ -107,7 +108,7 @@ form of an electric field.
         10uF tantalum capacitor used for bulk decoupling on a densely
         populated board where space is at a premium.
       \item \textbf{Film Capacitor}: Excellent stability over temperature
-        and voltage, very low dielectric absorption, and low ESR/ESL.
+        and voltage, very low dielectric absorption, and low ESR/ESL.\
         These are non-polarized but have \textbf{a larger and more expensive per
         unit capacitance} than other types. They are also \textbf{limited to
         lower capacitance values}. Usually used in high quality audio,

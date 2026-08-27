@@ -130,14 +130,175 @@ The behaviour of a BJT can be approximated well by the below equations.
     \end{itemize}
   \item \textbf{Modes of Operation}:
     A BJT can operate in four different modes depending on the biasing of
-    the base-emitter and base-collector junctions. Practically,\\
-    \begin{tabularx}{\linewidth}{|X|X|X|} \hline
-      Mode & Base-Emitter Voltage & Base-Collector Voltage \\ \hline
-      Cutoff         & $V_{BE} < V_{Fth} $       & $V_{BC} < V_{Rth}$       \\ \hline
-      Forward Active (Amplifier) & $V_{BE} \gtrsim V_{Fth} $ & $V_{BC} < V_{Rth}$       \\ \hline
-      Saturation (Switch) & $V_{BE} \gtrsim V_{Fth}$ & $V_{BC} \gtrsim V_{Rth}$ \\ \hline
-      Reverse Active & $V_{BE} < V_{Fth}$       & $V_{BC} \gtrsim V_{Rth}$ \\ \hline
-    \end{tabularx}
+    the base-emitter and base-collector junctions. Lets assume
+    \(V_{Fth} \approx 0.7\,\mathrm{V}\) and \(V_{Rth} \approx -0.7\,\mathrm{V}\)
+    for a silicon BJT.\
+    \begin{tabularx}{\linewidth}{|X|X|X|X|} \hline
+      Mode & Base-Emitter Voltage & Base-Collector Voltage & Collector Current \\ \hline
+      Cutoff                     & $V_{BE} < 0.7       $ & $V_{BC} < -0.7 $ & $I_C \approx 0$ \\ \hline
+      Forward Active (Amplifier) & $V_{BE} \gtrsim 0.7 $ & $V_{BC} < -0.7 $ & $I_C \approx \beta I_B$ \\ \hline
+      Saturation (Switch)        & $V_{BE} \gtrsim 0.7 $ & $V_{BC} \gtrsim -0.7 $ & $I_C \approx I_{C(sat)}$ \\ \hline
+      Reverse Active             & $V_{BE} < 0.7       $ & $V_{BC} \gtrsim -0.7 $ & $I_C \approx \beta_R I_B$ \\ \hline
+    \end{tabularx}\\
+    Here, \(\beta_R\) is the reverse current gain, which is typically much
+    smaller than \(\beta\) and is often ignored in practice.
+    \begin{itemize}
+      \item \textbf{Saturation and Cutoff (Switching)}:
+        To use a BJT as a switch, the device is deliberately driven between
+        only two of its four operating modes: \emph{cutoff} (off) and
+        \emph{saturation} (on). Consider an NPN with its emitter grounded,
+        its collector connected to the load and \(V_{CC}\) through the load
+        resistance \(R_C\), and its base driven through a series resistor
+        \(R_B\) from a logic-level input \(V_{IN}\).
+        \begin{itemize}
+          \item \textbf{Off State}:
+            When \(V_{IN} < 0.7\), the base-emitter junction does not
+            conduct, so \(I_B \approx 0\) and \(I_C \approx 0\) (ignoring
+            leakage current). The transistor is in cutoff and the full
+            supply voltage appears across the collector-emitter terminals,
+            \[
+              V_{CE} \approx V_{CC}
+            \]
+          \item \textbf{On State (Saturation)}:
+            When driven on, we want enough collector current such that entire
+            \(V_{cc}\) is dropped across \(R_C\) which means \(V_{CE}\) collapses
+            to \(V_{CE(sat)}\), typically \(0.1\text{--}0.3\,\mathrm{V}\)
+            for a small-signal device. The collector current is then set
+            almost entirely by the external circuit (represented as \(R_C\)),
+            not by the transistor:
+            \[
+              I_{C(sat)} = \frac{V_{CC} - V_{CE(sat)}}{R_C}
+            \]
+            In saturation, \(I_C\) is no longer \(\beta I_B\). It is
+            load-limited and \(\beta\) only tells us the minimum base
+            current required to reach this state.
+          \item \textbf{Sizing the Base Resistor}:
+            The edge of saturation occurs when \(I_B = I_{C(sat)}/\beta\).
+            Because \(\beta\) varies with temperature, manufacturing
+            tolerance and collector current itself (and its datasheet
+            minimum can be several times lower than its typical value),
+            driving the base at exactly this current is not robust. Instead
+            we define a \emph{forced beta} \(\beta_{forced}\), deliberately
+            chosen much lower than the transistor's minimum guaranteed
+            \(\beta\) (a common choice is \(\beta_{forced} \approx 10\)),
+            and size the base drive to guarantee saturation under worst-case
+            conditions:
+            \[
+              I_B = \frac{I_{C(sat)}}{\beta_{forced}}
+            \]
+            Applying KVL around the base loop, with \(V_{BE(sat)} \approx
+            0.7\text{--}0.8\,\mathrm{V}\),
+            \begin{align*}
+              V_{IN} &= I_B R_B + V_{BE(sat)} \\
+              R_B &= \frac{V_{IN} - V_{BE(sat)}}{I_B}
+            \end{align*}
+            Choosing a smaller \(R_B\) than this (i.e.\ more base overdrive)
+            pushes the transistor deeper into saturation, at the cost of
+            wasted base drive current and, for BJTs specifically, increased
+            \emph{storage time} during turn-off (excess minority carriers
+            stored in the base must first be removed before \(I_C\) can
+            begin to fall).
+          \item \textbf{Inductive Loads}:
+            If \(R_C\) is replaced by an inductive load (a relay coil or
+            motor winding), the collapsing magnetic field on turn-off
+            induces a large negative voltage spike across the collector,
+            since the inductor resists the sudden change in current. This
+            can exceed the transistor's \(V_{CE(\text{max})}\) rating and destroy
+            it. A \textbf{flyback (freewheeling) diode} placed in reverse
+            bias across the load gives the inductor's current a path to
+            decay through, clamping the spike to roughly one diode drop
+            above \(V_{CC}\).
+        \end{itemize}
+      \item \textbf{Forward Active (Amplification)}:
+        To use a BJT as an amplifier, it must be held in forward active
+        mode at all times, including for the full swing of the AC signal
+        superimposed on it. This requires establishing a stable DC
+        \emph{operating point} (or \emph{Q-point}), specified by a
+        quiescent \(I_C\) and \(V_{CE}\), before any AC analysis is
+        meaningful.
+        \begin{itemize}
+          \item \textbf{The Beta-Sensitivity Problem}:
+            A naive bias scheme (a single resistor from \(V_{CC}\) to the
+            base) sets \(I_B\) directly, and therefore sets \(I_C =
+            \beta I_B\). Since \(\beta\) is not a controlled or stable
+            parameter, the Q-point of such a circuit shifts significantly
+            between individual transistors and with temperature. A robust
+            bias network must set \(I_C\) largely \emph{independently} of
+            \(\beta\).
+          \item \textbf{Voltage Divider Bias}:
+            The standard solution adds a resistive divider (\(R_1\),
+            \(R_2\)) from \(V_{CC}\) to ground to fix the base voltage, and
+            an emitter resistor \(R_E\) to provide negative feedback: any
+            increase in \(I_C\) increases \(I_E R_E\), which reduces
+            \(V_{BE}\) and pulls \(I_C\) back down.
+
+            Applying Thevenin's theorem to the divider as seen from the
+            base,
+            \begin{align*}
+              V_{TH} &= V_{CC} \frac{R_2}{R_1 + R_2} \\
+              R_{TH} &= R_1 \parallel R_2
+            \end{align*}
+            Writing KVL around the base-emitter loop, and using
+            \(I_E = I_C \left(1 + \frac{1}{\beta}\right)\) and
+            \(I_B = I_C/\beta\) as derived earlier,
+            \begin{align*}
+              V_{TH} &= I_B R_{TH} + V_{BE} + I_E R_E \\
+              V_{TH} &= \frac{I_C}{\beta} R_{TH} + V_{BE} + I_C \left(1 + \frac{1}{\beta}\right) R_E
+            \end{align*}
+            Solving for \(I_C\),
+            \[
+              I_C = \frac{V_{TH} - V_{BE}}{R_E + \dfrac{R_{TH}}{\beta} + \dfrac{R_E}{\beta}}
+            \]
+            This expression makes the design condition explicit: if the
+            divider is stiff enough that \(R_{TH} \ll \beta R_E\), the
+            \(\beta\)-dependent terms in the denominator become negligible
+            and
+            \[
+              I_C \approx \frac{V_{TH} - V_{BE}}{R_E}
+            \]
+            which depends only on the divider ratio, \(V_{BE}\) (itself
+            weakly dependent on temperature and current, per the earlier
+            forward-active relation), and \(R_E\) — not on \(\beta\) at
+            all. In practice this is enforced with a rule of thumb: choose
+            the divider current \(I_{div} = V_{CC}/(R_1+R_2)\) to be roughly
+            an order of magnitude larger than the expected base current
+            \(I_B\), so the base current drawn from the divider node
+            perturbs \(V_{TH}\) only slightly.
+          \item \textbf{Setting the Collector Voltage / Load Line}:
+            With \(I_C\) fixed by the emitter-degenerated bias above, the
+            collector resistor \(R_C\) is chosen to place \(V_{CE}\) at the
+            desired quiescent point, typically near the middle of the
+            available voltage swing so the output can swing symmetrically
+            in both directions before clipping,
+            \[
+              V_{CC} = I_C R_C + V_{CE} + I_E R_E \approx I_C(R_C + R_E) + V_{CE}
+            \]
+            A common design target is \(V_{CE} \approx V_{CC}/2\).
+          \item \textbf{Small-Signal AC Gain}:
+            Once the Q-point is fixed, small AC signals superimposed on the
+            DC bias see the transistor as a locally linear device,
+            characterised by its transconductance and input resistance at
+            that operating point,
+            \begin{align*}
+              g_m &= \frac{I_C}{V_T} \\
+              r_\pi &= \frac{\beta}{g_m} = \frac{\beta V_T}{I_C}
+            \end{align*}
+            For a common-emitter stage with the emitter resistor \(R_E\)
+            AC-bypassed by a capacitor (so \(R_E\) sets the DC bias point
+            but is shorted at signal frequencies), the small-signal
+            voltage gain from base to collector is
+            \[
+              A_v = -g_m R_C = -\frac{I_C R_C}{V_T}
+            \]
+            The negative sign indicates the characteristic \(180^\circ\)
+            phase inversion of the common-emitter configuration. If
+            \(R_E\) is left unbypassed, it appears in series and reduces
+            (but stabilises) the gain,
+            \[
+              A_v \approx -\frac{R_C}{R_E} \hspace{1cm} \text{[for } g_m R_E \gg 1\text{]}
+            \]
+        \end{itemize}
+    \end{itemize}
   \item \textbf{Effects}:
     BJTs are affected by many non-linear effects that are not captured by
     the Ebers-Moll model. Sometimes they cause hard to diagnose problems.

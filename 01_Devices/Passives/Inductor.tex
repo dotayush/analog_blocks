@@ -11,6 +11,7 @@ magnetic field.
     version of Ohm's law:
     \begin{align*}
       \Phi &= L \cdot I \\
+      \text{Differentiating both sides with respect to time:} \\
       \frac{d\Phi}{dt} &= L \cdot \frac{dI}{dt} \hspace{1cm} \text{(assuming \(L\) is constant)} \\
       V &= L \cdot \frac{dI}{dt} \hspace{1cm} [V = \frac{d\Phi}{dt}]
     \end{align*}
@@ -25,7 +26,8 @@ magnetic field.
     of voltage to current in the Laplace domain:
     \begin{align*}
       V &= L \cdot \frac{dI}{dt} \\
-      V(s) &= L \cdot s I(s) \\
+      V(s) &= L \cdot s (I(s) - I(0)) \hspace{1cm} [\text{Laplace Transform}] \\
+      V(s) &= s L I(s) \hspace{1cm} [\text{assuming \(I(0) = 0\)}]
     \end{align*}
     We can now define the impedance of an inductor as:
     \[
@@ -54,7 +56,7 @@ magnetic field.
     effect  in many applications. This is also why inductors are
     used for filtering/chokes (they act as a short circuit at low
     frequencies but as an open circuit at high frequencies).
-  \item \textbf{Energy Stored in an Inductor:}
+  \item \textbf{Energy and Power:}
     The energy and power stored in an inductor can be derived
     from the voltage-current relationship of an inductor:
     \begin{align*}
@@ -66,43 +68,87 @@ magnetic field.
       \int P dt &= \int L \cdot \frac{1}{2} \cdot \frac{d(I^2)}{dt} dt \\
       E &= \frac{1}{2} L I^2
     \end{align*}
+  \item \textbf{Eddy Current Losses:}
+    Eddy currents are circulating currents induced in the core of an
+    inductor by the changing magnetic field. These currents flow in
+    closed loops within the core material and can cause significant
+    power losses due to the resistive heating of the core. To minimize
+    eddy current losses, cores are often laminated or made from
+    materials with high electrical resistance, such as ferrites.
   \item \textbf{Types of Inductors}:
     There are many types of inductors. Some common types include:
     \begin{itemize}
-      \item Air Core Inductors: These inductors have no magnetic core and are
-        typically used in high-frequency applications.
-      \item Iron Core Inductors: These inductors have a magnetic core made of
-        iron or ferrite, which increases the inductance and allows for
-        higher current handling.
-      \item Toroidal Inductors: These inductors have a doughnut-shaped core,
-        which helps to reduce electromagnetic interference (EMI) and improve
-        efficiency.
-      \item Variable Inductors: These inductors allow for the adjustment of
-        inductance by changing the position of a movable core or by using a
-        variable capacitor in series with the inductor.
+      \item \textbf{Air Core Inductors}: No magnetic core, just wire wound
+        on a non-magnetic core (or free-standing). No core losses and no
+        saturation, but low inductance per unit volume. Used in high-frequency
+        and RF applications where core losses would otherwise dominate.
+        Example: an air-core coil in a VHF/UHF matching network.
+      \item \textbf{Ferrite Core Inductors}: Wound on a ferrite (ceramic
+        ferrimagnetic) core. Ferrite's high resistivity keeps eddy current
+        losses low even at high frequency, so these are the standard choice
+        for switching power supply inductors and RF chokes. \textbf{Ferrites
+        saturate at a fairly low flux density}, so core geometry and gap
+        must be sized carefully for the expected current.
+        Example: the output inductor of a buck converter switching at a few
+        hundred kHz.
+      \item \textbf{Iron/Steel Core Inductors}: Wound on laminated iron or
+        steel. Laminations (thin, insulated sheets) limit eddy current
+        losses, but these losses still rise sharply with frequency, so
+        \textbf{iron cores are largely restricted to low-frequency, high-power
+        applications} (mains frequency and below). They allow much higher
+        flux density than ferrites before saturating.
+        Example: the core of a 50/60 Hz mains transformer or a large power
+        inductor in a linear supply.
+      \item \textbf{Toroidal Inductors}: Wound on a doughnut-shaped core
+        (can be ferrite, iron powder, or air). The closed magnetic loop
+        means the field is largely self-contained, which \textbf{reduces
+        electromagnetic interference (EMI) and stray coupling} compared to
+        a rod or solenoidal core of similar inductance, and improves
+        efficiency. This is really a statement about geometry rather than
+        a separate material class.
+        Example: a toroidal common-mode choke on a power supply input.
+      \item \textbf{Variable Inductors}: Inductance is adjusted mechanically,
+        most commonly by moving a ferrite or powdered-iron slug in or out of
+        the coil (a slug-tuned inductor), which changes the effective
+        permeability seen by the winding. Tapped coils with a switch are
+        another common approach.
+        Example: a slug-tuned IF coil in an old superheterodyne radio.
     \end{itemize}
     Some special inductors also exist to perform a unique function, such as:
     \begin{itemize}
-      \item Chokes: These inductors are designed to block high-frequency
-        signals while allowing low-frequency signals to pass through.
-      \item Transformers: Two or more inductors that are magnetically coupled
-        to transfer energy between circuits. They are very important in power
-        (to step up or step down voltage) and signal (to isolate circuits)
-        applications.
+      \item \textbf{Chokes}: Inductors designed to present high impedance
+        to high-frequency signals while passing low-frequency or DC current
+        with little attenuation — essentially an inductor used specifically
+        for its blocking behaviour rather than for energy storage or
+        filtering math.
+        Example: a ferrite bead or RF choke in series with a supply line to
+        block noise from a switching regulator.
+      \item \textbf{Transformers}: Two or more windings magnetically
+        coupled through a shared core, used to transfer energy between
+        circuits without a direct electrical connection. Important in power
+        applications (stepping voltage up or down) and signal applications
+        (galvanic isolation, impedance matching).
+        Example: a mains transformer stepping 230V down to 12V, or a
+        pulse transformer isolating a gate-drive signal.
     \end{itemize}
   \item \textbf{Advise:} These are some important things to keep in mind when
     working with inductors.
     \begin{itemize}
-      \item \textbf{Kickback Voltage:} When an inductor is suddenly disconnected
-        from a circuit, it can generate a high voltage spike (called a transient)
-        due to the collapsing magnetic field. This phenomenon is known as
-        \'kickback\' and can damage other components in the circuit. To prevent this,
-        a flyback diode is often placed across the inductor to safely dissipate
-        the energy.
-      \item \textbf{Saturation:} Inductors have a maximum current rating, beyond
-        which the core material can become saturated. When saturation occurs,
-        the inductance decreases significantly, and the inductor may not function
-        as intended. It is important to choose an inductor with an appropriate
-        current rating for the application.
+      \item \textbf{Kickback Voltage:} When an inductor is suddenly
+        disconnected from a circuit, it \textbf{can generate a sudden and
+        short lived (transient) high voltage spike due to the collapsing
+        magnetic field}. This phenomenon is known as kickback and
+        \textbf{can damage other components} in the circuit. To prevent
+        frying your circuit, a diode is often placed across the inductor
+        to safely dissipate the energy towards. Other names for this
+        phenomenon include flyback voltage, back EMF, and inductive
+        kickback. Other names for the diode used to protect are
+        flyback, freewheeling, snubber, clamp, catch or suppressor diode.
+      \item \textbf{Saturation:} Inductors have a maximum current rating,
+        beyond which the \textbf{core material can become saturated and cannot
+        increase current proportionally with the applied voltage}. This
+        is known as the saturation current. It leads to a loss of inductance
+        and energy storage ability. You must ensure that the current through
+        the inductor does not exceed this limit.
     \end{itemize}
 \end{itemize}
