@@ -2,25 +2,37 @@
 
 A device is a physical component that can be used to build circuits.
 Devices can be classified based on their functionality, characteristics,
-and behavior. In the context of analog circuits, devices are
-primarily classified into two categories: passive and active devices.
+and behavior. Here we will classify devices based on if they require
+an external power source to operate or not. This classification leads
+us to two categories of devices.
 \begin{itemize}
-    \item Passive Devices: These do not require an external power
-      source to operate. They can only attenuate, store or dissipate
+    \item \textbf{Passive Devices}: Do not require an external power source to
+      operate. They can attenuate, store and dissipate electromagnetic
       energy.
-    \item Active Devices: These devices require an external power
-      source to operate. Alongside attenuating, storing, or dissipating
-      energy, they can also amplify signals and provide gain to the
-      circuit.
+    \item \textbf{Active Devices}: Require an external power source to operate.
+      They can attenuate, store and dissipate electromagnetic energy
+      but they can also amplify energy.
 \end{itemize}
 
-We'll often use the term \textbf{one-port}, \textbf{two-port}, or
-\textbf{three-port} to describe the number of terminals (pins/contacts)
-a device has. We'll also use terms like \textbf{linear} (the relationship
-between voltage and current is proportional by a factor), \textbf{time-invariant}
-(the relationship between voltage and current does not drift with
-time), \textbf{dissipative} (the device dissipates energy usually in the
-form of heat).
+There are several important terms we will use throughout this handbook
+and it is good to be familiar with them early on.
+\begin{enumerate}
+    \item \textbf{Terminal}: A point of connection for a device. It can be
+      a pin, contact, or lead.
+    \item \textbf{Port}: A pair of terminals that can be used to connect
+      a device to other devices or circuits. A port can be used to
+      measure voltage and current.
+    \item \textbf{Linear}: The relationship between two quantities
+      (usually voltage and current) is proportional by a factor.
+      Non-linear devices do not have a proportional relationship
+      between voltage and current.
+    \item \textbf{Time-invariant}: The relationship between two quantities
+      (usually voltage and current) does not drift with time. Time-variant
+      devices have a relationship between voltage and current that changes
+      with time.
+    \item \textbf{Dissipative}: The device dissipates energy usually in
+      the form of heat. Non-dissipative devices do not dissipate energy.
+\end{enumerate}
 
 \input{01_Devices/Passives/main}
 \input{01_Devices/Actives/main}
