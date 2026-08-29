@@ -16,7 +16,7 @@ jobs:
           python3 -m pip install --user codespell
       - name: check
         run: |
-          ~/.local/bin/codespell --skip='*.aux,*.bbl,*.bcf,*.blg,*.fdb_latexmk,*.fls,*.log,*.out,*.run.xml,*.synctex.gz,*.toc'
+          ~/.local/bin/codespell -I ./ignored.txt --skip='*.aux,*.bbl,*.bcf,*.blg,*.fdb_latexmk,*.fls,*.log,*.out,*.run.xml,*.synctex.gz,*.toc'
       - name: run chktex.
         run: |
           chktex -q main.tex

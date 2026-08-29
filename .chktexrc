@@ -7,4 +7,6 @@ CmdLine
     -n44 # custom table rules
     -n36 # don't wanna put space before ()
     -n12 # shut up about interword spacings.
+    -n10 # solo ) found...
+    -n17 # can't find where...
 }

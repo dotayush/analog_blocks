@@ -44,10 +44,11 @@ Let's have some fun with this equation.
   \nabla \cdot \mathbf{B(x,y,z,t_1)} &= \nabla \cdot \mathbf{B(x,y,z,t_0)}
 \end{align*}
 \textbf{This proves that the divergence of the magnetic flux density function
-is constant over time}. Since \( J_m(x,y,z,t_0) = 0 \) in nature, we can conclude
-\( \frac{\partial}{\partial t} \rho_m(x,y,z,t_0) = 0 \) and subsequently
-\( \nabla \cdot \mathbf{B(x,y,z,t_0)} = 0 \). This is \textbf{the origin of Gauss's Law
-of Magnetism}.
+is constant over time}. Magnetic Charge has never been observed in nature.
+Thus magnetic charge density and magnetic current density are both zero. This
+means that there are no sources and sinks of magnetic flux density and thus
+\( \nabla \cdot \mathbf{B(x,y,z,t)} = 0 \) for all time \(t\). This is
+the origin of \textbf{Gauss's Law for Magnetism}.
 
 \subsubsection{Ampere's Law}
 
@@ -58,15 +59,15 @@ function. It is expressed as:
 \end{align*}
 where
 \begin{itemize}
-  \item \( \mathbf{H(x,y,z,t)} \): magnetic function.\( \frac{A}{m} \)
+  \item \( \mathbf{H(x,y,z,t)} \): magnetic function. \( \frac{A}{m} \)
   \item \( \mathbf{D(x,y,z,t)} \): electric flux density function.
     \( \frac{C}{m^2} \)
   \item \( \mathbf{J_e(x,y,z,t)} \): electric current density function.
-    \( \frac{A}{m^2} \). In nature, \( \mathbf{J_e(x,y,z,t) \neq 0 } \) since
-    electric monopoles that is, charges have been observed. It is defined as
-    \( \mathbf{J_e(x,y,z,t)} = \rho_e(x,y,z,t) \mathbf{v(x,y,z,t)} \) where
-    \( \rho_e(x,y,z,t) \) is the charge density function and
-    \( \mathbf{v(x,y,z,t)} \) is the velocity function of the charge.
+    \( \frac{A}{m^2} \). In nature, \( \mathbf{J_e(x,y,z,t)} \neq 0 \)
+    since electric charges exist.
+    \begin{align*}
+      \mathbf{J_e(x,y,z,t)} = \rho_e(x,y,z,t) \mathbf{v(x,y,z,t)}
+    \end{align*}
 \end{itemize}
 Let's have some fun with this equation.
 \begin{align*}
@@ -83,7 +84,7 @@ Let's have some fun with this equation.
   - \nabla \cdot \mathbf{D(x,y,z,t_1)} + \nabla \cdot \mathbf{D(x,y,z,t_0)} &=  \int_{t_0}^{t_1} \nabla \cdot \mathbf{J_e(x,y,z,t)} \, dt \\
   - \nabla \cdot \mathbf{D(x,y,z,t_1)} &= - \nabla \cdot \mathbf{D(x,y,z,t_0)} + \int_{t_0}^{t_1} \nabla \cdot \mathbf{J_e(x,y,z,t)} \, dt \\
   - \nabla \cdot \mathbf{D(x,y,z,t_1)} &= - \left[\nabla \cdot \mathbf{D(x,y,z,t_0)} - \int_{t_0}^{t_1} \nabla \cdot \mathbf{J_e(x,y,z,t)} \, dt \right] \\
-  \nabla \cdot \mathbf{D(x,y,z,t_1)} &= \nabla \cdot \mathbf{D(x,y,z,t_0)} - \int_{t_0}^{t_1} \nabla \cdot \mathbf{J_e(x,y,z,t)} \, dt \\
+  \nabla \cdot \mathbf{D(x,y,z,t_1)} &= \nabla \cdot \mathbf{D(x,y,z,t_0)} - \int_{t_0}^{t_1} \nabla \cdot \mathbf{J_e(x,y,z,t)} \, dt
 \end{align*}
 \textbf{This proves that the divergence of the electric flux density function
 changes over time}. To find anything meaningful we must find more information
@@ -108,23 +109,29 @@ Substituting (4) into (3), we get
   \nabla \cdot \mathbf{D(x,y,z,t_1)} &= \nabla \cdot \mathbf{D(x,y,z,t_0)} + [\rho_e(x,y,z,t_1) - \rho_e(x,y,z,t_0)] \\
   \nabla \cdot \mathbf{D(x,y,z,t_1)} &= \nabla \cdot \mathbf{D(x,y,z,t_0)} + \rho_e(x,y,z,t_1) - \rho_e(x,y,z,t_0)
 \end{align*}
+If you assume that at \(t_0\), the divergence of the electric flux density
+function and the charge density function are both zero, then we can simplify
+the above equation to:
+\begin{align*}
+  \nabla \cdot \mathbf{D(x,y,z,t_1)} &= \rho_e(x,y,z,t_1)
+\end{align*}
 We find that the divergence of the electric flux density function changes as
 the charge density function changes over time \( \nabla \cdot \mathbf{D(x,y,z,t)} =
 \rho_e(x,y,z,t) \). This is \textbf{the origin of Gauss's Law of Electricity}.
 
-\subsection{Static and Quasi-Static}
+\subsubsection{Statics \& Quasi-Statics Approximation}
 
-Faraday's and Ampere's Law (alongisde Gauss) fully define any electromagnetic system
+Faraday's and Ampere's Law (alongisde Gauss Conditions) fully define any electromagnetic system
 at all times and space. Both equations are \textbf{first order partial differential
 equations (PDEs)} which \textbf{are coupled with each other}. Sadly, for solving the
 full system is mathematically very expensive. One therefore wonders, \textbf{Is it
 possible to simplify and dumb down?}
 
 
-\textbf{Yes, but only under conditions}. This is where Static and Quasi-Static
+\textbf{Yes, but only under conditions}. This is where Statics and Quasi-Statics
 come into play. We need to make some assumptions.
 \begin{enumerate}
-  \item \textbf{Static}: We assume that all functions are frozen in time. This is the
+  \item \textbf{Statics}: We assume that all functions are frozen in time. This is the
     strongest assumption we can make and it reduces our PDEs to \textbf{ordinary
     differential equations (ODEs)} in space only. This is the DC regime where all functions
     are time-independent. To achieve this, the rate of change of all functions must
@@ -137,7 +144,7 @@ come into play. We need to make some assumptions.
       \frac{\partial \mathbf{J_e(x,y,z,t)}}{\partial t} = 0 \\
       \frac{\partial \mathbf{J_m(x,y,z,t)}}{\partial t} = 0
     \end{align*}
-  \item \textbf{Quasi-Static}: We assume that the flux functions [\(\mathbf{B}\) \&
+  \item \textbf{Quasi-Statics}: We assume that the flux functions [\(\mathbf{B}\) \&
     \(\mathbf{D}\)] do not change with time but we allow other functions [\(\mathbf{E}\),
     \(\mathbf{H}\), \(\mathbf{J}_e\), and \(\mathbf{J}_m\)] to change with time. This is
     a weaker assumption and it reduces our PDEs to ODEs in space only for the flux
@@ -179,7 +186,7 @@ or \(\mathbf{J}_e\) (\& \(\mathbf{J}_m\)).
       \nabla \times (\nabla V(x,y,z,t)) &= 0 \hspace{1cm} \left[\nabla \times (\nabla F) = 0 \right] \\
       -\nabla \times \mathbf{E(x,y,z,t)} &= \nabla \times (\nabla V(x,y,z,t)) \\
       \mathbf{E(x,y,z,t)} &= -\nabla V(x,y,z,t) \\
-      \text{[Line Integral of Electric Function A to B to A]} \\
+      \text{[Line Integral of Electric Function: A to B to A]} \\
       \oint_a^b \mathbf{E(x,y,z,t)} \cdot d\mathbf{l} &= \oint_a^b -\nabla V(x,y,z,t) \cdot d\mathbf{l} \\
                                                 &= \int_a^b -\nabla V(x,y,z,t) \cdot d\mathbf{l} + \int_b^a -\nabla V(x,y,z,t) \cdot d\mathbf{l} \\
                                                 &= -\left[ V(b,t) - V(a,t) \right] - \left[ V(a,t) - V(b,t) \right] \\
@@ -189,44 +196,45 @@ or \(\mathbf{J}_e\) (\& \(\mathbf{J}_m\)).
     around any closed loop is zero. Notice this did not require \(\mathbf{E}\) or \(V\)
     to be time-independent, only that \(\nabla\times\mathbf{E}=0\) holds instant by
     instant. This is precisely why KVL remains valid in the quasi-static (slowly
-    time-varying that is \(L \lll \lambda\)) regime and not just in true DC.\
+    time-varying, \(L \lll \lambda\)) regime, not just in true DC.\
   \item \textbf{Equation 6}: Taking the divergence of both sides of
-    equation (9), at each instant \(t\):
+    equation (6), at each instant \(t\):
     \begin{align*}
       \nabla \cdot (\nabla \times \mathbf{H(x,y,z,t)}) &= \nabla \cdot \mathbf{J_e(x,y,z,t)} \\
-      0 &= \nabla \cdot \mathbf{J_e(x,y,z,t)} \hspace{1cm} \text{[since divergence of a curl is always zero]} \tag{11}
+      0 &= \nabla \cdot \mathbf{J_e(x,y,z,t)} \hspace{1cm} \text{[since divergence of a curl is always zero]} \tag{7}
     \end{align*}
 
     \begin{itemize}
       \item \textbf{Charge Density Is Genuinely Time-Independent}:
-        Substituting (5) into (11):
+        Substituting (4) into (7):
         \begin{align*}
-          0 &= -\frac{\partial \rho_e(x,y,z,t)}{\partial t} \tag{12}
+          0 &= -\frac{\partial \rho_e(x,y,z,t)}{\partial t} \tag{8}
         \end{align*}
-        Unlike \(\mathbf{E}\), \(\mathbf{H}\), and \(\mathbf{J}_e\)
-        above, this is a genuine, non-instantaneous result: it says
+        Equation (8) \textbf{shows the total charge enclosed by that
+        surface genuinely does not change with time.} Unlike
+        \(\mathbf{E}\), \(\mathbf{H}\), and \(\mathbf{J}_e\) above,
+        this is a genuine, non-instantaneous result: it says
         \(\rho_e\)'s rate of change is zero \emph{for all} \(t\), not
         just at a single instant. This is the one function we can
         honestly write without \(t\):
         \begin{align*}
-          \rho_e(x,y,z,t) = \rho_e(x,y,z) \tag{12a}
+          \rho_e(x,y,z,t) = \rho_e(x,y,z) \tag{8a}
         \end{align*}
-
       \item \textbf{Zero Total Current Out of a Volume}: Integrating
-        both sides of equation (11) over a volume \(V\), at a fixed
+        both sides of equation (7) over a volume \(V\), at a fixed
         instant \(t\):
         \begin{align*}
           \int_V \nabla \cdot \mathbf{J_e(x,y,z,t)} \, dV &= \int_V 0 \, dV \\
           \int_V \nabla \cdot \mathbf{J_e(x,y,z,t)} \, dV &= 0 \\
-          \oint_S \mathbf{J_e(x,y,z,t)} \cdot d\mathbf{S} &= 0 \hspace{1cm} \text{[by Divergence Theorem]} \tag{13}
+          \oint_S \mathbf{J_e(x,y,z,t)} \cdot d\mathbf{S} &= 0 \hspace{1cm} \text{[by Divergence Theorem]} \tag{9}
         \end{align*}
+        Equation (9) \textbf{shows that the total current flowing out of a
+        closed surface is zero at every instant \(t\)} without requiring
+        \(\mathbf{J}_e\) itself to be constant in time.
     \end{itemize}
-    Equation (13) shows that the total current flowing out of a
-    closed surface is zero \emph{at every instant \(t\)} -- again,
-    without requiring \(\mathbf{J}_e\) itself to be constant in
-    time. Equation (12) shows the total charge enclosed by that
-    surface genuinely does not change with time. Together, these
-    mean the current flowing into a volume equals the current
-    flowing out, at every instant. This is the origin of Kirchhoff's
-    Current Law (KCL).
+    If current can not flow out of a closed surface (9) and the total charge
+    enclosed by that surface does not change with time (8a), then the total
+    current flowing into that surface must equal the total current flowing
+    out of that surface, at every instant (as current density is allowed to
+    change with time). This is the origin of Kirchhoff's Current Law (KCL).
 \end{enumerate}
