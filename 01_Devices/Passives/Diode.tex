@@ -1,4 +1,4 @@
-\subsection{Diode}
+\section{Diode}
 
 A diode is a two-terminal, active, non-linear and time-variant
 device that allows current to flow in one direction while blocking
@@ -68,10 +68,11 @@ diodes.
       \item \textbf{Maximum Reverse Current (\(I_R\))}: The maximum
         current that can flow through the diode when it is reverse biased.
     \end{itemize}
-  \item \textbf{Diode Models}:
-    The models of a diode are:
+  \item \textbf{Mathematical Models}:
+    There are several mathematical models that can be used to describe
+    the behaviour of a diode. The most common models are:
     \begin{itemize}
-      \item \textbf{Ideal Diode Model}: The ideal diode model assumes
+      \item \textbf{Ideal Model}: The ideal diode model assumes
         that the diode has zero forward voltage drop and infinite reverse
         resistance. It is a good approximation for low current applications.
         It is given by the following equation:
@@ -81,7 +82,7 @@ diodes.
             \infty & \text{if } V_D > 0
           \end{cases}
         \]
-      \item \textbf{Shockley Diode Model}: The Shockley diode model
+      \item \textbf{Non-linear Model}: The Shockley diode model
         is a more accurate model that takes into account the forward voltage
         drop and the reverse saturation current. It is a good approximation
         for high current applications.
@@ -100,27 +101,31 @@ diodes.
         This model does not account for the reverse breakdown conduction of
         the diode, nor does it account for the series or breakdown resistance
         of the diode.
-      \item \textbf{Piecewise Linear Model}: The piecewise linear model
-        is a more accurate model that approximates the current-voltage
-        relationship as a series of linear segments. It is obtained by
-        asymptotically solving the Shockley Diode Model in two separate
+      \item \textbf{Linear Model}: The piecewise linear model approximates
+        the current-voltage relationship as a series of linear segments.
+        The model also includes the effects of series resistance \(R_S\)
+        and breakdown resistance \(R_{ZK}\).
+        \[
+          I \approx
+          \begin{cases}
+            \dfrac{V_D + V_{BR}}{R_{ZK}} & \text{if } V_D < -V_{BR} \\[2mm]
+            0 & \text{if } -V_{BR} \leq V_D < V_{TH} \\[2mm]
+            \dfrac{V_D - V_{TH}}{R_S} & \text{if } V_D \geq V_{TH}
+          \end{cases}
+        \]
+        It is obtained by solving the Non-Linear Model in two separate
         voltage regimes: forward, cutoff. The breakdown regime is added as
         an independent term to account for reverse breakdown conduction.
-        The model also includes the effects of series resistance and breakdown
-        resistance.
         \begin{enumerate}
-          \item \textbf{Series Resistance:}
-            The Shockley Diode Model treats the entire applied voltage \(V_D\)
-            as appearing across the ideal exponential junction. In a real diode,
-            part of \(V_D\) drops across the bulk and contact series resistance
-            \(R_S\), so only the remainder, the junction voltage
-            \(V_j = V_D - I R_S\), drives the exponential term:
+          \item \textbf{Series Resistance \(R_S\):}
+            The Non-Linear Model treats the entire applied voltage \(V_D\)
+            as appearing across the ideal exponential junction. However In a
+            real diode, part of \(V_D\) drops across the bulk and contact
+            series resistance \(R_S\), so only the remainder, the junction
+            voltage \(V_j = V_D - I R_S\), drives the exponential term:
             \[
               I = I_S \left( e^{\frac{V_D - I R_S}{n V_T}} - 1 \right)
             \]
-            This equation is transcendental in \(I\) and has no closed-form
-            solution. The piecewise linear model is obtained by solving it
-            asymptotically in three separate voltage regimes.
           \item \textbf{Forward Regime:}
             For \(I \gg I_S\), the \(-1\) term is negligible and
             \(I \approx I_S e^{V_j / (nV_T)}\), so
@@ -156,15 +161,10 @@ diodes.
             \[
               I \approx \frac{V_D + V_{BR}}{R_{ZK}} \hspace{1cm} \text{if } V_D < -V_{BR}
             \]
-          \item \textbf{Assembled Model}
-            \[
-              I \approx
-              \begin{cases}
-                \dfrac{V_D + V_{BR}}{R_{ZK}} & \text{if } V_D < -V_{BR} \\[2mm]
-                0 & \text{if } -V_{BR} \leq V_D < V_{TH} \\[2mm]
-                \dfrac{V_D - V_{TH}}{R_S} & \text{if } V_D \geq V_{TH}
-              \end{cases}
-            \]
         \end{enumerate}
     \end{itemize}
+  \item \textbf{Circuit Analysis:}
+    Depending upon Axes of Linearity requirements, You can either use the
+    Non-Linear or Linear model as described above to analyse the behaviour
+    of a diode while performing your circuit analysis.
 \end{enumerate}

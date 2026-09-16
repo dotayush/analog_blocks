@@ -1,4 +1,4 @@
-\subsection{Resistor}
+\section{Resistor}
 An ideal resistor is a two-port, passive, linear and time-invariant
 device that opposes the flow of current.
 
@@ -19,10 +19,9 @@ device that opposes the flow of current.
     \[
       G = \frac{1}{R}
     \]
-    You'll notice when we apply KCL to circuits within this book
-    that contain resistors, we'll mostly use conductance \(G\) to
-    express the resistance. This simplifies the analysis a lot. The
-    ohms law can be rearranged for conductance:
+    We'll mostly use conductance \(G\) when we analyse resistors
+    mathematically as it simplifies the analysis a lot. The rearranged
+    Ohm's law in terms of conductance is:
     \[
       I = V \cdot G
     \]
@@ -32,9 +31,14 @@ device that opposes the flow of current.
     \[
       P = I^2 \cdot R = V^2 \cdot G
     \]
-  \item \textbf{Non-Ideal Resistor:}
+  \item \textbf{Non-Ideal Behavior:}
     In practise, resistor's are not ideal and thus most of our
     assumptions above (linear, time-invariant, dissipative) fall
-    apart at very high frequencies but for the most part, we can
-    treat resistors as ideal devices.
+    apart at very high frequencies. However for the most part,
+    we can treat resistors as ideal devices.
+  \item \textbf{Circuit Analysis:}
+    The behaviour of resistor is not affected by the kind of Input
+    Signal (AC or DC) applied to it. Therefore, The same mathematical
+    model can be used to describe the behaviour of a resistor in both
+    AC and DC inputs.
 \end{itemize}

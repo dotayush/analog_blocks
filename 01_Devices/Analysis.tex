@@ -1,0 +1,187 @@
+\section{Analysis}
+
+Circuit Analysis is the process of determining a circuit's behaviour from its
+topology and component values. Analysis is a deterministic process, with a
+variety of techniques available to a circuit designer depending on what is
+already known and what is being sought.
+
+When analysing a circuit, some characteristics are known and others are the
+target of the analysis. For example,
+\begin{itemize}
+    \item Given a DC input voltage, what is the output voltage of a
+      power supply?
+    \item Given an AC input signal, what is the frequency response of a
+      Low Pass Filter (LPF)?
+    \item Given an AC input signal, what is the gain of a transistor
+      amplifier?
+\end{itemize}
+This raises two natural questions:
+\begin{enumerate}
+    \item How many distinct kinds of analysis technique exist, in
+      principle, for any given circuit?
+    \item Given a set of known characteristics (AC/DC input, time/frequency
+      response), which technique is the appropriate one to apply?
+\end{enumerate}
+To answer the first question, we build a structure that classifies every
+analysis technique. Each characteristic that distinguishes one technique from
+another is binary. For example, the input signal is either DC or AC; the
+response is computed in either the time domain or the frequency domain; the
+non-linear devices in the circuit are either retained in their full
+non-linear form or replaced with a first-order (small-signal) approximation
+about a bias point. The second question, which technique to apply for a
+given circuit, depends on the specific problem at hand; later sections
+address this with worked examples.
+
+\subsection{Classification Space}
+
+Figure~\ref{fig:analysis-classes} considers three such characteristics to
+build a classification space.
+\begin{enumerate}
+    \item \textbf{Input Excitation:} The input signal is either DC or AC.
+      This forms the Axis of Input Excitation, the X-axis of the
+      classification space.
+    \item \textbf{Mathematical Representation:} The response is computed
+      in either the time domain or the frequency domain. This forms the
+      Axis of Mathematical Representation, the Y-axis of the classification
+      space. You can flip between the time and frequency domain using a
+      Fourier or Laplace Transform.
+    \item \textbf{Non-Linear Device Modelling:} The non-linear devices are
+      either retained in full (large-signal analysis) or linearized about
+      a bias point (small-signal analysis). This forms the Axis of
+      Linearity, the Z-axis of the classification space.
+\end{enumerate}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{01_ANALYSIS_CLASSES.png}
+    \caption{Classification space for analysis techniques.}\label{fig:analysis-classes}
+\end{figure}
+
+\subsection{Analysis Techniques}
+
+The resulting space has eight quadrants, each corresponding to a distinct
+analysis technique. Let us now consider each quadrant in turn, and the
+analysis technique that arises from it.
+
+\begin{itemize}
+    \item \textbf{Q1: Small Signal, Time Domain, DC Input:}
+      The analysis of a circuit with a DC input
+      signal, where the response is computed in the time domain, and the
+      non-linear devices are linearized about a bias point. In small
+      signal analysis, the DC operating point is used to compute the
+      linearization and is then removed from the circuit: independent DC
+      voltage sources are shorted, independent DC current sources are
+      opened, leaving only the incremental (perturbation) behaviour about
+      that point. A DC input to this linearized circuit is therefore
+      identically zero by construction. This analysis is \textbf{not useful}.
+    \item \textbf{Q2: Small Signal, Time Domain, AC Input:}
+      The analysis of a circuit with an AC input
+      signal, where the response is computed in the time domain, and the
+      non-linear devices are linearized about a bias point. It is a very
+      useful technique, and is equal to the Inverse Laplace Transform of
+      \textbf{Q4}.
+    \item \textbf{Q3: Small Signal, Frequency Domain, DC Input:}
+      It is the Laplace Transform of \textbf{Q1}, differing only in the Mathematical
+      Representation used. Since \textbf{Q1} is identically zero, so is this one, by
+      linearity of the transform. This analysis is \textbf{not useful}.
+    \item \textbf{Q4: Small Signal, Frequency Domain, AC Input:}
+      The analysis of a circuit with an AC
+      input signal, where the response is computed in the frequency
+      domain, and the non-linear devices are linearized about a bias
+      point. It is a very useful technique. In simulators like ngspice, it
+      is implemented as AC analysis.
+    \item \textbf{Q5: Large Signal, Time Domain, DC Input:}
+      The analysis of a circuit with a DC input
+      signal, where the response is computed in the time domain, and the
+      non-linear devices are retained in full. It is a very useful
+      technique. In simulators like ngspice, it is implemented as DC
+      analysis, OP analysis, or DC sweep analysis.
+    \item \textbf{Q6: Large Signal, Time Domain, AC Input:}
+      The analysis of a circuit with an AC input
+      signal, where the response is computed in the time domain, and the
+      non-linear devices are retained in full. It is a very useful
+      technique. In simulators like ngspice, it is implemented as TRAN
+      analysis.
+    \item \textbf{Q7: Large Signal, Frequency Domain, DC Input:}
+      It is the Laplace Transform of \textbf{Q5}, differing only in the
+      Mathematical Representation used. It does contain information about
+      the circuit, namely the frequency response to a DC input but since
+      it is only a single frequency bin at zero, This analysis is
+      \textbf{not useful}.
+    \item \textbf{Q8: Large Signal, Frequency Domain, AC Input:}
+      It is the Laplace Transform of \textbf{Q6},
+      differing only in the Mathematical Representation used. It contains
+      useful information about the circuit, namely the frequency response
+      of the circuit to an AC input with one caveat: unlike
+      \textbf{Q4}, the non-linear device models are not
+      linearized, so superposition does not hold. The resulting spectrum
+      is only valid for the specific input amplitude and waveform used to
+      compute it, not a general transfer function; changing the input
+      requires recomputing this quadrant from \textbf{Q6},
+      rather than scaling the result. In simulators like ngspice, it is
+      implemented as FOUR analysis.
+\end{itemize}
+
+Removing \textbf{Q1}, \textbf{Q3} and \textbf{Q7} due to lack of usefulness,
+We can summarize of the quadrants and the analysis techniques that arise
+from them:
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|}\hline
+      \textbf{Q} & \textbf{ZYX} & \textbf{Linearity} & \textbf{Representation} & \textbf{Input Excitation} & \textbf{SPICE} \\ \hline
+      Q2 & 001 & Small Signal & Time      & AC & None \\ \hline
+      Q4 & 011 & Small Signal & Frequency & AC & AC \\ \hline
+      Q5 & 100 & Large Signal & Time      & DC & DC, OP, DC Sweep \\ \hline
+      Q6 & 101 & Large Signal & Time      & AC & TRAN \\ \hline
+      Q8 & 111 & Large Signal & Frequency & AC & FOUR \\ \hline
+    \end{tabular}
+    \caption{Summary of the eight quadrants of analysis techniques.}\label{tab:quadrant-summary}
+\end{table}
+
+\subsection{Quadrant/Axes Dependencies}
+
+Certain Quadrants and Axes are dependent on each other, and this is important to
+understand when analysing circuits.
+\begin{itemize}
+    \item \textbf{Q2} and \textbf{Q4} depend on \textbf{Q5} to find a bias
+      point to linearize the non-linear devices about.
+    \item \textbf{Q6} can be computed without any knowledge of \textbf{Q5}
+      but it is often useful to compute \textbf{Q5} first to find a bias
+      point and use that to set initial conditions.
+    \item \textbf{An AC Input} can make use of either a small signal or
+      large signal device model but it is often convenient to use a small
+      signal model, since it is linear and therefore easier to analyse.
+      This is done below in the section on hand analysis simplifications.
+\end{itemize}
+
+\subsection{Hand Analysis Simplifications}
+
+When analysing circuits by hand, it is often useful to simplify the
+circuit schematic by treating various devices as either short circuits
+or open circuits, depending on the input excitation AC/DC.\
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|}\hline
+      \textbf{Device}   & \textbf{DC Input} & \textbf{AC Input} \\ \hline
+      DC Voltage Source & -                 & Short \\ \hline
+      AC Voltage Source & Short             & -     \\ \hline
+      DC Current Source & -                 & Open  \\ \hline
+      AC Current Source & Open              & -     \\ \hline
+      Resistor          & -                 & -     \\ \hline
+      Capacitor         & Open              & Short (HF/Large C only) \\ \hline
+      Inductor          & Short             & Open (HF/Large L only) \\ \hline
+      Diode             & -                 & Linearize \\ \hline
+      MOSFET            & -                 & Linearize \\ \hline
+      BJT               & -                 & Linearize \\ \hline
+      Dependent Sources & -                 & -     \\ \hline
+      OpAmp             & -                 & -     \\ \hline
+    \end{tabular}
+    \caption{Hand analysis simplifications for various devices.}\label{tab:hand-analysis-simplifications}
+\end{table}
+
+In the above table, \textbf{-} indicates that the device is treated normally
+that is without any simplification. \textbf{Short} indicates that the device
+should be replaced with a short circuit and \textbf{Open} indicates that the
+device should be replaced with an open circuit. \textbf{Linearize} indicates
+that the full non-linear model of a device should be replaced with its
+small-signal linearized model (about a bias point).

@@ -1,38 +1,40 @@
-\chapter{Devices \& Basic Blocks}
+\chapter{Devices \& Analysis}
 
 A device is a physical component that can be used to build circuits.
 Devices can be classified based on their functionality, characteristics,
 and behavior. Here we will classify devices based on if they require
-an external power source to operate or not. This classification leads
-us to two categories of devices.
+an external power source to operate or not, which leads us to two
+categories of devices:
 \begin{itemize}
-    \item \textbf{Passive Devices}: Do not require an external power source to
-      operate. They can attenuate, store and dissipate electromagnetic
-      energy.
-    \item \textbf{Active Devices}: Require an external power source to operate.
-      They can attenuate, store and dissipate electromagnetic energy
-      but they can also amplify energy.
+    \item \textbf{Passive Devices}: These devices do not require a power
+      source to operate. They can attenuate, store and dissipate
+      electromagnetic energy.
+    \item \textbf{Active Devices}: These devices require a power source to
+      operate. They can attenuate, store, dissipate \textbf{and amplify}
+      electromagnetic energy.
 \end{itemize}
 
 There are several important terms we will use throughout this handbook
 and it is good to be familiar with them early on.
 \begin{enumerate}
-    \item \textbf{Terminal}: A point of connection for a device. It can be
-      a pin, contact, or lead.
-    \item \textbf{Port}: A pair of terminals that can be used to connect
-      a device to other devices or circuits. A port can be used to
-      measure voltage and current.
-    \item \textbf{Linear}: The relationship between two quantities
-      (usually voltage and current) is proportional by a factor.
-      Non-linear devices do not have a proportional relationship
-      between voltage and current.
-    \item \textbf{Time-invariant}: The relationship between two quantities
-      (usually voltage and current) does not drift with time. Time-variant
-      devices have a relationship between voltage and current that changes
-      with time.
-    \item \textbf{Dissipative}: The device dissipates energy usually in
-      the form of heat. Non-dissipative devices do not dissipate energy.
+    \item \textbf{Port/Terminal}: A point of connection for a device.
+      It can be a pin, contact, or lead. Two Terminal and Two Port
+      devices are the most common.
+    \item \textbf{Linear}: The relationship between two quantities (here
+      voltage and current) is proportional by some factor. If you plot
+      this relationship, you will get a straight line. If the relationship
+      is not proportional, it is non-linear.
+    \item \textbf{Time Invariant}: If a quantity does not change with time,
+      it is time invariant. Many devices suffer from aging and therefore
+      are time variant over long periods. For everyday circuits, we can
+      assume that devices are time invariant.
+    \item \textbf{Dissipation}: The act of releasing energy (usually in the
+      form of heat) is known as dissipation.
 \end{enumerate}
 
-\input{01_Devices/Passives/main}
-\input{01_Devices/Actives/main}
+\input{01_Devices/Passives/Resistor}
+\input{01_Devices/Passives/Capacitor}
+\input{01_Devices/Passives/Inductor}
+\input{01_Devices/Passives/Diode}
+\input{01_Devices/Actives/BJT}
+\input{01_Devices/Analysis}

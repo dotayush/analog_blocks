@@ -6,13 +6,15 @@
 \usepackage[left=1cm, top=2.54cm, bottom=2.54cm, right=1cm]{geometry}
 \usepackage{lineno}
 \usepackage{silence}
+\usepackage{graphicx}
+\graphicspath{{./images/}}
 
 % --- footer & link setup ---
 \usepackage[colorlinks=true,allcolors=black]{hyperref}
 \usepackage{fancyhdr}
 
 % Define version once so it's easy to update
-\newcommand{\docversion}{v0.0.7}
+\newcommand{\docversion}{v0.0.8}
 
 \pagestyle{fancy}
 \fancyhf{}                          % clear all headers/footers
@@ -46,7 +48,7 @@
 
 \begin{document}
   \pagenumbering{arabic}
-  \title{Handbook of Analog Electronics}
+  \title{Notebook of Analog Electronics}
   \author{Ayush Gupta}
   \date{January 2026}
   \maketitle
@@ -59,5 +61,6 @@
   \include{03_Filters/main}
   \include{04_Current_Mirrors/main}
   \include{05_Amplifiers/main}
+  \include{06_Electromech/main}
   \include{1X_Theory/main}
 \end{document}
