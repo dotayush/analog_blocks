@@ -23,7 +23,7 @@ Applying KCL at \(V_-\) (\(G_F\) absent), \(V_- = -\frac{V_{out}}{A}\):
 \end{align*}
 In time (Q4 \(\to\) Q2, \(\frac{1}{s}\) is integration):
 \[
-  v_{out}(t) = -\frac{1}{R_1 C}\int_0^t v_{in}(t')\, dt' + v_{out}(0)
+  V_{out}(t) = -\frac{1}{R_1 C}\int_0^t V_{in}(t')\, dt' + V_{out}(0)
 \]
 
 \subsubsection{Analysis}
@@ -35,7 +35,7 @@ In time (Q4 \(\to\) Q2, \(\frac{1}{s}\) is integration):
     a real integrator is a low pass with DC gain \(-A_0\) and pole
     \(p = \frac{1}{R_1 C (1 + A_0)}\); it integrates only for \(\omega \gg p\).
   \item \textbf{DC Drift}: an offset \(V_{OS}\) is integrated without limit
-    (\(v_{out} = \frac{V_{OS}}{R_1 C} t\)) until saturation. \(G_F\) in parallel
+    (\(V_{out} = \frac{V_{OS}}{R_1 C} t\)) until saturation. \(G_F\) in parallel
     with \(C\) bounds it:
     \begin{align*}
       (V_- - V_{in}) G_1 + (V_- - V_{out})(G_F + sC) &= 0, \hspace{0.5cm} V_- = 0 \\

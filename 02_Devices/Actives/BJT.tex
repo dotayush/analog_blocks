@@ -125,14 +125,14 @@ The behaviour of a BJT can be approximated well by the below equations.
         voltage controlled current source when linearized around a bias point
         \(Q = (V_{BE(Q)}, V_{CE(Q)}, I_{C(Q)})\) (Section~\ref{sec:analysis_linearization}).
         \begin{align*}
-          i_c &= g_m v_{be} + g_o v_{ce} \\
-          i_b &= g_{be} v_{be}
+          I_c &= g_m V_{be} + g_o V_{ce} \\
+          I_b &= g_{be} V_{be}
         \end{align*}
         Here, \(g_m\) is the transconductance, \(g_o\) is the
         output conductance and \(g_{be}\) is the input conductance. Below
         schematic shows the simple idea of the hybrid-pi model for BJT.
         \begin{circuitfig}
-        	\draw (9.25, 6.75) to[american current source, l_={$g_m v_{be}$}] (9.25, 5);
+        	\draw (9.25, 6.75) to[american current source, l_={$g_m V_{be}$}] (9.25, 5);
         	\draw (6.5, 6.75) to[european resistor, l={$g_{be}$}] (6.5, 5);
         	\draw (10.75, 6.75) to[european resistor, l={$g_o$}] (10.75, 5);
         	\draw (6.5, 5) -- (9.25, 5);
@@ -140,10 +140,10 @@ The behaviour of a BJT can be approximated well by the below equations.
         	\draw (10.75, 6.75) -- (9.25, 6.75);
         	\draw (10.75, 6.75) -- (11.75, 6.75);
         	\draw (6.5, 6.75) -- (5.75, 6.75);
-        	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N1) at (5.25, 6.75){} node[anchor=center] at (N1.text){$v_b$};
-        	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N2) at (8.5, 4.5){} node[anchor=center] at (N2.text){$v_e$};
+        	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N1) at (5.25, 6.75){} node[anchor=center] at (N1.text){$V_b$};
+        	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N2) at (8.5, 4.5){} node[anchor=center] at (N2.text){$V_e$};
         	\draw (8.5, 5) -| (8.5, 4.75);
-        	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N3) at (12.25, 6.75){} node[anchor=center] at (N3.text){$v_c$};
+        	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N3) at (12.25, 6.75){} node[anchor=center] at (N3.text){$V_c$};
         \end{circuitfig}
         \(g_m\) can be calculated as follows:
         \begin{align*}
@@ -167,7 +167,7 @@ The behaviour of a BJT can be approximated well by the below equations.
           g_o &= I_S \left(e^{\frac{V_{BE(Q)}}{V_T}} - 1 \right) \times \frac{1}{V_A} \\
           g_o &= \frac{I_{C(Q)}}{1 + \frac{V_{CE(Q)}}{V_A}} \cdot \frac{1}{V_A} = \frac{I_{C(Q)}}{V_A + V_{CE(Q)}} \approx \frac{I_{C(Q)}}{V_A} \hspace{1cm} [V_A \gg V_{CE(Q)}]
         \end{align*}
-        The model is valid while \(|v_{be}| \ll 2V_T \approx 52\,\text{mV}\)
+        The model is valid while \(|V_{be}| \ll 2V_T \approx 52\,\text{mV}\)
         (the bound of Section~\ref{sec:analysis_linearization} with \(n = 1\)).
         At high frequency add \(C_{be}\) (diffusion plus junction) between
         base and emitter and \(C_{bc}\) (junction) between base and collector.

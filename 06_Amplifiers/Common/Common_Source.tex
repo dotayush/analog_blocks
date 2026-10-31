@@ -51,22 +51,22 @@ outside the symbol.
     Let \(G_o = G_D + g_o\).\\
     Applying KCL at \(V_g\):
     \begin{align*}
-      (v_g - v_{in})G_S + v_g sC_{gs} + (v_g - v_{out})sC_{gd} &= 0 \\
-      v_g (G_S + s(C_{gs} + C_{gd})) - v_{out} sC_{gd} &= v_{in} G_S \tag{2}
+      (V_g - V_{in})G_S + V_g sC_{gs} + (V_g - V_{out})sC_{gd} &= 0 \\
+      V_g (G_S + s(C_{gs} + C_{gd})) - V_{out} sC_{gd} &= V_{in} G_S \tag{2}
     \end{align*}
     Applying KCL at \(V_{out}\):
     \begin{align*}
-      v_{out}(G_D + g_o) + g_m v_g + v_{out} sC_L + (v_{out} - v_g)sC_{gd} &= 0 \\
-      v_{out}(G_o + s(C_L + C_{gd})) &= v_g (sC_{gd} - g_m) \\
-      v_g &= \frac{G_o + s(C_L + C_{gd})}{sC_{gd} - g_m} v_{out} \tag{3}
+      V_{out}(G_D + g_o) + g_m V_g + V_{out} sC_L + (V_{out} - V_g)sC_{gd} &= 0 \\
+      V_{out}(G_o + s(C_L + C_{gd})) &= V_g (sC_{gd} - g_m) \\
+      V_g &= \frac{G_o + s(C_L + C_{gd})}{sC_{gd} - g_m} V_{out} \tag{3}
     \end{align*}
     Substituting (3) into (2):
     \begin{align*}
-      v_{out}\left(\frac{(G_o + s(C_L + C_{gd}))(G_S + s(C_{gs} + C_{gd}))}{sC_{gd} - g_m} - sC_{gd}\right) &= v_{in} G_S \\
-      v_{out}\left(\frac{(G_o + s(C_L + C_{gd}))(G_S + s(C_{gs} + C_{gd})) - sC_{gd}(sC_{gd} - g_m)}{sC_{gd} - g_m}\right) &= v_{in} G_S
+      V_{out}\left(\frac{(G_o + s(C_L + C_{gd}))(G_S + s(C_{gs} + C_{gd}))}{sC_{gd} - g_m} - sC_{gd}\right) &= V_{in} G_S \\
+      V_{out}\left(\frac{(G_o + s(C_L + C_{gd}))(G_S + s(C_{gs} + C_{gd})) - sC_{gd}(sC_{gd} - g_m)}{sC_{gd} - g_m}\right) &= V_{in} G_S
     \end{align*}
     \begin{align*}
-      H(s) = \frac{v_{out}}{v_{in}} = \frac{G_S (sC_{gd} - g_m)}{(G_o + s(C_L + C_{gd}))(G_S + s(C_{gs} + C_{gd})) - sC_{gd}(sC_{gd} - g_m)} \tag{4}
+      H(s) = \frac{V_{out}}{V_{in}} = \frac{G_S (sC_{gd} - g_m)}{(G_o + s(C_L + C_{gd}))(G_S + s(C_{gs} + C_{gd})) - sC_{gd}(sC_{gd} - g_m)} \tag{4}
     \end{align*}
     Expanding the denominator:
     \begin{align*}
@@ -109,8 +109,8 @@ outside the symbol.
       \[
         Z_{in} = \frac{1}{s\left[C_{gs} + C_{gd}(1 - A_V)\right]} \approx \frac{1}{s\left[C_{gs} + C_{gd}(1 + g_m R_o)\right]}
       \]
-    \paragraph{At Output:} \(v_{in} = 0\) and (low frequency) \(v_g = 0\), so
-      \(g_m v_g = 0\):
+    \paragraph{At Output:} \(V_{in} = 0\) and (low frequency) \(V_g = 0\), so
+      \(g_m V_g = 0\):
       \[
         Z_{out} = \frac{1}{G_D + g_o} = R_D \parallel r_o
       \]

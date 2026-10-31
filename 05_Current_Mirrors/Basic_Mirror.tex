@@ -37,7 +37,7 @@ resistor, see Section~\ref{sec:mirror_widlar}.)
 	\draw (3.25, 5.175) -| (3.25, 5.405);
 	\draw (3.25, 5.405) -| (3.25, 5.905);
 	\draw (10, 1.75) |- (10, 11);
-	\draw (17.25, 5.563) to[american current source, l_={$g_{m_1}v_{gs}$}] (17.25, 4.063);
+	\draw (17.25, 5.563) to[american current source, l_={$g_{m_1}V_{gs}$}] (17.25, 4.063);
 	\draw (18.75, 5.563) to[european resistor, l_={$g_{o_1}$}] (18.75, 4.063);
 	\draw (17.25, 4.063) -- (18.75, 4.063);
 	\draw (18.75, 5.563) -- (17.25, 5.563);
@@ -47,7 +47,7 @@ resistor, see Section~\ref{sec:mirror_widlar}.)
 	\node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (16, 4.313){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (16, 4.313){\footnotesize S};
 	\node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (19.25, 5.313){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (19.25, 5.313){\footnotesize D};
 	\draw (15.25, 5.563) -- (14.5, 5.563);
-	\draw (13, 5.563) to[american current source, l={$g_{m_0}v_{gs}$}] (13, 4.063);
+	\draw (13, 5.563) to[american current source, l={$g_{m_0}V_{gs}$}] (13, 4.063);
 	\draw (11.5, 5.563) to[european resistor, l={$g_{o_0}$}] (11.5, 4.063);
 	\draw (13, 5.563) -- (11.5, 5.563);
 	\draw (13, 4.063) -- (11.5, 4.063);
@@ -163,12 +163,12 @@ Here's a table of the voltages at each terminal of the transistors:
       V_{cc} - I_{M_1} R_L &\geq V_{out,\min} \\
       R_{L, \max} &= \frac{V_{cc} - V_{out,\min}}{I_{M_1}} = \frac{V_{L,\max}}{I_{M_1}} \quad \text{[} V_{L,\max} = V_{cc} - V_{out,\min} \text{]}
     \end{align*}
-  \item \textbf{Current Gain (Q4)}: Inject \(i_{in}\) into \(V_x\) and
+  \item \textbf{Current Gain (Q4)}: Inject \(I_{in}\) into \(V_x\) and
     short the output to AC ground (\(V_{out} = 0\)):
     \begin{align*}
-      v_{x}(G_2 + g_{o_0} + g_{m_0}) &= i_{in} \\
-      i_{out} &= g_{m_1} v_x = \frac{g_{m_1}}{G_2 + g_{o_0} + g_{m_0}} i_{in} \\
-      \frac{i_{out}}{i_{in}} &\approx \frac{g_{m_1}}{g_{m_0}} = \frac{\sqrt{2K_P \frac{W_1}{L_1} I_{M_1}}}{\sqrt{2K_P \frac{W_0}{L_0} I_{M_0}}} = \sqrt{\frac{W_1 L_0}{L_1 W_0} \cdot \frac{W_1 L_0}{L_1 W_0}} = \frac{W_1 L_0}{L_1 W_0}
+      V_{x}(G_2 + g_{o_0} + g_{m_0}) &= I_{in} \\
+      I_{out} &= g_{m_1} V_x = \frac{g_{m_1}}{G_2 + g_{o_0} + g_{m_0}} I_{in} \\
+      \frac{I_{out}}{I_{in}} &\approx \frac{g_{m_1}}{g_{m_0}} = \frac{\sqrt{2K_P \frac{W_1}{L_1} I_{M_1}}}{\sqrt{2K_P \frac{W_0}{L_0} I_{M_0}}} = \sqrt{\frac{W_1 L_0}{L_1 W_0} \cdot \frac{W_1 L_0}{L_1 W_0}} = \frac{W_1 L_0}{L_1 W_0}
     \end{align*}
   \item \textbf{Impedances}:
     \paragraph{At Input:} Applying a test current $I_{test}$
@@ -185,7 +185,7 @@ Here's a table of the voltages at each terminal of the transistors:
       at $V_{out}$, from equation (5):
       \begin{align*}
         V_{out}(G_3 + g_{o_1}) + g_{m_1}V_{x} &= I_{test} \\
-        V_{out}(G_3 + g_{o_1}) + g_{m_1}(0) &= I_{test} \quad \text{[} v_x = 0 \text{ from (6)]} \\
+        V_{out}(G_3 + g_{o_1}) + g_{m_1}(0) &= I_{test} \quad \text{[} V_x = 0 \text{ from (6)]} \\
         \therefore Z_{out} &= \frac{V_{out}}{I_{test}} = \frac{1}{G_3 + g_{o_1}}
       \end{align*}
       Ignoring $G_3$, we get:

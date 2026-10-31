@@ -59,41 +59,41 @@ As in Section~\ref{sec:mirror_basic}, \(G_3\) exists only for analysis
   \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}: (\(g_{mb}\) neglected)\\
     Applying KCL at $V_{x}$:
     \begin{align*}
-      v_x(G_2 + g_{o_0} + g_{m_0}) &= i_{in} \tag{5}
+      V_x(G_2 + g_{o_0} + g_{m_0}) &= I_{in} \tag{5}
     \end{align*}
     Applying KCL at $V_{s}$ (current into \(G_S\) equals drain current of \(M_1\)):
     \begin{align*}
-      v_s G_S &= g_{m_1}(v_x - v_s) + g_{o_1}(v_{out} - v_s) \\
-      v_s (G_S + g_{m_1} + g_{o_1}) &= g_{m_1} v_x + g_{o_1} v_{out} \tag{6}
+      V_s G_S &= g_{m_1}(V_x - V_s) + g_{o_1}(V_{out} - V_s) \\
+      V_s (G_S + g_{m_1} + g_{o_1}) &= g_{m_1} V_x + g_{o_1} V_{out} \tag{6}
     \end{align*}
     Applying KCL at $V_{out}$:
     \begin{align*}
-      v_{out} G_3 + g_{m_1}(v_x - v_s) + g_{o_1}(v_{out} - v_s) &= 0 \\
-      v_{out} G_3 + v_s G_S &= 0 \hspace{1cm} \text{[using (6)]} \tag{7}
+      V_{out} G_3 + g_{m_1}(V_x - V_s) + g_{o_1}(V_{out} - V_s) &= 0 \\
+      V_{out} G_3 + V_s G_S &= 0 \hspace{1cm} \text{[using (6)]} \tag{7}
     \end{align*}
 \end{enumerate}
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \textbf{Current Gain}: output at AC ground (\(v_{out} = 0\)),
-    \(i_{out} = v_s G_S\). From (6) and (5):
+  \item \textbf{Current Gain}: output at AC ground (\(V_{out} = 0\)),
+    \(I_{out} = V_s G_S\). From (6) and (5):
     \begin{align*}
-      v_s &= \frac{g_{m_1} v_x}{G_S + g_{m_1} + g_{o_1}} \\
-      i_{out} &= \frac{G_S\, g_{m_1}}{G_S + g_{m_1} + g_{o_1}} \cdot \frac{i_{in}}{G_2 + g_{o_0} + g_{m_0}} \\
-      \frac{i_{out}}{i_{in}} &\approx \frac{g_{m_1}}{g_{m_0}} \cdot \frac{1}{1 + g_{m_1} R_S} \hspace{1cm} [g_{o_1} \ll G_S,\ G_2, g_{o_0} \ll g_{m_0}]
+      V_s &= \frac{g_{m_1} V_x}{G_S + g_{m_1} + g_{o_1}} \\
+      I_{out} &= \frac{G_S\, g_{m_1}}{G_S + g_{m_1} + g_{o_1}} \cdot \frac{I_{in}}{G_2 + g_{o_0} + g_{m_0}} \\
+      \frac{I_{out}}{I_{in}} &\approx \frac{g_{m_1}}{g_{m_0}} \cdot \frac{1}{1 + g_{m_1} R_S} \hspace{1cm} [g_{o_1} \ll G_S,\ G_2, g_{o_0} \ll g_{m_0}]
     \end{align*}
   \item \textbf{Impedances}:
     \paragraph{At Input:} identical to the basic mirror, from (5):
       \[
         Z_{in} = \frac{1}{G_2 + g_{o_0} + g_{m_0}} \approx \frac{1}{g_{m_0}}
       \]
-    \paragraph{At Output:} \(i_{in} = 0 \Rightarrow v_x = 0\) by (5). Apply
+    \paragraph{At Output:} \(I_{in} = 0 \Rightarrow V_x = 0\) by (5). Apply
       \(I_{test}\) at \(V_{out}\) (with \(G_3\) removed); it flows through
-      \(M_1\) into \(G_S\): \(v_s = \frac{I_{test}}{G_S}\). From (6):
+      \(M_1\) into \(G_S\): \(V_s = \frac{I_{test}}{G_S}\). From (6):
       \begin{align*}
-        \frac{I_{test}}{G_S}(G_S + g_{m_1} + g_{o_1}) &= g_{o_1} v_{out} \\
-        I_{test}\left(1 + \frac{g_{m_1} + g_{o_1}}{G_S}\right) &= g_{o_1} v_{out} \\
-        Z_{out} = \frac{v_{out}}{I_{test}} &= \frac{1 + (g_{m_1} + g_{o_1}) R_S}{g_{o_1}} \\
+        \frac{I_{test}}{G_S}(G_S + g_{m_1} + g_{o_1}) &= g_{o_1} V_{out} \\
+        I_{test}\left(1 + \frac{g_{m_1} + g_{o_1}}{G_S}\right) &= g_{o_1} V_{out} \\
+        Z_{out} = \frac{V_{out}}{I_{test}} &= \frac{1 + (g_{m_1} + g_{o_1}) R_S}{g_{o_1}} \\
         Z_{out} &= r_{o_1} + R_S + g_{m_1} r_{o_1} R_S \approx r_{o_1}(1 + g_{m_1} R_S)
       \end{align*}
       The degeneration multiplies the basic mirror output impedance by

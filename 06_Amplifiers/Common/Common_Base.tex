@@ -21,24 +21,24 @@ voltage gain.
   \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}: \(I_E = \frac{V_e - V_{IN}}{R_S}\),
     \(V_e = V_B - V_T \ln\frac{I_C}{I_S}\), \(I_C = A_F I_E\),
     \(V_{OUT} = V_{cc} - I_C R_C\).
-  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}: \(v_b = 0\), \(g_o\) neglected,
-    \(i_c = -g_m v_e\), \(i_b = -g_{be} v_e\).\\
-    Applying KCL at \(V_e\) (\(i_e = i_b + i_c\) leaves the device into the node):
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}: \(V_b = 0\), \(g_o\) neglected,
+    \(I_c = -g_m V_e\), \(I_b = -g_{be} V_e\).\\
+    Applying KCL at \(V_e\) (\(I_e = I_b + I_c\) leaves the device into the node):
     \begin{align*}
-      (v_e - v_{in}) G_S &= -(g_m + g_{be}) v_e \\
-      v_e &= \frac{G_S}{G_S + g_m + g_{be}} v_{in}
+      (V_e - V_{in}) G_S &= -(g_m + g_{be}) V_e \\
+      V_e &= \frac{G_S}{G_S + g_m + g_{be}} V_{in}
     \end{align*}
     Applying KCL at \(V_{out}\):
     \begin{align*}
-      v_{out} G_C + i_c &= 0 \hspace{0.5cm} \Rightarrow \hspace{0.5cm} v_{out} = \frac{g_m}{G_C} v_e \\
-      H = \frac{v_{out}}{v_{in}} &= \frac{g_m R_C\, G_S}{G_S + g_m + g_{be}}
+      V_{out} G_C + I_c &= 0 \hspace{0.5cm} \Rightarrow \hspace{0.5cm} V_{out} = \frac{g_m}{G_C} V_e \\
+      H = \frac{V_{out}}{V_{in}} &= \frac{g_m R_C\, G_S}{G_S + g_m + g_{be}}
     \end{align*}
 \end{enumerate}
 
 \subsubsection{Analysis}
 \begin{enumerate}
   \item \textbf{Gain}: \(G_S \to \infty\): \(A_{V0} = g_m R_C\). Current gain
-    \(\frac{i_c}{-i_e} = \frac{g_m}{g_m + g_{be}} = A_F\).
+    \(\frac{I_c}{-I_e} = \frac{g_m}{g_m + g_{be}} = A_F\).
   \item \textbf{Impedances}:
     \(Z_{in} = \frac{1}{g_m + g_{be}} = \frac{A_F}{g_m}\) (looking into the emitter),
     \(Z_{out} = R_C \parallel r_o\left(1 + g_m (R_S \parallel r_{be})\right)\).

@@ -52,28 +52,28 @@ written as differential and common mode parts,
     \begin{align*}
       \left.\frac{d(I_{D1} - I_{D2})}{dV_{id}}\right|_{V_{id} = 0} &= \sqrt{k_n}\sqrt{2 I_T} = \sqrt{2 k_n I_T} = 2\sqrt{k_n I_D} = g_m \hspace{1cm} [I_D = \tfrac{I_T}{2}]
     \end{align*}
-    so \(i_{d1} - i_{d2} = g_m v_{id}\) and \(i_{d1} = -i_{d2} = \frac{g_m v_{id}}{2}\).
-    By symmetry \(v_s = 0\) for a purely differential input (half circuit:
-    a CS stage driven by \(\frac{v_{id}}{2}\)).
+    so \(I_{d1} - I_{d2} = g_m V_{id}\) and \(I_{d1} = -I_{d2} = \frac{g_m V_{id}}{2}\).
+    By symmetry \(V_s = 0\) for a purely differential input (half circuit:
+    a CS stage driven by \(\frac{V_{id}}{2}\)).
 \end{enumerate}
 
 \subsubsection{Analysis}
 \begin{enumerate}
   \item \textbf{Differential Gain}: KCL at \(V_{o1}\):
-    \(v_{o1}(G_D + g_o) + g_m \frac{v_{id}}{2} = 0\), and \(v_{o2} = -v_{o1}\):
+    \(V_{o1}(G_D + g_o) + g_m \frac{V_{id}}{2} = 0\), and \(V_{o2} = -V_{o1}\):
     \[
-      A_d = \frac{v_{o1} - v_{o2}}{v_{id}} = -\frac{g_m}{G_D + g_o}
+      A_d = \frac{V_{o1} - V_{o2}}{V_{id}} = -\frac{g_m}{G_D + g_o}
     \]
   \item \textbf{Common Mode Gain}: tail current source with output conductance
-    \(g_{o,tail}\), \(v_{i1} = v_{i2} = v_{ic}\), \(g_o\) neglected. Both halves carry
-    \(i_d = \frac{g_{o,tail} v_s}{2}\) and \(i_d = g_m(v_{ic} - v_s)\):
+    \(g_{o,tail}\), \(V_{i1} = V_{i2} = V_{ic}\), \(g_o\) neglected. Both halves carry
+    \(I_d = \frac{g_{o,tail} V_s}{2}\) and \(I_d = g_m(V_{ic} - V_s)\):
     \begin{align*}
-      \frac{g_{o,tail}}{2} v_s &= g_m (v_{ic} - v_s) \hspace{0.5cm} \Rightarrow \hspace{0.5cm} v_s = \frac{2 g_m}{2 g_m + g_{o,tail}} v_{ic} \\
-      i_d &= \frac{g_m g_{o,tail}}{2 g_m + g_{o,tail}} v_{ic} \hspace{0.5cm} \Rightarrow \hspace{0.5cm}
-      A_c = \frac{v_{o1}}{v_{ic}} = -\frac{g_m g_{o,tail}}{G_D(2 g_m + g_{o,tail})} \approx -\frac{g_{o,tail}}{2 G_D}
+      \frac{g_{o,tail}}{2} V_s &= g_m (V_{ic} - V_s) \hspace{0.5cm} \Rightarrow \hspace{0.5cm} V_s = \frac{2 g_m}{2 g_m + g_{o,tail}} V_{ic} \\
+      I_d &= \frac{g_m g_{o,tail}}{2 g_m + g_{o,tail}} V_{ic} \hspace{0.5cm} \Rightarrow \hspace{0.5cm}
+      A_c = \frac{V_{o1}}{V_{ic}} = -\frac{g_m g_{o,tail}}{G_D(2 g_m + g_{o,tail})} \approx -\frac{g_{o,tail}}{2 G_D}
     \end{align*}
     In a single ended output, \(CMRR = \frac{|A_d/2|}{|A_c|} = \frac{g_m}{g_{o,tail}}\)
-    (perfectly matched halves give \(v_{o1} - v_{o2} = 0\) for any \(v_{ic}\)).
+    (perfectly matched halves give \(V_{o1} - V_{o2} = 0\) for any \(V_{ic}\)).
   \item \textbf{Linear Range}: dividing the large signal result by \(g_m V_{id}\)
     and using \(k_n = \frac{I_T}{2 V_{ov}^2}\):
     \begin{align*}

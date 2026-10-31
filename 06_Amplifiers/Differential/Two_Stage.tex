@@ -34,21 +34,21 @@ Section~\ref{sec:amp_cs} with \(C_c\) in the place of \(C_{gd}\).
     \]
     (\(M_6\) sees the same \(V_{GS}\) relation as \(M_4\)).
   \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}:
-    the first stage injects \(g_{m1} v_{id}\) into \(V_1\).\\
+    the first stage injects \(g_{m1} V_{id}\) into \(V_1\).\\
     Applying KCL at \(V_1\):
     \begin{align*}
-      v_1 (G_1 + sC_1) + (v_1 - v_{out}) sC_c &= g_{m1} v_{id} \\
-      v_1 (G_1 + s(C_1 + C_c)) - v_{out} sC_c &= g_{m1} v_{id} \tag{1}
+      V_1 (G_1 + sC_1) + (V_1 - V_{out}) sC_c &= g_{m1} V_{id} \\
+      V_1 (G_1 + s(C_1 + C_c)) - V_{out} sC_c &= g_{m1} V_{id} \tag{1}
     \end{align*}
     Applying KCL at \(V_{out}\):
     \begin{align*}
-      v_{out}(G_2 + sC_L) + (v_{out} - v_1) sC_c + g_{m6} v_1 &= 0 \\
-      v_1 &= -\frac{G_2 + s(C_L + C_c)}{g_{m6} - sC_c} v_{out} \tag{2}
+      V_{out}(G_2 + sC_L) + (V_{out} - V_1) sC_c + g_{m6} V_1 &= 0 \\
+      V_1 &= -\frac{G_2 + s(C_L + C_c)}{g_{m6} - sC_c} V_{out} \tag{2}
     \end{align*}
     Substituting (2) into (1):
     \begin{align*}
-      -v_{out}\left(\frac{(G_2 + s(C_L + C_c))(G_1 + s(C_1 + C_c)) + sC_c (g_{m6} - sC_c)}{g_{m6} - sC_c}\right) &= g_{m1} v_{id} \\
-      A(s) = \frac{v_{out}}{v_{id}} &= \frac{-g_{m1}(g_{m6} - sC_c)}{G_1 G_2 + s\left[G_2(C_1 + C_c) + G_1(C_L + C_c) + g_{m6} C_c\right] + s^2\left[C_1 C_L + C_1 C_c + C_L C_c\right]}
+      -V_{out}\left(\frac{(G_2 + s(C_L + C_c))(G_1 + s(C_1 + C_c)) + sC_c (g_{m6} - sC_c)}{g_{m6} - sC_c}\right) &= g_{m1} V_{id} \\
+      A(s) = \frac{V_{out}}{V_{id}} &= \frac{-g_{m1}(g_{m6} - sC_c)}{G_1 G_2 + s\left[G_2(C_1 + C_c) + G_1(C_L + C_c) + g_{m6} C_c\right] + s^2\left[C_1 C_L + C_1 C_c + C_L C_c\right]}
     \end{align*}
     (the sign is that of the inverting second stage; swapping \(V_{i1}\),
     \(V_{i2}\) restores a positive gain).

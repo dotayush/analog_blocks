@@ -200,31 +200,31 @@ that the full non-linear model of a device should be replaced with its
 small-signal linearized model (about a bias point).
 
 \section{Linearization (moving from +Z to -Z)}\label{sec:analysis_linearization}
-Let a non-linear device be described by \(i = f(v)\). Q5 gives the bias
+Let a non-linear device be described by \(I = f(V)\). Q5 gives the bias
 point \(V_Q\) and \(I_Q = f(V_Q)\). Write the total voltage as bias plus
-perturbation, \(v = V_Q + v_d\), and expand about \(V_Q\):
+perturbation, \(V = V_Q + V_d\), and expand about \(V_Q\):
 \begin{align*}
-  i &= f(V_Q + v_d) \\
-  i &= f(V_Q) + f'(V_Q) v_d + \frac{f''(V_Q)}{2} v_d^2 + \frac{f^{\prime\prime\prime}(V_Q)}{6} v_d^3 + \cdots \\
-  i - I_Q &= f'(V_Q) v_d + \frac{f''(V_Q)}{2} v_d^2 + \frac{f^{\prime\prime\prime}(V_Q)}{6} v_d^3 + \cdots \hspace{1cm} [I_Q = f(V_Q)] \\
-  i_d &\approx f'(V_Q) v_d = g\, v_d \hspace{1cm} [\text{keep first order term only}]
+  I &= f(V_Q + V_d) \\
+  I &= f(V_Q) + f'(V_Q) V_d + \frac{f''(V_Q)}{2} V_d^2 + \frac{f^{\prime\prime\prime}(V_Q)}{6} V_d^3 + \cdots \\
+  I - I_Q &= f'(V_Q) V_d + \frac{f''(V_Q)}{2} V_d^2 + \frac{f^{\prime\prime\prime}(V_Q)}{6} V_d^3 + \cdots \hspace{1cm} [I_Q = f(V_Q)] \\
+  I_d &\approx f'(V_Q) V_d = g\, V_d \hspace{1cm} [\text{keep first order term only}]
 \end{align*}
 The small signal conductance is \(g = f'(V_Q)\). The approximation holds
 when the second order term is negligible against the first:
 \begin{align*}
-  \left|\frac{f''(V_Q)}{2} v_d^2\right| &\ll \left| f'(V_Q) v_d \right| \\
-  |v_d| &\ll 2 \left| \frac{f'(V_Q)}{f''(V_Q)} \right|
+  \left|\frac{f''(V_Q)}{2} V_d^2\right| &\ll \left| f'(V_Q) V_d \right| \\
+  |V_d| &\ll 2 \left| \frac{f'(V_Q)}{f''(V_Q)} \right|
 \end{align*}
-For a device with more than one controlling voltage, \(i = f(v_1, v_2)\),
+For a device with more than one controlling voltage, \(I = f(V_1, V_2)\),
 the same expansion gives one conductance per controlling voltage:
 \begin{align*}
-  i_d &\approx \left.\frac{\partial f}{\partial v_1}\right|_{Q} v_{1d}
-             + \left.\frac{\partial f}{\partial v_2}\right|_{Q} v_{2d}
+  I_d &\approx \left.\frac{\partial f}{\partial V_1}\right|_{Q} V_{1d}
+             + \left.\frac{\partial f}{\partial V_2}\right|_{Q} V_{2d}
 \end{align*}
 This is where \(g_m = \partial I_D/\partial V_{GS}\) and
 \(g_o = \partial I_D/\partial V_{DS}\) of a transistor come from.
 
-\paragraph{Example (diode):} \(f(v) = I_S\left(e^{v/(nV_T)} - 1\right)\).
+\paragraph{Example (diode):} \(f(V) = I_S\left(e^{V/(nV_T)} - 1\right)\).
 \begin{align*}
   f'(V_Q) &= \frac{I_S e^{V_Q/(nV_T)}}{nV_T} = \frac{I_Q + I_S}{nV_T} \\
   f''(V_Q) &= \frac{I_S e^{V_Q/(nV_T)}}{(nV_T)^2} = \frac{I_Q + I_S}{(nV_T)^2} \\
@@ -232,8 +232,8 @@ This is where \(g_m = \partial I_D/\partial V_{GS}\) and
 \end{align*}
 Requiring the second order term to stay below \(10\%\) of the first:
 \begin{align*}
-  \frac{f''(V_Q)}{2} |v_d|^2 &\leq 0.1\, f'(V_Q) |v_d| \\
-  |v_d| &\leq 0.2\, n V_T \approx 5.2\,\text{mV}
+  \frac{f''(V_Q)}{2} |V_d|^2 &\leq 0.1\, f'(V_Q) |V_d| \\
+  |V_d| &\leq 0.2\, n V_T \approx 5.2\,\text{mV}
 \end{align*}
 
 \section{Applying the Octants to a Block}\label{sec:analysis_workflow}
@@ -251,10 +251,10 @@ Every block in this notebook is analysed in the same order.
     (\(G\), \(sC\), \(\frac{1}{sL}\), \(g_m\), \(g_o\)). Solve for
     \(H(s) = \frac{N(s)}{D(s)}\), \(Z_{in}\), \(Z_{out}\). Poles are roots
     of \(D(s)\), zeros are roots of \(N(s)\).
-  \item \textbf{Q2 (Small Signal, Time, AC):} \(v_{out}(t) =
+  \item \textbf{Q2 (Small Signal, Time, AC):} \(V_{out}(t) =
     \mathcal{L}^{-1}\{H(s) V_{in}(s)\}\).
   \item \textbf{Q6 (Large Signal, Time, AC):} Needed only when the input
-    violates \(|v_d| \ll 2|f'/f''|\). Solve the non-linear differential
+    violates \(|V_d| \ll 2|f'/f''|\). Solve the non-linear differential
     equations (by hand when possible, otherwise TRAN).
   \item \textbf{Q8 (Large Signal, Frequency, AC):} Fourier series of the
     periodic Q6 output. Harmonics measure distortion:
@@ -270,16 +270,16 @@ Every block in this notebook is analysed in the same order.
   V_{out}(s) &= \frac{V}{s(1 + sRC)} \\
   V_{out}(s) &= V\left(\frac{1}{s} - \frac{RC}{1 + sRC}\right) \hspace{1cm} [\text{partial fractions}] \\
   V_{out}(s) &= V\left(\frac{1}{s} - \frac{1}{s + \frac{1}{RC}}\right) \\
-  v_{out}(t) &= V\left(1 - e^{-t/(RC)}\right) \hspace{1cm} [\text{Q2}, \ T_c = RC]
+  V_{out}(t) &= V\left(1 - e^{-t/(RC)}\right) \hspace{1cm} [\text{Q2}, \ T_c = RC]
 \end{align*}
 
 \paragraph{Example (Q6 to Q8):} A diode biased at \(I_Q\) is driven by
-\(v_d = V_p \cos(\omega t)\) with \(V_p\) not small. With
+\(V_d = V_p \cos(\omega t)\) with \(V_p\) not small. With
 \(I_Q \gg I_S\) and \(x = \frac{V_p}{nV_T}\):
 \begin{align*}
-  i &= I_Q e^{x \cos(\omega t)} \\
-  i &= I_Q \left(1 + x\cos(\omega t) + \frac{x^2}{2}\cos^2(\omega t) + \frac{x^3}{6}\cos^3(\omega t) + \cdots \right) \\
-  i &= I_Q \left(1 + x\cos(\omega t) + \frac{x^2}{4}\left(1 + \cos(2\omega t)\right) + \frac{x^3}{24}\left(3\cos(\omega t) + \cos(3\omega t)\right) + \cdots \right)
+  I &= I_Q e^{x \cos(\omega t)} \\
+  I &= I_Q \left(1 + x\cos(\omega t) + \frac{x^2}{2}\cos^2(\omega t) + \frac{x^3}{6}\cos^3(\omega t) + \cdots \right) \\
+  I &= I_Q \left(1 + x\cos(\omega t) + \frac{x^2}{4}\left(1 + \cos(2\omega t)\right) + \frac{x^3}{24}\left(3\cos(\omega t) + \cos(3\omega t)\right) + \cdots \right)
 \end{align*}
 Collecting terms up to \(x^3\):
 \begin{align*}

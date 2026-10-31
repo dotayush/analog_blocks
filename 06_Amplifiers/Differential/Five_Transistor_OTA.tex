@@ -44,24 +44,24 @@ load and bandwidth by \(C_L\).
       V_{ic,\max} = V_{dd} - |V_{GS3}| + V_{th}
     \end{align*}
   \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}:
-    differential drive \(v_{i1} = \frac{v_{id}}{2}\), \(v_{i2} = -\frac{v_{id}}{2}\),
-    \(v_s \approx 0\), \(C_x\) the capacitance at \(V_x\) (\(\approx C_{gs3} + C_{gs4}\)).\\
+    differential drive \(V_{i1} = \frac{V_{id}}{2}\), \(V_{i2} = -\frac{V_{id}}{2}\),
+    \(V_s \approx 0\), \(C_x\) the capacitance at \(V_x\) (\(\approx C_{gs3} + C_{gs4}\)).\\
     Applying KCL at \(V_x\) (current leaves through \(M_1\) and the diode \(M_3\)):
     \begin{align*}
-      g_{m1} v_{i1} + g_{o1} v_x + (g_{m3} + g_{o3}) v_x + sC_x v_x &= 0 \\
-      v_x &= -\frac{g_{m1}}{g_{m3} + g_{o3} + g_{o1} + sC_x} v_{i1} \tag{1}
+      g_{m1} V_{i1} + g_{o1} V_x + (g_{m3} + g_{o3}) V_x + sC_x V_x &= 0 \\
+      V_x &= -\frac{g_{m1}}{g_{m3} + g_{o3} + g_{o1} + sC_x} V_{i1} \tag{1}
     \end{align*}
-    Applying KCL at \(V_{out}\) (\(M_4\) sources \(g_{m4}(0 - v_x) + g_{o4}(0 - v_{out})\) into the node):
+    Applying KCL at \(V_{out}\) (\(M_4\) sources \(g_{m4}(0 - V_x) + g_{o4}(0 - V_{out})\) into the node):
     \begin{align*}
-      g_{m2} v_{i2} + g_{o2} v_{out} + sC_L v_{out} &= -g_{m4} v_x - g_{o4} v_{out} \\
-      v_{out}(g_{o2} + g_{o4} + sC_L) &= -g_{m2} v_{i2} - g_{m4} v_x \tag{2}
+      g_{m2} V_{i2} + g_{o2} V_{out} + sC_L V_{out} &= -g_{m4} V_x - g_{o4} V_{out} \\
+      V_{out}(g_{o2} + g_{o4} + sC_L) &= -g_{m2} V_{i2} - g_{m4} V_x \tag{2}
     \end{align*}
     Substituting (1) into (2) with \(g_{m1} = g_{m2} = g_m\), \(g_{m3} = g_{m4}\),
     and \(g_{o1}, g_{o3} \ll g_{m3}\):
     \begin{align*}
-      v_{out}(g_{o2} + g_{o4} + sC_L) &= g_m \frac{v_{id}}{2} + \frac{g_{m3}\, g_m}{g_{m3} + sC_x} \cdot \frac{v_{id}}{2} \\
-      v_{out}(g_{o2} + g_{o4} + sC_L) &= \frac{g_m v_{id}}{2} \cdot \frac{2 g_{m3} + sC_x}{g_{m3} + sC_x} \\
-      A(s) = \frac{v_{out}}{v_{id}} &= \frac{g_m}{g_{o2} + g_{o4} + sC_L} \cdot \frac{1 + \frac{sC_x}{2 g_{m3}}}{1 + \frac{sC_x}{g_{m3}}}
+      V_{out}(g_{o2} + g_{o4} + sC_L) &= g_m \frac{V_{id}}{2} + \frac{g_{m3}\, g_m}{g_{m3} + sC_x} \cdot \frac{V_{id}}{2} \\
+      V_{out}(g_{o2} + g_{o4} + sC_L) &= \frac{g_m V_{id}}{2} \cdot \frac{2 g_{m3} + sC_x}{g_{m3} + sC_x} \\
+      A(s) = \frac{V_{out}}{V_{id}} &= \frac{g_m}{g_{o2} + g_{o4} + sC_L} \cdot \frac{1 + \frac{sC_x}{2 g_{m3}}}{1 + \frac{sC_x}{g_{m3}}}
     \end{align*}
 \end{enumerate}
 
@@ -73,15 +73,15 @@ load and bandwidth by \(C_L\).
     mirror pole \(p_2 = \frac{g_{m3}}{C_x}\); LHP zero \(z = \frac{2 g_{m3}}{C_x} = 2 p_2\)
     (the fast path through \(M_2\) bypasses the mirror).
   \item \textbf{Gain-Bandwidth}: \(GB = \frac{A_{V0}\, p_1}{2\pi} = \frac{g_{m1}}{2\pi C_L}\).
-  \item \textbf{Slew Rate (Q6)}: for a large \(v_{id}\) all of \(I_T\) flows in one
+  \item \textbf{Slew Rate (Q6)}: for a large \(V_{id}\) all of \(I_T\) flows in one
     side and charges or discharges \(C_L\): \(SR = \frac{I_T}{C_L}\).
-  \item \textbf{Common Mode Gain}: \(i_{d1} = i_{d2} = \frac{g_{o5}}{2} v_{ic}\)
+  \item \textbf{Common Mode Gain}: \(I_{d1} = I_{d2} = \frac{g_{o5}}{2} V_{ic}\)
     (tail of conductance \(g_{o5}\), Section~\ref{sec:amp_diffpair}). (1) gives
-    \(v_x = -\frac{i_{d1}}{g_{m3} + g_{o3}}\); at the output
-    \(i_{d2} + g_{o4} v_{out} = -g_{m4} v_x\):
+    \(V_x = -\frac{I_{d1}}{g_{m3} + g_{o3}}\); at the output
+    \(I_{d2} + g_{o4} V_{out} = -g_{m4} V_x\):
     \begin{align*}
-      g_{o4} v_{out} &= i_{d1}\left(\frac{g_{m4}}{g_{m3} + g_{o3}} - 1\right) \approx -\frac{g_{o3}}{g_{m3}} i_{d1} \\
-      A_c &= \frac{v_{out}}{v_{ic}} \approx -\frac{g_{o3}}{g_{o4}} \cdot \frac{g_{o5}}{2 g_{m3}} = -\frac{g_{o5}}{2 g_{m3}} \hspace{1cm}
+      g_{o4} V_{out} &= I_{d1}\left(\frac{g_{m4}}{g_{m3} + g_{o3}} - 1\right) \approx -\frac{g_{o3}}{g_{m3}} I_{d1} \\
+      A_c &= \frac{V_{out}}{V_{ic}} \approx -\frac{g_{o3}}{g_{o4}} \cdot \frac{g_{o5}}{2 g_{m3}} = -\frac{g_{o5}}{2 g_{m3}} \hspace{1cm}
       CMRR = \frac{A_{V0}}{|A_c|} = \frac{2 g_{m1} g_{m3}}{g_{o5}(g_{o2} + g_{o4})}
     \end{align*}
   \item \textbf{Phase Margin} in unity feedback: \(PM = 90^\circ - \tan^{-1}\frac{GB}{f_{p2}} + \tan^{-1}\frac{GB}{f_z}\).

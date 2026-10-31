@@ -25,18 +25,18 @@ multiplied by \(B_F + 1\), output impedance divided by \(B_F + 1\).
     \(g_o\) neglected.\\
     Applying KCL at \(V_b\):
     \begin{align*}
-      (v_b - v_{in}) G_S + g_{be}(v_b - v_{out}) &= 0 \tag{1}
+      (V_b - V_{in}) G_S + g_{be}(V_b - V_{out}) &= 0 \tag{1}
     \end{align*}
-    Applying KCL at \(V_{out}\) (\(i_b + i_c\) arrives from the device):
+    Applying KCL at \(V_{out}\) (\(I_b + I_c\) arrives from the device):
     \begin{align*}
-      v_{out} G_E &= (g_{be} + g_m)(v_b - v_{out}) \tag{2}
+      V_{out} G_E &= (g_{be} + g_m)(V_b - V_{out}) \tag{2}
     \end{align*}
-    From (2): \(v_b = v_{out}\frac{G_E + g_m + g_{be}}{g_m + g_{be}}\), so
-    \(v_b - v_{out} = \frac{G_E}{g_m + g_{be}} v_{out}\). Substituting into (1):
+    From (2): \(V_b = V_{out}\frac{G_E + g_m + g_{be}}{g_m + g_{be}}\), so
+    \(V_b - V_{out} = \frac{G_E}{g_m + g_{be}} V_{out}\). Substituting into (1):
     \begin{align*}
-      \left(v_{out}\frac{G_E + g_m + g_{be}}{g_m + g_{be}} - v_{in}\right) G_S + \frac{g_{be} G_E}{g_m + g_{be}} v_{out} &= 0 \\
-      v_{out}\left(G_S (G_E + g_m + g_{be}) + g_{be} G_E\right) &= G_S (g_m + g_{be}) v_{in} \\
-      H = \frac{v_{out}}{v_{in}} &= \frac{G_S (g_m + g_{be})}{G_S (G_E + g_m + g_{be}) + g_{be} G_E}
+      \left(V_{out}\frac{G_E + g_m + g_{be}}{g_m + g_{be}} - V_{in}\right) G_S + \frac{g_{be} G_E}{g_m + g_{be}} V_{out} &= 0 \\
+      V_{out}\left(G_S (G_E + g_m + g_{be}) + g_{be} G_E\right) &= G_S (g_m + g_{be}) V_{in} \\
+      H = \frac{V_{out}}{V_{in}} &= \frac{G_S (g_m + g_{be})}{G_S (G_E + g_m + g_{be}) + g_{be} G_E}
     \end{align*}
 \end{enumerate}
 
@@ -45,16 +45,16 @@ multiplied by \(B_F + 1\), output impedance divided by \(B_F + 1\).
   \item \textbf{Gain}: \(G_S \to \infty\):
     \(A_{V0} = \frac{g_m + g_{be}}{g_m + g_{be} + G_E} = \frac{(B_F + 1) R_E}{r_{be} + (B_F + 1) R_E}\).
   \item \textbf{Impedances}:
-    \paragraph{At Input:} \(i_b = g_{be}(v_b - v_{out}) = \frac{g_{be} G_E}{G_E + g_m + g_{be}} v_b\),
+    \paragraph{At Input:} \(I_b = g_{be}(V_b - V_{out}) = \frac{g_{be} G_E}{G_E + g_m + g_{be}} V_b\),
       \[
         Z_{in} = \frac{G_E + g_m + g_{be}}{g_{be} G_E} = r_{be} + (B_F + 1) R_E
       \]
-    \paragraph{At Output:} \(v_{in} = 0\), \(G_E\) removed, \(I_{test}\) into the
-      emitter. (1) gives \(v_b = \frac{g_{be}}{G_S + g_{be}} v_{out}\), and the
-      device current into the node is \((g_m + g_{be})(v_b - v_{out})\):
+    \paragraph{At Output:} \(V_{in} = 0\), \(G_E\) removed, \(I_{test}\) into the
+      emitter. (1) gives \(V_b = \frac{g_{be}}{G_S + g_{be}} V_{out}\), and the
+      device current into the node is \((g_m + g_{be})(V_b - V_{out})\):
       \begin{align*}
-        I_{test} + (g_m + g_{be})\left(\frac{g_{be}}{G_S + g_{be}} - 1\right) v_{out} &= 0 \\
-        I_{test} &= \frac{(g_m + g_{be}) G_S}{G_S + g_{be}} v_{out} \\
+        I_{test} + (g_m + g_{be})\left(\frac{g_{be}}{G_S + g_{be}} - 1\right) V_{out} &= 0 \\
+        I_{test} &= \frac{(g_m + g_{be}) G_S}{G_S + g_{be}} V_{out} \\
         Z_{out} &= \frac{G_S + g_{be}}{(g_m + g_{be}) G_S} = \frac{R_S + r_{be}}{B_F + 1}
       \end{align*}
 \end{enumerate}

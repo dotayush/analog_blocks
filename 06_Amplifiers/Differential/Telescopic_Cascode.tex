@@ -13,7 +13,7 @@ speed per unit power of single stage op-amps, at the cost of swing.
   \draw (0,2) node[nmos](M3){}; \node[right] at (0.3,2) {$M_3$};
   \draw (0,4.3) node[pmos](M5){}; \node[right] at (0.3,4.3) {$M_5$};
   \draw (0,6.3) node[pmos](M7){}; \node[right] at (0.3,6.3) {$M_7$};
-  \draw (M1.G) -- ++(-0.5,0) node[circ]{} node[left]{$\frac{v_{id}}{2}$};
+  \draw (M1.G) -- ++(-0.5,0) node[circ]{} node[left]{$\frac{V_{id}}{2}$};
   \draw (M3.G) -- ++(-0.5,0) node[left]{$V_{B3}$};
   \draw (M5.G) -- ++(-0.5,0) node[left]{$V_{B5}$};
   \draw (M7.G) -- ++(-0.5,0) node[left]{$V_{B7}$};
@@ -22,7 +22,7 @@ speed per unit power of single stage op-amps, at the cost of swing.
   \draw (M3.D) -- (M5.D);
   \draw (M5.S) -- (M7.D);
   \draw (M7.S) node[vcc]{$V_{dd}$};
-  \draw (0,3.15) node[circ]{} -- (1.8,3.15) node[circ]{} node[right]{$v_{o1}$};
+  \draw (0,3.15) node[circ]{} -- (1.8,3.15) node[circ]{} node[right]{$V_{o1}$};
 \end{circuitfig}
 
 \subsubsection{Transfer Function}
@@ -44,8 +44,8 @@ speed per unit power of single stage op-amps, at the cost of swing.
     \(G_L = \frac{1}{Z_{up}}\) in the cascode result:
     \begin{align*}
       Z_{dn} &= r_{o1} + r_{o3} + g_{m3}' r_{o1} r_{o3} \hspace{1cm}
-      \frac{v_{o1}}{v_{id}/2} = -g_{m1}(Z_{dn} \parallel Z_{up}) \\
-      A_d &= \frac{v_{o1} - v_{o2}}{v_{id}} = -g_{m1}(Z_{dn} \parallel Z_{up}) \approx -g_{m1}\left[(g_{m3} r_{o3} r_{o1}) \parallel (g_{m5} r_{o5} r_{o7})\right]
+      \frac{V_{o1}}{V_{id}/2} = -g_{m1}(Z_{dn} \parallel Z_{up}) \\
+      A_d &= \frac{V_{o1} - V_{o2}}{V_{id}} = -g_{m1}(Z_{dn} \parallel Z_{up}) \approx -g_{m1}\left[(g_{m3} r_{o3} r_{o1}) \parallel (g_{m5} r_{o5} r_{o7})\right]
     \end{align*}
 \end{enumerate}
 

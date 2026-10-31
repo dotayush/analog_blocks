@@ -34,12 +34,12 @@ a voltage buffer.
     \(V_{th}\) itself rises with \(V_{out}\) through the body effect
     (\(V_{SB} = V_{out}\)). Saturation needs \(V_{dd} - V_{out} \geq V_{ov}\),
     i.e. \(V_{in} \leq V_{dd} + V_{th}\).
-  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}: \(v_d = 0\), \(v_b = 0\).\\
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}: \(V_d = 0\), \(V_b = 0\).\\
     Applying KCL at \(V_{out}\) (the drain current arrives at the source node):
     \begin{align*}
-      v_{out}(G_L + sC_L) &= g_m (v_{in} - v_{out}) + g_{mb}(0 - v_{out}) + g_o (0 - v_{out}) \\
-      v_{out}(G_L + g_m + g_{mb} + g_o + sC_L) &= g_m v_{in} \\
-      H(s) = \frac{v_{out}}{v_{in}} &= \frac{g_m}{g_m + g_{mb} + g_o + G_L + sC_L}
+      V_{out}(G_L + sC_L) &= g_m (V_{in} - V_{out}) + g_{mb}(0 - V_{out}) + g_o (0 - V_{out}) \\
+      V_{out}(G_L + g_m + g_{mb} + g_o + sC_L) &= g_m V_{in} \\
+      H(s) = \frac{V_{out}}{V_{in}} &= \frac{g_m}{g_m + g_{mb} + g_o + G_L + sC_L}
     \end{align*}
 \end{enumerate}
 
@@ -61,10 +61,10 @@ a voltage buffer.
     \paragraph{At Input:} \(I_G = 0\) so \(Z_{in} \to \infty\) at DC.
       \(C_{gs}\) is bootstrapped (both its ends move together), so it
       appears as \(C_{gs}(1 - A_{V0})\).
-    \paragraph{At Output:} \(v_{in} = 0\), \(I_{test}\) into the source node
+    \paragraph{At Output:} \(V_{in} = 0\), \(I_{test}\) into the source node
       (\(G_L\) removed):
       \begin{align*}
-        I_{test} &= v_{out}(g_m + g_{mb} + g_o) \\
+        I_{test} &= V_{out}(g_m + g_{mb} + g_o) \\
         Z_{out} &= \frac{1}{g_m + g_{mb} + g_o} \approx \frac{1}{g_m}
       \end{align*}
   \item \textbf{Level Shift}: \(V_{OUT} = V_{IN} - V_{th} - V_{ov}\); the stage

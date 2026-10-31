@@ -24,8 +24,8 @@ and the output swing is larger than the telescopic cascode's.
   \draw (M5.S) -- (M7.D);
   \draw (M7.S) node[vcc]{$V_{dd}$};
   \draw (0,1.1) node[circ]{} -- (2.5,1.1) node[circ]{} node[right]{$V_f$ (fold)};
-  \draw (2.5,1.1) to[american current source, l_={$\frac{g_{m1} v_{id}}{2}$ from $M_1$}] (2.5,3.4);
-  \draw (0,3.35) node[circ]{} -- (-1.8,3.35) node[circ]{} node[left]{$v_{o1}$};
+  \draw (2.5,1.1) to[american current source, l_={$\frac{g_{m1} V_{id}}{2}$ from $M_1$}] (2.5,3.4);
+  \draw (0,3.35) node[circ]{} -- (-1.8,3.35) node[circ]{} node[left]{$V_{o1}$};
 \end{circuitfig}
 
 \subsubsection{Transfer Function}
@@ -43,7 +43,7 @@ and the output swing is larger than the telescopic cascode's.
       Z_{dn} &= r_{o3} + (r_{o1} \parallel r_{oB}) + g_{m3}' r_{o3} (r_{o1} \parallel r_{oB}) \\
       Z_{up} &= r_{o5} + r_{o7} + g_{m5}' r_{o5} r_{o7}
     \end{align*}
-    The signal current \(\frac{g_{m1} v_{id}}{2}\) injected at the fold node
+    The signal current \(\frac{g_{m1} V_{id}}{2}\) injected at the fold node
     splits between \(r_{o1} \parallel r_{oB}\) and the source of \(M_3\)
     (\(\approx \frac{1}{g_{m3}'}\)); the fraction entering \(M_3\) is
     \(\frac{g_{m3}'}{g_{m3}' + g_{o1} + g_{oB}} \approx 1\). Hence

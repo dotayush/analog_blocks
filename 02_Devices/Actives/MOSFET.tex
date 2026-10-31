@@ -74,17 +74,17 @@ flowing out of the drain (Section~\ref{sec:theory_general_complementary}).
   \item \textbf{Linear Model (Q4)}: Linearizing the saturation equation
     about \(Q = (V_{GS(Q)}, V_{DS(Q)}, V_{SB(Q)}, I_{D(Q)})\):
     \begin{align*}
-      i_d &= g_m v_{gs} + g_{mb} v_{bs} + g_o v_{ds} \\
-      i_g &= 0
+      I_d &= g_m V_{gs} + g_{mb} V_{bs} + g_o V_{ds} \\
+      I_g &= 0
     \end{align*}
     \begin{circuitfig}
-      \draw (0,2.5) node[left]{$v_g$} to[short, o-] (1,2.5) to[open, v^>=$v_{gs}$] (1,0);
-      \draw (3.5,2.5) to[american current source, l={$g_m v_{gs}$}] (3.5,0);
-      \draw (6.5,2.5) to[american current source, l={$g_{mb} v_{bs}$}] (6.5,0);
+      \draw (0,2.5) node[left]{$V_g$} to[short, o-] (1,2.5) to[open, v^>=$V_{gs}$] (1,0);
+      \draw (3.5,2.5) to[american current source, l={$g_m V_{gs}$}] (3.5,0);
+      \draw (6.5,2.5) to[american current source, l={$g_{mb} V_{bs}$}] (6.5,0);
       \draw (9,2.5) to[european resistor, l={$g_o$}] (9,0);
-      \draw (3.5,2.5) -- (10,2.5) node[right]{$v_d$};
+      \draw (3.5,2.5) -- (10,2.5) node[right]{$V_d$};
       \draw (1,0) -- (9,0);
-      \draw (3.5,0) to[short, -o] (3.5,-0.6) node[below]{$v_s$};
+      \draw (3.5,0) to[short, -o] (3.5,-0.6) node[below]{$V_s$};
     \end{circuitfig}
     \(g_m\) can be calculated as follows:
     \begin{align*}
@@ -113,7 +113,7 @@ flowing out of the drain (Section~\ref{sec:theory_general_complementary}).
     \]
     In subthreshold \(g_m = \frac{I_{D(Q)}}{n V_T}\), the largest \(g_m\) per
     unit current a MOSFET can give. The square law model is valid while
-    \(|v_{gs}| \ll 2 \left|\frac{f'}{f''}\right| = 2 \cdot \frac{K_P \frac{W}{L} V_{ov}}{K_P \frac{W}{L}} = 2V_{ov}\).
+    \(|V_{gs}| \ll 2 \left|\frac{f'}{f''}\right| = 2 \cdot \frac{K_P \frac{W}{L} V_{ov}}{K_P \frac{W}{L}} = 2V_{ov}\).
   \item \textbf{Triode as a Resistor (Switch)}: For \(V_{DS} \ll 2V_{ov}\)
     the quadratic term vanishes,
     \begin{align*}
@@ -128,10 +128,10 @@ flowing out of the drain (Section~\ref{sec:theory_general_complementary}).
       f_T &= \frac{g_m}{2\pi (C_{gs} + C_{gd})} \approx \frac{g_m}{2\pi \cdot \frac{2}{3} W L C_{ox}} = \frac{3 K_P V_{ov}}{4\pi C_{ox} L^2}
     \end{align*}
     \(f_T\) is the frequency at which the short circuit current gain
-    \(\frac{i_d}{i_g} = \frac{g_m}{s(C_{gs} + C_{gd})}\) falls to unity.
+    \(\frac{I_d}{I_g} = \frac{g_m}{s(C_{gs} + C_{gd})}\) falls to unity.
   \item \textbf{Noise}: thermal noise of the channel
-    \(\overline{i_n^2} = 4kT \cdot \frac{2}{3} g_m \cdot df\) and flicker noise
-    referred to the gate \(\overline{v_n^2} = \frac{K_f}{C_{ox} W L f} df\)
+    \(\overline{I_n^2} = 4kT \cdot \frac{2}{3} g_m \cdot df\) and flicker noise
+    referred to the gate \(\overline{V_n^2} = \frac{K_f}{C_{ox} W L f} df\)
     (Section~\ref{sec:theory_general_noise}).
   \item \textbf{Circuit Analysis}:
     \begin{itemize}

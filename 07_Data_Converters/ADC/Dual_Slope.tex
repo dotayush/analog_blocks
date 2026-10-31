@@ -8,10 +8,10 @@ Slow, but extremely accurate and immune to \(R\), \(C\) and clock values.
 
 \subsubsection{Transfer Function}
 \textbf{Large Signal, Time Domain, AC Input Analysis (Q6)}: integrator output
-\(v_x(t) = -\frac{1}{RC}\int v\,dt\), start at 0.
+\(V_x(t) = -\frac{1}{RC}\int V\,dt\), start at 0.
 \begin{align*}
-  \text{Phase 1 } (T_1 = N_1 T_{clk}):& \hspace{0.5cm} v_x(T_1) = -\frac{1}{RC}\int_0^{T_1} V_{IN}\, dt = -\frac{\overline{V_{IN}} T_1}{RC} \\
-  \text{Phase 2 } (T_2 = N_2 T_{clk}):& \hspace{0.5cm} 0 = v_x(T_1) + \frac{V_{REF} T_2}{RC} \\
+  \text{Phase 1 } (T_1 = N_1 T_{clk}):& \hspace{0.5cm} V_x(T_1) = -\frac{1}{RC}\int_0^{T_1} V_{IN}\, dt = -\frac{\overline{V_{IN}} T_1}{RC} \\
+  \text{Phase 2 } (T_2 = N_2 T_{clk}):& \hspace{0.5cm} 0 = V_x(T_1) + \frac{V_{REF} T_2}{RC} \\
   T_2 &= \frac{\overline{V_{IN}}}{V_{REF}} T_1 \hspace{0.5cm} \Rightarrow \hspace{0.5cm}
   N_2 = N_1 \frac{\overline{V_{IN}}}{V_{REF}}
 \end{align*}

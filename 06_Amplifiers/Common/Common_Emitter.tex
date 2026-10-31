@@ -27,22 +27,22 @@ at the collector, emitter shared. An emitter resistor \(G_E\)
     (1) is transcendental; iterate \(I_C^{(k+1)} = \frac{A_F}{R_E}\left(V_{IN} - V_T \ln\frac{I_C^{(k)}}{I_S}\right)\)
     starting from \(V_{BE} = 0.7\,\)V. Forward active needs
     \(V_{OUT} \gtrsim V_e + 0.3\,\)V.
-  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}: \(v_b = v_{in}\), \(g_o\) neglected.\\
-    Applying KCL at \(V_e\) (\(i_e = i_b + i_c\) arrives from the device):
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}: \(V_b = V_{in}\), \(g_o\) neglected.\\
+    Applying KCL at \(V_e\) (\(I_e = I_b + I_c\) arrives from the device):
     \begin{align*}
-      v_e G_E &= g_{be}(v_{in} - v_e) + g_m (v_{in} - v_e) \\
-      v_e (G_E + g_m + g_{be}) &= (g_m + g_{be}) v_{in} \\
-      v_e &= \frac{g_m + g_{be}}{G_E + g_m + g_{be}} v_{in} \tag{3}
+      V_e G_E &= g_{be}(V_{in} - V_e) + g_m (V_{in} - V_e) \\
+      V_e (G_E + g_m + g_{be}) &= (g_m + g_{be}) V_{in} \\
+      V_e &= \frac{g_m + g_{be}}{G_E + g_m + g_{be}} V_{in} \tag{3}
     \end{align*}
     Applying KCL at \(V_{out}\):
     \begin{align*}
-      v_{out} G_C + g_m (v_{in} - v_e) &= 0 \tag{4}
+      V_{out} G_C + g_m (V_{in} - V_e) &= 0 \tag{4}
     \end{align*}
     Substituting (3) into (4):
     \begin{align*}
-      v_{in} - v_e &= \frac{G_E}{G_E + g_m + g_{be}} v_{in} \\
-      v_{out} &= -\frac{g_m}{G_C} \cdot \frac{G_E}{G_E + g_m + g_{be}} v_{in} \\
-      H = \frac{v_{out}}{v_{in}} &= -\frac{g_m R_C}{1 + (g_m + g_{be}) R_E}
+      V_{in} - V_e &= \frac{G_E}{G_E + g_m + g_{be}} V_{in} \\
+      V_{out} &= -\frac{g_m}{G_C} \cdot \frac{G_E}{G_E + g_m + g_{be}} V_{in} \\
+      H = \frac{V_{out}}{V_{in}} &= -\frac{g_m R_C}{1 + (g_m + g_{be}) R_E}
     \end{align*}
 \end{enumerate}
 
@@ -52,15 +52,15 @@ at the collector, emitter shared. An emitter resistor \(G_E\)
     (with \(g_o\): \(-g_m (R_C \parallel r_o)\)). Large \(g_m R_E\):
     \(A_{V0} \approx -\frac{g_m}{g_m + g_{be}}\cdot\frac{R_C}{R_E} = -A_F \frac{R_C}{R_E}\).
   \item \textbf{Impedances}:
-    \paragraph{At Input:} \(i_b = g_{be}(v_{in} - v_e) = \frac{g_{be} G_E}{G_E + g_m + g_{be}} v_{in}\):
+    \paragraph{At Input:} \(I_b = g_{be}(V_{in} - V_e) = \frac{g_{be} G_E}{G_E + g_m + g_{be}} V_{in}\):
       \[
         Z_{in} = \frac{G_E + g_m + g_{be}}{g_{be} G_E} = \frac{1}{g_{be}} + \frac{g_m + g_{be}}{g_{be}} R_E = r_{be} + (B_F + 1) R_E
       \]
     \paragraph{At Output:} \(Z_{out} = R_C \parallel r_o(1 + g_m (R_E \parallel r_{be}))\approx R_C\).
   \item \textbf{Linearity}: the plain CE obeys the bound
-    \(|v_{be}| \ll 2V_T\) of Section~\ref{sec:analysis_linearization};
-    degeneration divides the input between \(v_{be}\) and \(R_E\), so
-    \(v_{be} = \frac{v_{in}}{1 + (g_m + g_{be})R_E}\) and the input range grows
+    \(|V_{be}| \ll 2V_T\) of Section~\ref{sec:analysis_linearization};
+    degeneration divides the input between \(V_{be}\) and \(R_E\), so
+    \(V_{be} = \frac{V_{in}}{1 + (g_m + g_{be})R_E}\) and the input range grows
     by the same factor the gain falls.
 \end{enumerate}
 

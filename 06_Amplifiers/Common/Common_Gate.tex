@@ -34,33 +34,33 @@ The DC path for the drain current goes through \(G_S\) and the source
       V_{ov} &= \frac{-G_S + \sqrt{G_S^2 + 4 k_n G_S (V_B - V_{th} - V_{IN})}}{2 k_n}
     \end{align*}
     Saturation requires \(V_{out} - V_s \geq V_{ov}\), i.e. \(V_{out} \geq V_B - V_{th}\).
-  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}: \(v_g = 0\). The drain current
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}: \(V_g = 0\). The drain current
     (drain to source) is
     \[
-      i_d = g_m(0 - v_s) + g_{mb}(0 - v_s) + g_o(v_{out} - v_s) = -(g_m + g_{mb} + g_o) v_s + g_o v_{out} \tag{4}
+      I_d = g_m(0 - V_s) + g_{mb}(0 - V_s) + g_o(V_{out} - V_s) = -(g_m + g_{mb} + g_o) V_s + g_o V_{out} \tag{4}
     \]
-    Applying KCL at \(V_{out}\) (\(i_d\) leaves the node into the drain):
+    Applying KCL at \(V_{out}\) (\(I_d\) leaves the node into the drain):
     \begin{align*}
-      v_{out} G_D + i_d &= 0 \tag{5}
+      V_{out} G_D + I_d &= 0 \tag{5}
     \end{align*}
-    Applying KCL at \(V_s\) (\(i_d\) arrives, leaves through \(G_S\)):
+    Applying KCL at \(V_s\) (\(I_d\) arrives, leaves through \(G_S\)):
     \begin{align*}
-      (v_s - v_{in}) G_S &= i_d \tag{6}
+      (V_s - V_{in}) G_S &= I_d \tag{6}
     \end{align*}
-    From (5) and (6): \((v_s - v_{in}) G_S = -v_{out} G_D\), so
+    From (5) and (6): \((V_s - V_{in}) G_S = -V_{out} G_D\), so
     \[
-      v_s = v_{in} - \frac{G_D}{G_S} v_{out} \tag{7}
+      V_s = V_{in} - \frac{G_D}{G_S} V_{out} \tag{7}
     \]
     Substituting (4) into (5):
     \begin{align*}
-      v_{out} G_D - (g_m + g_{mb} + g_o) v_s + g_o v_{out} &= 0 \\
-      v_{out}(G_D + g_o) &= (g_m + g_{mb} + g_o) v_s \tag{8}
+      V_{out} G_D - (g_m + g_{mb} + g_o) V_s + g_o V_{out} &= 0 \\
+      V_{out}(G_D + g_o) &= (g_m + g_{mb} + g_o) V_s \tag{8}
     \end{align*}
     Substituting (7) into (8):
     \begin{align*}
-      v_{out}(G_D + g_o) &= (g_m + g_{mb} + g_o)\left(v_{in} - \frac{G_D}{G_S} v_{out}\right) \\
-      v_{out}\left(G_D + g_o + \frac{G_D (g_m + g_{mb} + g_o)}{G_S}\right) &= (g_m + g_{mb} + g_o) v_{in} \\
-      H = \frac{v_{out}}{v_{in}} &= \frac{G_S (g_m + g_{mb} + g_o)}{G_S (G_D + g_o) + G_D (g_m + g_{mb} + g_o)} \tag{9}
+      V_{out}(G_D + g_o) &= (g_m + g_{mb} + g_o)\left(V_{in} - \frac{G_D}{G_S} V_{out}\right) \\
+      V_{out}\left(G_D + g_o + \frac{G_D (g_m + g_{mb} + g_o)}{G_S}\right) &= (g_m + g_{mb} + g_o) V_{in} \\
+      H = \frac{V_{out}}{V_{in}} &= \frac{G_S (g_m + g_{mb} + g_o)}{G_S (G_D + g_o) + G_D (g_m + g_{mb} + g_o)} \tag{9}
     \end{align*}
 \end{enumerate}
 
@@ -71,25 +71,25 @@ The DC path for the drain current goes through \(G_S\) and the source
       A_{V0} = \frac{g_m + g_{mb} + g_o}{G_D + g_o} \approx (g_m + g_{mb}) R_D
     \]
     positive and equal in size to the CS gain (plus body effect).
-  \item \textbf{Current Gain}: With a current input \(i_{in}\) into the
-    source, \(i_d = -i_{in}\) leaves through the drain unchanged:
-    \(\frac{i_{out}}{i_{in}} = 1\) (current buffer).
+  \item \textbf{Current Gain}: With a current input \(I_{in}\) into the
+    source, \(I_d = -I_{in}\) leaves through the drain unchanged:
+    \(\frac{I_{out}}{I_{in}} = 1\) (current buffer).
   \item \textbf{Impedances}:
     \paragraph{At Input:} \(G_S\) removed, test current \(I_{test}\) into the
-      source: \(I_{test} + i_d = 0\). With (5), \(I_{test} = v_{out} G_D\), and
+      source: \(I_{test} + I_d = 0\). With (5), \(I_{test} = V_{out} G_D\), and
       with (8):
       \begin{align*}
-        I_{test} &= \frac{G_D (g_m + g_{mb} + g_o)}{G_D + g_o} v_s \\
-        Z_{in} &= \frac{v_s}{I_{test}} = \frac{G_D + g_o}{G_D (g_m + g_{mb} + g_o)} = \frac{r_o + R_D}{1 + (g_m + g_{mb}) r_o}
+        I_{test} &= \frac{G_D (g_m + g_{mb} + g_o)}{G_D + g_o} V_s \\
+        Z_{in} &= \frac{V_s}{I_{test}} = \frac{G_D + g_o}{G_D (g_m + g_{mb} + g_o)} = \frac{r_o + R_D}{1 + (g_m + g_{mb}) r_o}
       \end{align*}
       \(Z_{in} \approx \frac{1}{g_m + g_{mb}}\) for \(R_D \ll r_o\), but rises to
       \(\approx R_D/(g_m r_o)\) and beyond when the load is large.
-    \paragraph{At Output:} \(v_{in} = 0\), \(G_D\) removed, \(I_{test}\) into
-      the drain: \(i_d = I_{test}\), and (6) gives \(v_s = \frac{I_{test}}{G_S}\).
+    \paragraph{At Output:} \(V_{in} = 0\), \(G_D\) removed, \(I_{test}\) into
+      the drain: \(I_d = I_{test}\), and (6) gives \(V_s = \frac{I_{test}}{G_S}\).
       From (4):
       \begin{align*}
-        I_{test} &= -(g_m + g_{mb} + g_o)\frac{I_{test}}{G_S} + g_o v_{out} \\
-        g_o v_{out} &= I_{test}\left(1 + \frac{g_m + g_{mb} + g_o}{G_S}\right) \\
+        I_{test} &= -(g_m + g_{mb} + g_o)\frac{I_{test}}{G_S} + g_o V_{out} \\
+        g_o V_{out} &= I_{test}\left(1 + \frac{g_m + g_{mb} + g_o}{G_S}\right) \\
         Z'_{out} &= r_o + R_S + (g_m + g_{mb}) r_o R_S \\
         Z_{out} &= R_D \parallel Z'_{out}
       \end{align*}

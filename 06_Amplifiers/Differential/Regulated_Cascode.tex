@@ -10,7 +10,7 @@ multiplied by \(1 + A_b\) without stacking more devices (no swing cost).
 \begin{circuitfig}
   \draw (0,0) node[nmos](M1){}; \node[right] at (0.3,0) {$M_1$};
   \draw (0,2.2) node[nmos](M2){}; \node[right] at (0.3,2.2) {$M_2$};
-  \draw (M1.G) -- ++(-0.5,0) node[circ]{} node[left]{$v_{in}$};
+  \draw (M1.G) -- ++(-0.5,0) node[circ]{} node[left]{$V_{in}$};
   \draw (M1.S) node[ground]{};
   \draw (M1.D) -- (M2.S);
   \draw (0,1.1) node[circ]{} node[right]{$V_x$};
@@ -28,13 +28,13 @@ multiplied by \(1 + A_b\) without stacking more devices (no swing cost).
     the loop sets \(V_x = V_{ref}\) (\(\geq V_{ov1}\)); \(V_{G2} = V_x + V_{GS2}\);
     \(V_{OUT,\min} = V_{ref} + V_{ov2}\), the same headroom as a plain cascode.
   \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}:
-    \(v_{g2} = -A_b v_x\). Output impedance (\(v_{in} = 0\), \(I_{test}\) into the
-    drain of \(M_2\), which flows through \(r_{o1}\)): \(v_x = \frac{I_{test}}{g_{o1}}\).
+    \(V_{g2} = -A_b V_x\). Output impedance (\(V_{in} = 0\), \(I_{test}\) into the
+    drain of \(M_2\), which flows through \(r_{o1}\)): \(V_x = \frac{I_{test}}{g_{o1}}\).
     \begin{align*}
-      I_{test} &= g_{m2}(v_{g2} - v_x) + g_{o2}(v_{out} - v_x) \\
-      I_{test} &= -g_{m2}(1 + A_b) v_x - g_{o2} v_x + g_{o2} v_{out} \\
-      g_{o2} v_{out} &= I_{test} + \left(g_{m2}(1 + A_b) + g_{o2}\right)\frac{I_{test}}{g_{o1}} \\
-      Z_{out} &= \frac{v_{out}}{I_{test}} = r_{o2} + r_{o1} + g_{m2}(1 + A_b) r_{o1} r_{o2}
+      I_{test} &= g_{m2}(V_{g2} - V_x) + g_{o2}(V_{out} - V_x) \\
+      I_{test} &= -g_{m2}(1 + A_b) V_x - g_{o2} V_x + g_{o2} V_{out} \\
+      g_{o2} V_{out} &= I_{test} + \left(g_{m2}(1 + A_b) + g_{o2}\right)\frac{I_{test}}{g_{o1}} \\
+      Z_{out} &= \frac{V_{out}}{I_{test}} = r_{o2} + r_{o1} + g_{m2}(1 + A_b) r_{o1} r_{o2}
     \end{align*}
     and the gain into a load \(R_L\) is \(A_V \approx -g_{m1}(Z_{out} \parallel R_L)\).
 \end{enumerate}
