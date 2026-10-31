@@ -117,7 +117,7 @@ effects of channel length modulation.
 Here's a table of the voltages at each terminal of the transistors:
 
 \begin{tabularx}{\linewidth}{|X|X|X|X|X|X|} \hline
-  Transistor & Gate (G) & Source (S) & Drain (D) & $V_{gs}$ & $V_{ds}$ \\ \hline
+  Transistor & Gate (G) & Source (S) & Drain (D) & $V_{GS}$ & $V_{DS}$ \\ \hline
   $M_0$ & $V_{x}$ & $V_{ee}$ & $V_{x}$ & $V_{x} - V_{ee}$ & $V_{x} - V_{ee}$ \\ \hline
   $M_1$ & $V_{x}$ & $V_{ee}$ & $V_{y}$ & $V_{x} - V_{ee}$ & $V_{y} - V_{ee}$ \\ \hline
   $M_2$ & $V_{z}$ & $V_{y}$ & $V_{out}$ & $V_{z} - V_{y}$ & $V_{out} - V_{y}$ \\ \hline
@@ -152,16 +152,16 @@ Here's a table of the voltages at each terminal of the transistors:
     \end{align*}
     Using the transistor equations for $I_{M_0}$, $I_{M_1}$, $I_{M_2}$, and $I_{M_3}$:
     \begin{align*}
-      I_{M_0} &= k_{n_0} (V_{gs_0} - V_{th})^2 (1 + K_{CLM} V_{ds_0}) \\
+      I_{M_0} &= k_{n_0} (V_{GS_0} - V_{th})^2 (1 + K_{CLM} V_{DS_0}) \\
               &= k_{n_0} (V_{x} - V_{ee} - V_{th})^2 (1 + K_{CLM} (V_{x} - V_{ee})) \\
               &= k_{n_0} (V_{x} - V_{ee} - V_{th})^2 \quad \text{[assuming } K_{CLM} \approx 0 \text{]} \tag{5} \\
-      I_{M_1} &= k_{n_1} (V_{gs_1} - V_{th})^2 (1 + K_{CLM} V_{ds_1}) \\
+      I_{M_1} &= k_{n_1} (V_{GS_1} - V_{th})^2 (1 + K_{CLM} V_{DS_1}) \\
               &= k_{n_1} (V_{x} - V_{ee} - V_{th})^2 (1 + K_{CLM} (V_{y} - V_{ee})) \\
               &= k_{n_1} (V_{x} - V_{ee} - V_{th})^2 \quad \text{[assuming } K_{CLM} \approx 0 \text{]} \tag{6} \\
-      I_{M_2} &= k_{n_2} (V_{gs_2} - V_{th})^2 (1 + K_{CLM} V_{ds_2}) \\
+      I_{M_2} &= k_{n_2} (V_{GS_2} - V_{th})^2 (1 + K_{CLM} V_{DS_2}) \\
               &= k_{n_2} (V_{z} - V_{y} - V_{th})^2 (1 + K_{CLM} (V_{out} - V_{y})) \\
               &= k_{n_2} (V_{z} - V_{y} - V_{th})^2 \quad \text{[assuming } K_{CLM} \approx 0 \text{]} \tag{7} \\
-      I_{M_3} &= k_{n_3} (V_{gs_3} - V_{th})^2 (1 + K_{CLM} V_{ds_3}) \\
+      I_{M_3} &= k_{n_3} (V_{GS_3} - V_{th})^2 (1 + K_{CLM} V_{DS_3}) \\
               &= k_{n_3} (V_{z} - V_{x} - V_{th})^2 (1 + K_{CLM} (V_{z} - V_{x})) \\
               &= k_{n_3} (V_{z} - V_{x} - V_{th})^2 \quad \text{[assuming } K_{CLM} \approx 0 \text{]} \tag{8}
     \end{align*}
@@ -276,15 +276,15 @@ currents and voltages in this circuit.
     ($V_{ov}$) for computing the bias voltages at
     nodes $V_{x}$, $V_{y}$, and $V_{z}$.
     \begin{align*}
-      V_{ov_0} &= V_{gs_0} - V_{th} \\
+      V_{ov_0} &= V_{GS_0} - V_{th} \\
       V_{ov_0} &= V_{x} - V_{ee} - V_{th} \\
       V_{x} &= V_{ov_0} + V_{ee} + V_{th} \\
       \\
-      V_{ov_3} &= V_{gs_3} - V_{th} \\
+      V_{ov_3} &= V_{GS_3} - V_{th} \\
       V_{ov_3} &= V_{z} - V_{x} - V_{th} \\
       V_{z} &= V_{ov_3} + V_{x} + V_{th} \\
       \\
-      V_{ov_2} &= V_{gs_2} - V_{th} \\
+      V_{ov_2} &= V_{GS_2} - V_{th} \\
       V_{ov_2} &= V_{z} - V_{y} - V_{th} \\
       V_{y} &= V_{z} - V_{ov_2} - V_{th}
     \end{align*}

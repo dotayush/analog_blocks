@@ -89,7 +89,7 @@ resistor, see Section~\ref{sec:mirror_widlar}.)
 Here's a table of the voltages at each terminal of the transistors:
 
 \begin{tabularx}{\linewidth}{|X|X|X|X|X|X|} \hline
-  Transistor & Gate (G) & Source (S) & Drain (D) & $V_{gs}$ & $V_{ds}$ \\ \hline
+  Transistor & Gate (G) & Source (S) & Drain (D) & $V_{GS}$ & $V_{DS}$ \\ \hline
   $M_0$ & $V_{x}$ & $V_{ee}$ & $V_{x}$ & $V_{x} - V_{ee}$ & $V_{x} - V_{ee}$ \\ \hline
   $M_1$ & $V_{x}$ & $V_{ee}$ & $V_{out}$ & $V_{x} - V_{ee}$ & $V_{out} - V_{ee}$ \\ \hline
 \end{tabularx}
@@ -111,11 +111,11 @@ Here's a table of the voltages at each terminal of the transistors:
     Using the transistor equations for $I_{M_0}$ and
     $I_{M_1}$:
     \begin{align*}
-      I_{M_0} &= k_{n_0}(V_{gs_0} - V_{th})^2 \cdot (1 + K_{CLM} V_{ds_0}) \\
+      I_{M_0} &= k_{n_0}(V_{GS_0} - V_{th})^2 \cdot (1 + K_{CLM} V_{DS_0}) \\
               &= k_{n_0}(V_{x} - V_{ee} - V_{th})^2 \cdot (1 + K_{CLM} (V_{x} - V_{ee})) \\
               &= k_{n_0}\left(\left(V_{cc} - \frac{(I_{M_0} + I_{G})}{G_2}\right) - V_{ee} - V_{th}\right)^2 \cdot \left(1 + K_{CLM} \left(\left(V_{cc} - \frac{(I_{M_0} + I_{G})}{G_2}\right) - V_{ee}\right)\right) \\
               &= k_{n_0}\left(\left(V_{cc} - \frac{(I_{M_0} + I_{G})}{G_2}\right) - V_{ee} - V_{th}\right)^2 \quad \text{[assuming } K_{CLM} = 0 \text{]} \tag{3} \\ \\
-      I_{M_1} &= k_{n_1}(V_{gs_1} - V_{th})^2 \cdot (1 + K_{CLM} V_{ds_1}) \\
+      I_{M_1} &= k_{n_1}(V_{GS_1} - V_{th})^2 \cdot (1 + K_{CLM} V_{DS_1}) \\
               &= k_{n_1}(V_{x} - V_{ee} - V_{th})^2 \cdot (1 + K_{CLM} (V_{out} - V_{ee})) \\
               &= k_{n_1}\left(\left(V_{cc} - \frac{(I_{M_0} + I_{G})}{G_2}\right) - V_{ee} - V_{th}\right)^2 \cdot \left(1 + K_{CLM} \left(V_{cc} - \frac{I_{M_1}}{G_3} - V_{ee}\right)\right) \\
               &= k_{n_1}\left(\left(V_{cc} - \frac{(I_{M_0} + I_{G})}{G_2}\right) - V_{ee} - V_{th}\right)^2 \quad \text{[assuming } K_{CLM} = 0 \text{]} \tag{4} \\
@@ -157,7 +157,7 @@ Here's a table of the voltages at each terminal of the transistors:
 \subsubsection{Analysis}
 \begin{enumerate}
   \item \textbf{Output Load (Max)}: \(M_1\) stays saturated
-    while \(V_{ds_1} \geq V_{ov_1}\). With the load \(R_L\) to \(V_{cc}\):
+    while \(V_{DS_1} \geq V_{ov_1}\). With the load \(R_L\) to \(V_{cc}\):
     \begin{align*}
       V_{out,\min} &= V_{ee} + V_{ov_1} \\
       V_{cc} - I_{M_1} R_L &\geq V_{out,\min} \\
@@ -208,7 +208,7 @@ currents and voltages in this circuit.
     ($V_{ov}$) for computing the bias voltage at
     node $V_{x}$.
     \begin{align*}
-      V_{ov_0} &= V_{gs_0} - V_{th} \\
+      V_{ov_0} &= V_{GS_0} - V_{th} \\
       V_{ov_0} &= (V_{x} - V_{ee}) - V_{th} \\
       V_{x} &= V_{ov_0} + V_{th} + V_{ee}
     \end{align*}
