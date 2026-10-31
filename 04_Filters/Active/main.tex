@@ -1,0 +1,10 @@
+\section{Active}
+Active filters replace inductors by op-amp feedback
+(Section~\ref{sec:devices_opamp}). All are derived with KCL in Q4 with an
+ideal op-amp (\(V_+ = V_-\), no input current); the finite gain-bandwidth
+must exceed the filter's \(f_0\) times its gain by a comfortable margin
+(\(GB > 10\,|H(f_0)|\,f_0\), and \(GB > 100\,Q\,f_0\) for high \(Q\)).
+
+\input{04_Filters/Active/Single_Pole_Active}
+\input{04_Filters/Active/Sallen_Key}
+\input{04_Filters/Active/Multiple_Feedback}

@@ -1,0 +1,21 @@
+\subsection{Single Pole Active Low Pass}\label{sec:filt_active_sp}
+
+\subsubsection{Overview}
+An inverting amplifier (Section~\ref{sec:amp_inverting}) with \(C\) across
+the feedback resistor: an RC low pass with gain and a buffered output.
+
+\subsubsection{Transfer Function}
+\textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}, KCL at
+\(V_- = 0\):
+\begin{align*}
+  (0 - V_{in}) G_1 + (0 - V_{out})(G_2 + sC) &= 0 \\
+  H(s) = \frac{V_{out}}{V_{in}} &= -\frac{G_1}{G_2 + sC} = -\frac{R_2}{R_1}\cdot\frac{1}{1 + sR_2 C}
+\end{align*}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item Pole \(s_p = -\frac{1}{R_2 C}\), \(f_p = \frac{1}{2\pi R_2 C}\); no finite zero.
+  \item DC gain \(-\frac{R_2}{R_1}\); \(Z_{in} = R_1\); \(Z_{out} \approx 0\): unlike the
+    passive RC (Section~\ref{sec:theory_general_loading}) the next stage does
+    not load it.
+\end{enumerate}

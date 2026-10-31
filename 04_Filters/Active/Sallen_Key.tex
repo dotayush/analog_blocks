@@ -1,0 +1,56 @@
+\subsection{Sallen-Key (Unity Gain) Low Pass and High Pass}\label{sec:filt_sallen_key}
+
+\subsubsection{Overview}
+Two RC sections with the op-amp as a unity gain buffer; positive feedback
+through \(C_1\) from the output to the middle node creates complex poles.
+
+\subsubsection{Schematic}
+\begin{circuitfig}
+  \draw (0,0) node[circ]{} node[left]{$V_{in}$} to[european resistor, l={$G_1$}] (2.2,0) node[circ]{} node[below left]{$V_x$} to[european resistor, l={$G_2$}] (4.4,0) node[circ]{} node[below left]{$V_y$};
+  \draw (4.4,0) to[capacitor, l={$C_2$}] (4.4,-2) node[ground]{};
+  \draw (7.6,-0.48) node[op amp, noinv input up](A){};
+  \draw (4.4,0) -- (A.+);
+  \draw (A.-) -- ++(-0.3,0) |- (9,-1.8) -- (9,-0.48);
+  \draw (A.out) -- (9.5,-0.48) node[circ]{} node[right]{$V_{out}$};
+  \draw (2.2,0) -- (2.2,1.5) to[capacitor, l={$C_1$}] (9,1.5) -- (9,-0.48);
+\end{circuitfig}
+
+\subsubsection{Transfer Function}
+\textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}, buffer:
+\(V_{out} = V_y\).\\
+KCL at \(V_y\):
+\begin{align*}
+  (V_y - V_x) G_2 + V_y sC_2 &= 0 \hspace{0.5cm} \Rightarrow \hspace{0.5cm} V_x = V_y \frac{G_2 + sC_2}{G_2} \tag{1}
+\end{align*}
+KCL at \(V_x\):
+\begin{align*}
+  (V_x - V_{in}) G_1 + (V_x - V_y) G_2 + (V_x - V_y) sC_1 &= 0 \tag{2}
+\end{align*}
+Substituting (1), \(V_x - V_y = V_y\frac{sC_2}{G_2}\):
+\begin{align*}
+  V_y\frac{(G_2 + sC_2) G_1}{G_2} - V_{in} G_1 + V_y sC_2 + V_y\frac{s^2 C_1 C_2}{G_2} &= 0 \\
+  V_y\left(G_1 G_2 + sC_2 G_1 + sC_2 G_2 + s^2 C_1 C_2\right) &= V_{in} G_1 G_2 \\
+  H_{LP}(s) = \frac{V_{out}}{V_{in}} &= \frac{G_1 G_2}{s^2 C_1 C_2 + s C_2 (G_1 + G_2) + G_1 G_2}
+\end{align*}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item Normalising (Section~\ref{sec:theory_cs_second_order}):
+    \begin{align*}
+      \omega_0^2 &= \frac{G_1 G_2}{C_1 C_2} = \frac{1}{R_1 R_2 C_1 C_2} \hspace{1cm}
+      \frac{\omega_0}{Q} = \frac{G_1 + G_2}{C_1} \\
+      Q &= \frac{C_1}{G_1 + G_2}\sqrt{\frac{G_1 G_2}{C_1 C_2}} = \frac{\sqrt{R_1 R_2 C_1 C_2}}{C_2 (R_1 + R_2)}
+    \end{align*}
+  \item Equal resistors \(R\): \(Q = \frac{1}{2}\sqrt{\frac{C_1}{C_2}}\); Butterworth
+    (\(Q = \frac{1}{\sqrt{2}}\)) needs \(C_1 = 2 C_2\).
+  \item DC gain 1, two poles, no finite zeros: \(-40\,\)dB/decade.
+  \item \textbf{High Pass}: exchanging every \(G_k \leftrightarrow sC_k\) gives
+    \(H_{HP}(s) = \frac{s^2 C_1 C_2}{s^2 C_1 C_2 + s G_2 (C_1 + C_2) + G_1 G_2}\) (same
+    algebra with the roles swapped), \(\omega_0^2 = \frac{G_1 G_2}{C_1 C_2}\).
+\end{enumerate}
+
+\subsubsection{Question}
+Butterworth low pass, \(f_0 = 1\,\)kHz, \(R_1 = R_2 = 10\,k\Omega\).
+\paragraph{Solution:}
+\(C_1 = 2C_2\), \(\omega_0 = \frac{1}{R\sqrt{2}C_2}\):
+\(C_2 = \frac{1}{2\pi \cdot 1000 \cdot 10^4 \cdot \sqrt{2}} = 11.25\,nF\), \(C_1 = 22.5\,nF\).
