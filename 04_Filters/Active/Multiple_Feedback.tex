@@ -17,40 +17,73 @@ through \(C_1\).
 \end{circuitfig}
 
 \subsubsection{Transfer Function}
-\textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}, \(V_- = 0\).\\
+\textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)} with an ideal
+op-amp: \(V_+ = 0\) so \(V_- = 0\), and no current enters \(V_-\).\\
 KCL at \(V_-\):
 \begin{align*}
-  (0 - V_x) sC_1 + (0 - V_{out}) G_2 &= 0 \hspace{0.5cm} \Rightarrow \hspace{0.5cm} V_x = -\frac{G_2}{sC_1} V_{out} \tag{1}
+  (V_- - V_x) sC_1 + (V_- - V_{out}) G_2 &= 0 \\
+  (0 - V_x) sC_1 + (0 - V_{out}) G_2 &= 0 \\
+  -V_x sC_1 &= V_{out} G_2 \\
+  V_x &= -\frac{G_2}{sC_1} V_{out} \tag{1}
 \end{align*}
-KCL at \(V_x\):
+KCL at \(V_x\) (\(C_1\) returns to \(V_- = 0\)):
 \begin{align*}
-  (V_x - V_{in}) G_1 + V_x sC_1 + (V_x - V_{out}) sC_2 &= 0 \\
+  (V_x - V_{in}) G_1 + (V_x - 0) sC_1 + (V_x - V_{out}) sC_2 &= 0 \\
+  V_x G_1 + V_x sC_1 + V_x sC_2 - V_{out} sC_2 &= V_{in} G_1 \\
   V_x (G_1 + s(C_1 + C_2)) - V_{out} sC_2 &= V_{in} G_1 \tag{2}
 \end{align*}
 Substituting (1) into (2):
 \begin{align*}
-  -V_{out}\left(\frac{G_2 (G_1 + s(C_1 + C_2))}{sC_1} + sC_2\right) &= V_{in} G_1 \\
+  -\frac{G_2}{sC_1} V_{out}(G_1 + s(C_1 + C_2)) - V_{out} sC_2 &= V_{in} G_1 \\
+  -V_{out}\left(\frac{G_2 (G_1 + s(C_1 + C_2))}{sC_1} + \frac{sC_2 \cdot sC_1}{sC_1}\right) &= V_{in} G_1 \\
   -V_{out}\frac{G_1 G_2 + s G_2 (C_1 + C_2) + s^2 C_1 C_2}{sC_1} &= V_{in} G_1 \\
-  H(s) &= -\frac{s C_1 G_1}{s^2 C_1 C_2 + s G_2 (C_1 + C_2) + G_1 G_2}
+  H(s) = \frac{V_{out}}{V_{in}} &= -\frac{s C_1 G_1}{s^2 C_1 C_2 + s G_2 (C_1 + C_2) + G_1 G_2}
+  \hspace{1cm} \text{(Multiplying both sides by \(-\frac{sC_1}{V_{in}(\dots)}\))}
 \end{align*}
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \(\omega_0^2 = \frac{G_1 G_2}{C_1 C_2}\), \(\frac{\omega_0}{Q} = \frac{G_2 (C_1 + C_2)}{C_1 C_2}\):
-    \[
-      Q = \frac{\sqrt{C_1 C_2}}{C_1 + C_2}\sqrt{\frac{G_1}{G_2}} = \frac{\sqrt{C_1 C_2}}{C_1 + C_2}\sqrt{\frac{R_2}{R_1}}
-    \]
-  \item Centre gain (\(s = j\omega_0\), the \(s^2\) and constant terms cancel):
-    \(H(j\omega_0) = -\frac{C_1 G_1}{G_2 (C_1 + C_2)} = -\frac{R_2}{R_1}\cdot\frac{C_1}{C_1 + C_2}\).
-  \item Equal capacitors: \(Q = \frac{1}{2}\sqrt{\frac{R_2}{R_1}}\),
-    \(H(j\omega_0) = -\frac{R_2}{2R_1} = -2Q^2\); bandwidth \(\frac{f_0}{Q}\)
-    (as derived for the RLC band filter).
-  \item Zero at \(s = 0\) (and one at infinity): band pass.
+  \item \textbf{Normalising}: dividing numerator and denominator by \(C_1 C_2\),
+    \begin{align*}
+      H(s) &= -\frac{s\frac{G_1}{C_2}}{s^2 + s\frac{G_2 (C_1 + C_2)}{C_1 C_2} + \frac{G_1 G_2}{C_1 C_2}}
+      \equiv -H_0\frac{s\frac{\omega_0}{Q}}{s^2 + s\frac{\omega_0}{Q} + \omega_0^2}
+    \end{align*}
+    so
+    \begin{align*}
+      \omega_0^2 &= \frac{G_1 G_2}{C_1 C_2} = \frac{1}{R_1 R_2 C_1 C_2} \\
+      \frac{\omega_0}{Q} &= \frac{G_2 (C_1 + C_2)}{C_1 C_2} \\
+      Q &= \frac{\omega_0 C_1 C_2}{G_2 (C_1 + C_2)} = \frac{C_1 C_2}{G_2 (C_1 + C_2)}\cdot\frac{\sqrt{G_1 G_2}}{\sqrt{C_1 C_2}}
+         = \frac{\sqrt{C_1 C_2}}{C_1 + C_2}\sqrt{\frac{G_1}{G_2}} = \frac{\sqrt{C_1 C_2}}{C_1 + C_2}\sqrt{\frac{R_2}{R_1}}
+    \end{align*}
+  \item \textbf{Centre Gain}: at \(s = j\omega_0\), \(s^2 C_1 C_2 = -\omega_0^2 C_1 C_2 = -G_1 G_2\),
+    which cancels the constant term:
+    \begin{align*}
+      H(j\omega_0) &= -\frac{j\omega_0 C_1 G_1}{-G_1 G_2 + j\omega_0 G_2 (C_1 + C_2) + G_1 G_2}
+       = -\frac{j\omega_0 C_1 G_1}{j\omega_0 G_2 (C_1 + C_2)} \\
+      H(j\omega_0) &= -\frac{C_1 G_1}{G_2 (C_1 + C_2)} = -\frac{R_2}{R_1}\cdot\frac{C_1}{C_1 + C_2}
+    \end{align*}
+  \item \textbf{Equal Capacitors} \(C_1 = C_2 = C\):
+    \begin{align*}
+      Q &= \frac{\sqrt{C \cdot C}}{C + C}\sqrt{\frac{R_2}{R_1}} = \frac{1}{2}\sqrt{\frac{R_2}{R_1}}
+      \hspace{1cm} \Rightarrow \hspace{1cm} \frac{R_2}{R_1} = 4Q^2 \\
+      H(j\omega_0) &= -\frac{R_2}{R_1}\cdot\frac{C}{2C} = -\frac{R_2}{2R_1} = -\frac{4Q^2}{2} = -2Q^2
+    \end{align*}
+    and the \(-3\,\)dB bandwidth is \(\frac{f_0}{Q}\) (as derived for the RLC band
+    filter, Section~\ref{sec:filt_rlc_band}).
+  \item \textbf{Zeros}: the numerator \(sC_1 G_1\) vanishes at \(s = 0\); the numerator
+    is first order and the denominator second, so the other zero is at
+    \(s \to \infty\): band pass.
 \end{enumerate}
 
 \subsubsection{Question}
 \(f_0 = 1\,\)kHz, \(Q = 5\), \(C_1 = C_2 = 10\,\)nF.
 \paragraph{Solution:}
-\(\frac{R_2}{R_1} = 4Q^2 = 100\); \(\omega_0 = \frac{1}{C\sqrt{R_1 R_2}} = \frac{1}{10 C R_1}\):
-\(R_1 = \frac{1}{10 \cdot 10\,n \cdot 2\pi \cdot 1000} = 1.59\,k\Omega\),
-\(R_2 = 159\,k\Omega\), centre gain \(-50\).
+\begin{align*}
+  \frac{R_2}{R_1} &= 4Q^2 = 4 \cdot 5^2 = 100 \hspace{1cm} \Rightarrow \hspace{1cm} R_2 = 100 R_1 \\
+  \omega_0 &= \frac{1}{\sqrt{R_1 R_2}\,C} = \frac{1}{\sqrt{R_1 \cdot 100 R_1}\,C} = \frac{1}{10 R_1 C} \\
+  R_1 &= \frac{1}{10\,\omega_0 C} = \frac{1}{10 \cdot 2\pi \cdot 1000\,Hz \cdot 10 \times 10^{-9}\,F}
+       = \frac{1}{6.283 \times 10^{-4}\,S} = 1.59\,k\Omega \\
+  R_2 &= 100 \cdot 1.59\,k\Omega = 159\,k\Omega \\
+  H(j\omega_0) &= -2Q^2 = -2 \cdot 25 = -50 \\
+  BW &= \frac{f_0}{Q} = \frac{1000\,Hz}{5} = 200\,Hz
+\end{align*}
