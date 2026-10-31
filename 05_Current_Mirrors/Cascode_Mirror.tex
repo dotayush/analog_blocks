@@ -125,7 +125,7 @@ Here's a table of the voltages at each terminal of the transistors:
 \end{tabularx}
 
 \begin{enumerate}
-  \item \textbf{Large Signal Analysis}:\\
+  \item \textbf{Large Signal Analysis (Q5)}:\\
     Applying KCL at $V_{out}$:
     \begin{align*}
       (V_{out} - V_{cc})G_5 + I_{M_2} &= 0 \\
@@ -178,7 +178,7 @@ Here's a table of the voltages at each terminal of the transistors:
                                                                     \approx \frac{k_{n_1}}{k_{n_0}} = \frac{\frac{K_P W_1}{L_1}}{\frac{K_P W_0}{L_0}} = \frac{\frac{W_1}{L_1}}{\frac{W_0}{L_0}} = \frac{W_1 L_0}{L_1 W_0}
                                                                   = \frac{W_2 L_3}{L_2 W_3} \\
     \end{align*}
-  \item \textbf{Small Signal Analysis}:\\
+  \item \textbf{Small Signal Analysis (Q4)}:\\
     Applying KCL at $V_{out}$:
     \begin{align*}
       V_{out}G_5 + (V_{out} - V_{y})g_{o_2} + (V_{z} - V_{y})g_{m_2} &= 0 \\
@@ -228,12 +228,11 @@ Here's a table of the voltages at each terminal of the transistors:
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \textbf{Output Load (Max)}: Maximum possible
-    load that can be connected at the output before
-    the transistor $M_2$ goes out of saturation can
-    be calculated as follows:
+  \item \textbf{Output Load (Max)}: \(M_2\) saturated needs
+    \(V_{out} - V_y \geq V_{ov_2}\), i.e. \(V_{out} \geq V_z - V_{th}\):
     \begin{align*}
-      R_{out, \max} &= \frac{V_{L, \max}}{I_{M_2}} \quad \text{[where, } V_{ee} \leq V_{L, \max} \leq V_{cc} \text{]}
+      V_{out,\min} &= V_y + V_{ov_2} = V_z - V_{th} \\
+      R_{L, \max} &= \frac{V_{cc} - V_{out,\min}}{I_{M_2}}
     \end{align*}
   \item \textbf{Impedances}:
     \paragraph{At Input:}Applying a test current $I_{test}$
@@ -317,7 +316,7 @@ currents and voltages in this circuit.
 \subsubsection{Question}
 Design a cascode current mirror with a current
 gain of 5. The input current is $I_{in} = 10 \mu$A.
-Assume the following specificiatons:
+Assume the following specifications:
 \begin{enumerate}
   \item $V_{cc} = +5$ V, $V_{ee} = 0$ V
   \item $V_{th} = 0.7$ V
@@ -337,7 +336,7 @@ Find the following:
     load that can be connected at the output.
   \item Small signal output resistance of the
     current mirror. Assume a load resistance
-    $R_L = 100 k\Omega$ is connected at the
+    $R_L = 50 k\Omega$ is connected at the
     output.
 \end{enumerate}
 \paragraph{Solution:}
@@ -360,22 +359,28 @@ Find the following:
       R_4 &\approx \frac{V_{cc} - V_{z}}
                       {I_{in}} = \frac{5 - 1.8}{10 \times 10^{-6}} = 320 k\Omega
     \end{align*}
-  \item Output voltage range and maximum output load:
+  \item Output voltage range and maximum output load
+    (\(I_{M_2} = I_{out} = 5 \cdot 10\,\mu A = 50\,\mu A\)):
     \begin{align*}
       V_{out, \min} &\approx V_{y} + V_{ov_2} = 0.9 + 0.2 = 1.1 \text{ V} \\
       V_{out, \max} &\approx V_{cc} = 5 \text{ V} \\
-      R_{out, \max} &= \frac{V_{L, \max}}{I_{M_2}} = \frac{5 - 0}{10 \times 10^{-6}} = 500 k\Omega
+      R_{L, \max} &= \frac{V_{cc} - V_{out,\min}}{I_{M_2}} = \frac{5 - 1.1}{50 \times 10^{-6}} = 78 k\Omega
     \end{align*}
+    so the \(50\,k\Omega\) load keeps \(M_2\) saturated.
   \item Small signal output resistance:
     \begin{align*}
-      g_{m_2} &= \frac{2 I_{M_2}}{V_{ov_2}} = \frac{2 \times 10 \times 10^{-6}}{0.2} = 0.0001 \text{ S} \\
-      g_{o_1} &= I_{M_1} K_{CLM} = 10 \times 10^{-6} \times 0.02 = 0.2 \times 10^{-6} \text{ S} \\
-      g_{o_2} &= I_{M_2} K_{CLM} = 10 \times 10^{-6} \times 0.02 = 0.2 \times 10^{-6} \text{ S} \\
-      G_5 &= \frac{1}{R_L} = \frac{1}{100 k\Omega} = 10^{-5} \text{ S} \\
+      g_{m_2} &= \frac{2 I_{M_2}}{V_{ov_2}} = \frac{2 \times 50 \times 10^{-6}}{0.2} = 5 \times 10^{-4} \text{ S} \\
+      g_{o_1} &= I_{M_1} K_{CLM} = 50 \times 10^{-6} \times 0.02 = 1 \times 10^{-6} \text{ S} \\
+      g_{o_2} &= I_{M_2} K_{CLM} = 50 \times 10^{-6} \times 0.02 = 1 \times 10^{-6} \text{ S} \\
+      G_5 &= \frac{1}{R_L} = \frac{1}{50 k\Omega} = 2 \times 10^{-5} \text{ S} \\
       \\
       Z_{out} &= \frac{g_{m_2} + g_{o_1} + g_{o_2}}{G_{5}(g_{m_2} + g_{o_1} + g_{o_2}) + g_{o_1} g_{o_2}} \\
-              &= \frac{0.0001 + 0.2 \times 10^{-6} + 0.2 \times 10^{-6}}{10^{-5}(0.0001 + 0.2 \times 10^{-6} + 0.2 \times 10^{-6}) + (0.2 \times 10^{-6})(0.2 \times 10^{-6})} \\
-              &\approx 9.99 M\Omega
+              &= \frac{5.02 \times 10^{-4}}{(2 \times 10^{-5})(5.02 \times 10^{-4}) + (10^{-6})(10^{-6})} \\
+              &= \frac{5.02 \times 10^{-4}}{1.004 \times 10^{-8} + 10^{-12}} \approx 49.995 k\Omega
+    \end{align*}
+    The load dominates. The mirror alone (\(G_5 \to 0\)):
+    \begin{align*}
+      Z_{out,mirror} &= \frac{g_{m_2} + g_{o_1} + g_{o_2}}{g_{o_1} g_{o_2}} = \frac{5.02 \times 10^{-4}}{10^{-12}} = 502 M\Omega \approx g_{m_2} r_{o_1} r_{o_2}
     \end{align*}
 \end{enumerate}
 
