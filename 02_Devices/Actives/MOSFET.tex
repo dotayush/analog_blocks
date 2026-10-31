@@ -79,14 +79,16 @@ flowing out of the drain (Section~\ref{sec:theory_general_complementary}).
       I_g &= 0
     \end{align*}
     \begin{circuitfig}
-      \draw (0,2.5) node[left]{$V_g$} to[short, o-] (1,2.5) to[open, v^>=$V_{gs}$] (1,0);
-      \draw (3.5,2.5) to[american current source, l={$g_m V_{gs}$}] (3.5,0);
-      \draw (6.5,2.5) to[american current source, l={$g_{mb} V_{bs}$}] (6.5,0);
-      \draw (9,2.5) to[european resistor, l={$g_o$}] (9,0);
-      \draw (3.5,2.5) -- (10,2.5) node[right]{$V_d$};
-      \draw (1,0) -- (9,0);
-      \draw (3.5,0) to[short, -o] (3.5,-0.6) node[below]{$V_s$};
+      \draw (0,3) node[left]{$V_g$} to[short, o-] (1,3) to[open, v^>=$V_{gs}$] (1,0);
+      \draw (0,-1.5) node[left]{$V_b$} to[short, o-] (1,-1.5) to[open, v_>=$V_{bs}$] (1,0);
+      \draw (3,3) to[american current source, l={$g_m V_{gs}$}] (3,0);
+      \draw (6,3) to[american current source, l={$g_{mb} V_{bs}$}] (6,0);
+      \draw (9,3) to[european resistor, l={$g_o$}] (9,0);
+      \draw (3,3) -- (10,3) node[circ]{} node[right]{$V_d$};
+      \draw (1,0) -- (10,0) node[circ]{} node[right]{$V_s$};
     \end{circuitfig}
+    The gate and the body draw no current (open); they only set the
+    controlling voltages \(V_{gs}\) and \(V_{bs}\).\par
     \(g_m\) can be calculated as follows:
     \begin{align*}
       g_m &= \left.\frac{\partial I_D}{\partial V_{GS}}\right|_{Q} \\
