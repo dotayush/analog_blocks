@@ -84,3 +84,18 @@ speed per unit power of single stage op-amps, at the cost of swing.
   \item \textbf{Common mode feedback}: both outputs are high impedance nodes, so
     the output common mode is set by a CMFB loop adjusting \(V_{B7}\) or the tail.
 \end{enumerate}
+
+\subsubsection{Question}
+\(I_T = 200\,\mu\)A, every \(|V_{ov}| = 0.2\,\)V, \(K_{CLM} = 0.1\,\)V\(^{-1}\) for all
+devices, body effect neglected, \(C_L = 1\,\)pF per output, \(V_{dd} = 1.8\,\)V. Find
+\(A_d\), \(GB\), \(SR\) and the swing per side.
+\paragraph{Solution:}
+\begin{align*}
+  I_D &= \frac{I_T}{2} = 100\,\mu A \hspace{1cm} g_m = \frac{2 \cdot 100\,\mu A}{0.2\,V} = 1\,mS \hspace{1cm} r_o = \frac{1}{0.1 \cdot 100\,\mu A} = 100\,k\Omega \\
+  Z_{dn} &= r_{o1} + r_{o3} + g_{m3} r_{o1} r_{o3} = 100\,k + 100\,k + 10^{-3} \cdot 10^{10} = 10.2\,M\Omega \hspace{1cm} Z_{up} = 10.2\,M\Omega \\
+  Z_{dn} \parallel Z_{up} &= \frac{10.2\,M}{2} = 5.1\,M\Omega \\
+  A_d &= -g_{m1}(Z_{dn} \parallel Z_{up}) = -10^{-3} \cdot 5.1 \times 10^{6} = -5100 \hspace{1cm} (20\log_{10} 5100 = 74.2\,dB) \\
+  GB &= \frac{g_{m1}}{2\pi C_L} = \frac{10^{-3}}{2\pi \cdot 10^{-12}}\,Hz = 159\,MHz \hspace{1cm}
+  SR = \frac{I_T}{C_L} = \frac{200\,\mu A}{1\,pF} = 200\,V/\mu s \\
+  \text{swing} &= V_{dd} - V_{ov9} - V_{ov1} - V_{ov3} - |V_{ov5}| - |V_{ov7}| = 1.8 - 5 \cdot 0.2 = 0.8\,V
+\end{align*}
