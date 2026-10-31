@@ -500,6 +500,7 @@ with the load returned to $V_{cc}$.
   printf('=== Zout ===\n'); pretty(factor(simplify(sol.Vout/Itest)))
 
   % input impedance: Itest into Vz, output at AC ground (Vout = 0)
-  sol = solve([subs(eq10, Vout, 0), eq11, Vz*(G4 + go3 + gm3) - Vy*(go3 + gm3) == Itest], [Vx, Vy, Vz]);
+  eq12_zin = Vz*(G4 + go3 + gm3) - Vy*(go3 + gm3) == Itest;
+  sol = solve([subs(eq10, Vout, 0), eq11, eq12_zin], [Vx, Vy, Vz]);
   printf('=== Zin ===\n'); pretty(factor(simplify(sol.Vz/Itest)))
 \end{lstlisting}

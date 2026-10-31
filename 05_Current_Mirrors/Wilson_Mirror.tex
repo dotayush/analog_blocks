@@ -448,5 +448,6 @@ output, with the load returned to $V_{cc}$.
   sol = solve([eq16, eq8, eq9], [Vout, Vx, Vy]);
   zout = factor(simplify(sol.Vout/Itest));
   printf('=== Zout ===\n'); pretty(zout)
-  printf('=== Zout, mirror alone (G4 = 0) ===\n'); pretty(factor(subs(zout, G4, 0)))
+  printf('=== Zout, mirror alone (G4 = 0) ===\n');
+  pretty(factor(subs(zout, G4, 0)))
 \end{lstlisting}
