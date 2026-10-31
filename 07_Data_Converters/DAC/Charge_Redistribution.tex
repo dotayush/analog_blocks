@@ -9,6 +9,25 @@ current flows. When the reference is replaced by an analog input the
 output is the product \(V_{IN} \cdot \frac{D}{2^n}\): a Multiplying DAC (MDAC),
 the core of SAR and pipeline ADCs.
 
+\subsubsection{Schematic}
+DAC array (\(n = 3\)): bottom plates switched to \(b_k V_{REF}\), the terminating \(C_u\) to 0.
+\begin{circuitfig}
+  \draw (0,3) node[circ]{} node[above]{$V_x$} -- (9,3) node[circ]{} node[right]{$V_x$ (to comparator / output)};
+  \foreach \x/\c/\b in {0/{4C_u}/{b_2 V_{REF}}, 2.2/{2C_u}/{b_1 V_{REF}}, 4.4/{C_u}/{b_0 V_{REF}}, 6.6/{C_u}/{0}}
+    \draw (\x,3) to[capacitor, l_={$\c$}] (\x,1.2) node[circ]{} node[below]{$\b$};
+  \draw (8.2,3) to[capacitor, l={$C_p$}] (8.2,1.2) node[ground]{};
+\end{circuitfig}
+Pipeline MDAC stage: phase \(\phi_1\) samples \(V_{IN}\) on both capacitors, phase \(\phi_2\) closes \(C_2\) around the op-amp and switches \(C_1\) to \(bV_{REF}\).
+\begin{circuitfig}
+  \draw (0,0) node[op amp](A){};
+  \draw (A.+) -- ++(-0.4,0) -- ++(0,-0.5) node[ground]{};
+  \draw (A.-) -- ++(-0.6,0) coordinate(x) node[circ]{} node[below left]{$V_x$};
+  \draw (x) to[capacitor, l_={$C_1$}] ++(-2.2,0) node[circ]{} node[left, align=right]{$\phi_1$: $V_{IN}$\\ $\phi_2$: $b V_{REF}$};
+  \draw (x) |- (-0.6,1.8) to[capacitor, l={$C_2$}] (1.8,1.8) -| (A.out);
+  \draw (-0.4,1.8) node[above]{\footnotesize $\phi_1$: $V_{IN}$};
+  \draw (A.out) to[short, -o] ++(0.8,0) node[right]{$V_{OUT}$};
+\end{circuitfig}
+
 \subsubsection{Transfer Function}
 \begin{enumerate}
   \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}: reset

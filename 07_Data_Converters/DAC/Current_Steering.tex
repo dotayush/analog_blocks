@@ -11,6 +11,22 @@ flows and a differential pair switch steers it to \(I_{OUT+}\) or
 either binary weighted (\(2^k I_u\) for bit \(k\)) or unary (one unit per LSB,
 thermometer decoded, a single unit switching per step).
 
+\subsubsection{Schematic}
+Binary weighted steering DAC (\(n = 3\)): each unit current is steered to \(I_{OUT+}\) by \(b_k\) or to \(I_{OUT-}\) by \(\overline{b_k}\).
+\begin{circuitfig}
+  \foreach \x/\w/\k in {0/{4I_u}/2, 3/{2I_u}/1, 6/{I_u}/0} {
+    \draw (\x,4) node[vcc]{$V_{dd}$} to[american current source, l={$\w$}] (\x,2.4) node[circ]{};
+    \draw (\x,2.4) -- (\x-0.6,2.4) to[nos, l_={$b_\k$}] (\x-0.6,0.8);
+    \draw (\x,2.4) -- (\x+0.6,2.4) to[nos, l={$\overline{b_\k}$}] (\x+0.6,0.8);
+    \draw (\x-0.6,0.8) node[circ]{} -- (\x-0.6,0.4);
+    \draw (\x+0.6,0.8) node[circ]{} -- (\x+0.6,0);
+  }
+  \draw (-0.6,0.4) -- (8.4,0.4) node[right]{$I_{OUT+}$};
+  \draw (0.6,0) -- (9.8,0) node[right]{$I_{OUT-}$};
+  \draw (8.0,0.4) node[circ]{} to[european resistor, l_={$R_L$}] (8.0,-1.6) node[ground]{};
+  \draw (9.4,0) node[circ]{} to[european resistor, l={$R_L$}] (9.4,-1.6) node[ground]{};
+\end{circuitfig}
+
 \subsubsection{Transfer Function}
 \begin{enumerate}
   \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}:
