@@ -1,9 +1,12 @@
-\subsection{Widlar Mirror}
+\subsection{Basic Mirror}\label{sec:mirror_basic}
 
 \subsubsection{Overview}
-Constructed from two transistors, It is the
-simplest form of a current mirror that can provide a
-current gain different from unity.
+Constructed from two transistors, a diode connected
+\(M_0\) and a mirroring \(M_1\) sharing \(V_{GS}\). It is the
+simplest form of a current mirror; its current gain is set
+by the ratio of \(\frac{W}{L}\). (This block was previously
+mislabelled as the Widlar mirror, which adds a source
+resistor, see Section~\ref{sec:mirror_widlar}.)
 
 \subsubsection{Schematic}
 \begin{circuitfig}
@@ -92,7 +95,7 @@ Here's a table of the voltages at each terminal of the transistors:
 \end{tabularx}
 
 \begin{enumerate}
-  \item \textbf{Large Signal Analysis}:\\
+  \item \textbf{Large Signal Analysis (Q5)}:\\
     Applying KCL at $V_{out}$:
     \begin{align*}
       (V_{out} - V_{cc})G_3 + I_{M_1} &= 0 \\
@@ -126,7 +129,7 @@ Here's a table of the voltages at each terminal of the transistors:
     \begin{align*}
       \frac{I_{out}}{I_{in}} \approx \frac{I_{M_1}}{I_{M_0}} \approx \frac{k_{n_1}}{k_{n_0}} = \frac{\frac{K_P W_1}{L_1}}{\frac{K_P W_0}{L_0}} = \frac{\frac{W_1}{L_1}}{\frac{W_0}{L_0}} = \frac{W_1 L_0}{L_1 W_0}
     \end{align*}
-  \item \textbf{Small Signal Analysis}:\\
+  \item \textbf{Small Signal Analysis (Q4)}:\\
     Applying KCL at $V_{out}$:
     \begin{align*}
       V_{out}G_3 + V_{out}g_{o_1} + g_{m_1}V_{x} &= 0 \\
@@ -153,12 +156,19 @@ Here's a table of the voltages at each terminal of the transistors:
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \textbf{Output Load (Max)}: Maximum possible
-    load that can be connected at the output before
-    the transistor $M_2$ goes out of saturation can
-    be calculated as follows:
+  \item \textbf{Output Load (Max)}: \(M_1\) stays saturated
+    while \(V_{ds_1} \geq V_{ov_1}\). With the load \(R_L\) to \(V_{cc}\):
     \begin{align*}
-      R_{out, \max} &= \frac{V_{L, \max}}{I_{M_1}} \quad \text{[where, } V_{ee} \leq V_{L, \max} \leq V_{cc} \text{]}
+      V_{out,\min} &= V_{ee} + V_{ov_1} \\
+      V_{cc} - I_{M_1} R_L &\geq V_{out,\min} \\
+      R_{L, \max} &= \frac{V_{cc} - V_{out,\min}}{I_{M_1}} = \frac{V_{L,\max}}{I_{M_1}} \quad \text{[} V_{L,\max} = V_{cc} - V_{out,\min} \text{]}
+    \end{align*}
+  \item \textbf{Current Gain (Q4)}: Inject \(i_{in}\) into \(V_x\) and
+    short the output to AC ground (\(V_{out} = 0\)):
+    \begin{align*}
+      v_{x}(G_2 + g_{o_0} + g_{m_0}) &= i_{in} \\
+      i_{out} &= g_{m_1} v_x = \frac{g_{m_1}}{G_2 + g_{o_0} + g_{m_0}} i_{in} \\
+      \frac{i_{out}}{i_{in}} &\approx \frac{g_{m_1}}{g_{m_0}} = \frac{\sqrt{2K_P \frac{W_1}{L_1} I_{M_1}}}{\sqrt{2K_P \frac{W_0}{L_0} I_{M_0}}} = \sqrt{\frac{W_1 L_0}{L_1 W_0} \cdot \frac{W_1 L_0}{L_1 W_0}} = \frac{W_1 L_0}{L_1 W_0}
     \end{align*}
   \item \textbf{Impedances}:
     \paragraph{At Input:} Applying a test current $I_{test}$
@@ -169,13 +179,13 @@ Here's a table of the voltages at each terminal of the transistors:
       \end{align*}
       Ignoring $G_2$ and assuming $g_{m_0} \gg g_{o_0}$, we get:
       \begin{align*}
-        Z_{in} &\approx \frac{1}{g_{m_0}} = \frac{2 I_{M_0}}{V_{ov_0}}
+        Z_{in} &\approx \frac{1}{g_{m_0}} = \frac{V_{ov_0}}{2 I_{M_0}}
       \end{align*}
     \paragraph{At Output:} Applying a test current $I_{test}$
       at $V_{out}$, from equation (5):
       \begin{align*}
         V_{out}(G_3 + g_{o_1}) + g_{m_1}V_{x} &= I_{test} \\
-        V_{out}(G_3 + g_{o_1}) + g_{m_1}(0) &= I_{test} \quad \text{[from (7)]} \\
+        V_{out}(G_3 + g_{o_1}) + g_{m_1}(0) &= I_{test} \quad \text{[} v_x = 0 \text{ from (6)]} \\
         \therefore Z_{out} &= \frac{V_{out}}{I_{test}} = \frac{1}{G_3 + g_{o_1}}
       \end{align*}
       Ignoring $G_3$, we get:
@@ -224,17 +234,16 @@ currents and voltages in this circuit.
 \end{enumerate}
 
 \subsubsection{Question}
-Design a Widlar Current Mirror (Sink) that meets
+Design a Basic Current Mirror (Sink) that meets
 the following requirements. The mirror must provide
 a current gain at the output of 5. The input current
 must be $I_{in} = 100 \mu A$. The mirror must operate
 with $V_{cc} = 5V$ and $V_{ee} = 0V$. Assume the
 following transistor parameters: $V_{th} = 1V$,
-$K_{CLM} = 0.02 V^{-1}$, $\frac{K_P}{2} =
-100 \mu A/V^2$ and $L = 1 \mu m$ for all transistors.
-Find the output impedance of the mirror and the
-maximum load that can be connected at the output
-if $V_{L, \max} = 4V$.
+$K_{CLM} = 0.02 V^{-1}$, $K_P = 200 \mu A/V^2$ and
+$L = 1 \mu m$ for all transistors. Find the input and
+output impedance of the mirror and the maximum load
+that can be connected at the output.
 \paragraph{Solution:}
 \begin{enumerate}
   \item \textbf{Choose appropriate transistor dimensions:}
@@ -250,7 +259,7 @@ if $V_{L, \max} = 4V$.
   \item \textbf{Compute $W_0$ to set the required bias current:} For $I_{in} = 100 \mu A$
     \begin{align*}
       W_0 &= \frac{2 I_{in} L_0}{K_P V_{ov_0}^2} \\
-          &= \frac{2 \cdot 100 \mu A \cdot 1 \mu m}{100 \mu A/V^2 \cdot (0.2V)^2} \\
+          &= \frac{2 \cdot 100 \mu A \cdot 1 \mu m}{200 \mu A/V^2 \cdot (0.2V)^2} \\
           &= 25 \mu m \\
       \therefore W_1 &= 5 W_0 = 125 \mu m
     \end{align*}
@@ -259,6 +268,10 @@ if $V_{L, \max} = 4V$.
       R_2 &= \frac{1}{G_2} = \frac{V_{cc} - V_{x}}{I_{M_0}} \\
           &= \frac{5V - 1.2V}{100 \mu A} \\
           &= 38 k\Omega
+    \end{align*}
+  \item \textbf{Compute the input impedance:}
+    \begin{align*}
+      Z_{in} &\approx \frac{1}{g_{m_0}} = \frac{V_{ov_0}}{2 I_{M_0}} = \frac{0.2V}{2 \cdot 100 \mu A} = 1 k\Omega \hspace{1cm} [R_2 = 38k\Omega \text{ in parallel: } 974 \Omega]
     \end{align*}
   \item \textbf{Compute the output impedance:}
     \begin{align*}
@@ -269,9 +282,10 @@ if $V_{L, \max} = 4V$.
   \item \textbf{Compute the maximum load that can be connected
     at the output:}
     \begin{align*}
-      R_{out, \max} &= \frac{V_{L, \max}}{I_{M_1}} \\
-                   &= \frac{4V}{500 \mu A} \\
-                   &= 8 k\Omega
+      V_{out,\min} &= V_{ee} + V_{ov_1} = 0 + 0.2V = 0.2V \\
+      R_{L, \max} &= \frac{V_{cc} - V_{out,\min}}{I_{M_1}} \\
+                   &= \frac{5V - 0.2V}{500 \mu A} \\
+                   &= 9.6 k\Omega
     \end{align*}
 \end{enumerate}
 
