@@ -1,5 +1,5 @@
 \section{Capacitor}
-An ideal capacitor is a two-port, passive, linear, time-invariant,
+An ideal capacitor is a two-terminal (one-port), passive, linear, time-invariant,
 non-dissipative device that stores energy (\& thus charge) in the
 form of an electric field.
 
@@ -10,8 +10,8 @@ form of an electric field.
     (\(C\)) and is measured in Farads (F). It also gives us the
     capacitor's version of Ohm's law:
     \begin{align*}
-      Q = C \cdot V \\
-      \text{Integrating both sides with respect to time:} \\
+      Q &= C \cdot V \\
+      \text{Differentiating both sides with respect to time:} \\
       \frac{dQ}{dt} &= C \cdot \frac{dV}{dt} \hspace{1cm} \text{(assuming \(C\) is constant)} \\
       I &= C \cdot \frac{dV}{dt} \hspace{1cm} [I = \frac{dQ}{dt}]
     \end{align*}
@@ -24,7 +24,7 @@ form of an electric field.
     equation. We thus can not describe resistance of a capacitor in the
     same way we do for a resistor. We must somehow trick the above
     capacitor relationship into giving us a proportionality factor
-    between voltage and current. Lapalace Transform can be used to
+    between voltage and current. Laplace Transform can be used to
     achieve this,
     \begin{align*}
       I &= C \cdot \frac{dV}{dt} \\
@@ -54,7 +54,7 @@ form of an electric field.
   \item \textbf{Frequency Response:}
     The impedance of a capacitor is inversely proportional to
     frequency. This means that at low frequencies, the impedance
-    of a capacitor is very high and at frequencies, the impedance
+    of a capacitor is very high and at high frequencies, the impedance
     of a capacitor is very low. This is why at high frequencies,
     the capacitor starts to load the circuit which is often a
     very desirable effect in many applications. This is also why
@@ -122,7 +122,7 @@ form of an electric field.
     electric field between the conductors.
   \item \textbf{Circuit Analysis:}
     The behaviour of capacitor is affected by the kind of Input Signal (AC
-    or DC) applied to it. Find the admittance before deciding weather to
+    or DC) applied to it. Find the admittance \(sC\) (Q4) before deciding whether to
     Short, Open or keep the capacitor as is within your analysis. Table~\ref{tab:hand-analysis-simplifications}
     serves as a quick reference.
 \end{itemize}

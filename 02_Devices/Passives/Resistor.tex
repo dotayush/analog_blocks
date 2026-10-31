@@ -1,5 +1,5 @@
 \section{Resistor}
-An ideal resistor is a two-port, passive, linear and time-invariant
+An ideal resistor is a two-terminal (one-port), passive, linear and time-invariant
 device that opposes the flow of current.
 
 \begin{itemize}
@@ -10,7 +10,7 @@ device that opposes the flow of current.
     current. In fact, This is precisely the relationship that gives
     us Ohm's law:
     \[
-      V = I_ \cdot R
+      V = I \cdot R
     \]
   \item \textbf{Conductance:}
     The inverse of resistance is called conductance (\(G\)) and is
@@ -32,7 +32,7 @@ device that opposes the flow of current.
       P = I^2 \cdot R = V^2 \cdot G
     \]
   \item \textbf{Non-Ideal Behavior:}
-    In practise, resistor's are not ideal and thus most of our
+    In practice, resistors are not ideal and thus most of our
     assumptions above (linear, time-invariant, dissipative) fall
     apart at very high frequencies. However for the most part,
     we can treat resistors as ideal devices.
@@ -40,5 +40,6 @@ device that opposes the flow of current.
     The behaviour of resistor is not affected by the kind of Input
     Signal (AC or DC) applied to it. Therefore, The same mathematical
     model can be used to describe the behaviour of a resistor in both
-    AC and DC inputs.
+    AC and DC inputs. Its admittance is \(G\) in Q4 and its current is
+    \(I = VG\) in Q5 (Chapter~\ref{ch:analysis}).
 \end{itemize}
