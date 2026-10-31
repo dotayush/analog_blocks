@@ -1,0 +1,158 @@
+\section{Metal Oxide Semiconductor FET (MOSFET)}\label{sec:devices_mosfet}
+
+A MOSFET is a four-terminal (gate G, drain D, source S, body B), active,
+non-linear and time-invariant device. The gate is insulated from the
+channel by an oxide, so the gate current is zero at DC (\(I_G = 0\)) and
+the device is \emph{voltage controlled}: \(V_{GS}\) sets the charge in
+the channel and \(V_{DS}\) moves it. When the body is tied to the source
+it is drawn as a three-terminal device.
+
+The family has two types: N-Channel (NMOS, electrons conduct) and
+P-Channel (PMOS, holes conduct). The PMOS equations are the NMOS
+equations written with \(V_{SG}\), \(V_{SD}\), \(|V_{th}|\) and \(I_D\)
+flowing out of the drain (Section~\ref{sec:theory_general_complementary}).
+
+\begin{circuitfig}
+  \draw (0,0) node[nmos](N){} (N.G) node[left]{G} (N.D) node[above]{D} (N.S) node[below]{S};
+  \node at (0,-1.6) {\Large NMOS};
+  \draw (4,0) node[pmos](P){} (P.G) node[left]{G} (P.S) node[above]{S} (P.D) node[below]{D};
+  \node at (4,-1.6) {\Large PMOS};
+\end{circuitfig}
+
+\begin{itemize}
+  \item \textbf{Parameters}:
+    \begin{itemize}
+      \item \(K_P = \mu_n C_{ox}\): process transconductance (A/V\(^2\)), the
+        product of carrier mobility and oxide capacitance per area.
+      \item \(W\), \(L\): channel width and length.
+      \item \(k_n = \frac{K_P}{2}\frac{W}{L}\): device transconductance factor.
+      \item \(V_{th}\): threshold voltage.
+      \item \(V_{ov} = V_{GS} - V_{th}\): overdrive voltage.
+      \item \(K_{CLM}\): channel length modulation coefficient (V\(^{-1}\)).
+    \end{itemize}
+  \item \textbf{Mathematical Model (Square Law, Q5)}:
+    \begin{itemize}
+      \item \textbf{Cutoff} (\(V_{GS} < V_{th}\)): no channel.
+        \[
+          I_D = 0
+        \]
+      \item \textbf{Triode} (\(V_{GS} \geq V_{th}\), \(V_{DS} < V_{ov}\)): the
+        channel charge per length at position \(y\) is
+        \(C_{ox} W (V_{GS} - V(y) - V_{th})\) and it drifts with velocity
+        \(\frac{K_P}{C_{ox}} \frac{dV}{dy}\) (mobility times field):
+        \begin{align*}
+          I_D &= C_{ox} W (V_{GS} - V(y) - V_{th}) \cdot \frac{K_P}{C_{ox}} \frac{dV}{dy} \\
+          \int_0^L I_D \, dy &= \int_0^{V_{DS}} K_P W (V_{GS} - V_{th} - V) \, dV \\
+          I_D L &= K_P W \left[ (V_{GS} - V_{th}) V_{DS} - \frac{V_{DS}^2}{2} \right] \\
+          I_D &= K_P \frac{W}{L} \left[ V_{ov} V_{DS} - \frac{V_{DS}^2}{2} \right]
+        \end{align*}
+      \item \textbf{Saturation} (\(V_{GS} \geq V_{th}\), \(V_{DS} \geq V_{ov}\)):
+        the triode current peaks where its slope vanishes,
+        \begin{align*}
+          \frac{\partial I_D}{\partial V_{DS}} = K_P \frac{W}{L} \left[ V_{ov} - V_{DS} \right] &= 0
+          \hspace{1cm} \Rightarrow \hspace{1cm} V_{DS} = V_{ov} \\
+          I_D = K_P \frac{W}{L} \left[ V_{ov}^2 - \frac{V_{ov}^2}{2} \right] &= \frac{K_P}{2} \frac{W}{L} V_{ov}^2
+        \end{align*}
+        The channel pinches off at the drain and further \(V_{DS}\) only
+        shortens the effective channel, captured by \(K_{CLM}\):
+        \[
+          I_D = \frac{K_P}{2} \frac{W}{L} (V_{GS} - V_{th})^2 (1 + K_{CLM} V_{DS})
+              = k_n (V_{GS} - V_{th})^2 (1 + K_{CLM} V_{DS})
+        \]
+      \item \textbf{Subthreshold} (\(V_{GS} \lesssim V_{th}\)): diffusion
+        current, exponential like a BJT, with slope factor \(n \approx 1.2\text{--}1.5\):
+        \[
+          I_D = I_{D0} \frac{W}{L} e^{\frac{V_{GS} - V_{th}}{n V_T}} \left(1 - e^{-\frac{V_{DS}}{V_T}}\right)
+        \]
+    \end{itemize}
+  \item \textbf{Body Effect}: A source-to-body voltage \(V_{SB} > 0\) widens
+    the depletion region under the gate and raises the threshold. With
+    body effect coefficient \(K_B\) (V\(^{1/2}\)) and Fermi potential \(V_F\):
+    \[
+      V_{th} = V_{th0} + K_B \left( \sqrt{2V_F + V_{SB}} - \sqrt{2V_F} \right)
+    \]
+  \item \textbf{Linear Model (Q4)}: Linearizing the saturation equation
+    about \(Q = (V_{GS(Q)}, V_{DS(Q)}, V_{SB(Q)}, I_{D(Q)})\):
+    \begin{align*}
+      i_d &= g_m v_{gs} + g_{mb} v_{bs} + g_o v_{ds} \\
+      i_g &= 0
+    \end{align*}
+    \begin{circuitfig}
+      \draw (0,2.5) node[left]{$v_g$} to[short, o-] (1,2.5) to[open, v^>=$v_{gs}$] (1,0);
+      \draw (3.5,2.5) to[american current source, l={$g_m v_{gs}$}] (3.5,0);
+      \draw (6.5,2.5) to[american current source, l={$g_{mb} v_{bs}$}] (6.5,0);
+      \draw (9,2.5) to[european resistor, l={$g_o$}] (9,0);
+      \draw (3.5,2.5) -- (10,2.5) node[right]{$v_d$};
+      \draw (1,0) -- (9,0);
+      \draw (3.5,0) to[short, -o] (3.5,-0.6) node[below]{$v_s$};
+    \end{circuitfig}
+    \(g_m\) can be calculated as follows:
+    \begin{align*}
+      g_m &= \left.\frac{\partial I_D}{\partial V_{GS}}\right|_{Q} \\
+      g_m &= \frac{\partial}{\partial V_{GS}} \left[ \frac{K_P}{2} \frac{W}{L} (V_{GS} - V_{th})^2 (1 + K_{CLM} V_{DS}) \right]_{Q} \\
+      g_m &= K_P \frac{W}{L} V_{ov} (1 + K_{CLM} V_{DS(Q)}) \\
+      g_m &= \frac{2 I_{D(Q)}}{V_{ov}} \hspace{1cm} \left[\text{dividing } I_{D(Q)} \text{ by } \frac{V_{ov}}{2}\right] \\
+      g_m &= \sqrt{2 K_P \frac{W}{L} I_{D(Q)} (1 + K_{CLM} V_{DS(Q)})} \approx \sqrt{2 K_P \frac{W}{L} I_{D(Q)}}
+    \end{align*}
+    \(g_o\) can be calculated as follows:
+    \begin{align*}
+      g_o &= \left.\frac{\partial I_D}{\partial V_{DS}}\right|_{Q} \\
+      g_o &= \frac{K_P}{2} \frac{W}{L} V_{ov}^2 K_{CLM} \\
+      g_o &= \frac{K_{CLM} I_{D(Q)}}{1 + K_{CLM} V_{DS(Q)}} \approx K_{CLM} I_{D(Q)}
+    \end{align*}
+    \(g_{mb}\) can be calculated as follows:
+    \begin{align*}
+      g_{mb} &= \left.\frac{\partial I_D}{\partial V_{BS}}\right|_{Q}
+              = \frac{\partial I_D}{\partial V_{th}} \cdot \frac{\partial V_{th}}{\partial V_{BS}} \\
+      g_{mb} &= \left(-g_m\right) \cdot \left(-\frac{K_B}{2\sqrt{2V_F + V_{SB(Q)}}}\right) \\
+      g_{mb} &= g_m \frac{K_B}{2\sqrt{2V_F + V_{SB(Q)}}}
+    \end{align*}
+    The intrinsic gain of a single device is
+    \[
+      \frac{g_m}{g_o} \approx \frac{\frac{2 I_{D(Q)}}{V_{ov}}}{K_{CLM} I_{D(Q)}} = \frac{2}{K_{CLM} V_{ov}}
+    \]
+    In subthreshold \(g_m = \frac{I_{D(Q)}}{n V_T}\), the largest \(g_m\) per
+    unit current a MOSFET can give. The square law model is valid while
+    \(|v_{gs}| \ll 2 \left|\frac{f'}{f''}\right| = 2 \cdot \frac{K_P \frac{W}{L} V_{ov}}{K_P \frac{W}{L}} = 2V_{ov}\).
+  \item \textbf{Triode as a Resistor (Switch)}: For \(V_{DS} \ll 2V_{ov}\)
+    the quadratic term vanishes,
+    \begin{align*}
+      I_D &\approx K_P \frac{W}{L} V_{ov} V_{DS} \\
+      R_{on} &= \frac{V_{DS}}{I_D} = \frac{1}{K_P \frac{W}{L} (V_{GS} - V_{th})}
+    \end{align*}
+  \item \textbf{Capacitances}: In saturation, with overlap capacitance
+    \(C_{ov}\) per side:
+    \begin{align*}
+      C_{gs} &= \frac{2}{3} W L C_{ox} + C_{ov} \hspace{1cm}
+      C_{gd} = C_{ov} \\
+      f_T &= \frac{g_m}{2\pi (C_{gs} + C_{gd})} \approx \frac{g_m}{2\pi \cdot \frac{2}{3} W L C_{ox}} = \frac{3 K_P V_{ov}}{4\pi C_{ox} L^2}
+    \end{align*}
+    \(f_T\) is the frequency at which the short circuit current gain
+    \(\frac{i_d}{i_g} = \frac{g_m}{s(C_{gs} + C_{gd})}\) falls to unity.
+  \item \textbf{Noise}: thermal noise of the channel
+    \(\overline{i_n^2} = 4kT \cdot \frac{2}{3} g_m \cdot df\) and flicker noise
+    referred to the gate \(\overline{v_n^2} = \frac{K_f}{C_{ox} W L f} df\)
+    (Section~\ref{sec:theory_general_noise}).
+  \item \textbf{Circuit Analysis}:
+    \begin{itemize}
+      \item \textbf{Non-Linear Analysis (Q5, Q6, Q8)}: Use the square law
+        with the region checks \(V_{GS} \gtrless V_{th}\), \(V_{DS} \gtrless V_{ov}\).
+      \item \textbf{Linear Analysis (Q4, Q2)}: Use \(g_m\), \(g_{mb}\), \(g_o\),
+        \(C_{gs}\), \(C_{gd}\) evaluated at the Q5 bias point. \(I_G = 0\),
+        so the gate node draws no current in KCL.
+    \end{itemize}
+\end{itemize}
+
+\subsection{Question}
+An NMOS with \(K_P = 200\,\mu\)A/V\(^2\), \(V_{th} = 0.5\,\)V,
+\(K_{CLM} = 0.05\,\)V\(^{-1}\) and \(L = 0.5\,\mu\)m must carry
+\(I_D = 100\,\mu\)A at \(V_{ov} = 0.2\,\)V. Find \(W\), \(g_m\), \(g_o\), the
+intrinsic gain and the minimum \(V_{DS}\).
+\paragraph{Solution:}
+\begin{align*}
+  W &= \frac{2 I_D L}{K_P V_{ov}^2} = \frac{2 \cdot 100\,\mu\text{A} \cdot 0.5\,\mu\text{m}}{200\,\mu\text{A/V}^2 \cdot (0.2\,\text{V})^2} = 12.5\,\mu\text{m} \\
+  g_m &= \frac{2 I_D}{V_{ov}} = \frac{2 \cdot 100\,\mu\text{A}}{0.2\,\text{V}} = 1\,\text{mS} \\
+  g_o &\approx K_{CLM} I_D = 0.05 \cdot 100\,\mu\text{A} = 5\,\mu\text{S} \hspace{1cm} [r_o = 200\,\text{k}\Omega] \\
+  \frac{g_m}{g_o} &= \frac{1\,\text{mS}}{5\,\mu\text{S}} = 200 = \frac{2}{0.05 \cdot 0.2} \\
+  V_{DS,\min} &= V_{ov} = 0.2\,\text{V}
+\end{align*}
