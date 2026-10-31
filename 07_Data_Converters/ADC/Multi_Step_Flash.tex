@@ -6,27 +6,69 @@ residue \(V_{IN} - V_{DAC}\) is amplified by \(2^{n_1}\) and an \(n_2\)-bit fine
 finds the LSBs (\(n = n_1 + n_2\)). Multi-step repeats this \(m\) times.
 Comparators drop from \(2^n - 1\) to \((2^{n_1} - 1) + (2^{n_2} - 1)\).
 
+\subsubsection{Schematic}
+\begin{circuitfig}
+  \draw (0,0) rectangle (1.4,1.2) node[midway]{S/H};
+  \draw[->] (-1,0.6) node[left]{$V_{IN}$} -- (0,0.6);
+  \draw (1.4,0.6) -- (2.2,0.6) node[circ]{};
+  \draw (2.2,0.6) |- (2.8,-1.2); \draw (2.8,-1.8) rectangle (4.6,-0.6) node[midway, align=center]{$n_1$-bit\\flash};
+  \draw[->] (4.6,-1.2) -- (5.4,-1.2); \draw (5.4,-1.8) rectangle (6.8,-0.6) node[midway]{DAC};
+  \draw (6.8,-1.2) -| (7.6,0.3);
+  \draw (7.6,0.6) circle (0.3) node{$\Sigma$}; \node at (7.3,0.0) {\footnotesize $-$};
+  \draw[->] (2.2,0.6) -- (7.3,0.6);
+  \draw[->] (7.9,0.6) -- (8.5,0.6); \draw (8.5,0) rectangle (9.7,1.2) node[midway]{$\times 2^{n_1}$};
+  \draw[->] (9.7,0.6) -- node[above]{$V_{RES}$} (10.9,0.6); \draw (10.9,0) rectangle (12.7,1.2) node[midway, align=center]{$n_2$-bit\\flash};
+  \draw[->] (4.6,-1.4) -- (4.9,-1.4) |- (11.8,-2.4) node[below]{$D_1$};
+  \draw[->] (11.8,0) -- (11.8,-2.2); \node[right] at (11.8,-0.9) {$D_2$};
+\end{circuitfig}
+
 \subsubsection{Transfer Function}
-\textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}:
+\textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}, input
+\(V_{IN} \in [0, V_{REF})\), truncating quantisers:
 \begin{align*}
-  D_1 &= \left\lfloor \frac{V_{IN}}{V_{REF}} 2^{n_1} \right\rfloor \hspace{1cm}
-  V_{RES} = 2^{n_1}\left(V_{IN} - \frac{D_1}{2^{n_1}} V_{REF}\right) \in [0, V_{REF}) \\
+  D_1 &= \left\lfloor \frac{V_{IN}}{V_{REF}} 2^{n_1} \right\rfloor \hspace{1cm} \Rightarrow \hspace{1cm}
+  \frac{D_1}{2^{n_1}} V_{REF} \leq V_{IN} < \frac{D_1 + 1}{2^{n_1}} V_{REF} \\
+  V_{RES} &= 2^{n_1}\left(V_{IN} - \frac{D_1}{2^{n_1}} V_{REF}\right) \hspace{1cm}
+  0 \leq V_{RES} < 2^{n_1}\cdot\frac{V_{REF}}{2^{n_1}} = V_{REF} \\
   D_2 &= \left\lfloor \frac{V_{RES}}{V_{REF}} 2^{n_2} \right\rfloor \hspace{1cm}
   D = D_1 2^{n_2} + D_2
 \end{align*}
-Substituting:
-\(\frac{D}{2^n} V_{REF} = \frac{D_1}{2^{n_1}} V_{REF} + \frac{D_2}{2^{n}} V_{REF} \approx \frac{D_1}{2^{n_1}} V_{REF} + \frac{V_{RES}}{2^{n_1}} = V_{IN}\).
+Check (\(n = n_1 + n_2\)):
+\begin{align*}
+  \frac{D}{2^n} V_{REF} &= \frac{D_1 2^{n_2}}{2^{n_1 + n_2}} V_{REF} + \frac{D_2}{2^{n}} V_{REF} = \frac{D_1}{2^{n_1}} V_{REF} + \frac{1}{2^{n_1}}\cdot\frac{D_2}{2^{n_2}} V_{REF} \\
+  \frac{D_2}{2^{n_2}} V_{REF} &\approx V_{RES} \hspace{1cm} [\text{within one fine LSB, } \tfrac{V_{REF}}{2^{n_2}}] \\
+  \frac{D}{2^n} V_{REF} &\approx \frac{D_1}{2^{n_1}} V_{REF} + \frac{V_{RES}}{2^{n_1}} = \frac{D_1}{2^{n_1}} V_{REF} + V_{IN} - \frac{D_1}{2^{n_1}} V_{REF} = V_{IN}
+\end{align*}
+with error below \(\frac{1}{2^{n_1}}\cdot\frac{V_{REF}}{2^{n_2}} = \frac{V_{REF}}{2^n} = X_{LSB}\).
 
 \subsubsection{Analysis}
 \begin{enumerate}
   \item \textbf{Accuracy}: the coarse DAC and the residue amplifier must be
-    accurate to the full \(n\) bits; a coarse comparator error \(e\) pushes
-    \(V_{RES}\) outside \([0, V_{REF})\). Redundancy (gain \(2^{n_1 - 1}\), fine
-    range doubled, one extra fine bit) lets digital correction absorb
-    \(|e| < \frac{V_{REF}}{2^{n_1 + 1}}\).
-  \item \textbf{Count}: \(n = 8\), \(n_1 = n_2 = 4\): \(15 + 15 = 30\) comparators
-    instead of 255. Multi-step with \(m\) steps of \(\frac{n}{m}\) bits:
+    accurate to the full \(n\) bits (\(V_{RES}\) is \(2^{n_1}\) times the input
+    difference). A coarse comparator error that returns \(D_1 + 1\) for an
+    input just below the threshold gives
+    \(V_{RES} = 2^{n_1}\left(V_{IN} - \frac{D_1 + 1}{2^{n_1}} V_{REF}\right) < 0\): outside \([0, V_{REF})\)
+    and the fine flash saturates. \textbf{Redundancy}: amplify by \(2^{n_1 - 1}\)
+    instead, so an exact \(D_1\) leaves \(V_{RES} \in [0, \frac{V_{REF}}{2})\); offset that by
+    \(\frac{V_{REF}}{4}\) (to \([\frac{V_{REF}}{4}, \frac{3V_{REF}}{4})\)) and give the fine flash one extra
+    bit. A coarse error \(e\) (input referred) moves the residue by
+    \(2^{n_1 - 1} e\), which stays inside \([0, V_{REF})\) while
+    \(2^{n_1 - 1}|e| < \frac{V_{REF}}{4}\), i.e. \(|e| < \frac{V_{REF}}{2^{n_1 + 1}}\) (half a coarse
+    LSB); digital correction adds the fine code with the overlap.
+  \item \textbf{Count}: \(n = 8\), \(n_1 = n_2 = 4\):
+    \((2^4 - 1) + (2^4 - 1) = 15 + 15 = 30\) comparators instead of
+    \(2^8 - 1 = 255\). Multi-step with \(m\) steps of \(\frac{n}{m}\) bits:
     \(m(2^{n/m} - 1)\).
   \item \textbf{Speed}: two (or \(m\)) sequential comparisons plus DAC and
     amplifier settling per sample.
 \end{enumerate}
+
+\subsubsection{Question}
+\(n_1 = n_2 = 4\), \(V_{REF} = 1\,V\), \(V_{IN} = 0.3\,V\). Find \(D_1\), \(V_{RES}\), \(D_2\), \(D\).
+\paragraph{Solution:}
+\begin{align*}
+  D_1 &= \lfloor 0.3 \cdot 16 \rfloor = \lfloor 4.8 \rfloor = 4 \\
+  V_{RES} &= 16\left(0.3 - \frac{4}{16}\cdot 1\right) = 16 \cdot (0.3 - 0.25) = 16 \cdot 0.05 = 0.8\,V \\
+  D_2 &= \lfloor 0.8 \cdot 16 \rfloor = \lfloor 12.8 \rfloor = 12 \\
+  D &= 4 \cdot 16 + 12 = 76 \hspace{1cm} \left(\lfloor 0.3 \cdot 256 \rfloor = \lfloor 76.8 \rfloor = 76\ \checkmark\right)
+\end{align*}
