@@ -28,69 +28,106 @@ load and bandwidth by \(C_L\).
   \draw (0,1.2) node[circ]{} node[left]{$V_x$};
   \draw (M3.G) -- (M4.G);
   \draw (M3.G) |- (0,1.6);
-  \draw (3,1.2) node[circ]{} -- (5,1.2) node[circ]{} node[above]{$V_{out}$} to[capacitor, l={$C_L$}] (5,-0.6) node[ground]{};
+  \draw (3,1.2) node[circ]{} -- (5.6,1.2) node[circ]{} node[above]{$V_{out}$} to[capacitor, l={$C_L$}] (5.6,-0.6) node[ground]{};
 \end{circuitfig}
 
 \subsubsection{Transfer Function}
 \begin{enumerate}
   \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}:
-    \(I_{D5} = I_T\), \(I_{D1} = I_{D2} = I_{D3} = I_{D4} = \frac{I_T}{2}\) at
-    \(V_{id} = 0\). \(V_x = V_{dd} - |V_{GS3}|\) and, by symmetry, \(V_{OUT} = V_x\)
-    (zero systematic offset). Saturation bounds:
+    at \(V_{ID} = 0\), \(I_{D5} = I_T\) splits equally,
+    \(I_{D1} = I_{D2} = I_{D3} = I_{D4} = \frac{I_T}{2}\). The diode \(M_3\)
+    sets \(V_X = V_{dd} - |V_{GS3}|\). \(M_4\) carries the same current as
+    \(M_3\) with the same \(V_{SG}\), so (with \(K_{CLM} \neq 0\)) it must also have
+    the same \(V_{SD}\): \(V_{OUT} = V_X\) (zero systematic offset). Saturation bounds:
     \begin{align*}
-      V_{OUT,\max} &= V_{dd} - |V_{ov4}| \hspace{1cm}
-      V_{OUT,\min} = V_{ic} - V_{th} \\
-      V_{ic,\min} &= V_{GS1} + V_{ov5} \hspace{1cm}
-      V_{ic,\max} = V_{dd} - |V_{GS3}| + V_{th}
+      M_4: \hspace{0.3cm} V_{dd} - V_{OUT} &\geq |V_{ov4}| &&\Rightarrow\hspace{0.3cm} V_{OUT,\max} = V_{dd} - |V_{ov4}| \\
+      M_2: \hspace{0.3cm} V_{OUT} - V_S &\geq V_{GS2} - V_{th} &&\Rightarrow\hspace{0.3cm} V_{OUT,\min} = V_{IC} - V_{th} \\
+      M_5: \hspace{0.3cm} V_S = V_{IC} - V_{GS1} &\geq V_{ov5} &&\Rightarrow\hspace{0.3cm} V_{IC,\min} = V_{GS1} + V_{ov5} \\
+      M_1: \hspace{0.3cm} V_X - V_S &\geq V_{GS1} - V_{th} &&\Rightarrow\hspace{0.3cm} V_{IC,\max} = V_X + V_{th} = V_{dd} - |V_{GS3}| + V_{th}
     \end{align*}
   \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}:
-    differential drive \(V_{i1} = \frac{V_{id}}{2}\), \(V_{i2} = -\frac{V_{id}}{2}\),
-    \(V_s \approx 0\), \(C_x\) the capacitance at \(V_x\) (\(\approx C_{gs3} + C_{gs4}\)).\\
-    Applying KCL at \(V_x\) (current leaves through \(M_1\) and the diode \(M_3\)):
+    differential drive \(V_{i1} = \frac{V_{id}}{2}\), \(V_{i2} = -\frac{V_{id}}{2}\);
+    \(I_{d1} + I_{d2} = 0\) as in Section~\ref{sec:amp_diffpair}, so
+    \(V_s \approx 0\) (exact only for a symmetric load; the error is of order
+    \(g_o/g_m\)). \(C_x\) is the capacitance at \(V_x\) (\(\approx C_{gs3} + C_{gs4}\)).\\
+    Applying KCL at \(V_x\) (current leaves through \(M_1\), \(I_{d1} = g_{m1} V_{i1} + g_{o1} V_x\),
+    and through the diode \(M_3\), a conductance \(g_{m3} + g_{o3}\) to AC ground):
     \begin{align*}
       g_{m1} V_{i1} + g_{o1} V_x + (g_{m3} + g_{o3}) V_x + sC_x V_x &= 0 \\
+      V_x (g_{m3} + g_{o3} + g_{o1} + sC_x) &= -g_{m1} V_{i1} \\
       V_x &= -\frac{g_{m1}}{g_{m3} + g_{o3} + g_{o1} + sC_x} V_{i1} \tag{1}
     \end{align*}
-    Applying KCL at \(V_{out}\) (\(M_4\) sources \(g_{m4}(0 - V_x) + g_{o4}(0 - V_{out})\) into the node):
+    Applying KCL at \(V_{out}\) (\(M_4\) sources \(g_{m4}(0 - V_x) + g_{o4}(0 - V_{out})\) into the node,
+    \(M_2\) and \(C_L\) take current out):
     \begin{align*}
       g_{m2} V_{i2} + g_{o2} V_{out} + sC_L V_{out} &= -g_{m4} V_x - g_{o4} V_{out} \\
       V_{out}(g_{o2} + g_{o4} + sC_L) &= -g_{m2} V_{i2} - g_{m4} V_x \tag{2}
     \end{align*}
-    Substituting (1) into (2) with \(g_{m1} = g_{m2} = g_m\), \(g_{m3} = g_{m4}\),
-    and \(g_{o1}, g_{o3} \ll g_{m3}\):
+    With \(g_{m1} = g_{m2} = g_m\), \(g_{m3} = g_{m4}\) and
+    \(g_{o1}, g_{o3} \ll g_{m3}\), (1) becomes
+    \(V_x = -\frac{g_m}{g_{m3} + sC_x} \cdot \frac{V_{id}}{2}\), and
+    \(-g_{m2} V_{i2} = g_m \frac{V_{id}}{2}\). Substituting into (2):
     \begin{align*}
-      V_{out}(g_{o2} + g_{o4} + sC_L) &= g_m \frac{V_{id}}{2} + \frac{g_{m3}\, g_m}{g_{m3} + sC_x} \cdot \frac{V_{id}}{2} \\
-      V_{out}(g_{o2} + g_{o4} + sC_L) &= \frac{g_m V_{id}}{2} \cdot \frac{2 g_{m3} + sC_x}{g_{m3} + sC_x} \\
-      A(s) = \frac{V_{out}}{V_{id}} &= \frac{g_m}{g_{o2} + g_{o4} + sC_L} \cdot \frac{1 + \frac{sC_x}{2 g_{m3}}}{1 + \frac{sC_x}{g_{m3}}}
+      V_{out}(g_{o2} + g_{o4} + sC_L) &= g_m \frac{V_{id}}{2} - g_{m3}\left(-\frac{g_m}{g_{m3} + sC_x} \cdot \frac{V_{id}}{2}\right) \\
+      V_{out}(g_{o2} + g_{o4} + sC_L) &= \frac{g_m V_{id}}{2}\left(1 + \frac{g_{m3}}{g_{m3} + sC_x}\right) = \frac{g_m V_{id}}{2} \cdot \frac{2 g_{m3} + sC_x}{g_{m3} + sC_x} \\
+      \frac{V_{out}}{V_{id}} &= \frac{g_m}{g_{o2} + g_{o4} + sC_L} \cdot \frac{g_{m3} + \frac{sC_x}{2}}{g_{m3} + sC_x} \hspace{1cm} \left[\tfrac{1}{2}(2 g_{m3} + sC_x) = g_{m3} + \tfrac{sC_x}{2}\right] \\
+      A(s) = \frac{V_{out}}{V_{id}} &= \frac{g_m}{g_{o2} + g_{o4} + sC_L} \cdot \frac{1 + \frac{sC_x}{2 g_{m3}}}{1 + \frac{sC_x}{g_{m3}}} \hspace{1cm} [\text{dividing by } g_{m3}]
     \end{align*}
 \end{enumerate}
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \textbf{DC Gain}: \(A_{V0} = \frac{g_{m1}}{g_{o2} + g_{o4}} = \frac{\frac{2 I_D}{V_{ov1}}}{(K_{CLM,n} + K_{CLM,p}) I_D} = \frac{2}{V_{ov1}(K_{CLM,n} + K_{CLM,p})}\).
-    \(V_{i1}\) (gate of \(M_1\), on the diode side) is the non-inverting input.
-  \item \textbf{Poles and Zero}: dominant \(p_1 = \frac{g_{o2} + g_{o4}}{C_L}\);
-    mirror pole \(p_2 = \frac{g_{m3}}{C_x}\); LHP zero \(z = \frac{2 g_{m3}}{C_x} = 2 p_2\)
+  \item \textbf{DC Gain}: \(s = 0\) in \(A(s)\); with \(g_{m1} = \frac{2 I_D}{V_{ov1}}\),
+    \(g_{o2} = K_{CLM,n} I_D\), \(g_{o4} = K_{CLM,p} I_D\) and \(I_D = \frac{I_T}{2}\):
+    \[
+      A_{V0} = \frac{g_{m1}}{g_{o2} + g_{o4}} = \frac{\frac{2 I_D}{V_{ov1}}}{(K_{CLM,n} + K_{CLM,p}) I_D} = \frac{2}{V_{ov1}(K_{CLM,n} + K_{CLM,p})}
+    \]
+    \(A_{V0} > 0\) for \(V_{id} = V_{i1} - V_{i2}\), so \(V_{i1}\) (gate of
+    \(M_1\), on the diode side) is the non-inverting input.
+  \item \textbf{Poles and Zero}: the roots of the denominator and numerator of \(A(s)\):
+    \begin{align*}
+      g_{o2} + g_{o4} + sC_L = 0 &\Rightarrow s = -p_1, \hspace{0.3cm} p_1 = \frac{g_{o2} + g_{o4}}{C_L} \hspace{0.5cm} \text{(dominant)} \\
+      1 + \frac{sC_x}{g_{m3}} = 0 &\Rightarrow s = -p_2, \hspace{0.3cm} p_2 = \frac{g_{m3}}{C_x} \hspace{0.5cm} \text{(mirror pole)} \\
+      1 + \frac{sC_x}{2 g_{m3}} = 0 &\Rightarrow s = -z, \hspace{0.3cm} z = \frac{2 g_{m3}}{C_x} = 2 p_2 \hspace{0.5cm} \text{(LHP zero)}
+    \end{align*}
     (the fast path through \(M_2\) bypasses the mirror).
-  \item \textbf{Gain-Bandwidth}: \(GB = \frac{A_{V0}\, p_1}{2\pi} = \frac{g_{m1}}{2\pi C_L}\).
-  \item \textbf{Slew Rate (Q6)}: for a large \(V_{id}\) all of \(I_T\) flows in one
-    side and charges or discharges \(C_L\): \(SR = \frac{I_T}{C_L}\).
-  \item \textbf{Common Mode Gain}: \(I_{d1} = I_{d2} = \frac{g_{o5}}{2} V_{ic}\)
-    (tail of conductance \(g_{o5}\), Section~\ref{sec:amp_diffpair}). (1) gives
-    \(V_x = -\frac{I_{d1}}{g_{m3} + g_{o3}}\); at the output
+  \item \textbf{Gain-Bandwidth}: well above \(p_1\) and below \(p_2\),
+    \(|A(j\omega)| \approx \frac{g_{m1}}{\omega C_L}\), which is \(1\) at
+    \(\omega = \frac{g_{m1}}{C_L}\):
+    \(GB = \frac{A_{V0}\, p_1}{2\pi} = \frac{1}{2\pi} \cdot \frac{g_{m1}}{g_{o2} + g_{o4}} \cdot \frac{g_{o2} + g_{o4}}{C_L} = \frac{g_{m1}}{2\pi C_L}\).
+  \item \textbf{Slew Rate (Q6)}: for a large \(V_{ID}\) all of \(I_T\) flows in one
+    side. \(V_{ID} > 0\): \(M_1\) takes \(I_T\), \(M_4\) mirrors it and \(M_2\) is
+    off, so \(I_T\) charges \(C_L\). \(V_{ID} < 0\): \(M_2\) takes \(I_T\) and
+    \(M_3\), \(M_4\) are off, so \(I_T\) discharges \(C_L\). Either way
+    \(SR = \frac{dV_{OUT}}{dt} = \frac{I_T}{C_L}\).
+  \item \textbf{Common Mode Gain}: \(V_{i1} = V_{i2} = V_{ic}\) and
+    \(I_{d1} = I_{d2} \approx \frac{g_{o5}}{2} V_{ic}\) (tail of conductance
+    \(g_{o5} \ll g_{m}\), Section~\ref{sec:amp_diffpair}). At DC (\(s = 0\)) and with
+    \(g_{o1}\) neglected, (1) gives \(V_x = -\frac{I_{d1}}{g_{m3} + g_{o3}}\); at the
+    output (as (2), with \(I_{d2}\) the whole \(M_2\) current)
     \(I_{d2} + g_{o4} V_{out} = -g_{m4} V_x\):
     \begin{align*}
-      g_{o4} V_{out} &= I_{d1}\left(\frac{g_{m4}}{g_{m3} + g_{o3}} - 1\right) \approx -\frac{g_{o3}}{g_{m3}} I_{d1} \\
-      A_c &= \frac{V_{out}}{V_{ic}} \approx -\frac{g_{o3}}{g_{o4}} \cdot \frac{g_{o5}}{2 g_{m3}} = -\frac{g_{o5}}{2 g_{m3}} \hspace{1cm}
-      CMRR = \frac{A_{V0}}{|A_c|} = \frac{2 g_{m1} g_{m3}}{g_{o5}(g_{o2} + g_{o4})}
+      g_{o4} V_{out} &= -g_{m4} V_x - I_{d2} = \frac{g_{m4}}{g_{m3} + g_{o3}} I_{d1} - I_{d1} \\
+      g_{o4} V_{out} &= I_{d1}\left(\frac{g_{m4}}{g_{m3} + g_{o3}} - 1\right) = I_{d1} \frac{g_{m4} - g_{m3} - g_{o3}}{g_{m3} + g_{o3}} \approx -\frac{g_{o3}}{g_{m3}} I_{d1} \hspace{0.5cm} [g_{m4} = g_{m3}] \\
+      V_{out} &\approx -\frac{g_{o3}}{g_{o4}\, g_{m3}} \cdot \frac{g_{o5}}{2} V_{ic} \\
+      A_c &= \frac{V_{out}}{V_{ic}} \approx -\frac{g_{o3}}{g_{o4}} \cdot \frac{g_{o5}}{2 g_{m3}} = -\frac{g_{o5}}{2 g_{m3}} \hspace{0.5cm} [g_{o3} = g_{o4}] \\
+      CMRR &= \frac{A_{V0}}{|A_c|} = \frac{g_{m1}}{g_{o2} + g_{o4}} \cdot \frac{2 g_{m3}}{g_{o5}} = \frac{2 g_{m1} g_{m3}}{g_{o5}(g_{o2} + g_{o4})}
     \end{align*}
-  \item \textbf{Phase Margin} in unity feedback: \(PM = 90^\circ - \tan^{-1}\frac{GB}{f_{p2}} + \tan^{-1}\frac{GB}{f_z}\).
+  \item \textbf{Phase Margin} in unity feedback: the loop gain \(A(j\omega)\) at
+    \(\omega = 2\pi GB\) has phase
+    \(-\tan^{-1}\frac{GB}{f_{p1}} - \tan^{-1}\frac{GB}{f_{p2}} + \tan^{-1}\frac{GB}{f_z}\)
+    with \(\tan^{-1}\frac{GB}{f_{p1}} \approx 90^\circ\) (\(GB \gg f_{p1}\)), so
+    \[
+      PM = 180^\circ + \angle A = 90^\circ - \tan^{-1}\frac{GB}{f_{p2}} + \tan^{-1}\frac{GB}{f_z}
+    \]
 \end{enumerate}
 
 \subsubsection{Design}
 \begin{enumerate}
-  \item \(I_T = SR \cdot C_L\).
-  \item \(g_{m1} = 2\pi GB \cdot C_L\), \(V_{ov1} = \frac{2 (I_T/2)}{g_{m1}} = \frac{I_T}{g_{m1}}\),
+  \item \(I_T = SR \cdot C_L\) (from \(SR = \frac{I_T}{C_L}\)).
+  \item \(g_{m1} = 2\pi GB \cdot C_L\) (from \(GB = \frac{g_{m1}}{2\pi C_L}\)),
+    \(V_{ov1} = \frac{2 I_D}{g_{m1}} = \frac{2 (I_T/2)}{g_{m1}} = \frac{I_T}{g_{m1}}\), and from
+    \(\frac{I_T}{2} = \frac{K_{P,n}}{2}\frac{W_1}{L_1} V_{ov1}^2\):
     \(\frac{W_1}{L_1} = \frac{I_T}{K_{P,n} V_{ov1}^2}\).
   \item Check \(A_{V0} = \frac{2}{V_{ov1}(K_{CLM,n} + K_{CLM,p})}\); if too low,
     longer \(L\) (smaller \(K_{CLM}\)) or a cascoded topology.
@@ -103,9 +140,9 @@ load and bandwidth by \(C_L\).
 \(K_{P,n} = 200\,\mu\)A/V\(^2\), \(K_{CLM,n} = K_{CLM,p} = 0.1\,\)V\(^{-1}\).
 \paragraph{Solution:}
 \begin{align*}
-  I_T &= 50\,V/\mu s \cdot 2\,pF = 100\,\mu A \hspace{1cm}
-  g_{m1} = 2\pi \cdot 50\,MHz \cdot 2\,pF = 628\,\mu S \\
-  V_{ov1} &= \frac{100\,\mu A}{628\,\mu S} = 0.159\,V \hspace{1cm}
-  \frac{W_1}{L_1} = \frac{100\,\mu A}{200\,\mu A/V^2 \cdot 0.159^2} = 19.8 \\
-  A_{V0} &= \frac{2}{0.159 \cdot 0.2} = 62.9 \hspace{1cm} (36\,dB)
+  I_T &= SR \cdot C_L = 50 \times 10^{6}\,V/s \cdot 2 \times 10^{-12}\,F = 100\,\mu A \\
+  g_{m1} &= 2\pi GB \cdot C_L = 2\pi \cdot 50 \times 10^{6}\,Hz \cdot 2 \times 10^{-12}\,F = 628\,\mu S \\
+  V_{ov1} &= \frac{I_T}{g_{m1}} = \frac{100\,\mu A}{628\,\mu S} = 0.159\,V \\
+  \frac{W_1}{L_1} &= \frac{I_T}{K_{P,n} V_{ov1}^2} = \frac{100\,\mu A}{200\,\mu A/V^2 \cdot (0.159\,V)^2} = \frac{100}{200 \cdot 0.0253} = 19.7 \\
+  A_{V0} &= \frac{2}{V_{ov1}(K_{CLM,n} + K_{CLM,p})} = \frac{2}{0.159 \cdot 0.2} = 62.8 \hspace{1cm} (20\log_{10} 62.8 = 36\,dB)
 \end{align*}
