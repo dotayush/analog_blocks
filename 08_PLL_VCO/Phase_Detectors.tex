@@ -46,3 +46,16 @@ cycle must be zero; with a minimum reset pulse \(t_{on}\) on both outputs,
   \theta_e &= 2\pi e \frac{t_{on}}{T_{ref}}
 \end{align*}
 a static phase offset and a reference spur.
+
+\subsection{Question}
+An XOR detector on \(V_{dd} = 1.8\,V\), and a PFD with \(I_{cp} = 100\,\mu A\),
+\(f_{ref} = 10\,MHz\), sink mismatch \(e = 5\%\), reset pulse \(t_{on} = 100\,ps\).
+Find both gains and the PFD static phase offset.
+\paragraph{Solution:}
+\begin{align*}
+  K_{pd,XOR} &= \frac{V_{dd}}{\pi} = \frac{1.8\,V}{3.1416} = 0.573\,V/rad \\
+  K_{pd,PFD} &= \frac{I_{cp}}{2\pi} = \frac{100\,\mu A}{6.2832} = 15.9\,\mu A/rad \\
+  T_{ref} &= \frac{1}{f_{ref}} = \frac{1}{10^7\,Hz} = 100\,ns \\
+  \theta_e &= 2\pi e \frac{t_{on}}{T_{ref}} = 6.2832 \cdot 0.05 \cdot \frac{100\,ps}{100\,ns} = 0.31416 \cdot 10^{-3} = 3.14 \times 10^{-4}\,rad = 0.018^\circ
+\end{align*}
+
