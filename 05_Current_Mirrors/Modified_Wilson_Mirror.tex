@@ -437,7 +437,7 @@ assuming $V_{L,\max} = V_{cc}$
 
   % current transfer function: Is injected into Vz
   sol_ct = solve([eq1, eq2, eq3, eq4_vt], [Vout, Vx, Vy, Vz]);
-  Iout = sol_ct.Vout * G5;
+  Iout = -sol_ct.Vout * G5; % current from AC ground through G5 into the drain
   curr_transfer = simplify(Iout/Is);
   % curr_transfer = collect(curr_transfer, G4*G5);
   printf('=== Current Transfer Results ===\n');

@@ -314,14 +314,14 @@ that can be connected at the output.
 
   % current transfer function: Is injected into Vx
   sol_ct = solve([eq1, eq2_vt], [Vout, Vx]);
-  Iout = sol_ct.Vout * G3;
+  Iout = -sol_ct.Vout * G3; % current from AC ground through G3 into the drain
   curr_transfer = simplify(Iout/Is);
   printf('=== Current Transfer Results ===\n');
   pretty(curr_transfer)
   printf('\n');
 
   % input impedance: Itest injected into Vx
-  eq2_zin = Vx*(G2 + go0 + gm0) + Itest == 0;
+  eq2_zin = Vx*(G2 + go0 + gm0) - Itest == 0;
   sol_zin = solve([eq1, eq2_zin], [Vout, Vx]);
   zin = simplify(sol_zin.Vx/Itest);
   % zin = subs(zin, 'G2', 0);
@@ -331,7 +331,7 @@ that can be connected at the output.
   printf('\n');
 
   % output impedance: Itest injected into Vout
-  eq1_zout = Vout*(G3 + go1) + Vx*gm1 + Itest == 0;
+  eq1_zout = Vout*(G3 + go1) + Vx*gm1 - Itest == 0;
   sol_zout = solve([eq1_zout, eq2], [Vout, Vx]);
   zout = simplify(sol_zout.Vout/Itest);
   % zout = subs(zout, 'G2', 0);
