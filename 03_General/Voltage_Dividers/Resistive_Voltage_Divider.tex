@@ -22,8 +22,10 @@ commonly used circuit in electronics.
 \end{circuitfig}
 
 \subsubsection{Transfer Function}
-Only linear devices are present, so Q5 and Q4 give the same result.
-Applying KCL at $V_{out}$ we get:
+Only linear devices are present, so the \textbf{Large Signal, Time Domain,
+DC Input Analysis (Q5)} and the \textbf{Small Signal, Frequency Domain, AC
+Input Analysis (Q4)} give the same result. Applying KCL at $V_{out}$ (no load
+current leaves the node) we get:
 \[
   (V_{out} - V_{cc}){G_1} + (V_{out} - V_{ee}){G_2} = 0
 \]
@@ -35,6 +37,7 @@ Applying KCL at $V_{out}$ we get:
       V_{out}G_1 - V_{cc}G_1 + V_{out}G_2 &= 0 \\
       V_{out}(G_1 + G_2) - V_{cc}G_1 &= 0 \\
       V_{out}(G_1 + G_2) &= V_{cc}G_1 \\
+      V_{out} &= V_{cc}\frac{G_1}{G_1 + G_2} \hspace{1cm} \text{(Dividing both sides by \(G_1 + G_2\))} \\
       H_1(s) = \frac{N_1(s)}{D_1(s)} = \frac{V_{out_1}}{V_{cc}} &= \frac{G_1}{G_1 + G_2}
     \end{align*}
   \item Due to \(V_{ee}\) alone (\(V_{cc} = 0V\)):
@@ -43,13 +46,17 @@ Applying KCL at $V_{out}$ we get:
       V_{out}G_1 + V_{out}G_2 - V_{ee}G_2 &= 0 \\
       V_{out}(G_1 + G_2) - V_{ee}G_2 &= 0 \\
       V_{out}(G_1 + G_2) &= V_{ee}G_2 \\
+      V_{out} &= V_{ee}\frac{G_2}{G_1 + G_2} \hspace{1cm} \text{(Dividing both sides by \(G_1 + G_2\))} \\
       H_2(s) = \frac{N_2(s)}{D_2(s)} = \frac{V_{out_2}}{V_{ee}} &= \frac{G_2}{G_1 + G_2}
     \end{align*}
 \end{enumerate}
 \paragraph{Total Output:}
 \begin{align*}
   V_{out} &= V_{out_1} + V_{out_2} \\
-  V_{out} &= V_{cc} \frac{G_1}{G_1 + G_2} + V_{ee} \frac{G_2}{G_1 + G_2}
+  V_{out} &= V_{cc} \frac{G_1}{G_1 + G_2} + V_{ee} \frac{G_2}{G_1 + G_2} \\
+  V_{out} &= V_{cc} \frac{\frac{1}{R_1}}{\frac{1}{R_1} + \frac{1}{R_2}} + V_{ee} \frac{\frac{1}{R_2}}{\frac{1}{R_1} + \frac{1}{R_2}} \hspace{1cm} \text{(Substituting \(G_1 = \frac{1}{R_1}\) and \(G_2 = \frac{1}{R_2}\))} \\
+  V_{out} &= V_{cc} \frac{\frac{1}{R_1}}{\frac{R_1 + R_2}{R_1 R_2}} + V_{ee} \frac{\frac{1}{R_2}}{\frac{R_1 + R_2}{R_1 R_2}} \\
+  V_{out} &= V_{cc} \frac{R_2}{R_1 + R_2} + V_{ee} \frac{R_1}{R_1 + R_2}
 \end{align*}
 
 \subsubsection{Analysis}
@@ -57,18 +64,24 @@ Applying KCL at $V_{out}$ we get:
   \item \textbf{Resistor Ratio (\(\frac{G_1}{G_2}\)):}
     From KCL at \(V_{out}\):
     \begin{align*}
-      (V_{out} - V_{cc})G_1 - (V_{ee} - V_{out})G_2 &= 0 \\
+      (V_{out} - V_{cc})G_1 + (V_{out} - V_{ee})G_2 &= 0 \\
+      (V_{out} - V_{cc})G_1 - (V_{ee} - V_{out})G_2 &= 0 \hspace{1cm} \text{(Writing \(V_{out} - V_{ee} = -(V_{ee} - V_{out})\))} \\
       (V_{out} - V_{cc})G_1 &= (V_{ee} - V_{out})G_2 \\
+      \frac{(V_{out} - V_{cc})G_1}{(V_{out} - V_{cc})G_2} &= \frac{(V_{ee} - V_{out})G_2}{(V_{out} - V_{cc})G_2} \hspace{1cm} \text{(Dividing both sides by \((V_{out} - V_{cc})G_2\))} \\
       \frac{G_1}{G_2} &= \frac{V_{ee} - V_{out}}{V_{out} - V_{cc}} \\
-      \frac{R_2}{R_1} &= \frac{V_{ee} - V_{out}}{V_{out} - V_{cc}} \hspace{1cm} \text{(Substituting \(G_1 = \frac{1}{R_1}\) and \(G_2 = \frac{1}{R_2}\))}
+      \frac{\frac{1}{R_1}}{\frac{1}{R_2}} &= \frac{V_{ee} - V_{out}}{V_{out} - V_{cc}} \hspace{1cm} \text{(Substituting \(G_1 = \frac{1}{R_1}\) and \(G_2 = \frac{1}{R_2}\))} \\
+      \frac{R_2}{R_1} &= \frac{V_{ee} - V_{out}}{V_{out} - V_{cc}}
     \end{align*}
-  \item \textbf{Impedance's:}
-    \paragraph{At Input:}
+  \item \textbf{Impedances:}
+    \paragraph{At Input:} Looking in from \(V_{cc}\) with \(V_{ee}\) shorted
+    (\(0V\)) and the output unloaded, \(G_1\) and \(G_2\) are in series:
       \begin{align*}
         Z_{in} &= \frac{1}{G_1} + \frac{1}{G_2} \\
         Z_{in} &= R_1 + R_2 \hspace{1cm} \text{(Substituting \(G_1 = \frac{1}{R_1}\) and \(G_2 = \frac{1}{R_2}\))}
       \end{align*}
-    \paragraph{At Output:}
+    \paragraph{At Output:} Looking in from \(V_{out}\) with both sources
+    shorted (\(0V\)), \(G_1\) and \(G_2\) are both connected from \(V_{out}\)
+    to ground, so they are in parallel and their conductances add:
       \begin{align*}
         Z_{out} &= \frac{1}{G_1 + G_2} \\
         Z_{out} &= \frac{1}{\frac{1}{R_1} + \frac{1}{R_2}} \hspace{1cm} \text{(Substituting \(G_1 = \frac{1}{R_1}\) and \(G_2 = \frac{1}{R_2}\))} \\
@@ -90,7 +103,8 @@ Design a resistive voltage divider to step down a \(10V\) supply to
 \(3.3V\). Calculate the input and output impedance of the voltage divider.
 \paragraph{Solution:}
 \begin{enumerate}
-  \item Calculate the resistor ratio (\(\frac{R_2}{R_1}\)):
+  \item Calculate the resistor ratio (\(\frac{R_2}{R_1}\)) with
+    \(V_{cc} = 10V\), \(V_{out} = 3.3V\) and \(V_{ee} = 0V\) (ground):
     \begin{align*}
       \frac{R_2}{R_1} &= \frac{V_{ee} - V_{out}}{V_{out} - V_{cc}} \\
       &= \frac{0V - 3.3V}{3.3V - 10V} \\
@@ -104,6 +118,13 @@ Design a resistive voltage divider to step down a \(10V\) supply to
       &= \frac{10 k\Omega}{0.4925} \\
       R_1 &\approx 20.3 k\Omega
     \end{align*}
+  \item Verifying the output voltage:
+    \begin{align*}
+      V_{out} &= V_{cc}\frac{R_2}{R_1 + R_2} + V_{ee}\frac{R_1}{R_1 + R_2} \\
+      &= 10V \cdot \frac{10 k\Omega}{20.3 k\Omega + 10 k\Omega} + 0V \cdot \frac{20.3 k\Omega}{20.3 k\Omega + 10 k\Omega} \\
+      &= 10V \cdot \frac{10}{30.3} \\
+      V_{out} &\approx 3.30V
+    \end{align*}
   \item Calculating Input and Output Impedances:
     \[
         \begin{aligned}
@@ -116,8 +137,8 @@ Design a resistive voltage divider to step down a \(10V\) supply to
         \begin{aligned}
           Z_{out} &= \frac{R_1 R_2}{R_1 + R_2} \\
           Z_{out} &= \frac{(20.3 k\Omega)(10 k\Omega)}{20.3 k\Omega + 10 k\Omega} \\
-          Z_{out} &\approx 6.77 k\Omega
+          Z_{out} &= \frac{203 (k\Omega)^2}{30.3 k\Omega} \\
+          Z_{out} &\approx 6.70 k\Omega
         \end{aligned}
       \]
 \end{enumerate}
-
