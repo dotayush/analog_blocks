@@ -27,17 +27,26 @@ a voltage buffer.
       V_{in} - V_{out} - V_{th} &= \sqrt{\frac{V_{out} G_L}{k_n}} \\
       V_{out} &= V_{in} - V_{th} - \sqrt{\frac{V_{out} G_L}{k_n}} = V_{in} - V_{th} - V_{ov}
     \end{align*}
-    With \(u = \sqrt{V_{out}}\): \(u^2 + \sqrt{\frac{G_L}{k_n}} u - (V_{in} - V_{th}) = 0\),
-    \[
-      V_{out} = \left(\frac{-\sqrt{\frac{G_L}{k_n}} + \sqrt{\frac{G_L}{k_n} + 4(V_{in} - V_{th})}}{2}\right)^2
-    \]
+    With \(u = \sqrt{V_{out}}\) (so \(V_{out} = u^2\)):
+    \begin{align*}
+      u^2 &= V_{in} - V_{th} - \sqrt{\frac{G_L}{k_n}} u \\
+      u^2 + \sqrt{\frac{G_L}{k_n}} u - (V_{in} - V_{th}) &= 0 \\
+      u &= \frac{-\sqrt{\frac{G_L}{k_n}} + \sqrt{\left(\sqrt{\frac{G_L}{k_n}}\right)^2 + 4(V_{in} - V_{th})}}{2} \hspace{1cm} [u \geq 0] \\
+      V_{out} = u^2 &= \left(\frac{-\sqrt{\frac{G_L}{k_n}} + \sqrt{\frac{G_L}{k_n} + 4(V_{in} - V_{th})}}{2}\right)^2
+    \end{align*}
     \(V_{th}\) itself rises with \(V_{out}\) through the body effect
-    (\(V_{SB} = V_{out}\)). Saturation needs \(V_{dd} - V_{out} \geq V_{ov}\),
-    i.e. \(V_{in} \leq V_{dd} + V_{th}\).
+    (\(V_{SB} = V_{out}\)). Saturation needs \(V_{DS} \geq V_{ov}\):
+    \begin{align*}
+      V_{dd} - V_{out} &\geq V_{in} - V_{out} - V_{th} \\
+      V_{in} &\leq V_{dd} + V_{th}
+    \end{align*}
   \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}: \(V_d = 0\), \(V_b = 0\).\\
-    Applying KCL at \(V_{out}\) (the drain current arrives at the source node):
+    Applying KCL at \(V_{out}\) (the drain current
+    \(I_d = g_m V_{gs} + g_{mb} V_{bs} + g_o V_{ds}\) arrives at the source node,
+    with \(V_{gs} = V_{in} - V_{out}\), \(V_{bs} = 0 - V_{out}\), \(V_{ds} = 0 - V_{out}\)):
     \begin{align*}
       V_{out}(G_L + sC_L) &= g_m (V_{in} - V_{out}) + g_{mb}(0 - V_{out}) + g_o (0 - V_{out}) \\
+      V_{out} G_L + V_{out} sC_L + g_m V_{out} + g_{mb} V_{out} + g_o V_{out} &= g_m V_{in} \\
       V_{out}(G_L + g_m + g_{mb} + g_o + sC_L) &= g_m V_{in} \\
       H(s) = \frac{V_{out}}{V_{in}} &= \frac{g_m}{g_m + g_{mb} + g_o + G_L + sC_L}
     \end{align*}
@@ -47,23 +56,26 @@ a voltage buffer.
 \begin{enumerate}
   \item \textbf{DC Gain}:
     \[
-      A_{V0} = \frac{g_m}{g_m + g_{mb} + g_o + G_L} \xrightarrow{G_L \to 0} \frac{g_m}{g_m + g_{mb} + g_o} \approx \frac{1}{1 + \frac{g_{mb}}{g_m}}
+      A_{V0} = H(0) = \frac{g_m}{g_m + g_{mb} + g_o + G_L} \xrightarrow{G_L \to 0} \frac{g_m}{g_m + g_{mb} + g_o} \xrightarrow{g_o \ll g_m} \frac{g_m}{g_m + g_{mb}} = \frac{1}{1 + \frac{g_{mb}}{g_m}}
     \]
     The body effect limits the gain to about \(0.8\text{--}0.9\) unless the
     body is tied to the source (separate well).
-  \item \textbf{Pole}: \(N(s)\) has no root, \(D(s) = 0\) at
+  \item \textbf{Pole}: \(N(s) = g_m\) has no root, \(D(s) = g_m + g_{mb} + g_o + G_L + sC_L = 0\) at \(s = -p_1\),
     \[
-      p_1 = \frac{g_m + g_{mb} + g_o + G_L}{C_L} \hspace{1cm} f_{p1} \approx \frac{g_m}{2\pi C_L}
+      p_1 = \frac{g_m + g_{mb} + g_o + G_L}{C_L} \hspace{1cm} f_{p1} = \frac{p_1}{2\pi} \approx \frac{g_m}{2\pi C_L} \hspace{0.5cm} [g_{mb}, g_o, G_L \ll g_m]
     \]
     which is a very wide bandwidth (the GB of a CS stage driving the same
     \(C_L\)).
   \item \textbf{Impedances}:
     \paragraph{At Input:} \(I_G = 0\) so \(Z_{in} \to \infty\) at DC.
-      \(C_{gs}\) is bootstrapped (both its ends move together), so it
+      \(C_{gs}\) is bootstrapped (both its ends move together): its current is
+      \(I = (V_{in} - A_{V0} V_{in}) sC_{gs} = V_{in} s C_{gs}(1 - A_{V0})\), so it
       appears as \(C_{gs}(1 - A_{V0})\).
     \paragraph{At Output:} \(V_{in} = 0\), \(I_{test}\) into the source node
       (\(G_L\) removed):
       \begin{align*}
+        I_{test} + I_d &= 0 \hspace{1cm} [\text{both arrive at the source node}] \\
+        I_{test} - g_m V_{out} - g_{mb} V_{out} - g_o V_{out} &= 0 \hspace{1cm} [V_{gs} = V_{bs} = V_{ds} = -V_{out}] \\
         I_{test} &= V_{out}(g_m + g_{mb} + g_o) \\
         Z_{out} &= \frac{1}{g_m + g_{mb} + g_o} \approx \frac{1}{g_m}
       \end{align*}
@@ -78,9 +90,9 @@ A follower biased by a \(100\,\mu\)A sink (\(G_L = 2\,\mu\)S) has
 \(f_{p1}\) and \(V_{OUT}\) for \(V_{IN} = 1.2\,\)V.
 \paragraph{Solution:}
 \begin{align*}
-  g_m &= 1\,mS \hspace{1cm} g_{mb} = 0.2\,mS \hspace{1cm} g_o = 10\,\mu S \\
-  A_{V0} &= \frac{1\,m}{1\,m + 0.2\,m + 10\,\mu + 2\,\mu} = \frac{1}{1.212} = 0.825 \\
-  Z_{out} &= \frac{1}{1.21\,mS} = 826\,\Omega \\
+  g_m &= \frac{2 \cdot 100\,\mu A}{0.2\,V} = 1\,mS \hspace{1cm} g_{mb} = 0.2\,mS \hspace{1cm} g_o = 0.1 \cdot 100\,\mu A = 10\,\mu S \\
+  A_{V0} &= \frac{1\,m}{1\,m + 0.2\,m + 10\,\mu + 2\,\mu} = \frac{1\,m}{1.212\,m} = 0.825 \\
+  Z_{out} &= \frac{1}{1\,m + 0.2\,m + 10\,\mu} = \frac{1}{1.21\,mS} = 826\,\Omega \\
   f_{p1} &= \frac{1.212\,mS}{2\pi \cdot 5\,pF} = 38.6\,MHz \\
   V_{OUT} &= 1.2 - 0.5 - 0.2 = 0.5\,V \hspace{1cm} [\text{ignoring the body effect shift of } V_{th}]
 \end{align*}
