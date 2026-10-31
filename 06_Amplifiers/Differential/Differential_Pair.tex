@@ -65,14 +65,14 @@ written as differential and common mode parts,
       A_d = \frac{v_{o1} - v_{o2}}{v_{id}} = -\frac{g_m}{G_D + g_o}
     \]
   \item \textbf{Common Mode Gain}: tail current source with output conductance
-    \(g_{oT}\), \(v_{i1} = v_{i2} = v_{ic}\), \(g_o\) neglected. Both halves carry
-    \(i_d = \frac{g_{oT} v_s}{2}\) and \(i_d = g_m(v_{ic} - v_s)\):
+    \(g_{o,tail}\), \(v_{i1} = v_{i2} = v_{ic}\), \(g_o\) neglected. Both halves carry
+    \(i_d = \frac{g_{o,tail} v_s}{2}\) and \(i_d = g_m(v_{ic} - v_s)\):
     \begin{align*}
-      \frac{g_{oT}}{2} v_s &= g_m (v_{ic} - v_s) \hspace{0.5cm} \Rightarrow \hspace{0.5cm} v_s = \frac{2 g_m}{2 g_m + g_{oT}} v_{ic} \\
-      i_d &= \frac{g_m g_{oT}}{2 g_m + g_{oT}} v_{ic} \hspace{0.5cm} \Rightarrow \hspace{0.5cm}
-      A_c = \frac{v_{o1}}{v_{ic}} = -\frac{g_m g_{oT}}{G_D(2 g_m + g_{oT})} \approx -\frac{g_{oT}}{2 G_D}
+      \frac{g_{o,tail}}{2} v_s &= g_m (v_{ic} - v_s) \hspace{0.5cm} \Rightarrow \hspace{0.5cm} v_s = \frac{2 g_m}{2 g_m + g_{o,tail}} v_{ic} \\
+      i_d &= \frac{g_m g_{o,tail}}{2 g_m + g_{o,tail}} v_{ic} \hspace{0.5cm} \Rightarrow \hspace{0.5cm}
+      A_c = \frac{v_{o1}}{v_{ic}} = -\frac{g_m g_{o,tail}}{G_D(2 g_m + g_{o,tail})} \approx -\frac{g_{o,tail}}{2 G_D}
     \end{align*}
-    In a single ended output, \(CMRR = \frac{|A_d/2|}{|A_c|} = \frac{g_m}{g_{oT}}\)
+    In a single ended output, \(CMRR = \frac{|A_d/2|}{|A_c|} = \frac{g_m}{g_{o,tail}}\)
     (perfectly matched halves give \(v_{o1} - v_{o2} = 0\) for any \(v_{ic}\)).
   \item \textbf{Linear Range}: dividing the large signal result by \(g_m V_{id}\)
     and using \(k_n = \frac{I_T}{2 V_{ov}^2}\):
