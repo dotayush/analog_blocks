@@ -3,13 +3,17 @@
 Suppose you buy 100 resistors all labeled as \(100 \Omega\)
 with a tolerance of \(\pm 5\%\). This means that the actual
 resistance value can vary between \(95 \Omega\) and \(105 \Omega\)
-even though it is labeled as \(100 \Omega\).
+even though it is labeled as \(100 \Omega\):
+\[
+  R = 100\,\Omega\,(1 \pm 0.05) \hspace{0.5cm} \Rightarrow \hspace{0.5cm}
+  R_{min} = 100 \cdot 0.95 = 95\,\Omega, \hspace{0.5cm} R_{max} = 100 \cdot 1.05 = 105\,\Omega
+\]
 
 In real-world resistors, capacitors, and inductors (and
 actually a lot of other components) cannot be manufactured to
 their exact specified values. This is due to natural
 imperfections of process, material, and environment.
 
-Refer to~\ref{sec:theory_general_probability} on how to deal
+Refer to Section~\ref{sec:theory_general_probability} on how to deal
 with this as a designer.
 
