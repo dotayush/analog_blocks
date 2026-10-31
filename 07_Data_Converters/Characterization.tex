@@ -35,12 +35,21 @@ signal band \(f_B\) (oversampling ratio \(OSR = \frac{f_s}{2 f_B}\)) keeps
 
 \subsection{Static Errors}
 With \(X_k\) the actual output for code \(k\) (DAC) or the actual transition
-into code \(k\) (ADC), after removing offset and gain (end-point line):
+into code \(k\) (ADC), after removing offset and gain (end-point line through
+the first level \(X_0\), ideal levels \(X_0 + k X_{LSB}\); for an ADC the
+first level is the first transition):
 \begin{align*}
   DNL_k &= \frac{X_{k+1} - X_k}{X_{LSB}} - 1 \hspace{1cm} \text{[step size error]} \\
-  INL_k &= \frac{X_k - k X_{LSB}}{X_{LSB}} = \sum_{j=0}^{k-1} DNL_j \hspace{1cm} \text{[deviation from the line]}
+  INL_k &= \frac{X_k - (X_0 + k X_{LSB})}{X_{LSB}} \hspace{1cm} \text{[deviation from the line]}
 \end{align*}
-\(DNL > -1\) everywhere guarantees a monotonic DAC / no missing codes ADC.
+Summing the DNL telescopes:
+\begin{align*}
+  \sum_{j=0}^{k-1} DNL_j &= \sum_{j=0}^{k-1} \frac{X_{j+1} - X_j}{X_{LSB}} - k
+  = \frac{(X_1 - X_0) + (X_2 - X_1) + \cdots + (X_k - X_{k-1})}{X_{LSB}} - k \\
+  &= \frac{X_k - X_0}{X_{LSB}} - k = \frac{X_k - X_0 - k X_{LSB}}{X_{LSB}} = INL_k
+\end{align*}
+\(DNL_k > -1 \Leftrightarrow X_{k+1} - X_k > 0\) everywhere guarantees a
+monotonic DAC / no missing codes ADC (a missing code has width 0, \(DNL = -1\)).
 An INL bounded by \(\pm\frac{1}{2}\) LSB is the usual linearity specification.
 
 \subsection{Dynamic Errors}
