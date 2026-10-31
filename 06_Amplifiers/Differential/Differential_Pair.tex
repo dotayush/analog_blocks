@@ -136,3 +136,21 @@ written as differential and common mode parts,
     \(V_{O1} - V_S \geq V_{GS} - V_{th}\), i.e. \(V_{O1} \geq V_{IC} - V_{th}\), so
     \(V_{IC,\max} = V_{O1} + V_{th} = V_{dd} - \frac{I_D}{G_D} + V_{th}\).
 \end{enumerate}
+
+\subsubsection{Question}
+\(I_T = 200\,\mu\)A, \(V_{ov} = 0.2\,\)V, \(V_{th} = 0.5\,\)V, \(K_{CLM} = 0.1\,\)V\(^{-1}\),
+\(R_D = 8\,k\Omega\), \(V_{dd} = 1.8\,\)V, tail output conductance
+\(g_{o,tail} = K_{CLM} I_T\), tail overdrive \(V_{ov,T} = 0.2\,\)V. Find \(A_d\),
+\(A_c\), the CMRR, the \(1\%\) linear range and the input common mode range.
+\paragraph{Solution:}
+\begin{align*}
+  I_D &= \frac{I_T}{2} = 100\,\mu A \hspace{1cm} g_m = \frac{2 \cdot 100\,\mu A}{0.2\,V} = 1\,mS \hspace{1cm}
+  g_o = 0.1 \cdot 100\,\mu A = 10\,\mu S \\
+  G_D &= \frac{1}{8\,k\Omega} = 125\,\mu S \hspace{1cm} g_{o,tail} = 0.1 \cdot 200\,\mu A = 20\,\mu S \\
+  A_d &= -\frac{g_m}{G_D + g_o} = -\frac{1\,mS}{135\,\mu S} = -7.41 \\
+  A_c &= -\frac{g_m g_{o,tail}}{G_D (2 g_m + g_{o,tail})} = -\frac{10^{-3} \cdot 2 \times 10^{-5}}{1.25 \times 10^{-4} \cdot 2.02 \times 10^{-3}} = -\frac{2 \times 10^{-8}}{2.525 \times 10^{-7}} = -0.0792 \\
+  CMRR &= \frac{g_m}{g_{o,tail}} + \frac{1}{2} = \frac{1\,mS}{20\,\mu S} + 0.5 = 50.5 \hspace{1cm} (20\log_{10} 50.5 = 34.1\,dB) \\
+  V_{ID,1\%} &= 0.282\, V_{ov} = 0.282 \cdot 0.2\,V = 56.4\,mV \\
+  V_{IC,\min} &= V_{GS} + V_{ov,T} = (0.5 + 0.2) + 0.2 = 0.9\,V \\
+  V_{IC,\max} &= V_{dd} - \frac{I_D}{G_D} + V_{th} = 1.8 - 100\,\mu A \cdot 8\,k\Omega + 0.5 = 1.8 - 0.8 + 0.5 = 1.5\,V
+\end{align*}
