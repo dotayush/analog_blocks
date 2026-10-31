@@ -58,8 +58,12 @@ Comparing \(s^2 + KRC_1 s + K\) with \(s^2 + 2D_R\omega_n s + \omega_n^2\)
       \theta_e(s) &= \frac{\theta_{ref}}{1 + G} = \frac{d\omega}{s^2}\cdot\frac{s^2}{s^2 + K RC_1 s + K} \\
       \theta_e(\infty) &= \lim_{s \to 0} s\,\theta_e(s) = \lim_{s \to 0} \frac{s\, d\omega}{s^2 + KRC_1 s + K} = 0
     \end{align*}
-    (an XOR detector with a passive RC filter is type I and keeps
-    \(\theta_e = \frac{d\omega}{K_{pd} K_v}\)).
+    An XOR detector with a passive RC filter \(F(s)\), \(F(0) = 1\), is type I,
+    \(G = \frac{K_{pd} F(s) K_v}{sN}\), and keeps a static error:
+    \begin{align*}
+      \theta_e(\infty) &= \lim_{s \to 0} s\,\frac{d\omega}{s^2}\cdot\frac{1}{1 + \frac{K_{pd} F(s) K_v}{sN}}
+      = \lim_{s \to 0} \frac{d\omega}{s + \frac{K_{pd} F(s) K_v}{N}} = \frac{N\, d\omega}{K_{pd} K_v}
+    \end{align*}
   \item \textbf{Loop Bandwidth}: substitute \(K = \omega_n^2\) and
     \(RC_1 = \frac{2D_R}{\omega_n}\) into \(G(j\omega)\) and set \(|G(j\omega_c)| = 1\)
     with \(x = \frac{\omega_c}{\omega_n}\):
