@@ -85,7 +85,7 @@ written as differential and common mode parts,
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \textbf{Differential Gain (Q4)}: with \(V_s = 0\),
+  \item \textbf{Differential Gain, Small Signal, Frequency Domain, AC Input Analysis (Q4)}: with \(V_s = 0\),
     \(I_{d1} = g_m \frac{V_{id}}{2} + g_o V_{o1}\). KCL at \(V_{o1}\) (\(I_{d1}\)
     and the current through \(G_D\) leave the node):
     \begin{align*}
@@ -98,7 +98,7 @@ written as differential and common mode parts,
     \[
       A_d = \frac{V_{o1} - V_{o2}}{V_{id}} = \frac{2 V_{o1}}{V_{id}} = -\frac{2 g_m}{2(G_D + g_o)} = -\frac{g_m}{G_D + g_o}
     \]
-  \item \textbf{Common Mode Gain (Q4)}: tail current source with output conductance
+  \item \textbf{Common Mode Gain, Small Signal, Frequency Domain, AC Input Analysis (Q4)}: tail current source with output conductance
     \(g_{o,tail}\), \(V_{i1} = V_{i2} = V_{ic}\), \(g_o\) neglected. Both halves
     are identical and their sum flows through the tail, \(2 I_d = g_{o,tail} V_s\),
     so \(I_d = \frac{g_{o,tail} V_s}{2}\); also \(I_d = g_m(V_{ic} - V_s)\):
@@ -116,7 +116,7 @@ written as differential and common mode parts,
       CMRR = \frac{|A_d/2|}{|A_c|} = \frac{g_m}{2 G_D} \cdot \frac{G_D(2 g_m + g_{o,tail})}{g_m g_{o,tail}} = \frac{2 g_m + g_{o,tail}}{2 g_{o,tail}} = \frac{g_m}{g_{o,tail}} + \frac{1}{2} \approx \frac{g_m}{g_{o,tail}}
     \]
     (perfectly matched halves give \(V_{o1} - V_{o2} = 0\) for any \(V_{ic}\)).
-  \item \textbf{Linear Range (Q5)}: dividing (3) by the linear part \(g_m V_{ID}\)
+  \item \textbf{Linear Range, Large Signal, Time Domain, DC Input Analysis (Q5)}: dividing (3) by the linear part \(g_m V_{ID}\)
     (\(g_m = \sqrt{2 k_n I_T}\)) and using
     \(k_n = \frac{I_T}{2 V_{ov}^2}\) (from \(k_n V_{ov}^2 = \frac{I_T}{2}\)):
     \begin{align*}
@@ -130,7 +130,7 @@ written as differential and common mode parts,
     \end{align*}
     Larger \(V_{ov}\) widens the linear range and lowers \(g_m = \frac{2 I_D}{V_{ov}}\)
     for the same current.
-  \item \textbf{Input Common Mode Range (Q5)}: the tail needs
+  \item \textbf{Input Common Mode Range, Large Signal, Time Domain, DC Input Analysis (Q5)}: the tail needs
     \(V_S \geq V_{ov,T}\) and \(V_{IC} = V_S + V_{GS}\), so
     \(V_{IC,\min} = V_{GS} + V_{ov,T}\). \(M_1\) saturated needs
     \(V_{O1} - V_S \geq V_{GS} - V_{th}\), i.e. \(V_{O1} \geq V_{IC} - V_{th}\), so

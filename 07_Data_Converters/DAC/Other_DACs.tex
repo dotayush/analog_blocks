@@ -19,7 +19,7 @@ instead of space. \(n\) cycles per conversion.
 \subsubsection{Pipeline DAC}
 Each stage \(k\) (one per bit, MSB last) computes
 \(V^{(k)} = \frac{V^{(k-1)} + b_k V_{REF}}{2}\) and passes it on: the same
-recursion (Q5) as the serial DAC, so \(V^{(n-1)} = V_{REF} \sum_{k} b_k 2^{k-n}\), but
+recursion (Large Signal, Time Domain, DC Input Analysis, Q5) as the serial DAC, so \(V^{(n-1)} = V_{REF} \sum_{k} b_k 2^{k-n}\), but
 unrolled over \(n\) stages, so a new code (its bits delayed by one cycle per
 stage) enters every cycle with latency \(n\) cycles.
 
