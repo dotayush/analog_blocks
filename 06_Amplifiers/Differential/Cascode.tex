@@ -99,3 +99,19 @@ below.
     \(\approx -\frac{g_{m1}}{g_{m2}'}\), so at the frequencies where \(C_{gd1}\)
     matters it is still multiplied by \(\approx 2\).
 \end{enumerate}
+
+\subsubsection{Question}
+\(I_D = 100\,\mu\)A, \(V_{ov} = 0.2\,\)V and \(K_{CLM} = 0.1\,\)V\(^{-1}\) for both
+devices, body effect neglected (\(g_{m2}' = g_{m2}\)). Find \(Z_{dn}\), \(A_{V0}\)
+with an ideal current source load, and \(A_V\) with \(R_L = 100\,k\Omega\).
+\paragraph{Solution:}
+\begin{align*}
+  g_{m1} &= g_{m2} = \frac{2 \cdot 100\,\mu A}{0.2\,V} = 1\,mS \hspace{1cm}
+  g_{o1} = g_{o2} = 0.1 \cdot 100\,\mu A = 10\,\mu S \hspace{1cm} r_o = 100\,k\Omega \\
+  Z_{dn} &= r_{o1} + r_{o2} + g_{m2} r_{o1} r_{o2} = 100\,k + 100\,k + 10^{-3} \cdot 10^{5} \cdot 10^{5} = 0.2\,M + 10\,M = 10.2\,M\Omega \\
+  A_{V0} &= -\frac{g_{m1}(g_{m2} + g_{o2})}{g_{o1} g_{o2}} = -\frac{10^{-3} \cdot 1.01 \times 10^{-3}}{10^{-5} \cdot 10^{-5}} = -\frac{1.01 \times 10^{-6}}{10^{-10}} = -10100 \hspace{0.5cm} (80.1\,dB) \\
+  A_V &= -\frac{g_{m1}(g_{m2} + g_{o2})}{(g_{m2} + g_{o2} + g_{o1}) G_L + g_{o1} g_{o2}}
+       = -\frac{1.01 \times 10^{-6}}{1.02 \times 10^{-3} \cdot 10^{-5} + 10^{-10}} = -\frac{1.01 \times 10^{-6}}{1.03 \times 10^{-8}} = -98.1 \\
+  A_V &= -G_m (Z_{dn} \parallel R_L) = -0.990\,mS \cdot \frac{10.2\,M \cdot 0.1\,M}{10.2\,M + 0.1\,M} = -0.990\,mS \cdot 99.0\,k\Omega = -98.1 \hspace{0.5cm} [\text{check}]
+\end{align*}
+The \(100\,k\Omega\) load throws away almost all of the \(10100\): \(A_V \approx -g_{m1} R_L\).
