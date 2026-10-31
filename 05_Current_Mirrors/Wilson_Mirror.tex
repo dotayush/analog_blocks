@@ -30,8 +30,8 @@ results in better current source/sink performance.
   \draw (3.5, 7.54) |- (3.23, 8.04);
   \draw (3.5, 8.04) -| (6, 7.5);
   \draw (10.25, 10.75) -- (10.25, -0);
-  \node[shape=rectangle, minimum width=4.59cm, minimum height=1.09cm] at (5.187, 9.813){} node[anchor=north, align=center, text width=4.202cm, inner sep=6pt] at (5.187, 10.375){Large Signal Schematic\\(Sink)};
-  \node[shape=rectangle, minimum width=3.09cm, minimum height=2.465cm] at (8.687, 7){} node[anchor=north west, align=left, text width=2.702cm, inner sep=6pt] at (7.125, 8.25){\textcolor{rgb,255:red,255;green,0;blue,0}{\footnotesize Exists Only For Analysis. In  Implementation take output directly from V\_\{out\}}};
+  \node[shape=rectangle, minimum width=4.59cm, minimum height=1.09cm] at (5.187, 9.813){} node[anchor=north, align=center, inner sep=6pt] at (5.187, 10.375){Large Signal Schematic\\(Sink)};
+  \node[shape=rectangle, minimum width=3.09cm, minimum height=2.465cm] at (8.687, 7){} node[anchor=north west, align=left, inner sep=6pt] at (7.125, 8.25){\textcolor{rgb,255:red,255;green,0;blue,0}{\footnotesize Exists Only For Analysis. In  Implementation take output directly from V\_\{out\}}};
   \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N4) at (7, 3.71){} node[anchor=center] at (N4.text){$V_{x}$};
   \draw[dash pattern={on 0.4pt off 0.8pt}, -stealth] (6, 3.71) |- (6.5, 3.71);
   \draw (3.5, 4.5) -| (3.5, 6.04);
@@ -41,18 +41,18 @@ results in better current source/sink performance.
   \draw (19.125, 2.562) -- (17.625, 2.562);
   \draw (17.625, 1.062) -- (16.375, 1.062);
   \draw (16.375, 2.562) -- (15.625, 2.562);
-  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (16.375, 2.312){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (16.375, 2.312){\footnotesize G};
-  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (16.375, 1.312){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (16.375, 1.312){\footnotesize S};
-  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (19.625, 2.312){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (19.625, 2.312){\footnotesize D};
+  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (16.375, 2.312){} node[anchor=center, align=center, inner sep=6pt] at (16.375, 2.312){\footnotesize G};
+  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (16.375, 1.312){} node[anchor=center, align=center, inner sep=6pt] at (16.375, 1.312){\footnotesize S};
+  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (19.625, 2.312){} node[anchor=center, align=center, inner sep=6pt] at (19.625, 2.312){\footnotesize D};
   \draw (15.625, 2.562) -- (14.875, 2.562);
   \draw (13.375, 2.562) to[american current source, l={$g_{m_0}V_{gs}$}] (13.375, 1.062);
   \draw (11.875, 2.562) to[european resistor, l={$g_{o_0}$}] (11.875, 1.062);
   \draw (13.375, 2.563) -- (11.875, 2.563);
   \draw (13.375, 1.063) -- (11.875, 1.063);
   \draw (14.875, 1.062) -- (13.375, 1.062);
-  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (14.875, 2.312){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (14.875, 2.312){\footnotesize G};
-  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (14.875, 1.312){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (14.875, 1.312){\footnotesize S};
-  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (11.375, 2.312){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (11.375, 2.312){\footnotesize D};
+  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (14.875, 2.312){} node[anchor=center, align=center, inner sep=6pt] at (14.875, 2.312){\footnotesize G};
+  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (14.875, 1.312){} node[anchor=center, align=center, inner sep=6pt] at (14.875, 1.312){\footnotesize S};
+  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (11.375, 2.312){} node[anchor=center, align=center, inner sep=6pt] at (11.375, 2.312){\footnotesize D};
   \draw (11.875, 7.563) to[european resistor, l={$G_3$}] (11.875, 6.063);
   \draw (11.875, 6.063) -| (11.875, 5.562);
   \draw (11.875, 7.563) -| (11.875, 8.062) -- (12.625, 8.062) -| (12.625, 7.812);
@@ -63,7 +63,7 @@ results in better current source/sink performance.
   \node[ground] at (16.375, 1.062){};
   \node[ground] at (12.625, 7.812){};
   \node[ground] at (18.375, 7.812){};
-  \node[shape=rectangle, minimum width=4.215cm, minimum height=1.09cm] at (15.5, 9.813){} node[anchor=north, align=center, text width=3.827cm, inner sep=6pt] at (15.5, 10.375){Small Signal Schematic\\(Sink)};
+  \node[shape=rectangle, minimum width=4.215cm, minimum height=1.09cm] at (15.5, 9.813){} node[anchor=north, align=center, inner sep=6pt] at (15.5, 10.375){Small Signal Schematic\\(Sink)};
   \draw (6, 3.52) -| (6, 3.71);
   \node[nmos, arrowmos] (N5) at (6, 4.48){} node[anchor=west] at (N5.text){$M_2$};
   \draw (5.02, 4.48) -| (3.5, 3.52);
@@ -75,8 +75,8 @@ results in better current source/sink performance.
   \draw (19.125, 5.562) -- (17.625, 5.562);
   \draw (17.625, 4.062) -- (16.375, 4.062);
   \draw (16.375, 5.562) -- (15.625, 5.562);
-  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (16.375, 5.312){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (16.375, 5.312){\footnotesize G};
-  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (16.375, 4.312){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (16.375, 4.312){\footnotesize S};
+  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (16.375, 5.312){} node[anchor=center, align=center, inner sep=6pt] at (16.375, 5.312){\footnotesize G};
+  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (16.375, 4.312){} node[anchor=center, align=center, inner sep=6pt] at (16.375, 4.312){\footnotesize S};
   \draw (19.125, 4.062) -- (19.125, 2.562);
   \draw (15.625, 2.562) -| (15.625, 3.313) -- (19.125, 3.313);
   \node[circ] at (3.5, 8.04){};
@@ -104,7 +104,7 @@ results in better current source/sink performance.
 \subsubsection{Transfer Function}
 Here's a table of the voltages at each terminal of the transistors:
 
-\begin{tabularx}{\linewidth}{|X|X|X|X|X|X|} \hline
+\noindent\begin{tabularx}{\linewidth}{|X|X|X|X|X|X|} \hline
   Transistor & Gate (G) & Source (S) & Drain (D) & $V_{GS}$ & $V_{DS}$ \\ \hline
   $M_0$ & $V_{X}$ & $V_{ee}$ & $V_{Y}$ & $V_{X} - V_{ee}$ & $V_{Y} - V_{ee}$ \\ \hline
   $M_1$ & $V_{X}$ & $V_{ee}$ & $V_{X}$ & $V_{X} - V_{ee}$ & $V_{X} - V_{ee}$ \\ \hline
@@ -264,7 +264,8 @@ Here's a table of the voltages at each terminal of the transistors:
         V_{out}(G_4 + g_{o_2}) - V_{out} \frac{g_{o_2} \left( (g_{o_2} + g_{m_2}) H + g_{m_0} g_{m_2} \right)}{S H + g_{m_0} g_{m_2}} &= I_{test} \\
         V_{out} \left( \frac{(G_4 + g_{o_2})(S H + g_{m_0} g_{m_2}) - g_{o_2}(g_{o_2} + g_{m_2}) H - g_{o_2} g_{m_0} g_{m_2}}{S H + g_{m_0} g_{m_2}} \right) &= I_{test} \\
         V_{out} \left( \frac{G_4 (S H + g_{m_0} g_{m_2}) + g_{o_2} S H - g_{o_2}(g_{o_2} + g_{m_2}) H}{S H + g_{m_0} g_{m_2}} \right) &= I_{test} \\
-        V_{out} \left( \frac{G_4 (S H + g_{m_0} g_{m_2}) + g_{o_2} H (g_{o_1} + g_{m_1})}{S H + g_{m_0} g_{m_2}} \right) &= I_{test} \hspace{1cm} [S - g_{o_2} - g_{m_2} = g_{o_1} + g_{m_1}]
+        \text{[} S - g_{o_2} - g_{m_2} = g_{o_1} + g_{m_1} \text{]} \\
+        V_{out} \left( \frac{G_4 (S H + g_{m_0} g_{m_2}) + g_{o_2} H (g_{o_1} + g_{m_1})}{S H + g_{m_0} g_{m_2}} \right) &= I_{test}
       \end{align*}
       \begin{align*}
         \therefore Z_{out} = \frac{V_{out}}{I_{test}} = \frac{S H + g_{m_0} g_{m_2}}{G_4 (S H + g_{m_0} g_{m_2}) + g_{o_2} H (g_{o_1} + g_{m_1})}

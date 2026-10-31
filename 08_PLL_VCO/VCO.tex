@@ -131,7 +131,18 @@ minimum \(g_m\) and the amplitude.
 \end{align*}
 
 \subsection{Relaxation VCO}\label{sec:vco_relax}
-A current \(I = g_c V_c\) charges and then discharges \(C\) between the two
+
+\begin{circuitfig}
+  \draw (0,4.6) node[vcc]{$V_{dd}$} to[american current source, l={$I = g_c V_c$}] (0,3.2) to[nos, l={$S_1$}] (0,1.5) node[circ]{} coordinate(n);
+  \draw (n) to[nos, l={$S_2$}] (0,-0.2) to[american current source, l={$I$}] (0,-1.6) node[ground]{};
+  \draw (n) -- (2,1.5) node[circ]{} to[capacitor, l={$C$}] (2,-0.5) node[ground]{};
+  \draw (4.5,1.5) node[op amp, scale=0.8](S){};
+  \draw (2,1.5) -- (3,1.5) |- (S.+); \draw (S.-) -- ++(-0.3,0) node[left]{\footnotesize ref};
+  \draw (S.out) -- ++(0.6,0) node[circ]{} node[right]{$V_{out}$};
+  \draw[dashed] ($(S.out) + (0.3,0)$) -- ++(0,1.9) -| (0.5,2.35);
+  \draw[dashed] ($(S.out) + (0.3,0)$) -- ++(0,-2.1) -| (0.5,0.65);
+  \node at (4.5,2.6) {\footnotesize Schmitt trigger ($V_H$, $V_L$)};
+\end{circuitfig}A current \(I = g_c V_c\) charges and then discharges \(C\) between the two
 thresholds \(V_H\), \(V_L\) of a Schmitt trigger (\(dV = V_H - V_L\)).
 \textbf{Large Signal, Time Domain, AC Input Analysis (Q6)}: each ramp lasts
 \(t\), from \(I = C\frac{dV}{t}\), \(t = \frac{C\, dV}{I}\):

@@ -3,7 +3,13 @@
 \subsubsection{SAR (Serial) DAC}
 A small DAC is reused once per bit. Charge sharing serial DAC: a capacitor
 \(C_1\) is charged to \(b_k V_{REF}\) and shared with an equal \(C_2\) holding
-the running result, LSB first. \textbf{Large Signal, Time Domain, DC Input
+the running result, LSB first.
+\begin{circuitfig}
+  \draw (0,2) node[circ]{} node[left]{$b_k V_{REF}$} to[nos, l={charge}] (2,2) node[circ]{} to[nos, l={share}] (4.5,2) node[circ]{} -- (6,2) node[circ]{} node[right]{$V^{(k)}$};
+  \draw (2,2) to[capacitor, l_={$C_1$}] (2,0) node[ground]{};
+  \draw (4.5,2) to[capacitor, l={$C_2$}] (4.5,0) node[ground]{};
+\end{circuitfig}
+ \textbf{Large Signal, Time Domain, DC Input
 Analysis (Q5)}, charge conservation when \(C_1\) and \(C_2\) are joined:
 \begin{align*}
   C_1 b_k V_{REF} + C_2 V^{(k-1)} &= (C_1 + C_2) V^{(k)} \\
@@ -23,8 +29,26 @@ recursion (Large Signal, Time Domain, DC Input Analysis, Q5) as the serial DAC, 
 unrolled over \(n\) stages, so a new code (its bits delayed by one cycle per
 stage) enters every cycle with latency \(n\) cycles.
 
+\begin{circuitfig}
+  \foreach \i/\lab in {0/{$b_0$}, 3/{$b_1$}, 6.5/{$b_{n-1}$}} {
+    \draw (\i,0) rectangle ++(2,1.2) node[midway, align=center]{$\frac{V + b V_{REF}}{2}$};
+    \draw[->] (\i+1,2) node[above]{\lab} -- (\i+1,1.2);
+  }
+  \draw[->] (-1,0.6) node[left]{$0$} -- (0,0.6);
+  \draw[->] (2,0.6) -- (3,0.6); \draw[->] (5,0.6) -- (5.5,0.6); \node at (5.95,0.6) {$\ldots$}; \draw[->] (6.1,0.6) -- (6.5,0.6);
+  \draw[->] (8.5,0.6) -- (9.5,0.6) node[right]{$V^{(n-1)}$};
+\end{circuitfig}
 \subsubsection{Delta-Sigma DAC}
-A digital modulator (Section~\ref{sec:adc_ds}) maps the \(n\)-bit code at
+
+\begin{circuitfig}
+  \draw[->] (-1.2,0.6) node[left]{$D$ ($n$ bits)} -- (0,0.6);
+  \draw (0,0) rectangle (2.4,1.2) node[midway, align=center]{digital\\modulator};
+  \draw[->] (2.4,0.6) -- node[above]{\footnotesize 1 bit, $f_s$} (4,0.6);
+  \draw (4,0) rectangle (5.6,1.2) node[midway, align=center]{1-bit\\DAC};
+  \draw[->] (5.6,0.6) -- (6.6,0.6);
+  \draw (6.6,0) rectangle (8.6,1.2) node[midway, align=center]{analog\\low pass};
+  \draw[->] (8.6,0.6) -- (9.6,0.6) node[right]{$V_{OUT}$};
+\end{circuitfig}A digital modulator (Section~\ref{sec:adc_ds}) maps the \(n\)-bit code at
 \(f_s = 2\, OSR\, f_B\) onto a 1-bit (or few-bit) stream whose quantisation
 noise is pushed above \(f_B\); a 1-bit DAC is perfectly linear (two levels
 define a line) and an analog low pass filter removes the shaped noise:

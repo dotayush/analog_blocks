@@ -12,7 +12,7 @@
 \usepackage{fancyhdr}
 
 % Define version once so it's easy to update
-\newcommand{\docversion}{v0.1.1}
+\newcommand{\docversion}{v0.1.2}
 
 \pagestyle{fancy}
 \fancyhf{}                          % clear all headers/footers
@@ -34,7 +34,8 @@
 \newcolumntype{M}{>{$}c<{$}}
 \renewcommand{\arraystretch}{1.5}
 \newcommand{\spc}{,\:}
-\newenvironment{circuitfig}{\par\medskip\noindent\hbox to \linewidth\bgroup\hss\begin{circuitikz}\tolerance=10000\emergencystretch=10pt}{\end{circuitikz}\hss\egroup\par\medskip}
+\newsavebox{\circuitfigbox}
+\newenvironment{circuitfig}{\par\medskip\noindent\begin{lrbox}{\circuitfigbox}\begin{circuitikz}\tolerance=10000\emergencystretch=10pt}{\end{circuitikz}\end{lrbox}\ifdim\wd\circuitfigbox>\linewidth\resizebox{\linewidth}{!}{\usebox{\circuitfigbox}}\else\makebox[\linewidth]{\usebox{\circuitfigbox}}\fi\par\medskip}
 \setcounter{tocdepth}{2}
 % \linenumbers
 \newenvironment{symtable}{\begin{longtable}{|p{0.25\linewidth}|p{0.5\linewidth}|p{0.15\linewidth}|}\hline \textbf{Symbol} & \textbf{Meaning} & \textbf{Unit} \\ \hline \endhead}{\end{longtable}}
