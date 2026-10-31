@@ -7,7 +7,7 @@ device that opposes the flow of current.
     This act of opposition is called resistance and is measured in
     Ohms (\(\Omega\)). A good way to imagine resistance is to think
     about its value as a proportionality factor between voltage and
-    current. In fact, This is precisely the relationship that gives
+    current. In fact, this is precisely the relationship that gives
     us Ohm's law:
     \[
       V = I \cdot R
@@ -28,9 +28,11 @@ device that opposes the flow of current.
   \item \textbf{Power Dissipation:}
     A resistor dissipates energy in the form of heat. The power
     dissipated by a resistor is given by:
-    \[
-      P = I^2 \cdot R = V^2 \cdot G
-    \]
+    \begin{align*}
+      P &= V \cdot I \\
+      P &= (I \cdot R) \cdot I = I^2 \cdot R \hspace{1cm} [V = IR] \\
+      P &= V \cdot (V \cdot G) = V^2 \cdot G \hspace{1cm} [I = VG]
+    \end{align*}
   \item \textbf{Non-Ideal Behavior:}
     In practice, resistors are not ideal and thus most of our
     assumptions above (linear, time-invariant, dissipative) fall
@@ -38,8 +40,10 @@ device that opposes the flow of current.
     we can treat resistors as ideal devices.
   \item \textbf{Circuit Analysis:}
     The behaviour of resistor is not affected by the kind of Input
-    Signal (AC or DC) applied to it. Therefore, The same mathematical
+    Signal (AC or DC) applied to it. Therefore, the same mathematical
     model can be used to describe the behaviour of a resistor in both
-    AC and DC inputs. Its admittance is \(G\) in Q4 and its current is
-    \(I = VG\) in Q5 (Chapter~\ref{ch:analysis}).
+    AC and DC inputs. Its current is \(I = VG\) in the Large Signal,
+    Time Domain, DC Input Analysis (Q5) and its admittance is \(G\) in the
+    Small Signal, Frequency Domain, AC Input Analysis (Q4)
+    (Chapter~\ref{ch:analysis}).
 \end{itemize}
