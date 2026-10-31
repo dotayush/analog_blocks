@@ -1,0 +1,94 @@
+\section{Characterisation}\label{sec:dc_char}
+
+\subsection{Ideal Transfer}
+An \(n\)-bit code \(\langle b_{n-1} \ldots b_1 b_0 \rangle\) has the integer value
+\(D = \sum_{k=0}^{n-1} b_k 2^k\), \(0 \leq D \leq 2^n - 1\). With full scale
+reference \(X_{REF}\):
+\begin{align*}
+  X_{LSB} &= \frac{X_{REF}}{2^n} \\
+  \text{DAC:} \hspace{0.5cm} X_{OUT}(D) &= D \cdot X_{LSB} = X_{REF} \sum_{k=0}^{n-1} b_k 2^{k-n} \\
+  \text{ADC:} \hspace{0.5cm} D(X_{IN}) &= \left\lfloor \frac{X_{IN}}{X_{LSB}} + \frac{1}{2} \right\rfloor \hspace{1cm} [\text{transitions at } (k - \tfrac{1}{2}) X_{LSB}]
+\end{align*}
+
+\subsection{Quantization Noise}
+For a busy input the ADC error \(e = D X_{LSB} - X_{IN}\) is uniformly
+distributed over \(\left[-\frac{X_{LSB}}{2}, \frac{X_{LSB}}{2}\right]\) with
+density \(\frac{1}{X_{LSB}}\):
+\begin{align*}
+  \overline{e^2} &= \int_{-X_{LSB}/2}^{X_{LSB}/2} e^2 \frac{1}{X_{LSB}} de \\
+  &= \frac{1}{X_{LSB}} \left[\frac{e^3}{3}\right]_{-X_{LSB}/2}^{X_{LSB}/2} \\
+  &= \frac{1}{3 X_{LSB}} \left(\frac{X_{LSB}^3}{8} - \left(-\frac{X_{LSB}^3}{8}\right)\right) \\
+  &= \frac{1}{X_{LSB}} \cdot \frac{2}{3} \cdot \frac{X_{LSB}^3}{8} = \frac{X_{LSB}^2}{12}
+\end{align*}
+A full scale sine \(x(t) = \frac{X_{REF}}{2}\sin(\omega t)\) has power
+\(\overline{x^2} = \frac{1}{2}\left(\frac{X_{REF}}{2}\right)^2 = \frac{X_{REF}^2}{8}\);
+with \(X_{REF} = 2^n X_{LSB}\):
+\begin{align*}
+  SQNR &= \frac{X_{REF}^2 / 8}{X_{LSB}^2 / 12} = \frac{12}{8} \cdot \frac{\left(2^n X_{LSB}\right)^2}{X_{LSB}^2} = \frac{12}{8} \cdot 2^{2n} = 1.5 \cdot 2^{2n} \\
+  SQNR_{dB} &= 10\log_{10}\left(1.5 \cdot 2^{2n}\right) = 10\log_{10}(1.5) + 2n \cdot 10\log_{10}(2) \\
+  &= 1.76 + 2n \cdot 3.01 = 1.76 + 6.02\, n \hspace{1cm} \text{[dB]}
+\end{align*}
+The noise is spread uniformly over \(0 \ldots \frac{f_s}{2}\). Keeping only a
+signal band \(f_B\) (oversampling ratio \(OSR = \frac{f_s}{2 f_B}\)) keeps
+\(\frac{f_B}{f_s/2} = \frac{1}{OSR}\) of it:
+\begin{align*}
+  \overline{e^2}_{f_B} &= \frac{X_{LSB}^2}{12} \cdot \frac{1}{OSR} \\
+  SQNR_{dB} &= 10\log_{10}\left(1.5 \cdot 2^{2n} \cdot OSR\right) = 6.02\, n + 1.76 + 10\log_{10}(OSR)
+\end{align*}
+(each doubling of \(f_s\) buys \(10\log_{10}(2) = 3.01\,\)dB, i.e.
+\(\frac{3.01}{6.02} = \frac{1}{2}\) bit).
+
+\subsection{Static Errors}
+With \(X_k\) the actual output for code \(k\) (DAC) or the actual transition
+into code \(k\) (ADC), after removing offset and gain (end-point line through
+the first level \(X_0\), ideal levels \(X_0 + k X_{LSB}\); for an ADC the
+first level is the first transition):
+\begin{align*}
+  DNL_k &= \frac{X_{k+1} - X_k}{X_{LSB}} - 1 \hspace{1cm} \text{[step size error]} \\
+  INL_k &= \frac{X_k - (X_0 + k X_{LSB})}{X_{LSB}} \hspace{1cm} \text{[deviation from the line]}
+\end{align*}
+Summing the DNL telescopes:
+\begin{align*}
+  \sum_{j=0}^{k-1} DNL_j &= \sum_{j=0}^{k-1} \frac{X_{j+1} - X_j}{X_{LSB}} - k
+  = \frac{(X_1 - X_0) + (X_2 - X_1) + \cdots + (X_k - X_{k-1})}{X_{LSB}} - k \\
+  &= \frac{X_k - X_0}{X_{LSB}} - k = \frac{X_k - X_0 - k X_{LSB}}{X_{LSB}} = INL_k
+\end{align*}
+\(DNL_k > -1 \Leftrightarrow X_{k+1} - X_k > 0\) everywhere guarantees a
+monotonic DAC / no missing codes ADC (a missing code has width 0, \(DNL = -1\)).
+An INL bounded by \(\pm\frac{1}{2}\) LSB is the usual linearity specification.
+
+\subsection{Dynamic Errors}
+\begin{itemize}
+  \item \textbf{SINAD} (signal to noise and distortion) and
+    \textbf{ENOB}: \(ENOB = \frac{SINAD_{dB} - 1.76}{6.02}\).
+  \item \textbf{Jitter}: a sampling instant error \(t_j\) (rms) on
+    \(x = A\sin(2\pi f_{in} t)\) gives \(e = \frac{dx}{dt} t_j\), with rms slope
+    \(\frac{2\pi f_{in} A}{\sqrt{2}}\):
+    \begin{align*}
+      \frac{dx}{dt} &= 2\pi f_{in} A \cos(2\pi f_{in} t), \hspace{1cm}
+      \overline{\left(\frac{dx}{dt}\right)^2} = \frac{(2\pi f_{in} A)^2}{2} \\
+      \overline{e^2} &= \overline{\left(\frac{dx}{dt}\right)^2} t_j^2 = \frac{(2\pi f_{in} A)^2}{2} t_j^2 \\
+      SNR_{jitter} &= \frac{A^2/2}{\overline{e^2}} = \frac{A^2/2}{(2\pi f_{in} A)^2 t_j^2 / 2} = \frac{1}{(2\pi f_{in} t_j)^2} \\
+      SNR_{jitter,dB} &= 10\log_{10}\frac{1}{(2\pi f_{in} t_j)^2} = -20\log_{10}(2\pi f_{in} t_j)
+    \end{align*}
+    e.g. \(f_{in} = 100\,\)MHz, \(t_j = 1\,\)ps:
+    \begin{align*}
+      2\pi f_{in} t_j &= 2\pi \cdot 10^{8} \cdot 10^{-12} = 6.28 \cdot 10^{-4} \\
+      SNR_{jitter,dB} &= -20\log_{10}\left(6.28 \cdot 10^{-4}\right) = 64.0\,\text{dB} \hspace{1cm}
+      ENOB = \frac{64.0 - 1.76}{6.02} = 10.3\,\text{bits}
+    \end{align*}
+  \item \textbf{SFDR}: ratio of the signal to the largest spur
+    (Chapter~\ref{ch:analysis}, Q8: harmonics of a non-linear transfer).
+\end{itemize}
+
+\subsection{Mismatch}
+Matched elements of value \(X\) have independent random errors with
+relative standard deviation \(S_X = SD\left(\frac{dX}{X}\right)\) (Pelgrom:
+\(S_X \propto \frac{1}{\sqrt{\text{area}}}\), Section~\ref{sec:theory_general_probability}).
+A sum of \(m\) unit elements has standard deviation \(\sqrt{m}\, S_X X\) since
+variances add:
+\[
+  Var\left(\sum_{i=1}^{m} dX_i\right) = \sum_{i=1}^{m} Var(dX_i) = m (S_X X)^2
+  \hspace{0.5cm} \Rightarrow \hspace{0.5cm}
+  SD\left(\sum_{i=1}^{m} dX_i\right) = \sqrt{m}\, S_X X
+\]

@@ -1,0 +1,90 @@
+\subsection{Difference Amplifier}\label{sec:amp_difference}
+
+\subsubsection{Overview}
+Inverting path \(V_1 \to G_1 \to V_-\) with feedback \(G_2\), non-inverting
+path \(V_2 \to G_3 \to V_+\) with \(G_4\) to ground. With matched ratios it
+amplifies \(V_2 - V_1\) and rejects the common mode.
+
+\subsubsection{Schematic}
+\begin{circuitfig}
+  \draw (0,0) node[op amp](A){};
+  \draw (A.-) -- ++(-0.6,0) coordinate(n) node[circ]{} to[european resistor, l_={$G_1$}] ++(-2.4,0) node[circ]{} node[left]{$V_1$};
+  \draw (n) |- (-0.5,1.6) to[european resistor, l={$G_2$}] (1.6,1.6) -| (A.out);
+  \draw (A.+) -- ++(-0.6,0) coordinate(p) node[circ]{} to[european resistor, l={$G_3$}] ++(-2.4,0) node[circ]{} node[left]{$V_2$};
+  \draw (p) to[european resistor, l_={$G_4$}] ++(0,-2) node[ground]{};
+  \draw (A.out) to[short, -o] ++(0.8,0) node[right]{$V_{out}$};
+\end{circuitfig}
+
+\subsubsection{Transfer Function}
+Only linear elements with an ideal op-amp, so the \textbf{Large Signal, Time
+Domain, DC Input Analysis (Q5)} and the \textbf{Small Signal, Frequency
+Domain, AC Input Analysis (Q4)} give the same result. Applying KCL at \(V_+\):
+\begin{align*}
+  (V_+ - V_2) G_3 + (V_+ - 0) G_4 &= 0 \\
+  V_+ (G_3 + G_4) &= V_2 G_3 \\
+  V_+ &= \frac{G_3}{G_3 + G_4} V_2
+\end{align*}
+Applying KCL at \(V_-\):
+\begin{align*}
+  (V_- - V_1) G_1 + (V_- - V_{out}) G_2 &= 0 \\
+  V_- (G_1 + G_2) &= G_1 V_1 + G_2 V_{out} \\
+  V_- &= \frac{G_1 V_1 + G_2 V_{out}}{G_1 + G_2}
+\end{align*}
+Ideal op-amp, \(V_+ = V_-\):
+\begin{align*}
+  \frac{G_1 V_1 + G_2 V_{out}}{G_1 + G_2} &= \frac{G_3}{G_3 + G_4} V_2 \\
+  G_1 V_1 + G_2 V_{out} &= \frac{G_3 (G_1 + G_2)}{G_3 + G_4} V_2 \hspace{1cm} [\times (G_1 + G_2)] \\
+  V_{out} &= \underbrace{\frac{G_3 (G_1 + G_2)}{G_2 (G_3 + G_4)}}_{a} V_2 - \underbrace{\frac{G_1}{G_2}}_{b} V_1 \hspace{1cm} [-G_1 V_1, \ \div G_2]
+\end{align*}
+In resistances (\(G_k = \frac{1}{R_k}\)):
+\begin{align*}
+  a &= \frac{\frac{1}{R_3}\cdot\frac{R_1 + R_2}{R_1 R_2}}{\frac{1}{R_2}\cdot\frac{R_3 + R_4}{R_3 R_4}}
+     = \frac{R_1 + R_2}{R_1 R_2 R_3}\cdot\frac{R_2 R_3 R_4}{R_3 + R_4} = \frac{R_4 (R_1 + R_2)}{R_1 (R_3 + R_4)} \\
+  b &= \frac{\frac{1}{R_1}}{\frac{1}{R_2}} = \frac{R_2}{R_1} \\
+  V_{out} &= \frac{R_4 (R_1 + R_2)}{R_1 (R_3 + R_4)} V_2 - \frac{R_2}{R_1} V_1
+\end{align*}
+With \(\frac{R_4}{R_3} = \frac{R_2}{R_1}\), substitute \(R_4 = \frac{R_2 R_3}{R_1}\):
+\begin{align*}
+  R_3 + R_4 &= R_3 + \frac{R_2 R_3}{R_1} = \frac{R_3 (R_1 + R_2)}{R_1} \\
+  a &= \frac{\frac{R_2 R_3}{R_1}(R_1 + R_2)}{R_1 \cdot \frac{R_3(R_1 + R_2)}{R_1}} = \frac{\frac{R_2 R_3}{R_1}(R_1 + R_2)}{R_3(R_1 + R_2)} = \frac{R_2}{R_1} = b \\
+  V_{out} &= \frac{R_2}{R_1} V_2 - \frac{R_2}{R_1} V_1 = \frac{R_2}{R_1}(V_2 - V_1)
+\end{align*}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Common Mode Rejection}: write the inputs as a common mode
+    \(V_{ic}\) and a differential \(V_{id}\), \(V_1 = V_{ic} - \frac{V_{id}}{2}\),
+    \(V_2 = V_{ic} + \frac{V_{id}}{2}\):
+    \begin{align*}
+      V_{out} &= a\left(V_{ic} + \frac{V_{id}}{2}\right) - b\left(V_{ic} - \frac{V_{id}}{2}\right)
+               = (a - b) V_{ic} + \frac{a + b}{2} V_{id} \\
+      A_c &= a - b \hspace{1cm} A_d = \frac{a + b}{2} \hspace{1cm}
+      CMRR = \frac{|A_d|}{|A_c|} = \frac{a + b}{2|a - b|}
+    \end{align*}
+    Let the nominal ratio be \(k = \frac{R_2}{R_1} = \frac{R_4}{R_3}\) (so \(b = k\)) and
+    let \(R_4\) be off by a fraction \(e\), \(R_4 \to R_4(1 + e)\), i.e.
+    \(\frac{R_4}{R_3} \to k(1 + e)\). Dividing the top and bottom of \(a\) by \(R_1 R_3\):
+    \begin{align*}
+      a &= \frac{\frac{R_1 + R_2}{R_1}\cdot\frac{R_4}{R_3}}{\frac{R_3 + R_4}{R_3}} = \frac{(1 + k)\, k(1 + e)}{1 + k(1 + e)} \\
+      1 + k(1 + e) &= (1 + k) + ke = (1 + k)\left(1 + \frac{ke}{1 + k}\right) \\
+      a &= \frac{k(1 + e)}{1 + \frac{ke}{1 + k}} \approx k(1 + e)\left(1 - \frac{ke}{1 + k}\right) \hspace{1cm} [\tfrac{1}{1 + x} \approx 1 - x, \ |x| \ll 1] \\
+      a &\approx k\left(1 + e - \frac{ke}{1 + k}\right) = k\left(1 + e\frac{1 + k - k}{1 + k}\right) = k\left(1 + \frac{e}{1 + k}\right) \hspace{1cm} [e^2 \to 0] \\
+      a - b &\approx \frac{k e}{1 + k} \hspace{1cm} \frac{a + b}{2} \approx k \\
+      CMRR &\approx \frac{k}{\frac{k|e|}{1 + k}} = \frac{1 + k}{|e|}
+    \end{align*}
+  \item \textbf{Impedances}: \(V_- = V_+\) is not a virtual ground here, but with
+    \(V_2 = 0\) it is, so \(Z_{in,1} = R_1\). Into \(V_2\), no current enters
+    \(V_+\), so \(G_3\) and \(G_4\) are in series: \(Z_{in,2} = R_3 + R_4\). They are
+    unequal, which is why the instrumentation amplifier buffers both inputs
+    first.
+\end{enumerate}
+
+\subsubsection{Question}
+\(k = 1\) (\(R_1 = R_2 = R_3 = 10\,k\Omega\)) with \(R_4 = 10.1\,k\Omega\) (\(e = 1\%\)).
+Find the CMRR, approximate and exact.
+\paragraph{Solution:}
+\begin{align*}
+  CMRR &\approx \frac{1 + k}{|e|} = \frac{1 + 1}{0.01} = 200 \hspace{1cm} (20\log_{10} 200 = 46\,dB) \\
+  a &= \frac{R_4 (R_1 + R_2)}{R_1 (R_3 + R_4)} = \frac{10.1 \cdot 20}{10 \cdot 20.1} = \frac{202}{201} = 1.004975 \hspace{1cm} b = 1 \\
+  CMRR &= \frac{a + b}{2|a - b|} = \frac{2.004975}{2 \cdot 0.004975} = \frac{2.004975}{0.009950} = 201.5
+\end{align*}

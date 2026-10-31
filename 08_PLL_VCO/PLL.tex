@@ -1,0 +1,119 @@
+\section{Charge Pump PLL}\label{sec:pll_cp}
+
+\subsection{Overview}
+PFD and charge pump, loop filter \(Z(s)\), VCO (gain \(K_v\) in rad/s/V) and a
+divider by \(N\). In lock \(f_{out} = N f_{ref}\) with zero static phase error.
+
+\subsection{Schematic}
+\begin{circuitfig}
+  \draw (0,0) rectangle (1.8,1.2) node[midway, align=center]{PFD\\+CP};
+  \draw[->] (-1,0.8) node[left]{$\theta_{ref}$} -- (0,0.8);
+  \draw[->] (1.8,0.6) -- node[above]{$I_f$} (3,0.6);
+  \draw (3,0.6) node[circ]{} node[above]{$V_c$} -- (5,0.6);
+  \draw (3,0.6) to[european resistor, l_={$R$}] (3,-1) to[capacitor, l_={$C_1$}] (3,-2.6) node[ground]{};
+  \draw (4,0.6) to[capacitor, l={$C_2$}] (4,-2.6) node[ground]{};
+  \draw (5,0) rectangle (6.8,1.2) node[midway]{VCO};
+  \draw[->] (6.8,0.6) -- (8.2,0.6) node[right]{$\theta_{out}$};
+  \draw (7.5,0.6) -- (7.5,2.2);
+  \draw (3.4,1.8) rectangle (5.2,2.6) node[midway]{$\div N$};
+  \draw[->] (7.5,2.2) -- (5.2,2.2);
+  \draw[->] (3.4,2.2) -- (-0.4,2.2) |- (0,0.4);
+  \node at (0.5,2.45) {$\theta_{div}$};
+\end{circuitfig}
+
+\subsection{Transfer Function}
+\textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}, phase domain.
+The averaged pump current into the filter is \(I_f = K_{pd}\theta_e = \frac{I_{cp}}{2\pi}\theta_e\)
+(\(I_{cp}\) is the constant pump current).
+Loop filter (KCL at \(V_c\), conductances \(sC_2\) and \(\frac{1}{R + \frac{1}{sC_1}}\)):
+\begin{align*}
+  I_f &= V_c\left(sC_2 + \frac{1}{R + \frac{1}{sC_1}}\right) = V_c\left(sC_2 + \frac{sC_1}{sRC_1 + 1}\right) \\
+      &= V_c\,\frac{sC_2(1 + sRC_1) + sC_1}{1 + sRC_1} = V_c\,\frac{s\left[(C_1 + C_2) + sRC_1C_2\right]}{1 + sRC_1} \\
+  Z(s) &= \frac{V_c}{I_f} = \frac{1 + sRC_1}{s\left[(C_1 + C_2) + sRC_1C_2\right]} = \frac{1 + sRC_1}{s(C_1 + C_2)\left(1 + sR\frac{C_1 C_2}{C_1 + C_2}\right)}
+\end{align*}
+VCO: \(\omega_{out} = K_v V_c \Rightarrow \theta_{out} = \frac{\omega_{out}}{s} = \frac{K_v}{s} V_c\). Divider:
+\(\theta_{div} = \frac{\theta_{out}}{N}\). Chaining \(\theta_e \to I_f \to V_c \to \theta_{out} \to \theta_{div}\),
+the open loop gain (\(\theta_{div}/\theta_e\)) is
+\[
+  G(s) = \frac{\theta_{div}}{\theta_e} = \frac{I_f}{\theta_e}\cdot\frac{V_c}{I_f}\cdot\frac{\theta_{out}}{V_c}\cdot\frac{\theta_{div}}{\theta_{out}} = \frac{I_{cp}}{2\pi} Z(s) \frac{K_v}{s} \frac{1}{N}
+\]
+and the closed loop, from \(\theta_e = \theta_{ref} - \theta_{div}\) and \(\theta_{out} = N\theta_{div} = N G\theta_e\):
+\begin{align*}
+  \theta_{out} &= N G\left(\theta_{ref} - \frac{\theta_{out}}{N}\right) = N G\,\theta_{ref} - G\,\theta_{out} \\
+  \theta_{out}(1 + G) &= N G\,\theta_{ref} \hspace{0.5cm} \Rightarrow \hspace{0.5cm}
+  \frac{\theta_{out}}{\theta_{ref}} = \frac{N G(s)}{1 + G(s)}
+\end{align*}
+\paragraph{Second order approximation} (\(C_2 = 0\), \(Z = R + \frac{1}{sC_1} = \frac{1 + sRC_1}{sC_1}\)): with
+\(K = \frac{I_{cp} K_v}{2\pi N C_1}\),
+\begin{align*}
+  G(s) &= \frac{I_{cp}}{2\pi}\cdot\frac{1 + sRC_1}{sC_1}\cdot\frac{K_v}{sN} = \frac{I_{cp} K_v}{2\pi N C_1}\cdot\frac{1 + sRC_1}{s^2} = \frac{K(1 + sRC_1)}{s^2} \\
+  \frac{\theta_{out}}{\theta_{ref}} &= \frac{N\frac{K(1 + sRC_1)}{s^2}}{1 + \frac{K(1 + sRC_1)}{s^2}} \cdot \frac{s^2}{s^2}
+  = \frac{NK(1 + sRC_1)}{s^2 + K + KRC_1 s} = N\frac{K(1 + sRC_1)}{s^2 + K RC_1 s + K}
+\end{align*}
+Comparing \(s^2 + KRC_1 s + K\) with \(s^2 + 2D_R\omega_n s + \omega_n^2\)
+(Section~\ref{sec:theory_cs_second_order}):
+\begin{align*}
+  \omega_n^2 &= K \hspace{0.5cm} \Rightarrow \hspace{0.5cm} \omega_n = \sqrt{\frac{I_{cp} K_v}{2\pi N C_1}} \\
+  2D_R\omega_n &= KRC_1 = \omega_n^2 RC_1 \hspace{0.5cm} \Rightarrow \hspace{0.5cm}
+  D_R = \frac{RC_1}{2}\omega_n = \frac{RC_1}{2}\sqrt{\frac{I_{cp} K_v}{2\pi N C_1}} = \frac{R}{2}\sqrt{\frac{I_{cp} K_v C_1}{2\pi N}}
+\end{align*}
+
+\subsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Type II}: two integrators (\(C_1\) and the VCO) in the loop.
+    Phase error for a reference frequency step \(\theta_{ref} = \frac{d\omega}{s^2}\):
+    \begin{align*}
+      \theta_e &= \theta_{ref} - \theta_{div} = \theta_{ref} - G\theta_e \hspace{0.5cm} \Rightarrow \hspace{0.5cm} \theta_e = \frac{\theta_{ref}}{1 + G} \\
+      \frac{1}{1 + G} &= \frac{1}{1 + \frac{K(1 + sRC_1)}{s^2}} = \frac{s^2}{s^2 + K RC_1 s + K} \\
+      \theta_e(s) &= \frac{\theta_{ref}}{1 + G} = \frac{d\omega}{s^2}\cdot\frac{s^2}{s^2 + K RC_1 s + K} = \frac{d\omega}{s^2 + K RC_1 s + K} \\
+      \theta_e(\infty) &= \lim_{s \to 0} s\,\theta_e(s) = \lim_{s \to 0} \frac{s\, d\omega}{s^2 + KRC_1 s + K} = \frac{0 \cdot d\omega}{K} = 0
+    \end{align*}
+    An XOR detector with a passive RC filter \(F(s)\), \(F(0) = 1\), is type I,
+    \(G = \frac{K_{pd} F(s) K_v}{sN}\), and keeps a static error:
+    \begin{align*}
+      \theta_e(\infty) &= \lim_{s \to 0} s\,\frac{d\omega}{s^2}\cdot\frac{1}{1 + \frac{K_{pd} F(s) K_v}{sN}}
+      = \lim_{s \to 0} \frac{d\omega}{s + \frac{K_{pd} F(s) K_v}{N}} = \frac{N\, d\omega}{K_{pd} K_v}
+    \end{align*}
+  \item \textbf{Loop Bandwidth}: substitute \(K = \omega_n^2\) and
+    \(RC_1 = \frac{2D_R}{\omega_n}\) into \(G(j\omega)\) and set \(|G(j\omega_c)| = 1\)
+    with \(x = \frac{\omega_c}{\omega_n}\):
+    \begin{align*}
+      G(j\omega) &= \frac{K(1 + j\omega RC_1)}{(j\omega)^2} = -\frac{K(1 + j\omega RC_1)}{\omega^2} \hspace{1cm} [j^2 = -1] \\
+      |G(j\omega)| &= \frac{K\sqrt{1 + (\omega RC_1)^2}}{\omega^2} = \frac{\omega_n^2\sqrt{1 + \left(\frac{2D_R\omega}{\omega_n}\right)^2}}{\omega^2} \\
+      1 &= \frac{\omega_n^2\sqrt{1 + 4D_R^2 \frac{x^2\omega_n^2}{\omega_n^2}}}{x^2\omega_n^2} = \frac{\sqrt{1 + 4D_R^2 x^2}}{x^2} \hspace{1cm} [\omega_c = x\omega_n] \\
+      x^4 &= 1 + 4D_R^2 x^2 \hspace{1cm} [\text{squaring}, \times x^4] \hspace{1cm} \Rightarrow \hspace{1cm} (x^2)^2 - 4D_R^2 (x^2) - 1 = 0 \\
+      x^2 &= \frac{4D_R^2 + \sqrt{(4D_R^2)^2 + 4}}{2} = \frac{4D_R^2 + \sqrt{16D_R^4 + 4}}{2} = 2D_R^2 + \sqrt{4D_R^4 + 1} \hspace{0.5cm} [\text{positive root}] \\
+      \omega_c &= \omega_n\sqrt{2D_R^2 + \sqrt{4D_R^4 + 1}} \hspace{0.5cm} \xrightarrow{D_R^4 \gg 1} \hspace{0.5cm} \omega_n\sqrt{2D_R^2 + 2D_R^2} = 2D_R\omega_n
+    \end{align*}
+    (\(D_R = 1\): \(\omega_c = 2.06\,\omega_n\), so \(\omega_c \approx 2D_R\omega_n\) already holds for
+    \(D_R \gtrsim 1\)); keep \(\omega_c < \frac{2\pi f_{ref}}{10}\).
+  \item \textbf{\(C_2\)}: smooths the charge pump pulses (ripple on \(V_c\) gives
+    reference spurs). It adds a pole where \(1 + sR\frac{C_1C_2}{C_1 + C_2} = 0\), at
+    \(|s| = \frac{C_1 + C_2}{RC_1 C_2}\); with \(C_2 = \frac{C_1}{10}\),
+    \(|s| = \frac{1.1 C_1}{RC_1 \cdot 0.1 C_1} = \frac{11}{RC_1}\), eleven times the zero
+    \(\frac{1}{RC_1}\) (and \(\frac{11}{RC_1} = \frac{11\omega_n}{2D_R}\) above \(\omega_c \approx 2D_R\omega_n\) for
+    \(D_R \approx 1\)), so the second order results stay close.
+  \item \textbf{Noise Transfer}: reference (and PFD/CP) noise sees
+    \(\frac{N G}{1 + G}\): low pass, multiplied by \(N\). VCO noise
+    \(\theta_{vco}\) adds at the VCO output; with \(\theta_{ref} = 0\),
+    \(\theta_e = -\frac{\theta_{out}}{N}\):
+    \begin{align*}
+      \theta_{out} &= \theta_{vco} + N G\theta_e = \theta_{vco} - G\theta_{out}
+      \hspace{0.5cm} \Rightarrow \hspace{0.5cm} \frac{\theta_{out}}{\theta_{vco}} = \frac{1}{1 + G}
+    \end{align*}
+    high pass (\(\to 0\) for \(|G| \gg 1\), \(\to 1\) for \(|G| \ll 1\)). The loop bandwidth trades them.
+\end{enumerate}
+
+\subsection{Question}
+\(f_{ref} = 10\,\)MHz, \(N = 100\), \(K_v = 2\pi \cdot 100\,\)MHz/V,
+\(I_{cp} = 100\,\mu\)A, target \(\omega_n = 2\pi \cdot 200\,\)kHz, \(D_R = 1\). Find
+\(C_1\), \(R\), \(C_2\).
+\paragraph{Solution:}
+\begin{align*}
+  \omega_n &= 2\pi \cdot 2 \times 10^5 = 1.257 \times 10^6\,\text{rad/s} \hspace{1cm} \omega_n^2 = (1.257 \times 10^6)^2 = 1.579 \times 10^{12} \\
+  \omega_n^2 &= \frac{I_{cp} K_v}{2\pi N C_1} \hspace{0.5cm} \Rightarrow \hspace{0.5cm} C_1 = \frac{I_{cp} K_v}{2\pi N \omega_n^2} = \frac{100\,\mu \cdot 2\pi \cdot 10^8}{2\pi \cdot 100 \cdot (2\pi \cdot 2 \times 10^5)^2} = \frac{10^{-4} \cdot 10^8 / 100}{1.579 \times 10^{12}} = \frac{10^{2}}{1.579 \times 10^{12}} = 63.3\,pF \\
+  D_R &= \frac{RC_1}{2}\omega_n \hspace{0.5cm} \Rightarrow \hspace{0.5cm} R = \frac{2 D_R}{\omega_n C_1} = \frac{2 \cdot 1}{1.257 \times 10^6 \cdot 63.3\,p} = \frac{2}{7.96 \times 10^{-5}} = 25.1\,k\Omega \\
+  C_2 &= \frac{C_1}{10} = \frac{63.3\,p}{10} = 6.3\,pF \\
+  \frac{\omega_c}{\omega_n} &= \sqrt{2 D_R^2 + \sqrt{4 D_R^4 + 1}} = \sqrt{2 \cdot 1 + \sqrt{4 \cdot 1 + 1}} = \sqrt{2 + 2.236} = \sqrt{4.236} = 2.058 \hspace{0.5cm} \Rightarrow \hspace{0.5cm}
+  \frac{\omega_c}{2\pi} = 2.058 \cdot 200\,kHz = 412\,kHz < \frac{f_{ref}}{10} = 1\,MHz
+\end{align*}

@@ -1,0 +1,110 @@
+\section{Operational Amplifier (Op-Amp)}\label{sec:devices_opamp}
+
+An op-amp is treated here as a device: a three-terminal (plus supplies),
+active, (ideally) linear, time-invariant differential voltage amplifier.
+How it is built is the subject of Section~\ref{sec:amp_differential}; here
+we only need its terminal behaviour to use it inside blocks
+(Section~\ref{sec:amp_functional}).
+
+\begin{circuitfig}
+  \draw (0,0) node[op amp](A){};
+  \draw (A.-) node[left]{$V_-$} (A.+) node[left]{$V_+$} (A.out) node[right]{$V_{out}$};
+  \draw (4,1) node[left]{$V_+$} to[short, o-] (4.8,1) to[european resistor, l_={$R_{id}$}] (4.8,-1) to[short, -o] (4,-1) node[left]{$V_-$};
+  \draw (9,1) to[european resistor, l={$R_o$}] (10.8,1) to[short, -o] (11.3,1) node[right]{$V_{out}$};
+  \draw (9,-1.2) node[ground]{} to[american controlled voltage source, invert, l={$A(s)(V_+ - V_-)$}] (9,1);
+\end{circuitfig}
+
+\begin{itemize}
+  \item \textbf{Mathematical Model}:
+    \[
+      V_{out} = A(s) \left( V_+ - V_- \right) = A(s) V_{id}
+    \]
+    \begin{itemize}
+      \item \textbf{Ideal Model}: \(A \to \infty\), \(R_{id} \to \infty\),
+        \(R_o \to 0\). For a finite output with infinite gain,
+        \begin{align*}
+          V_{id} &= \frac{V_{out}}{A} \xrightarrow{A \to \infty} 0
+          \hspace{0.5cm} \Rightarrow \hspace{0.5cm} V_+ = V_- \hspace{0.5cm} \text{[virtual short, negative feedback only]} \\
+          I_+ &= I_- = \frac{V_{id}}{R_{id}} = 0 \hspace{0.5cm} \text{[no input current]}
+        \end{align*}
+      \item \textbf{Single Pole Model}: a dominant pole \(p_1\) and DC gain
+        \(A_0\),
+        \begin{align*}
+          A(s) &= \frac{A_0}{1 + \frac{s}{p_1}} = \frac{A_0 p_1}{s + p_1} \hspace{1cm} [\text{multiply by } \tfrac{p_1}{p_1}] \\
+          A(s) &\approx \frac{A_0 p_1}{s} \hspace{1cm} [|s| \gg p_1] \\
+          |A(j\omega_u)| &= \frac{A_0 p_1}{\omega_u} = 1 \hspace{1cm} \Rightarrow \hspace{1cm} \omega_u = A_0 p_1 \\
+          GB &= \frac{\omega_u}{2\pi} = A_0 \cdot \frac{p_1}{2\pi} \hspace{1cm} \text{[gain-bandwidth product, Hz]} \\
+          A(s) &\approx \frac{2\pi GB}{s} \hspace{1cm} [|s| \gg p_1]
+        \end{align*}
+        For example, \(A_0 = 10^5\) and \(\frac{p_1}{2\pi} = 10\,\text{Hz}\) give
+        \(GB = 10^5 \cdot 10\,\text{Hz} = 1\,\text{MHz}\).
+      \item \textbf{Large Signal Limits} (Large Signal, Time Domain, DC
+        Input Analysis (Q5); Large Signal, Time Domain, AC Input Analysis
+        (Q6)): the output saturates and
+        slews,
+        \begin{align*}
+          V_{OL} \leq V_{out} \leq V_{OH} \hspace{1cm}
+          \left|\frac{dV_{out}}{dt}\right| \leq SR
+        \end{align*}
+        A sine of amplitude \(V_p\) and frequency \(f\) has slope
+        \begin{align*}
+          V_{out}(t) &= V_p \sin(2\pi f t) \\
+          \frac{dV_{out}}{dt} &= 2\pi f V_p \cos(2\pi f t) \\
+          \left|\frac{dV_{out}}{dt}\right|_{\max} &= 2\pi f V_p \hspace{1cm} [|\cos| \leq 1]
+        \end{align*}
+        so it is undistorted only while
+        \begin{align*}
+          2\pi f V_p &\leq SR \\
+          f &\leq f_{FP} = \frac{SR}{2\pi V_p} \hspace{1cm} \text{[full power bandwidth]}
+        \end{align*}
+        For example, \(SR = 0.5\,\text{V}/\mu\text{s}\) and \(V_p = 10\,\text{V}\) give
+        \(f_{FP} = \frac{0.5 \cdot 10^6\,\text{V/s}}{2\pi \cdot 10\,\text{V}} \approx 7.96\,\text{kHz}\).
+    \end{itemize}
+  \item \textbf{Negative Feedback}: A network returns a fraction \(F\) of
+    the output to the inverting input, \(V_- = F V_{out}\), \(V_+ = V_{in}\).
+    \begin{align*}
+      V_{out} &= A(V_+ - V_-) = A(V_{in} - F V_{out}) \\
+      V_{out} + AF V_{out} &= A V_{in} \\
+      V_{out}(1 + AF) &= A V_{in} \\
+      A_{CL} &= \frac{V_{out}}{V_{in}} = \frac{A}{1 + AF} = \frac{1}{F} \cdot \frac{AF}{1 + AF} \xrightarrow{AF \to \infty} \frac{1}{F}
+    \end{align*}
+    \(T = AF\) is the loop gain. With the single pole model:
+    \begin{align*}
+      A_{CL}(s) &= \frac{\frac{A_0 p_1}{s + p_1}}{1 + \frac{A_0 p_1 F}{s + p_1}} \\
+      A_{CL}(s) &= \frac{A_0 p_1}{s + p_1 + A_0 p_1 F} \hspace{1cm} [\text{multiply top and bottom by } s + p_1] \\
+      A_{CL}(s) &= \frac{A_0 p_1}{s + p_1(1 + A_0 F)} \\
+      A_{CL}(s) &= \frac{\frac{A_0 p_1}{p_1(1 + A_0 F)}}{\frac{s}{p_1(1 + A_0 F)} + 1} \hspace{1cm} [\text{divide top and bottom by } p_1(1 + A_0 F)] \\
+      A_{CL}(s) &= \frac{\frac{A_0}{1 + A_0 F}}{1 + \frac{s}{p_1(1 + A_0 F)}}
+    \end{align*}
+    The closed loop DC gain falls by \(1 + A_0F\) and the pole rises by
+    \(1 + A_0F\): gain times bandwidth is conserved,
+    \begin{align*}
+      f_{-3dB,CL} &= \frac{p_1 (1 + A_0 F)}{2\pi} \\
+      f_{-3dB,CL} &\approx \frac{p_1 A_0 F}{2\pi} \hspace{1cm} [A_0 F \gg 1] \\
+      f_{-3dB,CL} &= F \cdot \frac{A_0 p_1}{2\pi} = F \cdot GB \\
+      \frac{A_0}{1 + A_0 F} \cdot f_{-3dB,CL} &= \frac{A_0}{1 + A_0 F} \cdot \frac{p_1 (1 + A_0 F)}{2\pi} = \frac{A_0 p_1}{2\pi} = GB
+    \end{align*}
+  \item \textbf{Non-Idealities}:
+    \begin{itemize}
+      \item \textbf{Offset} \(V_{OS}\): the \(V_{id}\) needed to bring
+        \(V_{out}\) to its intended value. It appears in series with \(V_+\),
+        so it is amplified by \(\frac{1}{F}\).
+      \item \textbf{Bias Currents} \(I_{B+}\), \(I_{B-}\) flow into the
+        inputs; \(I_{OS} = |I_{B+} - I_{B-}|\).
+      \item \textbf{Common Mode Rejection}: with
+        \(V_{ic} = \frac{V_+ + V_-}{2}\),
+        \begin{align*}
+          V_{out} &= A_d V_{id} + A_c V_{ic} \hspace{1cm}
+          CMRR = \frac{A_d}{A_c}
+        \end{align*}
+      \item \textbf{Power Supply Rejection}:
+        \(PSRR = \frac{A_d}{V_{out}/V_{dd}}\), the gain from the input divided
+        by the gain from the supply.
+    \end{itemize}
+  \item \textbf{Circuit Analysis}: In the Large Signal, Time Domain, DC
+    Input Analysis (Q5) check that \(V_{out}\) is inside
+    \(V_{OL} \ldots V_{OH}\) and the input common mode is inside its range.
+    In the Small Signal, Frequency Domain, AC Input Analysis (Q4) write KCL with \(V_{out} = A(s)(V_+ - V_-)\) and take
+    \(A \to \infty\) at the end; this keeps the derivation honest about
+    which results need high gain.
+\end{itemize}

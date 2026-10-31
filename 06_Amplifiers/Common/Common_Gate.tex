@@ -1,0 +1,152 @@
+\subsection{Common Gate (CG)}\label{sec:amp_cg}
+
+\subsubsection{Overview}
+The input drives the source, the output is taken at the drain and the
+gate is held at a DC bias (AC ground). It is non-inverting, has a low
+input impedance (\(\approx \frac{1}{g_m}\)) and a high output impedance.
+It is used as a current buffer and is the upper device of every cascode.
+
+\subsubsection{Schematic}
+\begin{circuitfig}
+  \draw (5,0) node[nmos](M){};
+  \node[right] at (5.4,0) {$M_1$};
+  \draw (M.G) -- (3.6,0) node[left]{$V_B$};
+  \draw (M.D) -- (5,2) node[circ]{} to[european resistor, l_={$G_D$}] (5,4) node[vcc]{$V_{dd}$};
+  \draw (5,2) -- (7,2) node[circ]{} node[above]{$V_{out}$};
+  \draw (M.S) -- (5,-1.6) node[circ]{} node[right]{$V_s$} to[european resistor, l_={$G_S$}] (5,-3.6) to[sinusoidal voltage source, l_={$V_{in}$}] (5,-5.6) node[ground]{};
+\end{circuitfig}
+The DC path for the drain current goes through \(G_S\) and the source
+\(V_{in}\) (which therefore carries a DC value \(V_{IN}\)).
+
+\subsubsection{Transfer Function}
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}: (\(K_{CLM} = 0\))
+    \begin{align*}
+      I_D &= (V_S - V_{IN}) G_S \tag{1} \\
+      I_D &= k_n (V_B - V_S - V_{th})^2 \tag{2} \\
+      V_{OUT} &= V_{dd} - \frac{I_D}{G_D} \tag{3}
+    \end{align*}
+    Let \(V_{ov} = V_B - V_S - V_{th}\), so \(V_S = V_B - V_{th} - V_{ov}\). Equating
+    (1) and (2):
+    \begin{align*}
+      k_n V_{ov}^2 &= (V_B - V_{th} - V_{ov} - V_{IN}) G_S \\
+      k_n V_{ov}^2 &= G_S (V_B - V_{th} - V_{IN}) - G_S V_{ov} \\
+      k_n V_{ov}^2 + G_S V_{ov} - G_S (V_B - V_{th} - V_{IN}) &= 0 \\
+      V_{ov} &= \frac{-G_S + \sqrt{G_S^2 - 4 k_n \cdot \left(-G_S (V_B - V_{th} - V_{IN})\right)}}{2 k_n} \quad [\text{positive root}] \\
+      V_{ov} &= \frac{-G_S + \sqrt{G_S^2 + 4 k_n G_S (V_B - V_{th} - V_{IN})}}{2 k_n}
+    \end{align*}
+    Then \(I_D = k_n V_{ov}^2\) and \(V_{OUT}\) follows from (3).
+    Saturation requires \(V_{DS} \geq V_{ov}\):
+    \begin{align*}
+      V_{OUT} - V_S &\geq V_{ov} \\
+      V_{OUT} &\geq V_S + V_{ov} = (V_B - V_{th} - V_{ov}) + V_{ov} = V_B - V_{th}
+    \end{align*}
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}: \(V_g = 0\). The drain current
+    (drain to source) is
+    \begin{align*}
+      I_d &= g_m V_{gs} + g_{mb} V_{bs} + g_o V_{ds} \hspace{1cm} [V_g = V_b = 0] \\
+      I_d &= g_m(0 - V_s) + g_{mb}(0 - V_s) + g_o(V_{out} - V_s) \\
+      I_d &= -(g_m + g_{mb} + g_o) V_s + g_o V_{out} \tag{4}
+    \end{align*}
+    Applying KCL at \(V_{out}\) (\(I_d\) leaves the node into the drain):
+    \begin{align*}
+      V_{out} G_D + I_d &= 0 \tag{5}
+    \end{align*}
+    Applying KCL at \(V_s\) (\(I_d\) arrives, leaves through \(G_S\)):
+    \begin{align*}
+      (V_s - V_{in}) G_S &= I_d \tag{6}
+    \end{align*}
+    From (5), \(I_d = -V_{out} G_D\); into (6):
+    \begin{align*}
+      (V_s - V_{in}) G_S &= -V_{out} G_D \\
+      V_s - V_{in} &= -\frac{G_D}{G_S} V_{out} \\
+      V_s &= V_{in} - \frac{G_D}{G_S} V_{out} \tag{7}
+    \end{align*}
+    Substituting (4) into (5):
+    \begin{align*}
+      V_{out} G_D - (g_m + g_{mb} + g_o) V_s + g_o V_{out} &= 0 \\
+      V_{out}(G_D + g_o) &= (g_m + g_{mb} + g_o) V_s \tag{8}
+    \end{align*}
+    Substituting (7) into (8):
+    \begin{align*}
+      V_{out}(G_D + g_o) &= (g_m + g_{mb} + g_o)\left(V_{in} - \frac{G_D}{G_S} V_{out}\right) \\
+      V_{out}(G_D + g_o) &= (g_m + g_{mb} + g_o) V_{in} - \frac{G_D (g_m + g_{mb} + g_o)}{G_S} V_{out} \\
+      V_{out}\left(G_D + g_o + \frac{G_D (g_m + g_{mb} + g_o)}{G_S}\right) &= (g_m + g_{mb} + g_o) V_{in} \\
+      V_{out}\left(G_S (G_D + g_o) + G_D (g_m + g_{mb} + g_o)\right) &= G_S (g_m + g_{mb} + g_o) V_{in} \hspace{1cm} [\times G_S] \\
+      H = \frac{V_{out}}{V_{in}} &= \frac{G_S (g_m + g_{mb} + g_o)}{G_S (G_D + g_o) + G_D (g_m + g_{mb} + g_o)} \tag{9}
+    \end{align*}
+\end{enumerate}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Gain}: With an ideal source (\(G_S \to \infty\)), divide
+    numerator and denominator of (9) by \(G_S\):
+    \begin{align*}
+      A_{V0} &= \lim_{G_S \to \infty} \frac{g_m + g_{mb} + g_o}{G_D + g_o + \frac{G_D (g_m + g_{mb} + g_o)}{G_S}}
+              = \frac{g_m + g_{mb} + g_o}{G_D + g_o} \\
+      A_{V0} &\approx \frac{g_m + g_{mb}}{G_D} = (g_m + g_{mb}) R_D \hspace{1cm} [g_o \ll g_m,\ g_o \ll G_D]
+    \end{align*}
+    positive and equal in size to the CS gain (plus body effect).
+  \item \textbf{Current Gain}: With a current input \(I_{in}\) into the
+    source (\(G_S\) removed), KCL at \(V_s\) is \(I_{in} + I_d = 0\), so
+    \(I_d = -I_{in}\): the drain pulls \(-I_d = I_{in}\) out of the load,
+    \(\frac{I_{out}}{I_{in}} = 1\) (current buffer).
+  \item \textbf{Impedances}:
+    \paragraph{At Input:} \(G_S\) removed, test current \(I_{test}\) into the
+      source: \(I_{test} + I_d = 0\). With (5), \(I_{test} = V_{out} G_D\), and
+      with (8), \(V_{out} = \frac{g_m + g_{mb} + g_o}{G_D + g_o} V_s\):
+      \begin{align*}
+        I_{test} &= \frac{G_D (g_m + g_{mb} + g_o)}{G_D + g_o} V_s \\
+        Z_{in} &= \frac{V_s}{I_{test}} = \frac{G_D + g_o}{G_D (g_m + g_{mb} + g_o)}
+                = \frac{(G_D + g_o) R_D r_o}{G_D (g_m + g_{mb} + g_o) R_D r_o} \\
+        Z_{in} &= \frac{r_o + R_D}{(g_m + g_{mb}) r_o + g_o r_o} = \frac{r_o + R_D}{1 + (g_m + g_{mb}) r_o}
+      \end{align*}
+      \(Z_{in} \approx \frac{1}{g_m + g_{mb}}\) for \(R_D \ll r_o\), but rises to
+      \(\approx R_D/(g_m r_o)\) and beyond when the load is large.
+    \paragraph{At Output:} \(V_{in} = 0\), \(G_D\) removed, \(I_{test}\) into
+      the drain: \(I_d = I_{test}\), and (6) gives \(V_s = \frac{I_{test}}{G_S}\).
+      From (4):
+      \begin{align*}
+        I_{test} &= -(g_m + g_{mb} + g_o)\frac{I_{test}}{G_S} + g_o V_{out} \\
+        g_o V_{out} &= I_{test}\left(1 + \frac{g_m + g_{mb} + g_o}{G_S}\right) \\
+        Z'_{out} &= \frac{V_{out}}{I_{test}} = r_o\left(1 + (g_m + g_{mb} + g_o) R_S\right) \hspace{1cm} [\tfrac{1}{g_o} = r_o,\ \tfrac{1}{G_S} = R_S] \\
+        Z'_{out} &= r_o + (g_m + g_{mb}) r_o R_S + g_o r_o R_S \\
+        Z'_{out} &= r_o + R_S + (g_m + g_{mb}) r_o R_S \hspace{1cm} [g_o r_o = 1] \\
+        Z_{out} &= R_D \parallel Z'_{out}
+      \end{align*}
+      This is the cascode impedance boost: a resistance \(R_S\) below a
+      common gate device is multiplied by \(\approx g_m r_o\).
+  \item \textbf{Poles}: with \(C_L\) at the output (it includes \(C_{gd}\),
+    whose gate end is AC ground) and \(C_s = C_{gs} + C_{sb}\) at the
+    source, the two nodes are coupled only through \(g_o\). Neglecting
+    \(g_o\), (4) is \(I_d = -(g_m + g_{mb}) V_s\) and KCL at \(V_s\) and at \(V_{out}\) gives
+    \begin{align*}
+      (V_s - V_{in}) G_S + V_s sC_s &= -(g_m + g_{mb}) V_s
+      \hspace{0.5cm} \Rightarrow \hspace{0.5cm}
+      V_s = \frac{G_S}{G_S + g_m + g_{mb} + sC_s} V_{in} \\
+      V_{out}(G_D + sC_L) - (g_m + g_{mb}) V_s &= 0
+      \hspace{0.5cm} \Rightarrow \hspace{0.5cm}
+      V_{out} = \frac{g_m + g_{mb}}{G_D + sC_L} V_s \\
+      H(s) &= \frac{G_S (g_m + g_{mb})}{(G_S + g_m + g_{mb} + sC_s)(G_D + sC_L)}
+    \end{align*}
+    two real poles
+    \[
+      p_{out} = \frac{G_D}{C_L} \hspace{1cm} p_{in} = \frac{G_S + g_m + g_{mb}}{C_s}
+    \]
+    and no Miller multiplication (no capacitance from input to output).
+\end{enumerate}
+
+\subsubsection{Question}
+\(I_D = 100\,\mu\)A, \(V_{ov} = 0.2\,\)V, \(K_{CLM} = 0.1\,\)V\(^{-1}\),
+\(g_{mb} = 0.2 g_m\), \(R_D = 8\,k\Omega\), \(R_S = 1\,k\Omega\). Find
+\(A_{V}\), \(Z_{in}\) and \(Z_{out}\).
+\paragraph{Solution:}
+\begin{align*}
+  g_m &= 1\,mS \hspace{0.5cm} g_{mb} = 0.2\,mS \hspace{0.5cm} g_o = 10\,\mu S \hspace{0.5cm} G_D = 125\,\mu S \hspace{0.5cm} G_S = 1\,mS \\
+  g_m + g_{mb} + g_o &= 1\,m + 0.2\,m + 10\,\mu = 1.21\,mS \hspace{0.5cm} G_D + g_o = 125\,\mu + 10\,\mu = 135\,\mu S \\
+  r_o & = \frac{1}{10\,\mu S} = 100\,k\Omega \\
+  A_V &= \frac{(1\,m)(1.21\,m)}{(1\,m)(135\,\mu) + (125\,\mu)(1.21\,m)} = \frac{1.21 \times 10^{-6}}{1.35 \times 10^{-7} + 1.5125 \times 10^{-7}} = \frac{1.21 \times 10^{-6}}{2.8625 \times 10^{-7}} = 4.23 \\
+  Z_{in} &= \frac{135\,\mu}{(125\,\mu)(1.21\,m)} = \frac{1.35 \times 10^{-4}}{1.5125 \times 10^{-7}} = 893\,\Omega \\
+  Z'_{out} &= 100\,k + 1\,k + (1.2\,m)(100\,k)(1\,k) = 100\,k + 1\,k + 120\,k = 221\,k\Omega \\
+  Z_{out} &= 8\,k \parallel 221\,k = \frac{8\,k \cdot 221\,k}{8\,k + 221\,k} = \frac{1768}{229}\,k\Omega = 7.72\,k\Omega
+\end{align*}

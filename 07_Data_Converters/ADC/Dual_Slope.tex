@@ -1,0 +1,65 @@
+\subsection{Dual Slope ADC}\label{sec:adc_dual_slope}
+
+\subsubsection{Overview}
+An integrator (Section~\ref{sec:amp_integrator}) integrates \(V_{IN}\) for a
+fixed \(N_1\) clock periods, then integrates \(-V_{REF}\) until its output returns
+to zero, counting \(N_2\) periods. The ratio \(\frac{N_2}{N_1}\) is the result.
+Slow, but extremely accurate and immune to \(R\), \(C\) and clock values.
+
+\subsubsection{Schematic}
+\begin{circuitfig}
+  \draw (0,1) node[circ]{} node[left]{$V_{IN}$} -- (0.6,1);
+  \draw (0,-0.2) node[circ]{} node[left]{$-V_{REF}$} -- (0.6,-0.2);
+  \draw (0.6,1) -- (1.3,0.4); \draw (1.3,0.4) node[circ]{};
+  \node at (1.0,1.3) {\footnotesize $\phi_1$}; \node at (1.0,-0.5) {\footnotesize $\phi_2$};
+  \draw (1.3,0.4) to[european resistor, l={$R$}] (3.2,0.4) node[circ]{};
+  \draw (4.4,0) node[op amp](A){};
+  \draw (3.2,0.4) -- (A.-);
+  \draw (A.+) -- ++(-0.3,0) -- ++(0,-0.4) node[ground]{};
+  \draw (3.2,0.4) |- (3.4,1.8) to[capacitor, l={$C$}] (5.6,1.8) -| (A.out);
+  \draw (A.out) -- (6.2,0) node[circ]{} node[above]{$V_x$};
+  \draw (8,-0.1) node[op amp, scale=0.6](K){};
+  \draw (6.2,0) |- (K.+); \draw (K.-) -- ++(-0.3,0) -- ++(0,-0.4) node[ground]{};
+  \draw (9.2,-0.6) rectangle (10.8,0.4) node[midway]{counter};
+  \draw[->] (K.out) -- (9.2,-0.1);
+  \draw[->] (10.8,-0.1) -- ++(0.6,0) node[right]{$N_2$};
+\end{circuitfig}
+
+\subsubsection{Transfer Function}
+\textbf{Large Signal, Time Domain, AC Input Analysis (Q6)}: the ideal
+integrator (Section~\ref{sec:amp_integrator}) gives
+\(V_x(t) = V_x(t_0) - \frac{1}{RC}\int_{t_0}^{t} V\,dt'\) for the applied \(V\); it starts at \(V_x(0) = 0\).
+Define the average over phase 1, \(\overline{V_{IN}} = \frac{1}{T_1}\int_0^{T_1} V_{IN}\, dt\).
+\begin{align*}
+  \text{Phase 1 } (T_1 = N_1 T_{clk}):& \hspace{0.5cm} V_x(T_1) = 0 - \frac{1}{RC}\int_0^{T_1} V_{IN}\, dt = -\frac{\overline{V_{IN}} T_1}{RC} \\
+  \text{Phase 2 } (T_2 = N_2 T_{clk}):& \hspace{0.5cm} V_x(T_1 + T_2) = V_x(T_1) - \frac{1}{RC}\int_{T_1}^{T_1 + T_2} (-V_{REF})\, dt = V_x(T_1) + \frac{V_{REF} T_2}{RC}
+\end{align*}
+Phase 2 ends when the comparator sees \(V_x = 0\):
+\begin{align*}
+  0 &= -\frac{\overline{V_{IN}} T_1}{RC} + \frac{V_{REF} T_2}{RC} \\
+  V_{REF} T_2 &= \overline{V_{IN}} T_1 \hspace{1cm} [\times RC] \\
+  T_2 &= \frac{\overline{V_{IN}}}{V_{REF}} T_1 \\
+  N_2 T_{clk} &= \frac{\overline{V_{IN}}}{V_{REF}} N_1 T_{clk} \hspace{0.5cm} \Rightarrow \hspace{0.5cm}
+  N_2 = N_1 \frac{\overline{V_{IN}}}{V_{REF}}
+\end{align*}
+\(R\), \(C\) and \(T_{clk}\) cancel (they only need to be constant over one conversion).
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Noise Rejection, Small Signal, Frequency Domain, AC Input
+    Analysis (Q4)}: phase 1 is a linear average of \(V_{IN}\) over \(T_1\). For
+    \(V_{IN} = e^{j2\pi f t}\) (a sine is the imaginary part of
+    \(A e^{j\theta} e^{j2\pi f t}\)):
+    \begin{align*}
+      H(f) = \frac{1}{T_1}\int_0^{T_1} e^{j2\pi f t}\, dt &= \frac{1}{T_1}\cdot\frac{e^{j2\pi f T_1} - 1}{j2\pi f} \\
+      &= \frac{e^{j\pi f T_1}}{T_1}\cdot\frac{e^{j\pi f T_1} - e^{-j\pi f T_1}}{j2\pi f} \hspace{1cm} [\text{factoring } e^{j\pi f T_1}] \\
+      &= \frac{e^{j\pi f T_1}}{T_1}\cdot\frac{2j\sin(\pi f T_1)}{j2\pi f} = e^{j\pi f T_1}\frac{\sin(\pi f T_1)}{\pi f T_1} \hspace{1cm} [e^{jx} - e^{-jx} = 2j\sin x] \\
+      |H(f)| &= \left|\frac{\sin(\pi f T_1)}{\pi f T_1}\right|
+    \end{align*}
+    with nulls where \(\sin(\pi f T_1) = 0\), \(f = \frac{k}{T_1}\) (\(k = 1, 2, \ldots\)).
+    \(T_1 = 100\,\)ms: \(50\,Hz \cdot 0.1\,s = 5\) and \(60\,Hz \cdot 0.1\,s = 6\) are both
+    integers, so both mains frequencies and all their harmonics are rejected.
+  \item \textbf{Conversion Time}: \(N_1 = 2^n\) and \(N_2 \leq N_1\) (as
+    \(\overline{V_{IN}} \leq V_{REF}\)), so at most \((N_1 + N_2) T_{clk} = 2 \cdot 2^n T_{clk} = 2^{n+1} T_{clk}\).
+    16 bits at \(f_{clk} = 1\,\)MHz: \(2^{17} \cdot 1\,\mu s = 131072\,\mu s = 131\,ms\).
+\end{enumerate}

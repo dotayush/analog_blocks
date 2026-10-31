@@ -1,0 +1,60 @@
+\subsection{Single Pole Active Low Pass}\label{sec:filt_active_sp}
+
+\subsubsection{Overview}
+An inverting amplifier (Section~\ref{sec:amp_inverting}) with \(C\) across
+the feedback resistor: an RC low pass with gain and a buffered output.
+
+\subsubsection{Schematic}
+\begin{circuitfig}
+  \draw (0,0) node[op amp](A){};
+  \draw (A.-) -- ++(-0.6,0) coordinate(n) node[circ]{} node[below left]{$V_-$} to[european resistor, l_={$G_1$}] ++(-2.4,0) node[circ]{} node[left]{$V_{in}$};
+  \draw (n) |- (-0.5,1.6) to[european resistor, l={$G_2$}] (1.6,1.6) -| (A.out);
+  \draw (-0.5,1.6) |- (-0.5,2.8) to[capacitor, l={$C$}] (1.6,2.8) -- (1.6,1.6);
+  \draw (A.+) -- ++(-0.6,0) node[ground]{};
+  \draw (A.out) to[short, -o] ++(0.8,0) node[right]{$V_{out}$};
+\end{circuitfig}
+
+\subsubsection{Transfer Function}
+\textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)} with an ideal
+op-amp: \(V_+ = 0\), so \(V_- = V_+ = 0\) and no current enters \(V_-\). The
+feedback admittance is \(G_2\) in parallel with \(sC\), i.e.\ \(G_2 + sC\).
+KCL at \(V_-\):
+\begin{align*}
+  (V_- - V_{in}) G_1 + (V_- - V_{out})(G_2 + sC) &= 0 \\
+  (0 - V_{in}) G_1 + (0 - V_{out})(G_2 + sC) &= 0 \hspace{1cm} \text{(Substituting \(V_- = 0\))} \\
+  -V_{in} G_1 - V_{out}(G_2 + sC) &= 0 \\
+  -V_{out}(G_2 + sC) &= V_{in} G_1 \\
+  H(s) = \frac{V_{out}}{V_{in}} &= -\frac{G_1}{G_2 + sC} \hspace{1cm} \text{(Dividing both sides by \(-V_{in}(G_2 + sC)\))} \\
+  H(s) &= -\frac{\frac{1}{R_1}}{\frac{1}{R_2} + sC} \hspace{1cm} \text{(Substituting \(G_1 = \frac{1}{R_1}\), \(G_2 = \frac{1}{R_2}\))} \\
+  H(s) &= -\frac{\frac{1}{R_1}}{\frac{1 + sR_2 C}{R_2}} \\
+  H(s) &= -\frac{1}{R_1}\cdot\frac{R_2}{1 + sR_2 C} \\
+  H(s) &= -\frac{R_2}{R_1}\cdot\frac{1}{1 + sR_2 C}
+\end{align*}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Pole}: the denominator vanishes at
+    \begin{align*}
+      1 + s_p R_2 C &= 0 \\
+      s_p &= -\frac{1}{R_2 C} \\
+      f_p &= \frac{|s_p|}{2\pi} = \frac{1}{2\pi R_2 C}
+    \end{align*}
+    The numerator is a constant, so there is no finite zero.
+  \item \textbf{DC Gain}: at \(s = 0\),
+    \(H(0) = -\frac{R_2}{R_1}\cdot\frac{1}{1 + 0} = -\frac{R_2}{R_1}\).
+  \item \textbf{Impedances}: \(V_- = 0\) (virtual ground), so
+    \(Z_{in} = \frac{V_{in}}{(V_{in} - 0) G_1} = \frac{1}{G_1} = R_1\). The output is
+    the op-amp output, \(Z_{out} = \frac{R_o}{1 + AF} \approx 0\)
+    (Section~\ref{sec:amp_inverting}): unlike the passive RC
+    (Section~\ref{sec:theory_general_loading}) the next stage does not load it.
+\end{enumerate}
+
+\subsubsection{Question}
+\(R_1 = 1\,k\Omega\), \(R_2 = 10\,k\Omega\), \(C = 15.9\,nF\). Find the DC gain and
+\(f_p\).
+\paragraph{Solution:}
+\begin{align*}
+  H(0) &= -\frac{R_2}{R_1} = -\frac{10\,k\Omega}{1\,k\Omega} = -10 \\
+  f_p &= \frac{1}{2\pi R_2 C} = \frac{1}{2\pi \cdot 10^4\,\Omega \cdot 15.9 \times 10^{-9}\,F}
+       = \frac{1}{9.990 \times 10^{-4}\,s} = 1.001\,kHz
+\end{align*}

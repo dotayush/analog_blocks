@@ -1,0 +1,92 @@
+\subsection{Charge Redistribution DAC and MDAC}\label{sec:dac_mdac}
+
+\subsubsection{Overview}
+Binary weighted capacitors \(C_k = 2^k C_u\) plus a terminating \(C_u\)
+(total \(2^n C_u\)) share a top plate \(V_x\). After a reset the bottom
+plates are switched to \(V_{REF}\) or ground and charge redistributes.
+Capacitor matching is the best of any integrated element, and no static
+current flows. When the reference is replaced by an analog input the
+output is the product \(V_{IN} \cdot \frac{D}{2^n}\): a Multiplying DAC (MDAC),
+the core of SAR and pipeline ADCs.
+
+\subsubsection{Transfer Function}
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}: reset
+    puts zero charge on the top plate (\(V_x = 0\), all bottom plates at 0).
+    With top plate parasitic \(C_p\), charge conservation after switching:
+    \begin{align*}
+      \sum_{k=0}^{n-1} C_k (V_x - b_k V_{REF}) + C_u (V_x - 0) + C_p V_x &= 0 \\
+      V_x \left(\sum_k C_k + C_u + C_p\right) &= V_{REF} \sum_k b_k 2^k C_u \\
+      \sum_{k=0}^{n-1} C_k + C_u &= (2^0 + 2^1 + \cdots + 2^{n-1}) C_u + C_u = (2^n - 1) C_u + C_u = 2^n C_u \\
+      V_x \left(2^n C_u + C_p\right) &= V_{REF} C_u D \\
+      V_x &= \frac{D\, C_u}{2^n C_u + C_p} V_{REF} = \frac{D}{2^n} V_{REF} \cdot \frac{1}{1 + \frac{C_p}{2^n C_u}}
+    \end{align*}
+    \(C_p\) is a gain error only (linearity is untouched).
+  \item \textbf{Pipeline MDAC stage} (\textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}):
+    \(C_1\), \(C_2\) around an op-amp. Phase 1:
+    both sample \(V_{IN}\) against the virtual ground (top plate charge
+    \(-(C_1 + C_2)V_{IN}\)). Phase 2: \(C_2\) is the feedback capacitor, \(C_1\)
+    switches to \(b V_{REF}\), \(b \in \{-1, 0, 1\}\):
+    \begin{align*}
+      -(C_1 + C_2) V_{IN} &= C_1 (0 - b V_{REF}) + C_2 (0 - V_{OUT}) = -C_1 b V_{REF} - C_2 V_{OUT} \\
+      C_2 V_{OUT} &= (C_1 + C_2) V_{IN} - C_1 b V_{REF} \\
+      V_{OUT} &= \left(1 + \frac{C_1}{C_2}\right) V_{IN} - \frac{C_1}{C_2} b V_{REF} \xrightarrow{C_1 = C_2} 2 V_{IN} - b V_{REF}
+    \end{align*}
+    With finite op-amp gain \(A\) the top plate sits at \(V_x = -\frac{V_{OUT}}{A}\)
+    instead of 0, and the op-amp input capacitance \(C_{in}\) (no charge in
+    phase 1) also takes charge:
+    \begin{align*}
+      -(C_1 + C_2) V_{IN} &= C_1 (V_x - b V_{REF}) + C_2 (V_x - V_{OUT}) + C_{in} V_x \\
+      -(C_1 + C_2) V_{IN} + C_1 b V_{REF} &= (C_1 + C_2 + C_{in}) V_x - C_2 V_{OUT}
+      = -V_{OUT}\left(C_2 + \frac{C_1 + C_2 + C_{in}}{A}\right) \\
+      V_{OUT} &= \frac{(C_1 + C_2) V_{IN} - C_1 b V_{REF}}{C_2\left(1 + \frac{C_1 + C_2 + C_{in}}{A C_2}\right)}
+      = \left[\left(1 + \frac{C_1}{C_2}\right) V_{IN} - \frac{C_1}{C_2} b V_{REF}\right] \frac{1}{1 + \frac{1}{AF}}
+    \end{align*}
+    with feedback factor \(F = \frac{C_2}{C_1 + C_2 + C_{in}}\): the residue is
+    scaled by \(\frac{1}{1 + \frac{1}{AF}} = \frac{AF}{1 + AF}\) (Section~\ref{sec:devices_opamp}).
+\end{enumerate}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Mismatch}: as the binary current DAC (Section~\ref{sec:dac_current}), at mid scale
+    the MSB (\(2^{n-1}\) units) replaces the other \(2^{n-1} - 1\) switched units
+    (the terminating \(C_u\) never switches):
+    \(Var(DNL_{N/2}) = (2^{n-1} + 2^{n-1} - 1) S_C^2\),
+    \(SD(DNL_{N/2}) = \sqrt{2^n - 1}\, S_C\).
+  \item \textbf{Area}: \(2^n C_u\) grows fast; a bridge (split) capacitor
+    \(C_b\) between an \(m\)-bit LSB array (total \(2^m C_u\) with its
+    terminating \(C_u\)) and the MSB array must make the whole LSB array look
+    like one unit \(C_u\) from the MSB side (series combination):
+    \begin{align*}
+      \frac{C_b \cdot 2^m C_u}{C_b + 2^m C_u} &= C_u \\
+      C_b \cdot 2^m C_u &= C_u (C_b + 2^m C_u) \hspace{1cm} [\times (C_b + 2^m C_u)] \\
+      2^m C_b &= C_b + 2^m C_u \hspace{1cm} [\div C_u] \\
+      C_b (2^m - 1) &= 2^m C_u \\
+      C_b &= \frac{2^{m}}{2^{m} - 1} C_u
+    \end{align*}
+    The MSB array (\(2^{n-m} - 1\) units plus the bridged unit) and the LSB
+    array then total \(\approx 2^{n-m} C_u + 2^m C_u + C_b \approx (2^{n-m} + 2^m) C_u\).
+  \item \textbf{kT/C}: sampling on \(C_{tot}\) adds noise
+    \(\frac{kT}{C_{tot}}\) (Section~\ref{sec:theory_general_noise}); it must stay
+    below \(\frac{X_{LSB}^2}{12}\) with \(X_{LSB} = \frac{V_{REF}}{2^n}\):
+    \[
+      \frac{kT}{C_{tot}} < \frac{V_{REF}^2}{12 \cdot 2^{2n}}
+      \hspace{0.5cm} \Rightarrow \hspace{0.5cm}
+      C_{tot} > \frac{12 kT 2^{2n}}{V_{REF}^2}
+    \]
+\end{enumerate}
+
+\subsubsection{Question}
+\(n = 10\), \(V_{REF} = 1\,V\), \(C_u = 20\,fF\), \(C_p = 1\,pF\), \(S_C = 0.1\%\),
+\(T = 300\,K\). Find \(V_x\) for \(D = 512\), \(SD(DNL_{N/2})\), the kT/C bound on
+\(C_{tot}\), and the bridge capacitor for a \(5 + 5\) split.
+\paragraph{Solution:}
+\begin{align*}
+  2^n C_u &= 1024 \cdot 20\,fF = 20.48\,pF \hspace{1cm} \frac{C_p}{2^n C_u} = \frac{1\,pF}{20.48\,pF} = 0.0488 \\
+  V_x &= \frac{512}{1024} \cdot 1\,V \cdot \frac{1}{1 + 0.0488} = \frac{0.5\,V}{1.0488} = 0.477\,V \hspace{1cm} [\text{a } 4.7\% \text{ gain error}] \\
+  SD(DNL_{N/2}) &= \sqrt{2^{10} - 1}\, S_C = \sqrt{1023} \cdot 0.001 = 31.98 \cdot 0.001 = 0.032\,\text{LSB} \\
+  kT &= 1.381 \times 10^{-23} \cdot 300 = 4.14 \times 10^{-21}\,J \\
+  C_{tot} &> \frac{12 kT\, 2^{2n}}{V_{REF}^2} = \frac{12 \cdot 4.14 \times 10^{-21} \cdot 1048576}{1^2} = 52.1\,fF \hspace{1cm} [20.48\,pF \text{ satisfies it}] \\
+  C_b &= \frac{2^5}{2^5 - 1} C_u = \frac{32}{31} \cdot 20\,fF = 20.65\,fF \hspace{1cm}
+  C_{tot,split} \approx (2^5 + 2^5) C_u = 64 \cdot 20\,fF = 1.28\,pF
+\end{align*}

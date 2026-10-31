@@ -1,0 +1,335 @@
+\section{Bipolar Junction Transistor (BJT)}
+
+A BJT is a three-terminal, active, non-linear and time-invariant device.
+It is physically built from two PN junctions that share a single
+region, with the two junctions oriented oppositely. This shows
+up in its governing model. It is called a \emph{bipolar} device
+because both electrons and holes are involved in the conduction
+process.
+
+The three terminals are the base (B), the collector (C) and the
+emitter (E). It is often called a \emph{current controlled device}
+because of the relationship between its base and collector currents,
+\(I_C = B_F I_B\).
+In reality, the base-emitter voltage controls the collector current
+(\(I_C \propto e^{V_{BE}/V_T}\)) and the base current is a by-product.
+
+BJT family has two types of transistors: NPN and PNP.\ They are
+(in a sense) mirror images of each other.
+
+\begin{circuitfig}
+	% Paths, nodes and wires:
+	\node[npn] at (5.5, 7.02){};
+	\node[pnp, yscale=-1] at (9, 6.98){};
+	\node[shape=rectangle, minimum width=1.465cm, minimum height=0.465cm] at (5.5, 6){} node[anchor=north, align=center, text width=1.077cm, inner sep=6pt] at (5.5, 6.25){Emitter};
+	\node[shape=rectangle, minimum width=0.97cm, minimum height=0.465cm] at (4.157, 7.02){} node[anchor=north, align=center, text width=0.582cm, inner sep=6pt] at (4.157, 7.27){Base};
+	\node[shape=rectangle, minimum width=0.97cm, minimum height=0.465cm] at (7.657, 6.98){} node[anchor=north, align=center, text width=0.582cm, inner sep=6pt] at (7.657, 7.23){Base};
+	\node[shape=rectangle, minimum width=1.465cm, minimum height=0.465cm] at (5.5, 8.04){} node[anchor=north, align=center, text width=1.077cm, inner sep=6pt] at (5.5, 8.29){Collector};
+	\node[shape=rectangle, minimum width=1.465cm, minimum height=0.465cm] at (9, 8){} node[anchor=north, align=center, text width=1.077cm, inner sep=6pt] at (9, 8.25){Collector};
+	\node[shape=rectangle, minimum width=1.465cm, minimum height=0.465cm] at (9, 5.96){} node[anchor=north, align=center, text width=1.077cm, inner sep=6pt] at (9, 6.21){Emitter};
+	\node[shape=rectangle, minimum width=1.965cm, minimum height=0.755cm] at (5.5, 4.855){} node[anchor=north, align=center, text width=1.577cm, inner sep=6pt] at (5.5, 5.25){\Large NPN};
+	\node[shape=rectangle, minimum width=1.965cm, minimum height=0.755cm] at (9, 4.855){} node[anchor=north, align=center, text width=1.577cm, inner sep=6pt] at (9, 5.25){\Large PNP};
+\end{circuitfig}
+
+The behaviour of a BJT can be approximated well by the below equations.
+\begin{itemize}
+  \item \textbf{Mathematical Model}:
+    There are several mathematical models that describe the behaviour of the
+    BJT. Some of the most common ones are:
+    \begin{itemize}
+      \item \textbf{Ideal Model}: The ideal model assumes that the BJT has infinite
+        current gain and zero base current.
+        \[
+          I_C = \begin{cases}
+            0 & \text{if } V_{BE} < V_{th} \\
+            \text{set by the external circuit} & \text{if } V_{BE} = V_{th}
+          \end{cases}
+          \hspace{1cm} I_B = 0
+        \]
+      \item \textbf{Non-linear Model}: The Ebers-Moll model combined with Base-Width Modulation
+        Non-Linearity is a more accurate model that describes the behaviour of BJT. Ebers-Moll
+        is built from two coupled Shockley diode equations, one per junction,
+        \begin{align*}
+          I_F &= I_{FS}\left( e^{\frac{V_{BE}}{V_T}} - 1 \right) \hspace{1cm} \text{[base-emitter diode]} \\
+          I_R &= I_{RS}\left( e^{\frac{V_{BC}}{V_T}} - 1 \right) \hspace{1cm} \text{[base-collector diode]}
+        \end{align*}
+        each of which injects a fraction (\(A_F\), \(A_R\)) of its current into the
+        opposite terminal:
+        \begin{align*}
+          I_C &= A_F I_F - I_R \\
+          I_E &= I_F - A_R I_R \\
+          I_B &= I_E - I_C = (1 - A_F) I_F + (1 - A_R) I_R
+        \end{align*}
+        Including base-width modulation, the collector current is
+        \[
+          I_C = \left[\underbrace{A_F I_{FS} \left( e^{\frac{V_{BE}}{V_T}} - 1 \right)}_{\text{Forward Contribution}} - \underbrace{I_{RS} \left( e^{\frac{V_{BC}}{V_T}} - 1 \right)}_{\text{Reverse Contribution}}\right] \left( 1 + \frac{V_{CE}}{V_A} \right)
+        \]
+        \begin{itemize}
+          \item \(I_C\) is the collector current
+          \item \(I_{FS}\) is the forward (base-emitter) saturation current
+          \item \(A_F\) is the forward common base current gain
+          \item \(V_{BE}\) is the base-emitter voltage
+          \item \(V_T\) is the thermal voltage
+          \item \(I_{RS}\) is the reverse (base-collector) saturation current
+          \item \(A_R\) is the reverse common base current gain
+          \item \(V_{BC}\) is the base-collector voltage
+          \item \(V_{CE}\) is the collector-emitter voltage
+          \item \(V_A\) is the Early voltage
+        \end{itemize}
+        Reciprocity ties the two diodes together through a single
+        saturation current \(I_S\):
+        \[
+          A_F I_{FS} = A_R I_{RS} = I_S
+          \hspace{1cm} \Rightarrow \hspace{1cm}
+          I_{RS} = \frac{I_S}{A_R}
+        \]
+        We \textbf{will make two simplifications to our Non-Linear model} to make
+        it easier to work with,
+        \begin{itemize}
+          \item Ignore the dependence of collector current on collector-emitter
+            voltage (\(V_{CE}\)) by assuming an infinite early voltage \(V_A \to \infty\).
+            Using reciprocity, the Ebers-Moll model becomes:
+            \[
+              I_C = I_S \left( e^{\frac{V_{BE}}{V_T}} - 1 \right) - \frac{I_S}{A_R} \left( e^{\frac{V_{BC}}{V_T}} - 1 \right)
+            \]
+          \item In forward active mode, the base-collector junction is reverse biased
+            (\(V_{BC} \ll -V_T\)) and thus \( e^{\frac{V_{BC}}{V_T}} \approx 0 \):
+            \begin{align*}
+              I_C &= I_S \left( e^{\frac{V_{BE}}{V_T}} - 1 \right) - \frac{I_S}{A_R} \left( e^{\frac{V_{BC}}{V_T}} - 1 \right) \\
+              I_C &= I_S \left( e^{\frac{V_{BE}}{V_T}} - 1 \right) - \frac{I_S}{A_R}(0 - 1) \\
+              I_C &= I_S \left( e^{\frac{V_{BE}}{V_T}} - 1 \right) + \frac{I_S}{A_R} \\
+              I_C &\approx I_S \left( e^{\frac{V_{BE}}{V_T}} - 1 \right) \hspace{1cm} \left[\frac{I_S}{A_R} \ll I_C\right]
+            \end{align*}
+        \end{itemize}
+        We \textbf{can also derive the base and emitter currents} from the collector
+        current model.
+        \begin{itemize}
+          \item Common emitter and common base gains. In forward active
+            \(|I_R| \approx I_{RS} \ll I_F\), so \(I_R\) is dropped from
+            \(I_C = A_F I_F - I_R\) and \(I_B = (1 - A_F) I_F + (1 - A_R) I_R\):
+            \begin{align*}
+              B_F &= \frac{I_C}{I_B} = \frac{A_F I_F}{(1 - A_F) I_F} = \frac{A_F}{1 - A_F} \\
+              B_F (1 - A_F) &= A_F \hspace{1cm} [\times (1 - A_F)] \\
+              B_F - B_F A_F &= A_F \\
+              B_F &= A_F + B_F A_F = A_F (1 + B_F) \\
+              A_F &= \frac{B_F}{1 + B_F} \hspace{1cm} [\div (1 + B_F)]
+            \end{align*}
+            In reverse active (\(I_F \approx 0\)) the emitter collects,
+            \(-I_E = A_R I_R\) and \(I_B = (1 - A_R) I_R\), so in the same way
+            \begin{align*}
+              B_R &= \frac{-I_E}{I_B} = \frac{A_R I_R}{(1 - A_R) I_R} = \frac{A_R}{1 - A_R}
+              \hspace{1cm} \Leftrightarrow \hspace{1cm} A_R = \frac{B_R}{1 + B_R}
+            \end{align*}
+          \item Base Current (\(I_B\)):
+            \[
+              I_B = \frac{I_C}{B_F} = \frac{I_S}{B_F}\left( e^{\frac{V_{BE}}{V_T}} - 1 \right)
+            \]
+          \item Emitter Current (\(I_E\)):
+            \begin{align*}
+              I_E &= I_C + I_B \\
+              I_E &= I_C + \frac{I_C}{B_F} \\
+              I_E &= I_C \left( 1 + \frac{1}{B_F} \right) \\
+              I_E &= I_C \cdot \frac{1 + B_F}{B_F} = \frac{I_C}{A_F} \hspace{1cm} \left[A_F = \frac{B_F}{1 + B_F}\right] \\
+              I_E &\approx I_C \hspace{1cm} \text{[for large \(B_F\)]}
+            \end{align*}
+        \end{itemize}
+      \item \textbf{Linear Model}: The Hybrid-Pi model models the BJT as a
+        voltage controlled current source when linearized around a bias point
+        \(Q = (V_{BE(Q)}, V_{CE(Q)}, I_{C(Q)})\) (Section~\ref{sec:analysis_linearization}).
+        \begin{align*}
+          I_c &= g_m V_{be} + g_o V_{ce} \\
+          I_b &= g_{be} V_{be}
+        \end{align*}
+        Here, \(g_m\) is the transconductance, \(g_o\) is the
+        output conductance and \(g_{be}\) is the input conductance. Below
+        schematic shows the simple idea of the hybrid-pi model for BJT.
+        \begin{circuitfig}
+        	\draw (9.25, 6.75) to[american current source, l_={$g_m V_{be}$}] (9.25, 5);
+        	\draw (6.5, 6.75) to[european resistor, l={$g_{be}$}] (6.5, 5);
+        	\draw (10.75, 6.75) to[european resistor, l={$g_o$}] (10.75, 5);
+        	\draw (6.5, 5) -- (9.25, 5);
+        	\draw (9.25, 5) -- (10.75, 5);
+        	\draw (10.75, 6.75) -- (9.25, 6.75);
+        	\draw (10.75, 6.75) -- (11.75, 6.75);
+        	\draw (6.5, 6.75) -- (5.75, 6.75);
+        	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N1) at (5.25, 6.75){} node[anchor=center] at (N1.text){$V_b$};
+        	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N2) at (8.5, 4.5){} node[anchor=center] at (N2.text){$V_e$};
+        	\draw (8.5, 5) -| (8.5, 4.75);
+        	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm](N3) at (12.25, 6.75){} node[anchor=center] at (N3.text){$V_c$};
+        \end{circuitfig}
+        \(g_m\) can be calculated as follows:
+        \begin{align*}
+          g_m &= \left.\frac{\partial I_C}{\partial V_{BE}} \right|_{V_{CE(Q)}} \\
+          g_m &= \frac{\partial}{\partial V_{BE}} \left[ I_S \left( e^{\frac{V_{BE}}{V_T}} - 1 \right) \right]_{Q} \\
+          g_m &= \frac{\partial}{\partial V_{BE}} \left[ I_S e^{\frac{V_{BE}}{V_T}} - I_S \right]_{Q} \\
+          g_m &= I_S e^{\frac{V_{BE(Q)}}{V_T}} \times \frac{1}{V_T} \\
+          g_m &= \frac{I_{C(Q)} + I_S}{V_T} \hspace{1cm} \left[I_{C(Q)} = I_S e^{\frac{V_{BE(Q)}}{V_T}} - I_S\right] \\
+          g_m &\approx \frac{I_{C(Q)}}{V_T} \hspace{1cm} [I_{C(Q)} \gg I_S]
+        \end{align*}
+        \(g_{be}\) can be calculated as follows:
+        \begin{align*}
+          g_{be} &= \left.\frac{\partial I_B}{\partial V_{BE}} \right|_{V_{CE(Q)}} \\
+          g_{be} &= \frac{\partial}{\partial V_{BE}} \left[ \frac{I_S}{B_F} \left( e^{\frac{V_{BE}}{V_T}} - 1 \right) \right]_{Q} \\
+          g_{be} &= \frac{1}{B_F} \cdot \frac{I_S e^{\frac{V_{BE(Q)}}{V_T}}}{V_T} \\
+          g_{be} &= \frac{1}{B_F} \cdot g_m \hspace{1cm} \left[g_m = \frac{I_S e^{\frac{V_{BE(Q)}}{V_T}}}{V_T}\right] \\
+          g_{be} &= \frac{g_m}{B_F} \hspace{1cm} \left[r_{be} = \frac{B_F}{g_m} = \frac{B_F V_T}{I_{C(Q)}}\right]
+        \end{align*}
+        \(g_o\) can be calculated as follows:
+        \begin{align*}
+          g_o &= \left.\frac{\partial I_C}{\partial V_{CE}} \right|_{V_{BE(Q)}} \\
+          g_o &= \frac{\partial}{\partial V_{CE}} \left[ I_S \left( e^{\frac{V_{BE}}{V_T}} - 1 \right) \left( 1 + \frac{V_{CE}}{V_A} \right) \right]_{Q} \\
+          g_o &= I_S \left(e^{\frac{V_{BE(Q)}}{V_T}} - 1 \right) \times \frac{1}{V_A} \\
+          g_o &= \frac{I_{C(Q)}}{1 + \frac{V_{CE(Q)}}{V_A}} \cdot \frac{1}{V_A} \hspace{1cm} \left[I_S \left(e^{\frac{V_{BE(Q)}}{V_T}} - 1 \right) = \frac{I_{C(Q)}}{1 + \frac{V_{CE(Q)}}{V_A}}\right] \\
+          g_o &= \frac{I_{C(Q)}}{V_A + V_{CE(Q)}} \approx \frac{I_{C(Q)}}{V_A} \hspace{1cm} [V_A \gg V_{CE(Q)}]
+        \end{align*}
+        For example, at \(I_{C(Q)} = 1\,\text{mA}\), \(B_F = 100\), \(V_A = 100\,\text{V}\):
+        \begin{align*}
+          g_m &= \frac{1\,\text{mA}}{26\,\text{mV}} \approx 38.5\,\text{mS} \hspace{1cm}
+          g_{be} = \frac{38.5\,\text{mS}}{100} = 385\,\mu\text{S} \ (r_{be} = 2.6\,\text{k}\Omega) \hspace{1cm}
+          g_o = \frac{1\,\text{mA}}{100\,\text{V}} = 10\,\mu\text{S}
+        \end{align*}
+        The model is valid while \(|V_{be}| \ll 2V_T \approx 52\,\text{mV}\)
+        (the bound of Section~\ref{sec:analysis_linearization} with \(n = 1\)).
+        At high frequency add \(C_{be}\) (diffusion plus junction) between
+        base and emitter and \(C_{bc}\) (junction) between base and collector.
+    \end{itemize}
+  \item \textbf{Voltages \& Relations}:
+    There are several important voltages in a BJT:
+    \begin{itemize}
+      \item \textbf{Thermal/Boltzmann Voltage (\(V_T\))}:
+        The thermal voltage is given by:
+        \[
+          V_T = \frac{kT}{q}
+        \]
+        where \(k\) is the Boltzmann constant, \(T\) is the temperature in
+        Kelvin and \(q\) is the charge of an electron. At room temperature,
+        \(V_T \approx 26\,\mathrm{mV}\).
+      \item \textbf{Threshold Voltage (\(V_{th}\))}:
+        The threshold voltage is the minimum voltage required to forward
+        bias a junction such that it conducts. For a silicon junction (most
+        common), the threshold voltage is \(V_{th} \approx 0.6\text{--}0.7\,\mathrm{V}\).
+        Since we have two junctions in a BJT, we have two threshold voltages.
+        We define \(V_{Fth}\) for the base-emitter junction (\(V_{BE} > V_{Fth}\)
+        conducts) and \(V_{Rth}\) for the base-collector junction
+        (\(V_{BC} > V_{Rth}\) conducts). Both are \(\approx +0.7\,\)V for an NPN.
+    \end{itemize}
+    They are also related to each other:
+    \begin{itemize}
+      \item \textbf{Base-Emitter \(V_{BE}\) and Base-Collector \(V_{BC}\) Voltages}:
+        If you rearranged Ebers-Moll model for \(V_{BE}\) or \(V_{BC}\) after
+        simplifying for forward active or reverse active mode, you get:
+        \begin{itemize}
+          \item \textbf{Under Forward Active Mode} (\(e^{V_{BC}/V_T} \approx 0\)):
+            \begin{align*}
+              I_C &= I_S \left( e^{\frac{V_{BE}}{V_T}} - 1 \right) \\
+              V_{BE} &= V_T \ln \left( \frac{I_C}{I_{S}} + 1 \right) \\
+              V_{BC} &< V_{Rth}
+            \end{align*}
+          \item \textbf{Under Reverse Active Mode} (\(e^{V_{BE}/V_T} \approx 0\)):
+            The emitter now collects. From \(I_E = I_F - A_R I_R\) with \(I_F \approx -I_{FS}\):
+            \begin{align*}
+              I_E &\approx -A_R I_{RS} \left( e^{\frac{V_{BC}}{V_T}} - 1 \right) = -I_S \left( e^{\frac{V_{BC}}{V_T}} - 1 \right) \\
+              V_{BC} &= V_T \ln \left( \frac{-I_E}{I_{S}} + 1 \right) \\
+              V_{BE} &< V_{Fth}
+            \end{align*}
+          \end{itemize}
+      \item \textbf{Collector-Emitter \(V_{CE}\) Voltage}:
+        The collector-emitter voltage is the voltage across the collector and
+        emitter terminals. It is given by:
+        \begin{align*}
+          V_{CE} &= V_{BE} - V_{BC} \\
+          V_{CE} &= V_B - V_E - (V_B - V_C) \\
+          V_{CE} &= V_B - V_E - V_B + V_C \\
+          V_{CE} &= V_C - V_E
+        \end{align*}
+    \end{itemize}
+  \item \textbf{Modes of Operation}:
+    A BJT can operate in four different modes depending on which junctions
+    conduct. With \(V_{Fth} \approx V_{Rth} \approx 0.7\,\)V (NPN):
+    \begin{table}[H]
+      \centering
+      \begin{tabular}{|c|c|c|c|}\hline
+        \textbf{Mode}              & \( V_{BE} \)        & \( V_{BC} \)             & \(I_{C}\) \\ \hline
+        Cutoff                     & $V_{BE} < 0.7       $ & $V_{BC} < 0.7 $       & $I_C \approx 0$ \\ \hline
+        Forward Active (Amplifier) & $V_{BE} \gtrsim 0.7 $ & $V_{BC} < 0.7 $       & $I_C \approx B_F I_B$ \\ \hline
+        Saturation (Switch)        & $V_{BE} \gtrsim 0.7 $ & $V_{BC} \gtrsim 0.7 $ & $I_C < B_F I_B$, \(V_{CE} = V_{CE(sat)}\) \\ \hline
+        Reverse Active             & $V_{BE} < 0.7       $ & $V_{BC} \gtrsim 0.7 $ & $-I_E \approx B_R I_B$ \\ \hline
+      \end{tabular}
+    \end{table}
+    In practice the base-collector junction starts to conduct noticeably at
+    \(V_{BC} \approx 0.4\text{--}0.5\,\)V, so forward active is safest for
+    \(V_{CE} \gtrsim 0.3\,\)V (\(V_{BC} = V_{BE} - V_{CE}\)).
+  \item \textbf{Applications}:
+    Various modes can be exploited for different applications. The two
+    most common are switching and amplification.
+    \begin{itemize}
+      \item \textbf{Switching}:
+        A BJT can be used as a switch by being driven between \textbf{cutoff}
+        (off) and \textbf{saturation} (on). The idea is to size the base resistor
+        such that there is enough \(I_B\) for the resulting \(I_C\) to collapse \(V_{CE}\) to
+        \(V_{CE(sat)}\) (typically \(0.2\text{--}0.3\,\mathrm{V}\)) through whatever load
+        that exists on the collector. You only need to,
+        \begin {itemize}
+          \item Find the required collector current \(I_C\) to drive the load.
+            \[
+              I_C = \frac{V_{CC} - V_{CE(sat)}}{R_C}
+            \]
+          \item Find the required base current \(I_B\) to drive the transistor into
+            saturation. \(B_{forced}\) is a forced current gain much smaller than \(B_F\)
+            to guarantee saturation, usually \(B_{forced} = 10\).
+            \[
+              I_B = \frac{I_C}{B_{forced}}
+            \]
+          \item Find the base resistor \(R_B\) to limit the base current to \(I_B\).
+            \[
+              R_B = \frac{V_{IN} - V_{BE}}{I_B}
+            \]
+        \end{itemize}
+      \item \textbf{Amplification}:
+        A BJT can be used as an amplifier by being biased in \textbf{forward
+        active} mode. The idea is to size the base resistor such that your
+        desired \(I_C\) keeps the transistor in forward active mode for the
+        entire swing of the input signal. You only need to,
+        \begin{itemize}
+          \item Find the required \(I_B\) for desired \(I_C\). The forward
+            current gain is usually \(B_F = 100\).
+            \[
+              I_B = \frac{I_C}{B_F}
+            \]
+          \item Find the base resistor \(R_B\) to limit the base current
+            to \(I_B\).
+            \[
+              R_B = \frac{V_{IN} - V_{BE}}{I_B}
+            \]
+        \end{itemize}
+    \end{itemize}
+  \item \textbf{Effects}:
+    BJTs are affected by many non-linear effects that are not captured by
+    the Ebers-Moll model. Sometimes they cause hard to diagnose problems.
+    \begin{itemize}
+        \item \textbf{Base Width Modulation}: Increasing \(V_{CE}\) shrinks the base
+          width physically. This increases the collector current and is captured
+          by the Early voltage (\(V_A\)) and produces the Early Effect.
+          \[
+            I_C = I_{S} \left( e^{\frac{V_{BE}}{V_T}} - 1 \right) \left( 1 + \frac{V_{CE}}{V_A} \right) \hspace{1cm} \text{[forward active]}
+          \]
+    \end{itemize}
+  \item \textbf{Noise}:
+      BJTs are also affected by noise namely, thermal noise, shot noise and flicker
+      noise. You can read more about these noises in Section~\ref{sec:theory_general_noise}.
+  \item \textbf{Circuit Analysis}:
+    Depending upon Axis of Linearity requirements, you can either use the
+    Non-Linear or Linear model to analyse the behaviour of a BJT while
+    performing your circuit analysis.
+    \begin{itemize}
+      \item \textbf{Non-Linear Analysis} (Large Signal, Time Domain, DC
+        Input Analysis (Q5); Large Signal, Time Domain, AC Input Analysis
+        (Q6); Large Signal, Frequency Domain, AC Input Analysis (Q8)):
+        Use Ebers-Moll model to analyse the behaviour of a BJT in a circuit.
+      \item \textbf{Linear Analysis} (Small Signal, Frequency Domain, AC
+        Input Analysis (Q4); Small Signal, Time Domain, AC Input Analysis
+        (Q2)):
+        Use the hybrid-pi model, evaluated at the Q5 bias point, to analyse
+        the behaviour of a BJT in a circuit.
+    \end{itemize}
+\end{itemize}

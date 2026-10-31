@@ -1,0 +1,127 @@
+\subsection{Current Mirror Op-Amp}\label{sec:amp_cmoa}
+
+\subsubsection{Overview}
+A differential pair \(M_1\), \(M_2\) with diode connected loads \(M_3\), \(M_4\).
+The drain currents are mirrored with gain \(B\) to the output: \(M_4 \to M_6\)
+directly, \(M_3 \to M_5\) (gain \(B\)) and then \(M_7 \to M_8\) (gain 1) to flip
+its direction. The mirrors multiply the transconductance by \(B\) (a
+\(g_m\) enhancement) while every internal node stays low impedance.
+
+\subsubsection{Schematic}
+\begin{circuitfig}
+  \draw (-1,2.6) node[pmos, xscale=-1](M5){}; \node[left] at (-1.3,2.6) {$M_5$};
+  \draw (2,2.6) node[pmos](M3){}; \node[right] at (2.3,2.6) {$M_3$};
+  \draw (5,2.6) node[pmos, xscale=-1](M4){}; \node[left] at (4.7,2.6) {$M_4$};
+  \draw (8,2.6) node[pmos](M6){}; \node[right] at (8.3,2.6) {$M_6$};
+  \draw (M5.S) -- ++(0,0.3) -| (M6.S);
+  \draw (M3.S) -- ++(0,0.3); \draw (M4.S) -- ++(0,0.3);
+  \draw (3.5,3.67) node[vcc]{$V_{dd}$};
+  \draw (M5.G) -- (M3.G); \draw (0.5,2.6) node[circ]{} |- (2,1.3);
+  \draw (M4.G) -- (M6.G); \draw (6.5,2.6) node[circ]{} |- (5,1.3);
+  \draw (2,0) node[nmos](M1){}; \node[right] at (2.3,0) {$M_1$};
+  \draw (5,0) node[nmos, xscale=-1](M2){}; \node[left] at (4.7,0) {$M_2$};
+  \draw (M1.G) -- ++(-0.3,0) node[circ]{} node[above]{$V_{i1}$};
+  \draw (M2.G) -- ++(0.3,0) node[circ]{} node[above]{$V_{i2}$};
+  \draw (M3.D) -- (M1.D); \draw (2,1.3) node[circ]{} node[right]{$V_a$};
+  \draw (M4.D) -- (M2.D); \draw (5,1.3) node[circ]{} node[left]{$V_b$};
+  \draw (M1.S) |- (3.5,-1.1) node[circ]{} -| (M2.S);
+  \draw (3.5,-1.1) to[american current source, l={$I_T$}] (3.5,-2.6) node[ground]{};
+  \draw (-1,0) node[nmos, xscale=-1](M7){}; \node[left] at (-1.3,0) {$M_7$};
+  \draw (8,0) node[nmos](M8){}; \node[right] at (8.3,0) {$M_8$};
+  \draw (M5.D) -- (M7.D);
+  \draw (M7.D) -- ++(0,0.3) coordinate(c7) -| (M7.G); \draw (-1,1.07) node[circ]{} node[left]{$V_c$};
+  \draw (M7.G) -- ++(0,-3.4) -| (M8.G);
+  \draw (M7.S) node[ground]{}; \draw (M8.S) node[ground]{};
+  \draw (M6.D) -- (M8.D);
+  \draw (8,1.3) node[circ]{} -- (9.6,1.3) node[circ]{} node[above]{$V_{out}$} to[capacitor, l={$C_L$}] (9.6,-0.6) node[ground]{};
+\end{circuitfig}
+
+\subsubsection{Transfer Function}
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}:
+    at \(V_{ID} = 0\) the tail splits equally, \(I_{D1} = I_{D2} = I_{D3} = I_{D4} = \frac{I_T}{2}\).
+    \(M_5\) has \(V_{SG5} = V_{SG3}\) and \(\frac{W_5}{L_5} = B\frac{W_3}{L_3}\), so
+    \begin{align*}
+      I_{D5} &= \frac{K_{P,p}}{2}\cdot B\frac{W_3}{L_3}(V_{SG3} - |V_{th}|)^2 = B I_{D3} = B\frac{I_T}{2}
+    \end{align*}
+    and likewise \(I_{D6} = B I_{D4} = B\frac{I_T}{2}\). \(M_7\) carries \(I_{D5}\) and
+    \(M_8\) mirrors it with gain 1: \(I_{D7} = I_{D8} = B\frac{I_T}{2}\). At the
+    output \(I_{D6} = I_{D8}\), so no static current is left to charge \(C_L\).
+    Supply current:
+    \begin{align*}
+      I_{dd} &= I_{D3} + I_{D4} + I_{D5} + I_{D6} = \frac{I_T}{2} + \frac{I_T}{2} + B\frac{I_T}{2} + B\frac{I_T}{2} = (1 + B) I_T
+    \end{align*}
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}:
+    differential drive \(V_{i2} = \frac{V_{id}}{2}\), \(V_{i1} = -\frac{V_{id}}{2}\) and
+    \(V_s = 0\) (Section~\ref{sec:amp_diffpair}). At the internal nodes
+    \(V_a\), \(V_b\), \(V_c\) every \(g_o\) is negligible next to the diode \(g_m\)
+    (\(g_o \ll g_m\)), and their capacitances are neglected here (see
+    Analysis). Matching: \(g_{m1} = g_{m2} = g_m\), \(g_{m5} = B g_{m3}\),
+    \(g_{m6} = B g_{m4}\), \(g_{m8} = g_{m7}\).\\
+    KCL at \(V_a\) (current leaves down \(M_1\) and down the diode \(M_3\) to AC ground):
+    \begin{align*}
+      g_{m1} V_{i1} + g_{m3} V_a &= 0 \hspace{1cm} \Rightarrow \hspace{1cm} V_a = -\frac{g_m}{g_{m3}} V_{i1} \tag{1}
+    \end{align*}
+    \(M_5\) (gate \(V_a\), source at AC ground) sources \(g_{m5}(0 - V_a)\) out of its
+    drain into \(V_c\), which leaves through the diode \(M_7\). KCL at \(V_c\):
+    \begin{align*}
+      g_{m5}(0 - V_a) &= g_{m7} V_c \\
+      V_c &= -\frac{B g_{m3}}{g_{m7}} V_a = -\frac{B g_{m3}}{g_{m7}}\left(-\frac{g_m}{g_{m3}} V_{i1}\right) = \frac{B g_m}{g_{m7}} V_{i1} \tag{2}
+    \end{align*}
+    KCL at \(V_b\), the mirror image of (1):
+    \begin{align*}
+      g_{m2} V_{i2} + g_{m4} V_b &= 0 \hspace{1cm} \Rightarrow \hspace{1cm} V_b = -\frac{g_m}{g_{m4}} V_{i2} \tag{3}
+    \end{align*}
+    KCL at \(V_{out}\): \(M_6\) sources \(g_{m6}(0 - V_b) + g_{o6}(0 - V_{out})\) into the
+    node; \(M_8\) draws \(g_{m8} V_c + g_{o8} V_{out}\) and \(C_L\) draws \(sC_L V_{out}\):
+    \begin{align*}
+      -g_{m6} V_b - g_{o6} V_{out} &= g_{m8} V_c + g_{o8} V_{out} + sC_L V_{out} \\
+      V_{out}(g_{o6} + g_{o8} + sC_L) &= -g_{m6} V_b - g_{m8} V_c \\
+      V_{out}(g_{o6} + g_{o8} + sC_L) &= B g_{m4}\frac{g_m}{g_{m4}} V_{i2} - g_{m7}\frac{B g_m}{g_{m7}} V_{i1} \hspace{1cm} \text{(Substituting (2), (3))} \\
+      V_{out}(g_{o6} + g_{o8} + sC_L) &= B g_m (V_{i2} - V_{i1}) = B g_m \left(\frac{V_{id}}{2} + \frac{V_{id}}{2}\right) = B g_m V_{id} \\
+      A(s) = \frac{V_{out}}{V_{id}} &= \frac{B g_{m1}}{g_{o6} + g_{o8} + sC_L}
+    \end{align*}
+    \(V_{i2}\) (the side mirrored once) is the non-inverting input. The output
+    current \(B g_{m1} V_{id}\) is the 5T OTA's \(g_{m1} V_{id}\) times \(B\).
+\end{enumerate}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{DC Gain}: \(s = 0\), with \(g_{m1} = \frac{2 I_{D1}}{V_{ov1}} = \frac{2 \frac{I_T}{2}}{V_{ov1}} = \frac{I_T}{V_{ov1}}\),
+    \(g_{o6} = K_{CLM,p} I_{D6}\), \(g_{o8} = K_{CLM,n} I_{D8}\) and \(I_{D6} = I_{D8} = B\frac{I_T}{2}\):
+    \begin{align*}
+      A_{V0} &= \frac{B g_{m1}}{g_{o6} + g_{o8}} = \frac{B \cdot \frac{I_T}{V_{ov1}}}{(K_{CLM,n} + K_{CLM,p}) \frac{B I_T}{2}}
+              = \frac{B I_T}{V_{ov1}}\cdot\frac{2}{(K_{CLM,n} + K_{CLM,p}) B I_T} = \frac{2}{V_{ov1}(K_{CLM,n} + K_{CLM,p})}
+    \end{align*}
+    the same as the 5T OTA (Section~\ref{sec:amp_5t}): \(B\) cancels.
+  \item \textbf{Gain-Bandwidth}: dominant pole \(p_1 = \frac{g_{o6} + g_{o8}}{C_L}\), so
+    \begin{align*}
+      GB &= \frac{A_{V0}\, p_1}{2\pi} = \frac{1}{2\pi}\cdot\frac{B g_{m1}}{g_{o6} + g_{o8}}\cdot\frac{g_{o6} + g_{o8}}{C_L} = \frac{B g_{m1}}{2\pi C_L}
+    \end{align*}
+  \item \textbf{Slew Rate, Large Signal, Time Domain, AC Input Analysis (Q6)}:
+    for a large \(V_{ID} > 0\), \(M_2\) takes all of \(I_T\), so \(M_6\) sources
+    \(B I_T\) and \(M_8\) is off; for \(V_{ID} < 0\), \(M_1\) takes \(I_T\) and \(M_8\)
+    sinks \(B I_T\) with \(M_6\) off. Either way \(SR = \frac{B I_T}{C_L}\). Both
+    \(GB\) and \(SR\) are \(B\) times larger than the 5T OTA at the same \(I_T\).
+  \item \textbf{Mirror Poles}: \(V_a\) carries \(C_{gs3} + C_{gs5} = C_{gs3} + B C_{gs3} = (1 + B) C_{gs3}\)
+    (\(M_5\) is \(B\) times wider), driven by \(\frac{1}{g_{m3}}\); \(V_c\) carries
+    \(C_{gs7} + C_{gs8} = 2 C_{gs7}\), driven by \(\frac{1}{g_{m7}}\):
+    \begin{align*}
+      p_a &= \frac{g_{m3}}{(1 + B) C_{gs3}} \hspace{1cm} p_c = \frac{g_{m7}}{2 C_{gs7}}
+    \end{align*}
+    \(p_a\) falls with \(B\) while \(GB\) rises with it, so \(B\) is limited to a few
+    (2--5) by phase margin.
+\end{enumerate}
+
+\subsubsection{Question}
+\(I_T = 100\,\mu A\), \(B = 2\), \(C_L = 10\,pF\), \(V_{ov1} = 0.2\,V\),
+\(K_{CLM,n} = K_{CLM,p} = 0.05\,\)V\(^{-1}\). Find \(A_{V0}\), \(GB\), \(SR\) and the
+supply current.
+\paragraph{Solution:}
+\begin{align*}
+  g_{m1} &= \frac{I_T}{V_{ov1}} = \frac{100\,\mu A}{0.2\,V} = 500\,\mu S \\
+  A_{V0} &= \frac{2}{V_{ov1}(K_{CLM,n} + K_{CLM,p})} = \frac{2}{0.2 \cdot (0.05 + 0.05)} = \frac{2}{0.02} = 100 \hspace{1cm} (40\,dB) \\
+  GB &= \frac{B g_{m1}}{2\pi C_L} = \frac{2 \cdot 500 \times 10^{-6}\,S}{2\pi \cdot 10 \times 10^{-12}\,F} = \frac{10^{-3}}{6.283 \times 10^{-11}}\,Hz = 15.9\,MHz \\
+  SR &= \frac{B I_T}{C_L} = \frac{2 \cdot 100 \times 10^{-6}\,A}{10 \times 10^{-12}\,F} = 2 \times 10^{7}\,V/s = 20\,V/\mu s \\
+  I_{dd} &= (1 + B) I_T = 3 \cdot 100\,\mu A = 300\,\mu A
+\end{align*}

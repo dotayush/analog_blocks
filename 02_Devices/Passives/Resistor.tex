@@ -1,0 +1,49 @@
+\section{Resistor}
+An ideal resistor is a two-terminal (one-port), passive, linear and time-invariant
+device that opposes the flow of current.
+
+\begin{itemize}
+  \item \textbf{Resistance:}
+    This act of opposition is called resistance and is measured in
+    Ohms (\(\Omega\)). A good way to imagine resistance is to think
+    about its value as a proportionality factor between voltage and
+    current. In fact, this is precisely the relationship that gives
+    us Ohm's law:
+    \[
+      V = I \cdot R
+    \]
+  \item \textbf{Conductance:}
+    The inverse of resistance is called conductance (\(G\)) and is
+    measured in Siemens (S). The relationship between resistance and
+    conductance is:
+    \[
+      G = \frac{1}{R}
+    \]
+    We'll mostly use conductance \(G\) when we analyse resistors
+    mathematically as it simplifies the analysis a lot. The rearranged
+    Ohm's law in terms of conductance is:
+    \[
+      I = V \cdot G
+    \]
+  \item \textbf{Power Dissipation:}
+    A resistor dissipates energy in the form of heat. The power
+    dissipated by a resistor is given by:
+    \begin{align*}
+      P &= V \cdot I \\
+      P &= (I \cdot R) \cdot I = I^2 \cdot R \hspace{1cm} [V = IR] \\
+      P &= V \cdot (V \cdot G) = V^2 \cdot G \hspace{1cm} [I = VG]
+    \end{align*}
+  \item \textbf{Non-Ideal Behavior:}
+    In practice, resistors are not ideal and thus most of our
+    assumptions above (linear, time-invariant, dissipative) fall
+    apart at very high frequencies. However for the most part,
+    we can treat resistors as ideal devices.
+  \item \textbf{Circuit Analysis:}
+    The behaviour of resistor is not affected by the kind of Input
+    Signal (AC or DC) applied to it. Therefore, the same mathematical
+    model can be used to describe the behaviour of a resistor in both
+    AC and DC inputs. Its current is \(I = VG\) in the Large Signal,
+    Time Domain, DC Input Analysis (Q5) and its admittance is \(G\) in the
+    Small Signal, Frequency Domain, AC Input Analysis (Q4)
+    (Chapter~\ref{ch:analysis}).
+\end{itemize}

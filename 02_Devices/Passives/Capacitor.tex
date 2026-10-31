@@ -1,0 +1,131 @@
+\section{Capacitor}
+An ideal capacitor is a two-terminal (one-port), passive, linear, time-invariant,
+non-dissipative device that stores energy (\& thus charge) in the
+form of an electric field.
+
+\begin{itemize}
+  \item \textbf{Capacitance:}
+    The relationship between charge and
+    voltage is expressed by a proportionality factor called capacitance
+    (\(C\)) and is measured in Farads (F). It also gives us the
+    capacitor's version of Ohm's law:
+    \begin{align*}
+      Q &= C \cdot V \\
+      \text{Differentiating both sides with respect to time:} \\
+      \frac{dQ}{dt} &= C \cdot \frac{dV}{dt} \hspace{1cm} \text{(assuming \(C\) is constant)} \\
+      I &= C \cdot \frac{dV}{dt} \hspace{1cm} [I = \frac{dQ}{dt}]
+    \end{align*}
+    The inverse of capacitance is called elastance (\(S\)) and is measured in Farads
+    inverse (F\(^{-1}\)).
+  \item \textbf{Impedance:}
+    Unlike resistor where a proportionality factor directly relates
+    voltage and current, a capacitor is different, the relationship
+    between voltage and current is related instead by a differential
+    equation. We thus can not describe resistance of a capacitor in the
+    same way we do for a resistor. We must somehow trick the above
+    capacitor relationship into giving us a proportionality factor
+    between voltage and current. Laplace Transform can be used to
+    achieve this,
+    \begin{align*}
+      I &= C \cdot \frac{dV}{dt} \\
+      I(s) &= C \left( s V(s) - V(0) \right) \hspace{1cm} [\mathcal{L}\{\tfrac{dV}{dt}\} = sV(s) - V(0)] \\
+      I(s) &= sC\, V(s) \hspace{1cm} [\text{assuming \(V(0) = 0\)}] \\
+      V(s) &= \frac{1}{sC} I(s)
+    \end{align*}
+    We can now define the impedance of a capacitor as the ratio
+    of voltage to current in the Laplace domain:
+    \[
+      Z_C = \frac{V(s)}{I(s)} = \frac{1}{s C} = \frac{1}{j\omega C} = \frac{1}{j 2 \pi f C} \hspace{1cm} [s = j\omega = j 2\pi f]
+    \]
+  \item \textbf{Admittance:}
+    The inverse of impedance is called admittance (\(Y\)) and
+    is measured in Siemens (S). The relationship between impedance
+    and admittance is:
+    \[
+      Y = \frac{1}{Z} = \frac{1}{\frac{1}{sC}} = sC
+    \]
+
+    You'll notice when we apply KCL to circuits within this book,
+    we'll mostly use admittance \(Y\) to express the impedance, we
+    do this as it simplifies the analysis a lot. The admittance
+    version of Ohm's law is:
+    \[
+      I = V \cdot Y
+    \]
+  \item \textbf{Frequency Response:}
+    The impedance of a capacitor is inversely proportional to
+    frequency. This means that at low frequencies, the impedance
+    of a capacitor is very high and at high frequencies, the impedance
+    of a capacitor is very low. This is why at high frequencies,
+    the capacitor starts to load the circuit which is often a
+    very desirable effect in many applications. This is also why
+    capacitors are used for decoupling (they act as a short
+    circuit at high frequencies).
+  \item \textbf{Energy and Power:}
+    The energy and power stored in a capacitor is given by:
+    \begin{align*}
+      I &= C \cdot \frac{dV}{dt} \\
+      P &= V \cdot I \\
+      P &= V \cdot C \cdot \frac{dV}{dt} \\
+      P &= C \cdot V \cdot \frac{dV}{dt} \\
+      P &= C \cdot \frac{1}{2} \cdot \frac{d(V^2)}{dt} \hspace{1cm} [\frac{d(V^2)}{dt} = 2V \cdot \frac{dV}{dt}] \\
+      E &= \int_0^t P \, dt' = \int_0^t C \cdot \frac{1}{2} \cdot \frac{d(V^2)}{dt'} \, dt' \\
+      E &= \frac{1}{2} C \left[ V^2(t) - V^2(0) \right] \\
+      E &= \frac{1}{2} C V^2 \hspace{1cm} [V(0) = 0,\ V = V(t)]
+    \end{align*}
+  \item \textbf{Types of Capacitors}:
+    There are many types of capacitors, some of the most common are:
+        \begin{itemize}
+      \item \textbf{Ceramic/MLCC Capacitor}: Small size, low cost \& a
+        very low equivalent series resistance (ESR) and inductance (ESL) make
+        them really good for high frequency applications. The downside
+        is that \textbf{capacitance varies greatly with applied DC voltage} (a plus
+        if you want to use them as cheap varactors) and it also
+        \textbf{varies greatly with temperature}. These usually have \textbf{low
+        capacitance values} for a given size. Ceramic capacitors are divided
+        into classes,
+        \begin{itemize}
+          \item Class 1: C0G/NP0 (high stability, low capacitance)
+          \item Class 2: X7R (moderate stability, moderate capacitance)
+          \item Class 3: Y5V (low stability, high capacitance)
+        \end{itemize}
+        Examples: 100 nF X7R 0603 ceramic capacitor across a supply pin, or
+        a C0G/NP0 capacitor in a precision timing or filter network.
+      \item \textbf{Electrolytic Capacitor}: High capacitance for a
+        given case size, low cost and good for bulk energy
+        storage. These usually have a \textbf{higher ESR and ESL, which
+        translates to poor high frequency behaviour}, and are \textbf{almost
+        always polarized} (reverse voltage may destroy the part). These
+        also have a \textbf{finite lifetime} (electrolyte evaporation, sped up
+        by heat and ripple current).
+        Example: 470\,\(\mu\)F aluminum electrolytic capacitor on the output
+        of a linear or switching power supply.
+      \item \textbf{Tantalum Capacitor}: Higher capacitance density
+        than ceramics and more stable over voltage and temperature
+        than electrolytics. These also have a lower ESR/ESL than
+        electrolytics. They are very \textbf{often polarized} (known for
+        failing short and igniting under fault) and \textbf{derating (keeping
+        applied voltage well below rated) is strongly recommended} if
+        you want reliability. These are often \textbf{expensive}. Example:
+        10\,\(\mu\)F tantalum capacitor used for bulk decoupling on a densely
+        populated board where space is at a premium.
+      \item \textbf{Film Capacitor}: Excellent stability over temperature
+        and voltage, very low dielectric absorption, and low ESR/ESL.
+        These are non-polarized but have \textbf{a larger and more expensive per
+        unit capacitance} than other types. They are also \textbf{limited to
+        lower capacitance values}. Usually used in high quality audio,
+        precision timing and filters. Example: 1\,\(\mu\)F polypropylene film
+        capacitor in a high quality audio crossover network.
+    \end{itemize}
+  \item \textbf{They can form everywhere}:
+    A capacitor exists anywhere where you have two conductors
+    separated by an insulator. The charges are stored on the
+    surface of the conductors and the energy is stored in the
+    electric field between the conductors.
+  \item \textbf{Circuit Analysis:}
+    The behaviour of capacitor is affected by the kind of Input Signal (AC
+    or DC) applied to it. Find the admittance \(sC\) in the Small Signal,
+    Frequency Domain, AC Input Analysis (Q4) before deciding whether to
+    Short, Open or keep the capacitor as is within your analysis. Table~\ref{tab:hand-analysis-simplifications}
+    serves as a quick reference.
+\end{itemize}

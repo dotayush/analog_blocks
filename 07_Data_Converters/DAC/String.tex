@@ -1,0 +1,90 @@
+\subsection{String (R-String) DAC}\label{sec:dac_string}
+
+\subsubsection{Overview}
+\(N = 2^n\) equal resistors \(R\) between \(V_{REF}\) and ground give every
+level; a decoder closes the one switch \(S_D\) selecting tap \(D\). The
+simplest DAC, inherently monotonic.
+
+\subsubsection{Schematic}
+\begin{circuitfig}
+  \draw (0,6) node[vcc]{$V_{REF}$} to[european resistor, l_={$R$}] (0,4.5) node[circ]{} to[european resistor, l_={$R$}] (0,3) node[circ]{} to[short] (0,2.6);
+  \draw[dashed] (0,2.6) -- (0,1.9);
+  \draw (0,1.9) to[european resistor, l_={$R$}] (0,0.4) node[circ]{} to[european resistor, l_={$R$}] (0,-1.1) node[ground]{};
+  \draw (0,4.5) to[spst, l={$S_{N-1}$}] (2.5,4.5);
+  \draw (0,3) to[spst, l={$S_{N-2}$}] (2.5,3);
+  \draw (0,0.4) to[spst, l={$S_{1}$}] (2.5,0.4);
+  \draw (2.5,4.5) -- (2.5,0.4);
+  \draw (2.5,2.4) -- (3.5,2.4) node[circ]{} node[right]{$V_{OUT}$};
+  \node[left] at (-0.6,0.4) {$V_1$};
+  \node[left] at (-0.6,3) {$V_{N-2}$};
+\end{circuitfig}
+
+\subsubsection{Transfer Function}
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}: the string
+    current is \(\frac{V_{REF}}{N R}\); tap \(D\) sits \(D\) resistors above ground:
+    \begin{align*}
+      I_{STR} &= \frac{V_{REF}}{N R} \\
+      V_{OUT} = V_D &= D R \cdot I_{STR} = D R \cdot \frac{V_{REF}}{N R} = \frac{D}{N} V_{REF} = \frac{D}{2^n} V_{REF}
+    \end{align*}
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}:
+    looking into tap \(D\) with \(V_{REF}\) shorted, \(DR\) is in parallel with
+    \((N - D)R\); the closed switch adds its on resistance \(R_{sw}\) in series
+    and the load is \(C_L\):
+    \begin{align*}
+      R_{out}(D) &= \frac{D R \cdot (N - D) R}{D R + (N - D) R} = \frac{D (N - D) R^2}{N R} = \frac{D (N - D)}{N} R \\
+      H(s) &= \frac{V_{out}}{V_D} = \frac{\frac{1}{s C_L}}{R_{out}(D) + R_{sw} + \frac{1}{s C_L}}
+      = \frac{1}{1 + s (R_{out}(D) + R_{sw}) C_L}
+    \end{align*}
+\end{enumerate}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Settling} (\textbf{Small Signal, Time Domain, AC Input Analysis (Q2)}):
+    \(R_{out}\) peaks at \(D = \frac{N}{2}\):
+    \begin{align*}
+      R_{out}(D) &= \frac{(N D - D^2) R}{N} \hspace{1cm}
+      \frac{dR_{out}}{dD} = \frac{(N - 2D)R}{N} = 0 \hspace{0.5cm} \Rightarrow \hspace{0.5cm} D = \frac{N}{2} \\
+      R_{out,\max} &= \frac{\frac{N}{2}\left(N - \frac{N}{2}\right)}{N} R = \frac{N^2/4}{N} R = \frac{N}{4} R
+    \end{align*}
+    A full scale step \(V_{REF}\) through \(H(s)\) (\(R_{sw} \ll R_{out}\),
+    \(T_c = R_{out} C_L\)) leaves the error \(V_{REF} e^{-t/T_c}\); settling to
+    \(\frac{1}{2}\) LSB \(= \frac{V_{REF}}{2^{n+1}}\):
+    \begin{align*}
+      V_{REF} e^{-t/T_c} &= \frac{V_{REF}}{2^{n+1}} \hspace{0.5cm} \Rightarrow \hspace{0.5cm}
+      e^{t/T_c} = 2^{n+1} \hspace{0.5cm} \Rightarrow \hspace{0.5cm}
+      t = T_c \ln(2^{n+1}) = (n + 1) \ln(2)\, T_c
+    \end{align*}
+  \item \textbf{INL from mismatch}: let \(X = \sum_{j < D} R_j\),
+    \(Y = \sum_{j \geq D} R_j\), \(V_D = V_{REF}\frac{X}{X + Y}\).
+    \begin{align*}
+      dV_D &= V_{REF}\frac{Y\, dX - X\, dY}{(X + Y)^2} \\
+      dV_D &= V_{REF}\frac{dX - dY}{2 N R} \hspace{1cm} \left[D = \tfrac{N}{2},\ X = Y = \tfrac{NR}{2}\right]
+    \end{align*}
+    The second line substitutes \(X = Y = \frac{NR}{2}\) in the first:
+    \[
+      V_{REF}\frac{\frac{NR}{2}\, dX - \frac{NR}{2}\, dY}{(NR)^2} = V_{REF}\frac{\frac{NR}{2}(dX - dY)}{N^2 R^2} = V_{REF}\frac{dX - dY}{2 N R}
+    \]
+    With \(\frac{N}{2}\) independent resistors in each sum (Section~\ref{sec:dc_char}, Mismatch):
+    \begin{align*}
+      \text{var}(dX - dY) &= \text{var}(dX) + \text{var}(dY) = \frac{N}{2}(S_R R)^2 + \frac{N}{2}(S_R R)^2 = N (S_R R)^2 \\
+      SD(dV_D) &= \frac{V_{REF}\sqrt{N} S_R R}{2 N R} = \frac{V_{REF} S_R}{2\sqrt{N}} \\
+      SD(INL_{N/2}) &= \frac{SD(dV_D)}{V_{REF}/N} = \frac{V_{REF} S_R}{2\sqrt{N}} \cdot \frac{N}{V_{REF}} = \frac{\sqrt{N}}{2} S_R = \frac{\sqrt{2^n}}{2} S_R \ \text{LSB}
+    \end{align*}
+  \item \textbf{Monotonic}: tap \(D + 1\) adds \(R_D\) to \(X\):
+    \(V_{D+1} - V_D = V_{REF}\frac{X + R_D}{\sum R} - V_{REF}\frac{X}{\sum R} = R_D \cdot \frac{V_{REF}}{\sum R} > 0\) for any
+    positive resistors.
+  \item \textbf{Cost}: \(2^n\) resistors and \(2^n\) switches; practical to 8--10 bits.
+\end{enumerate}
+
+\subsubsection{Question}
+\(n = 10\), \(R = 100\,\Omega\), \(S_R = 0.2\%\), \(C_L = 2\,\)pF. Find the worst
+\(R_{out}\), the time to settle to \(\frac{1}{2}\) LSB and \(SD(INL)\) at mid scale.
+\paragraph{Solution:}
+\(N = 2^{10} = 1024\), \(R_{sw}\) neglected:
+\begin{align*}
+  R_{out,\max} &= \frac{N}{4} R = \frac{1024}{4} \cdot 100 = 25.6\,k\Omega \\
+  T_c &= R_{out,\max} C_L = 25.6\,k\Omega \cdot 2\,pF = 51.2\,ns \\
+  t &= T_c \ln(2^{11}) = 51.2\,ns \cdot \ln(2048) = 51.2\,ns \cdot 7.62 = 390\,ns \\
+  SD(INL) &= \frac{\sqrt{2^{10}}}{2} S_R = \frac{32}{2} \cdot 0.002 = 0.032\,\text{LSB}
+\end{align*}

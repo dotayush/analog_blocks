@@ -1,0 +1,93 @@
+\subsection{Loading Effect}\label{sec:theory_general_loading}
+
+Two adjacent circuit stages can load each other if the adjoining
+impedances (output \(\to\) input or input \(\to\) output) are within the same
+order of magnitude (say, within a factor of 10 of each other). This
+can cause the voltage or current levels to drop significantly as
+the adjacent stages form a voltage or current divider. \textbf{Loading
+is a pseudo rule and doesn't hold true under a few special cases
+as discussed below}.
+
+For example, Consider three generic circuit stages shown as boxes
+connected to each other as shown below. Each circuit stage/box has an
+input impedance and an output impedance.
+\begin{circuitfig}
+  % Paths, nodes and wires:
+  \node[shape=rectangle, draw={rgb,255:red,255;green,0;blue,0}, line width=1pt, minimum width=2.465cm, minimum height=1.715cm] (N1) at (6.75, 6.625){} node[anchor=center] at (N1.text){\textcolor{rgb,255:red,255;green,0;blue,0}{$Box_1$}};
+  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N2) at (8.25, 8){} node[anchor=center] at (N2.text){\textcolor{rgb,255:red,255;green,0;blue,0}{$Z_{out_1}$}};
+  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N3) at (5.5, 8){} node[anchor=center] at (N3.text){\textcolor{rgb,255:red,255;green,0;blue,0}{$Z_{in_1}$}};
+  \node[shape=rectangle, draw, line width=1pt, minimum width=2.465cm, minimum height=1.715cm] (N4) at (10.75, 6.625){} node[anchor=center] at (N4.text){$Box_2$};
+  \node[shape=rectangle, draw={rgb,255:red,0;green,8;blue,255}, line width=1pt, minimum width=2.465cm, minimum height=1.715cm] (N5) at (14.5, 6.625){} node[anchor=center] at (N5.text){$Box_3$};
+  \draw[stealth-] (9.5, 6.625) -- (8, 6.625);
+  \draw[-stealth] (12, 6.625) -- (13.25, 6.625);
+  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N6) at (12, 8){} node[anchor=center] at (N6.text){\textcolor{rgb,255:red,0;green,0;blue,0}{$Z_{out_2}$}};
+  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N7) at (15.75, 8){} node[anchor=center] at (N7.text){\textcolor{rgb,255:red,30;green,0;blue,255}{$Z_{out_3}$}};
+  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N8) at (13.25, 8){} node[anchor=center] at (N8.text){\textcolor{rgb,255:red,0;green,8;blue,255}{$Z_{in_3}$}};
+  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N9) at (9.5, 8){} node[anchor=center] at (N9.text){$Z_{in_2}$};
+  \draw[line width=1pt, dash pattern={on 4pt off 4pt}] (8.75, 4.25) -| (8.75, 9);
+  \draw[line width=1pt, dash pattern={on 4pt off 4pt}] (12.5, 4.25) -| (12.5, 9);
+\end{circuitfig}
+Following our previous definition, If the output impedance of Box 1
+(\(Z_{out_1}\)) is negligible compared to the input impedance of Box
+2 (\(Z_{in_2}\)), then Box 1 and Box 2 will not load each other
+significantly.
+
+Generally, A circuit stage might be a passive circuit, an active circuit,
+a mixed (passive and active) circuit, a current source, or an RF circuit.
+In these cases, we can summarize the loading effect as follows:
+
+\begin{enumerate}
+  \item \textbf{Passive Circuits}: We want to maintain the voltage
+    levels without stages loading each other. Therefore, the output
+    impedance of the driving stage to be very low (at least 10x lesser)
+    than the input impedance of the driven stage. If Box 2 was a Passive
+    Circuit, Loading can be minimized if \(Z_{out_2} \leq \frac{Z_{in_3}}{10}\), since
+    (with \(V_{out_2}\) the open circuit output voltage of Box 2)
+    \begin{align*}
+      \frac{V_{in_3}}{V_{out_2}} = \frac{Z_{in_3}}{Z_{out_2} + Z_{in_3}}
+      \geq \frac{Z_{in_3}}{\frac{Z_{in_3}}{10} + Z_{in_3}} = \frac{1}{\frac{1}{10} + 1} = \frac{10}{11} \approx 0.91
+    \end{align*}
+  \item \textbf{Active Circuits}: You have to determine what the
+    input and output impedance of the specific circuit stage would
+    be and then decide if loading is an issue or not between two
+    adjacent circuit stages.
+  \item \textbf{Mixed Circuits}: Break the circuit down into its
+    passive and active components and analyze the loading effect between
+    the two adjacent circuit stages.
+  \item \textbf{Current Sources}: We want to maintain a constant current
+    regardless of the load. To achieve this the output impedance
+    of the Current Source should be very high compared to the input
+    impedance of the load. Thus, If Box 2 was a Current Source, We would
+    want $Z_{out_2}$ to be much larger than $Z_{in_3}$, since the source
+    current \(I_{out_2}\) divides between \(Z_{out_2}\) and \(Z_{in_3}\):
+    \begin{align*}
+      \frac{I_{in_3}}{I_{out_2}} = \frac{Z_{out_2}}{Z_{out_2} + Z_{in_3}}
+      \geq \frac{10 Z_{in_3}}{10 Z_{in_3} + Z_{in_3}} = \frac{10}{11} \approx 0.91
+      \hspace{1cm} [Z_{out_2} \geq 10 Z_{in_3}]
+    \end{align*}
+  \item \textbf{RF Circuits}: Transmission lines require impedance matching
+    to avoid reflections and transfer power from Point A to Point B. In
+    this case, if Box 2 and Box 3 were an RF circuit, we would want
+    \(Z_{in_3} = Z_{out_2}^*\) (complex conjugate) for maximum power transfer,
+    and both equal to the line impedance \(Z_0\) for no reflection. With
+    \(Z_{out} = R_o + jX_o\) and \(Z_{in} = R_i + jX_i\):
+    the source amplitude \(V_s\) drives
+    \begin{align*}
+      I &= \frac{V_s}{Z_{out} + Z_{in}} = \frac{V_s}{(R_o + R_i) + j(X_o + X_i)} \\
+      P_{in} &= \frac{1}{2}|I|^2 R_i = \frac{|V_s|^2}{2} \cdot \frac{R_i}{(R_o + R_i)^2 + (X_o + X_i)^2}
+    \end{align*}
+    The reactances only appear in the (non-negative) term \((X_o + X_i)^2\) of the
+    denominator, so \(P_{in}\) is maximised first by \(X_i = -X_o\), leaving
+    \begin{align*}
+      P_{in} &= \frac{|V_s|^2}{2} \cdot \frac{R_i}{(R_o + R_i)^2} \\
+      \frac{dP_{in}}{dR_i} &= \frac{|V_s|^2}{2} \cdot \frac{(R_o + R_i)^2 - 2R_i(R_o + R_i)}{(R_o + R_i)^4}
+      = \frac{|V_s|^2}{2} \cdot \frac{(R_o + R_i)(R_o + R_i - 2R_i)}{(R_o + R_i)^4} \hspace{0.5cm} [\text{factor } (R_o + R_i)] \\
+      &= \frac{|V_s|^2}{2} \cdot \frac{R_o - R_i}{(R_o + R_i)^3} = 0
+      \hspace{0.5cm} \Rightarrow \hspace{0.5cm} R_i = R_o \\
+      P_{in,\text{max}} &= \frac{|V_s|^2}{2} \cdot \frac{R_o}{(2R_o)^2} = \frac{|V_s|^2}{8R_o}
+    \end{align*}
+    i.e.\ \(Z_{in} = R_o - jX_o = Z_{out}^*\). If the
+    impedances are not matched, we place a matching network between Box 2
+    and Box 3.
+\end{enumerate}
+

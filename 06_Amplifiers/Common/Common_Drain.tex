@@ -1,0 +1,98 @@
+\subsection{Common Drain (CD, Source Follower)}\label{sec:amp_cd}
+
+\subsubsection{Overview}
+The input drives the gate, the output is taken at the source and the
+drain is tied to the supply (AC ground). The output follows the input
+shifted down by \(V_{GS}\) with a gain slightly below one. It has an
+infinite input impedance and a low output impedance (\(\approx \frac{1}{g_m}\)):
+a voltage buffer.
+
+\subsubsection{Schematic}
+\begin{circuitfig}
+  \draw (5,0) node[nmos](M){};
+  \node[right] at (5.4,0) {$M_1$};
+  \draw (2.5,-2) node[ground]{} to[sinusoidal voltage source, l={$V_{in}$}] (2.5,0) -- (M.G);
+  \draw (M.D) -- (5,2) node[vcc]{$V_{dd}$};
+  \draw (M.S) -- (5,-1.4) node[circ]{} to[european resistor, l_={$G_L$}] (5,-3.4) node[ground]{};
+  \draw (5,-1.4) -- (7.5,-1.4) node[circ]{} node[above]{$V_{out}$} to[capacitor, l={$C_L$}] (7.5,-3.4) node[ground]{};
+\end{circuitfig}
+\(G_L\) may be a resistor or the output conductance of a current source
+(\(G_L = g_{o,sink}\)).
+
+\subsubsection{Transfer Function}
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}: (\(K_{CLM} = 0\))
+    \begin{align*}
+      V_{OUT} G_L &= I_D = k_n (V_{IN} - V_{OUT} - V_{th})^2 \\
+      V_{IN} - V_{OUT} - V_{th} &= \sqrt{\frac{V_{OUT} G_L}{k_n}} \\
+      V_{OUT} &= V_{IN} - V_{th} - \sqrt{\frac{V_{OUT} G_L}{k_n}} = V_{IN} - V_{th} - V_{ov}
+    \end{align*}
+    With \(u = \sqrt{V_{OUT}}\) (so \(V_{OUT} = u^2\)):
+    \begin{align*}
+      u^2 &= V_{IN} - V_{th} - \sqrt{\frac{G_L}{k_n}} u \\
+      u^2 + \sqrt{\frac{G_L}{k_n}} u - (V_{IN} - V_{th}) &= 0 \\
+      u &= \frac{-\sqrt{\frac{G_L}{k_n}} + \sqrt{\left(\sqrt{\frac{G_L}{k_n}}\right)^2 + 4(V_{IN} - V_{th})}}{2} \hspace{1cm} [u \geq 0] \\
+      V_{OUT} = u^2 &= \left(\frac{-\sqrt{\frac{G_L}{k_n}} + \sqrt{\frac{G_L}{k_n} + 4(V_{IN} - V_{th})}}{2}\right)^2
+    \end{align*}
+    \(V_{th}\) itself rises with \(V_{OUT}\) through the body effect
+    (\(V_{SB} = V_{OUT}\)). Saturation needs \(V_{DS} \geq V_{ov}\):
+    \begin{align*}
+      V_{dd} - V_{OUT} &\geq V_{IN} - V_{OUT} - V_{th} \\
+      V_{IN} &\leq V_{dd} + V_{th}
+    \end{align*}
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}: \(V_d = 0\), \(V_b = 0\).\\
+    Applying KCL at \(V_{out}\) (the drain current
+    \(I_d = g_m V_{gs} + g_{mb} V_{bs} + g_o V_{ds}\) arrives at the source node,
+    with \(V_{gs} = V_{in} - V_{out}\), \(V_{bs} = 0 - V_{out}\), \(V_{ds} = 0 - V_{out}\)):
+    \begin{align*}
+      V_{out}(G_L + sC_L) &= g_m (V_{in} - V_{out}) + g_{mb}(0 - V_{out}) + g_o (0 - V_{out}) \\
+      V_{out} G_L + V_{out} sC_L + g_m V_{out} + g_{mb} V_{out} + g_o V_{out} &= g_m V_{in} \\
+      V_{out}(G_L + g_m + g_{mb} + g_o + sC_L) &= g_m V_{in} \\
+      H(s) = \frac{V_{out}}{V_{in}} &= \frac{g_m}{g_m + g_{mb} + g_o + G_L + sC_L}
+    \end{align*}
+\end{enumerate}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{DC Gain}:
+    \[
+      A_{V0} = H(0) = \frac{g_m}{g_m + g_{mb} + g_o + G_L} \xrightarrow{G_L \to 0} \frac{g_m}{g_m + g_{mb} + g_o} \xrightarrow{g_o \ll g_m} \frac{g_m}{g_m + g_{mb}} = \frac{1}{1 + \frac{g_{mb}}{g_m}}
+    \]
+    The body effect limits the gain to about \(0.8\text{--}0.9\) unless the
+    body is tied to the source (separate well).
+  \item \textbf{Pole}: \(N(s) = g_m\) has no root, \(D(s) = g_m + g_{mb} + g_o + G_L + sC_L = 0\) at \(s = -p_1\),
+    \[
+      p_1 = \frac{g_m + g_{mb} + g_o + G_L}{C_L} \hspace{1cm} f_{p1} = \frac{p_1}{2\pi} \approx \frac{g_m}{2\pi C_L} \hspace{0.5cm} [g_{mb}, g_o, G_L \ll g_m]
+    \]
+    which is a very wide bandwidth (the GB of a CS stage driving the same
+    \(C_L\)).
+  \item \textbf{Impedances}:
+    \paragraph{At Input:} \(I_G = 0\) so \(Z_{in} \to \infty\) at DC.
+      \(C_{gs}\) is bootstrapped (both its ends move together): its current is
+      \(I = (V_{in} - A_{V0} V_{in}) sC_{gs} = V_{in} s C_{gs}(1 - A_{V0})\), so it
+      appears as \(C_{gs}(1 - A_{V0})\).
+    \paragraph{At Output:} \(V_{in} = 0\), \(I_{test}\) into the source node
+      (\(G_L\) removed):
+      \begin{align*}
+        I_{test} + I_d &= 0 \hspace{1cm} [\text{both arrive at the source node}] \\
+        I_{test} - g_m V_{out} - g_{mb} V_{out} - g_o V_{out} &= 0 \hspace{1cm} [V_{gs} = V_{bs} = V_{ds} = -V_{out}] \\
+        I_{test} &= V_{out}(g_m + g_{mb} + g_o) \\
+        Z_{out} &= \frac{1}{g_m + g_{mb} + g_o} \approx \frac{1}{g_m}
+      \end{align*}
+  \item \textbf{Level Shift}: \(V_{OUT} = V_{IN} - V_{th} - V_{ov}\); the stage
+    costs \(V_{GS}\) of headroom.
+\end{enumerate}
+
+\subsubsection{Question}
+A follower biased by a \(100\,\mu\)A sink (\(G_L = 2\,\mu\)S) has
+\(V_{ov} = 0.2\,\)V, \(V_{th} = 0.5\,\)V, \(K_{CLM} = 0.1\,\)V\(^{-1}\),
+\(g_{mb} = 0.2 g_m\), \(C_L = 5\,\)pF. Find \(A_{V0}\), \(Z_{out}\),
+\(f_{p1}\) and \(V_{OUT}\) for \(V_{IN} = 1.2\,\)V.
+\paragraph{Solution:}
+\begin{align*}
+  g_m &= \frac{2 \cdot 100\,\mu A}{0.2\,V} = 1\,mS \hspace{1cm} g_{mb} = 0.2\,mS \hspace{1cm} g_o = 0.1 \cdot 100\,\mu A = 10\,\mu S \\
+  A_{V0} &= \frac{1\,m}{1\,m + 0.2\,m + 10\,\mu + 2\,\mu} = \frac{1\,m}{1.212\,m} = 0.825 \\
+  Z_{out} &= \frac{1}{1\,m + 0.2\,m + 10\,\mu} = \frac{1}{1.21\,mS} = 826\,\Omega \\
+  f_{p1} &= \frac{1.212\,mS}{2\pi \cdot 5\,pF} = 38.6\,MHz \\
+  V_{OUT} &= 1.2 - 0.5 - 0.2 = 0.5\,V \hspace{1cm} [\text{ignoring the body effect shift of } V_{th}]
+\end{align*}

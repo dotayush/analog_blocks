@@ -1,0 +1,77 @@
+\subsection{Common Base (CB)}\label{sec:amp_cb}
+
+\subsubsection{Overview}
+The BJT counterpart of the common gate stage: input at the emitter,
+output at the collector, base at AC ground. Low input impedance
+(\(\approx \frac{1}{g_m}\)), current gain \(A_F \approx 1\), non-inverting
+voltage gain.
+
+\subsubsection{Schematic}
+\begin{circuitfig}
+  \draw (5,0) node[npn](Q){};
+  \node[right] at (5.4,0) {$Q_1$};
+  \draw (Q.B) -- (3.6,0) node[left]{$V_B$};
+  \draw (Q.C) -- (5,1.4) node[circ]{} to[european resistor, l_={$G_C$}] (5,3.4) node[vcc]{$V_{cc}$};
+  \draw (5,1.4) -- (7,1.4) node[circ]{} node[above]{$V_{out}$};
+  \draw (Q.E) -- (5,-1.2) node[circ]{} node[right]{$V_e$} to[european resistor, l_={$G_S$}] (5,-3.2) to[sinusoidal voltage source, l_={$V_{in}$}] (5,-5.2) node[ground]{};
+\end{circuitfig}
+
+\subsubsection{Transfer Function}
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}: \(I_E = \frac{V_E - V_{IN}}{R_S}\),
+    \(V_E = V_B - V_{BE} = V_B - V_T \ln\frac{I_C}{I_S}\), \(I_C = A_F I_E\),
+    \(V_{OUT} = V_{cc} - I_C R_C\). Substituting \(V_E\) into \(I_E\):
+    \begin{align*}
+      \frac{I_C}{A_F} &= \frac{V_B - V_T \ln\frac{I_C}{I_S} - V_{IN}}{R_S} \\
+      I_C^{(k+1)} &= \frac{A_F}{R_S}\left(V_B - V_{IN} - V_T \ln\frac{I_C^{(k)}}{I_S}\right)
+    \end{align*}
+    iterated from \(V_{BE} = 0.7\,\)V as for the CE stage.
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}: \(V_b = 0\), \(g_o\) neglected,
+    \(I_c = -g_m V_e\), \(I_b = -g_{be} V_e\).\\
+    Applying KCL at \(V_e\) (\(I_e = I_b + I_c\) leaves the device into the node):
+    \begin{align*}
+      (V_e - V_{in}) G_S &= I_b + I_c = -(g_m + g_{be}) V_e \\
+      V_e G_S + (g_m + g_{be}) V_e &= G_S V_{in} \\
+      V_e &= \frac{G_S}{G_S + g_m + g_{be}} V_{in}
+    \end{align*}
+    Applying KCL at \(V_{out}\):
+    \begin{align*}
+      V_{out} G_C + I_c &= 0 \hspace{0.5cm} \Rightarrow \hspace{0.5cm} V_{out} G_C - g_m V_e = 0 \hspace{0.5cm} \Rightarrow \hspace{0.5cm} V_{out} = \frac{g_m}{G_C} V_e \\
+      V_{out} &= g_m R_C \cdot \frac{G_S}{G_S + g_m + g_{be}} V_{in} \\
+      H = \frac{V_{out}}{V_{in}} &= \frac{g_m R_C\, G_S}{G_S + g_m + g_{be}}
+    \end{align*}
+\end{enumerate}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Gain}: \(G_S \to \infty\):
+    \(A_{V0} = \lim_{G_S \to \infty} \frac{g_m R_C}{1 + \frac{g_m + g_{be}}{G_S}} = g_m R_C\). Current gain
+    (\(I_c = -g_m V_e\), the current into the emitter from outside is \(-I_e = (g_m + g_{be}) V_e\)):
+    \[
+      \frac{I_c}{-I_e} = \frac{-g_m V_e}{-(g_m + g_{be}) V_e} = \frac{g_m}{g_m + g_{be}} = \frac{g_m}{g_m + \frac{g_m}{B_F}} = \frac{B_F}{B_F + 1} = A_F
+    \]
+  \item \textbf{Impedances}:
+    \paragraph{At Input:} \(G_S\) removed, \(I_{test}\) into the emitter:
+      \(I_{test} + I_b + I_c = 0\), so \(I_{test} = (g_m + g_{be}) V_e\) and
+      \[
+        Z_{in} = \frac{V_e}{I_{test}} = \frac{1}{g_m + g_{be}} = \frac{1}{g_m}\cdot\frac{g_m}{g_m + g_{be}} = \frac{A_F}{g_m}
+      \]
+    \paragraph{At Output:} this is the CE output test with \(R_E\) replaced by the
+      source resistance \(R_S\) (\(V_{in} = 0\) and the base at AC ground):
+      \[
+        Z_{out} = R_C \parallel r_o\left(1 + (g_m + g_o)(R_S \parallel r_{be})\right) \approx R_C \parallel r_o\left(1 + g_m (R_S \parallel r_{be})\right)
+      \]
+  \item \textbf{Bandwidth}: as for the CG stage, no capacitance couples
+    input to output (\(C_{bc}\) goes to AC ground), so there is no Miller
+    effect.
+\end{enumerate}
+
+\subsubsection{Question}
+\(I_C = 1\,\)mA, \(B_F = 100\), \(R_C = 5\,k\Omega\), \(R_S = 50\,\Omega\),
+\(V_T = 26\,\)mV. Find \(Z_{in}\) and \(A_V\).
+\paragraph{Solution:}
+\begin{align*}
+  g_m &= \frac{1\,mA}{26\,mV} = 38.46\,mS \hspace{1cm} g_{be} = \frac{38.46\,mS}{100} = 0.385\,mS \hspace{1cm} G_S = \frac{1}{50\,\Omega} = 20\,mS \\
+  g_m + g_{be} &= 38.46\,mS + 0.385\,mS = 38.85\,mS \hspace{1cm} Z_{in} = \frac{1}{38.85\,mS} = 25.7\,\Omega \\
+  A_V &= \frac{(38.46\,mS)(5\,k\Omega)(20\,mS)}{20\,mS + 38.85\,mS} = 192.3 \cdot \frac{20}{58.85} = 65.4
+\end{align*}

@@ -1,0 +1,357 @@
+\subsection{Basic Mirror}\label{sec:mirror_basic}
+
+\subsubsection{Overview}
+Constructed from two transistors, a diode connected
+\(M_0\) and a mirroring \(M_1\) sharing \(V_{GS}\). It is the
+simplest form of a current mirror; its current gain is set
+by the ratio of \(\frac{W}{L}\). (This block was previously
+mislabelled as the Widlar mirror, which adds a source
+resistor, see Section~\ref{sec:mirror_widlar}.)
+
+\subsubsection{Schematic}
+\begin{circuitfig}
+  \draw (2.98, 7.905) to[american voltage source, l_={$V_{cc}$}] (1.73, 7.905);
+	\node[nmos, arrowmos, xscale=-1] (N1) at (3.25, 4.405){} node[anchor=east] at (N1.text){$M_0$};
+	\node[nmos, arrowmos] (N2) at (5.75, 4.405){} node[anchor=west] at (N2.text){$M_1$};
+	\draw (3.25, 7.405) to[european resistor, l={$G_2$}] (3.25, 5.905);
+	\draw (5.75, 5.655) -| (5.75, 5.175);
+	\draw (4.5, 4.405) |- (3.25, 5.405);
+	\draw (4.77, 4.405) -- (4.23, 4.405);
+	\draw (3.25, 3.635) -| (3.25, 3.405) -| (5.75, 3.635);
+	\draw (3.75, 2.655) to[american voltage source, l={$V_{ee}$}] (2.5, 2.655);
+	\draw (3.75, 2.655) -| (4.5, 3.405);
+	\node[ground, rotate=-90] at (1.73, 7.905){};
+	\node[ground, rotate=-90] at (2.5, 2.655){};
+	\draw[dash pattern={on 1.6pt off 0.8pt}, -stealth] (5.75, 5.655) -- (6.25, 5.655);
+	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N3) at (6.75, 5.615){} node[anchor=center] at (N3.text){$V_{out}$};
+	\draw (5.75, 7.365) to[european resistor, l={\textcolor{rgb,255:red,255;green,0;blue,0}{$G_3$}}] (5.75, 5.865);
+	\draw (5.75, 5.655) -- (5.75, 5.885);
+	\draw (3.25, 7.405) |- (2.98, 7.905);
+	\draw (3.25, 7.905) -| (5.75, 7.365);
+	\node[shape=rectangle, minimum width=4.965cm, minimum height=1.09cm] at (4.375, 9.928){} node[anchor=north, align=center, text width=4.577cm, inner sep=6pt] at (4.375, 10.49){Large Signal Schematic\\(Sink)};
+	\node[shape=rectangle, draw={rgb,255:red,255;green,0;blue,0}, line width=1pt, dash pattern={on 4pt off 2pt on 1pt off 2pt on 1pt off 2pt}, minimum width=1.465cm, minimum height=2.195cm] at (6, 7){};
+	\node[shape=rectangle, minimum width=3.09cm, minimum height=2.465cm] at (8.438, 6.865){} node[anchor=north west, align=left, text width=2.702cm, inner sep=6pt] at (6.875, 8.115){\textcolor{rgb,255:red,255;green,0;blue,0}{\footnotesize Exists Only For Analysis. In  Implementation take output directly from V\_\{out\}}};
+	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N4) at (2.25, 5.405){} node[anchor=center] at (N4.text){$V_{x}$};
+	\draw[dash pattern={on 1.6pt off 0.8pt}, -stealth] (3.25, 5.405) |- (2.75, 5.405);
+	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N5) at (4.5, 6.115){} node[anchor=center] at (N5.text){$I_{G}$};
+	\draw (3.25, 5.175) -| (3.25, 5.405);
+	\draw (3.25, 5.405) -| (3.25, 5.905);
+	\draw (10, 1.75) |- (10, 11);
+	\draw (17.25, 5.563) to[american current source, l_={$g_{m_1}V_{gs}$}] (17.25, 4.063);
+	\draw (18.75, 5.563) to[european resistor, l_={$g_{o_1}$}] (18.75, 4.063);
+	\draw (17.25, 4.063) -- (18.75, 4.063);
+	\draw (18.75, 5.563) -- (17.25, 5.563);
+	\draw (17.25, 4.063) -- (16, 4.063);
+	\draw (16, 5.563) -- (15.25, 5.563);
+	\node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (16, 5.313){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (16, 5.313){\footnotesize G};
+	\node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (16, 4.313){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (16, 4.313){\footnotesize S};
+	\node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (19.25, 5.313){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (19.25, 5.313){\footnotesize D};
+	\draw (15.25, 5.563) -- (14.5, 5.563);
+	\draw (13, 5.563) to[american current source, l={$g_{m_0}V_{gs}$}] (13, 4.063);
+	\draw (11.5, 5.563) to[european resistor, l={$g_{o_0}$}] (11.5, 4.063);
+	\draw (13, 5.563) -- (11.5, 5.563);
+	\draw (13, 4.063) -- (11.5, 4.063);
+	\draw (14.5, 4.063) -- (13, 4.063);
+	\node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (14.5, 5.313){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (14.5, 5.313){\footnotesize G};
+	\node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (14.5, 4.313){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (14.5, 4.313){\footnotesize S};
+	\node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (11, 5.313){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (11, 5.313){\footnotesize D};
+	\draw (11.5, 7.563) to[european resistor, l={$G_2$}] (11.5, 6.063);
+	\draw (11.5, 6.063) -| (11.5, 5.562);
+	\draw (11.5, 7.563) -| (11.5, 8.062) -- (12.25, 8.062) -| (12.25, 7.812);
+	\draw (18.75, 7.563) to[european resistor, l={\textcolor{rgb,255:red,255;green,0;blue,0}{$G_3$}}] (18.75, 6.063);
+	\draw (18.75, 6.063) -| (18.75, 5.562);
+	\draw (18.75, 7.563) -| (18.75, 8.062) |- (18, 8.062) -| (18, 7.812);
+	\draw[dash pattern={on 1.6pt off 0.8pt}, -stealth] (18.75, 5.563) -- (19.25, 5.563);
+	\node[shape=rectangle, minimum width=0.715cm, minimum height=0.465cm] (N6) at (10.625, 5.563){} node[anchor=center] at (N6.text){$V_{x}$};
+	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N7) at (19.75, 5.563){} node[anchor=center] at (N7.text){$V_{out}$};
+	\node[ground] at (14.5, 4.063){};
+	\node[ground] at (16, 4.063){};
+	\node[ground] at (12.25, 7.812){};
+	\node[ground] at (18, 7.812){};
+	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N8) at (15.25, 6.813){} node[anchor=center] at (N8.text){$I_{G}$};
+	\draw[dash pattern={on 1.6pt off 0.8pt}, -stealth] (11.5, 5.563) -- (11, 5.563);
+	\node[shape=rectangle, minimum width=4.215cm, minimum height=1.09cm] at (15.375, 9.937){} node[anchor=north, align=center, text width=3.827cm, inner sep=6pt] at (15.375, 10.5){Small Signal Schematic\\(Sink)};
+	\node[circ] at (3.25, 5.405){};
+	\node[circ] at (4.5, 4.405){};
+	\node[circ] at (4.5, 3.405){};
+	\node[circ] at (3.25, 7.905){};
+	\draw (13, 5.563) |- (15.25, 6.063) -| (15.25, 5.563);
+	\draw[dash pattern={on 1.6pt off 0.8pt}, -stealth] (15.25, 6.063) -- (15.25, 6.563);
+	\draw[dash pattern={on 1.6pt off 0.8pt}, -stealth] (4.5, 5.365) -- (4.5, 5.865);
+	\node[circ] at (11.5, 5.563){};
+	\node[circ] at (15.25, 5.563){};
+	\node[circ] at (18.75, 5.563){};
+	\node[circ] at (13, 5.563){};
+	\node[shape=rectangle, draw={rgb,255:red,255;green,0;blue,0}, line width=1pt, dash pattern={on 4pt off 2pt on 1pt off 2pt on 1pt off 2pt}, minimum width=1.465cm, minimum height=1.965cm] at (19, 7.063){};
+\end{circuitfig}
+
+\subsubsection{Transfer Function}
+Here's a table of the voltages at each terminal of the transistors:
+
+\begin{tabularx}{\linewidth}{|X|X|X|X|X|X|} \hline
+  Transistor & Gate (G) & Source (S) & Drain (D) & $V_{GS}$ & $V_{DS}$ \\ \hline
+  $M_0$ & $V_{X}$ & $V_{ee}$ & $V_{X}$ & $V_{X} - V_{ee}$ & $V_{X} - V_{ee}$ \\ \hline
+  $M_1$ & $V_{X}$ & $V_{ee}$ & $V_{OUT}$ & $V_{X} - V_{ee}$ & $V_{OUT} - V_{ee}$ \\ \hline
+\end{tabularx}
+
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}:\\
+    Applying KCL at $V_{OUT}$:
+    \begin{align*}
+      (V_{OUT} - V_{cc})G_3 + I_{M_1} &= 0 \\
+      V_{OUT}G_3 - V_{cc}G_3 + I_{M_1} &= 0 \\
+      V_{OUT} &= V_{cc} - \frac{I_{M_1}}{G_3} \tag{1}\end{align*}
+    Applying KCL at $V_{X}$:
+    \begin{align*}
+      (V_{X} - V_{cc})G_2 + I_{M_0} + I_{G} &= 0 \\
+      V_{X}G_2 - V_{cc}G_2 + (I_{M_0} + I_{G}) &= 0 \\
+      V_{X}G_2 &= - (I_{M_0} + I_{G}) + V_{cc}G_2 \\
+      V_{X} &= V_{cc} - \frac{(I_{M_0} + I_{G})}{G_2} \tag{2}
+    \end{align*}
+    Using the transistor equations for $I_{M_0}$ and
+    $I_{M_1}$:
+    \begin{align*}
+      I_{M_0} &= k_{n_0}(V_{GS_0} - V_{th})^2 \cdot (1 + K_{CLM} V_{DS_0}) \\
+              &= k_{n_0}(V_{X} - V_{ee} - V_{th})^2 \cdot (1 + K_{CLM} (V_{X} - V_{ee})) \\
+              &= k_{n_0}\left(\left(V_{cc} - \frac{(I_{M_0} + I_{G})}{G_2}\right) - V_{ee} - V_{th}\right)^2 \cdot \left(1 + K_{CLM} \left(\left(V_{cc} - \frac{(I_{M_0} + I_{G})}{G_2}\right) - V_{ee}\right)\right) \\
+              &= k_{n_0}\left(\left(V_{cc} - \frac{(I_{M_0} + I_{G})}{G_2}\right) - V_{ee} - V_{th}\right)^2 \quad \text{[assuming } K_{CLM} = 0 \text{]} \tag{3} \\ \\
+      I_{M_1} &= k_{n_1}(V_{GS_1} - V_{th})^2 \cdot (1 + K_{CLM} V_{DS_1}) \\
+              &= k_{n_1}(V_{X} - V_{ee} - V_{th})^2 \cdot (1 + K_{CLM} (V_{OUT} - V_{ee})) \\
+              &= k_{n_1}\left(\left(V_{cc} - \frac{(I_{M_0} + I_{G})}{G_2}\right) - V_{ee} - V_{th}\right)^2 \cdot \left(1 + K_{CLM} \left(V_{cc} - \frac{I_{M_1}}{G_3} - V_{ee}\right)\right) \\
+              &= k_{n_1}\left(\left(V_{cc} - \frac{(I_{M_0} + I_{G})}{G_2}\right) - V_{ee} - V_{th}\right)^2 \quad \text{[assuming } K_{CLM} = 0 \text{]} \tag{4}
+    \end{align*}
+    The input current is the current through \(G_2\) and the output
+    current is the drain current of \(M_1\):
+    \begin{align*}
+      I_{IN} &= (V_{cc} - V_{X})G_2 = I_{M_0} + I_{G} \approx I_{M_0} \quad \text{[from (2), } I_G \approx 0 \text{ by MOS physics]} \\
+      I_{OUT} &= (V_{cc} - V_{OUT})G_3 = I_{M_1} \quad \text{[from (1)]}
+    \end{align*}
+    Both transistors share \(V_{GS} = V_X - V_{ee}\), so dividing the
+    second line of (4) by the second line of (3) cancels the square term:
+    \begin{align*}
+      \frac{I_{M_1}}{I_{M_0}} &= \frac{k_{n_1}(V_{X} - V_{ee} - V_{th})^2 (1 + K_{CLM} (V_{OUT} - V_{ee}))}{k_{n_0}(V_{X} - V_{ee} - V_{th})^2 (1 + K_{CLM} (V_{X} - V_{ee}))} \\
+                              &= \frac{k_{n_1}}{k_{n_0}} \cdot \frac{1 + K_{CLM} (V_{OUT} - V_{ee})}{1 + K_{CLM} (V_{X} - V_{ee})} \\
+                              &= \frac{k_{n_1}}{k_{n_0}} \quad \text{[assuming } K_{CLM} = 0 \text{, or } V_{OUT} = V_X \text{]}
+    \end{align*}
+    Thus, with \(k_n = \frac{K_P}{2}\frac{W}{L}\),
+    \begin{align*}
+      \frac{I_{OUT}}{I_{IN}} \approx \frac{I_{M_1}}{I_{M_0}} \approx \frac{k_{n_1}}{k_{n_0}} = \frac{\frac{K_P}{2} \frac{W_1}{L_1}}{\frac{K_P}{2} \frac{W_0}{L_0}} = \frac{\frac{W_1}{L_1}}{\frac{W_0}{L_0}} = \frac{W_1 L_0}{L_1 W_0}
+    \end{align*}
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}:\\
+    Applying KCL at $V_{out}$:
+    \begin{align*}
+      V_{out}G_3 + V_{out}g_{o_1} + g_{m_1}V_{x} &= 0 \\
+      V_{out}(G_3 + g_{o_1}) + g_{m_1}V_{x} &= 0 \tag{5}
+    \end{align*}
+    Applying KCL at $V_{x}$:
+    \begin{align*}
+      V_{x}G_2 + V_{x}g_{o_0} + g_{m_0}V_{x} + I_{G} &= 0 \\
+      V_{x}(G_2 + g_{o_0} + g_{m_0}) &= 0 \quad \text{[assuming } I_G \approx 0 \text{ by MOS physics]} \tag{6}
+    \end{align*}
+    Adding voltage source $V_s$ at $V_x$ that supplies
+    a current $I_s$ into $V_{x}$, we get:
+    \begin{align*}
+      V_{x}(G_2 + g_{o_0} + g_{m_0}) - I_{s} &=0 \tag{7} \\
+      V_{x} &= V_{s} \tag{8}
+    \end{align*}
+    Solving equations (5), (7) and (8) ((7) only fixes \(I_s\)):
+    \begin{align*}
+      V_{out}(G_3 + g_{o_1}) &= - g_{m_1} V_{x} \quad \text{[from (5)]} \\
+      V_{out} &= - \frac{g_{m_1} V_{x}}{G_3 + g_{o_1}} \\
+              &= - \frac{g_{m_1} V_{s}}{G_3 + g_{o_1}} \quad \text{[from (8)]} \\
+      H(s) = \frac{N(s)}{D(s)} = \frac{V_{out}}{V_{s}} &= - \frac{g_{m_1}}{G_3 + g_{o_1}}
+    \end{align*}
+\end{enumerate}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Output Load (Max), Large Signal, Time Domain, DC Input (Q5)}:
+    \(M_1\) stays saturated while \(V_{DS_1} \geq V_{ov_1}\). Both
+    transistors share \(V_{GS}\) and \(V_{th}\), so
+    \(V_{ov_1} = V_{GS_1} - V_{th} = V_{GS_0} - V_{th} = V_{ov_0}\).
+    With the load \(R_L = \frac{1}{G_3}\) to \(V_{cc}\), (1) gives
+    \(V_{OUT} = V_{cc} - I_{M_1} R_L\):
+    \begin{align*}
+      V_{DS_1} = V_{OUT} - V_{ee} &\geq V_{ov_1} \\
+      V_{OUT,\min} &= V_{ee} + V_{ov_1} \\
+      V_{cc} - I_{M_1} R_L &\geq V_{OUT,\min} \\
+      I_{M_1} R_L &\leq V_{cc} - V_{OUT,\min} \\
+      R_{L, \max} &= \frac{V_{cc} - V_{OUT,\min}}{I_{M_1}} = \frac{V_{L,\max}}{I_{M_1}} \quad \text{[} V_{L,\max} = V_{cc} - V_{OUT,\min} \text{]}
+    \end{align*}
+  \item \textbf{Current Gain, Small Signal, Frequency Domain, AC Input (Q4)}:
+    Inject \(I_{in}\) into \(V_x\) and short the output to AC ground
+    (\(V_{out} = 0\)). (6) with the injected current, and the drain
+    current of \(M_1\) flowing from the AC ground into \(V_{out}\):
+    \begin{align*}
+      V_{x}(G_2 + g_{o_0} + g_{m_0}) &= I_{in} \\
+      V_{x} &= \frac{I_{in}}{G_2 + g_{o_0} + g_{m_0}} \\
+      I_{out} &= g_{m_1} V_x + g_{o_1} V_{out} = g_{m_1} V_x + g_{o_1} \cdot 0 = g_{m_1} V_x \\
+              &= \frac{g_{m_1}}{G_2 + g_{o_0} + g_{m_0}} I_{in} \\
+      \frac{I_{out}}{I_{in}} &= \frac{g_{m_1}}{G_2 + g_{o_0} + g_{m_0}} \approx \frac{g_{m_1}}{g_{m_0}} \quad \text{[} G_2, g_{o_0} \ll g_{m_0} \text{]}
+    \end{align*}
+    With \(g_m \approx \sqrt{2 K_P \frac{W}{L} I_D}\)
+    (Section~\ref{sec:devices_mosfet}) and the Q5 result
+    \(I_{M_1} = \frac{W_1 L_0}{L_1 W_0} I_{M_0}\):
+    \begin{align*}
+      \frac{g_{m_1}}{g_{m_0}} &= \frac{\sqrt{2K_P \frac{W_1}{L_1} I_{M_1}}}{\sqrt{2K_P \frac{W_0}{L_0} I_{M_0}}}
+                               = \sqrt{\frac{\frac{W_1}{L_1}}{\frac{W_0}{L_0}} \cdot \frac{I_{M_1}}{I_{M_0}}} \\
+                              &= \sqrt{\frac{W_1 L_0}{L_1 W_0} \cdot \frac{W_1 L_0}{L_1 W_0}} = \frac{W_1 L_0}{L_1 W_0}
+    \end{align*}
+  \item \textbf{Impedances}:
+    \paragraph{At Input:} Applying a test current $I_{test}$
+      at $V_{x}$, from equation (6):
+      \begin{align*}
+        V_{x}(G_2 + g_{o_0} + g_{m_0}) &= I_{test} \\
+        \therefore Z_{in} &= \frac{V_{x}}{I_{test}} = \frac{1}{G_2 + g_{o_0} + g_{m_0}}
+      \end{align*}
+      Ignoring $G_2$ and assuming $g_{m_0} \gg g_{o_0}$, with
+      \(g_{m_0} = \frac{2 I_{M_0}}{V_{ov_0}}\), we get:
+      \begin{align*}
+        Z_{in} &\approx \frac{1}{g_{m_0}} = \frac{1}{\frac{2 I_{M_0}}{V_{ov_0}}} = \frac{V_{ov_0}}{2 I_{M_0}}
+      \end{align*}
+    \paragraph{At Output:} Applying a test current $I_{test}$
+      at $V_{out}$, from equation (5):
+      \begin{align*}
+        V_{out}(G_3 + g_{o_1}) + g_{m_1}V_{x} &= I_{test} \\
+        V_{out}(G_3 + g_{o_1}) + g_{m_1}(0) &= I_{test} \quad \text{[} V_x = 0 \text{ from (6)]} \\
+        \therefore Z_{out} &= \frac{V_{out}}{I_{test}} = \frac{1}{G_3 + g_{o_1}}
+      \end{align*}
+      Ignoring $G_3$, with \(g_{o_1} \approx K_{CLM} I_{M_1}\), we get:
+      \begin{align*}
+        Z_{out} &\approx \frac{1}{g_{o_1}} = \frac{1}{K_{CLM} I_{M_1}}
+      \end{align*}
+\end{enumerate}
+
+\subsubsection{Design}
+Large Signal, Time Domain, DC Input Analysis (Q5) can be used to set the bias
+currents and voltages in this circuit.
+\begin{enumerate}
+  \item Choose appropriate transistor dimensions
+    ($W$ and $L$) for transistors $M_0$ and $M_1$
+    to achieve the desired current gain.
+    \begin{align*}
+      \frac{I_{OUT}}{I_{IN}} &= \frac{W_1 L_0}{L_1 W_0}
+    \end{align*}
+  \item Choose a suitable overdrive voltage value
+    ($V_{ov}$) for computing the bias voltage at
+    node $V_{X}$.
+    \begin{align*}
+      V_{ov_0} &= V_{GS_0} - V_{th} \\
+      V_{ov_0} &= (V_{X} - V_{ee}) - V_{th} \\
+      V_{X} &= V_{ov_0} + V_{th} + V_{ee}
+    \end{align*}
+  \item Using the chosen $V_{ov}$, compute $W_0$
+    to set the required bias current $I_{IN}$.
+    \begin{align*}
+      I_{IN} = I_{M_0} &= \frac{K_P}{2} \frac{W_0}{L_0} V_{ov_0}^2 \\
+      \therefore W_0 &= \frac{2 I_{IN} L_0}{K_P V_{ov_0}^2}
+    \end{align*}
+    $W_1$ can then be computed using the current
+    gain relation from step (a).
+  \item Compute the required value of $G_2$ (or
+    $R_2$) to ensure that the voltage at node
+    $V_{X}$ is as calculated in step (b).
+    \begin{align*}
+      (V_{X} - V_{cc})G_2 + I_{M_0} + I_{G} &= 0 \\
+      (V_{X} - V_{cc})G_2 + I_{M_0} &\approx 0 \quad \text{[assuming } I_G \approx 0 \text{ by MOS physics ]} \\
+      (V_{X} - V_{cc})G_2 &\approx - I_{M_0} \\
+      G_2 &\approx - \frac{I_{M_0}}{(V_{X} - V_{cc})} \\
+      \therefore G_2 &= \frac{I_{M_0}}{V_{cc} - V_{X}} \\
+      R_2 &= \frac{1}{G_2} = \frac{V_{cc} - V_{X}}{I_{M_0}}
+    \end{align*}
+\end{enumerate}
+
+\subsubsection{Question}
+Design a Basic Current Mirror (Sink) that meets
+the following requirements. The mirror must provide
+a current gain at the output of 5. The input current
+must be $I_{IN} = 100 \mu A$. The mirror must operate
+with $V_{cc} = 5V$ and $V_{ee} = 0V$. Assume the
+following transistor parameters: $V_{th} = 1V$,
+$K_{CLM} = 0.02 V^{-1}$, $K_P = 200 \mu A/V^2$ and
+$L = 1 \mu m$ for all transistors. Find the input and
+output impedance of the mirror and the maximum load
+that can be connected at the output.
+\paragraph{Solution:}
+\begin{enumerate}
+  \item \textbf{Choose appropriate transistor dimensions:}
+    \begin{align*}
+      \frac{I_{OUT}}{I_{IN}} &= \frac{W_1 L_0}{L_1 W_0} = 5 \\
+      \therefore W_1 &= 5 W_0 \quad \text{[assuming } L_0 = L_1 \text{]}
+    \end{align*}
+  \item \textbf{Choose a suitable overdrive voltage and determine
+    the resulting bias voltages:}
+    Choosing \(V_{ov_0} = 0.2V\):
+    \begin{align*}
+      V_{X} &= V_{ov_0} + V_{th} + V_{ee} = 0.2V + 1V + 0V = 1.2V
+    \end{align*}
+  \item \textbf{Compute $W_0$ to set the required bias current:} For $I_{IN} = 100 \mu A$
+    \begin{align*}
+      W_0 &= \frac{2 I_{IN} L_0}{K_P V_{ov_0}^2} \\
+          &= \frac{2 \cdot 100 \mu A \cdot 1 \mu m}{200 \mu A/V^2 \cdot (0.2V)^2} \\
+          &= \frac{200 \times 10^{-12} \, A \cdot m}{8 \times 10^{-6} \, A} \\
+          &= 25 \mu m \\
+      \therefore W_1 &= 5 W_0 = 5 \cdot 25 \mu m = 125 \mu m
+    \end{align*}
+  \item \textbf{Compute the required value of $G_2$ (or $R_2$):}
+    \begin{align*}
+      R_2 &= \frac{1}{G_2} = \frac{V_{cc} - V_{X}}{I_{M_0}} \\
+          &= \frac{5V - 1.2V}{100 \mu A} \\
+          &= 38 k\Omega
+    \end{align*}
+  \item \textbf{Compute the input impedance:}
+    \begin{align*}
+      g_{m_0} &= \frac{2 I_{M_0}}{V_{ov_0}} = \frac{2 \cdot 100 \mu A}{0.2V} = 1 mS \hspace{1cm}
+      g_{o_0} \approx K_{CLM} I_{M_0} = 0.02 V^{-1} \cdot 100 \mu A = 2 \mu S \\
+      Z_{in} &\approx \frac{1}{g_{m_0}} = \frac{V_{ov_0}}{2 I_{M_0}} = \frac{0.2V}{2 \cdot 100 \mu A} = 1 k\Omega
+    \end{align*}
+    Keeping \(G_2 = \frac{1}{38 k\Omega} = 26.3 \mu S\) and \(g_{o_0}\):
+    \begin{align*}
+      Z_{in} &= \frac{1}{G_2 + g_{o_0} + g_{m_0}} = \frac{1}{26.3 \mu S + 2 \mu S + 1000 \mu S} = \frac{1}{1028.3 \mu S} = 972 \Omega
+    \end{align*}
+  \item \textbf{Compute the output impedance:} The output current is
+    \(I_{M_1} = 5 I_{IN} = 5 \cdot 100 \mu A = 500 \mu A\).
+    \begin{align*}
+      Z_{out} &\approx \frac{1}{g_{o_1}} \approx \frac{1}{K_{CLM} I_{M_1}} \\
+              &= \frac{1}{0.02 V^{-1} \cdot 500 \mu A} \\
+              &= 100 k\Omega
+    \end{align*}
+  \item \textbf{Compute the maximum load that can be connected
+    at the output:}
+    \begin{align*}
+      V_{OUT,\min} &= V_{ee} + V_{ov_1} = V_{ee} + V_{ov_0} = 0 + 0.2V = 0.2V \\
+      R_{L, \max} &= \frac{V_{cc} - V_{OUT,\min}}{I_{M_1}} \\
+                   &= \frac{5V - 0.2V}{500 \mu A} \\
+                   &= 9.6 k\Omega
+    \end{align*}
+\end{enumerate}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms Vx Vout Iin Itest
+  syms G3 G2 go0 gm0 go1 gm1
+
+  % small signal kcl, equations (5) and (6)
+  eq5 = Vout*(G3 + go1) + gm1*Vx == 0;   % KCL at Vout
+  eq6 = Vx*(G2 + go0 + gm0) == 0;        % KCL at Vx
+
+  % voltage transfer: Vx forced by a source, so (6) drops out
+  sol = solve(eq5, Vout);
+  printf('=== Vout/Vx ===\n'); pretty(simplify(sol/Vx))
+
+  % current gain: Iin into Vx, output shorted (Vout = 0)
+  vx = solve(Vx*(G2 + go0 + gm0) == Iin, Vx);
+  Iout = gm1*vx + go1*0;                 % M1 drain current
+  printf('=== Iout/Iin ===\n'); pretty(simplify(Iout/Iin))
+
+  % input impedance: Itest into Vx
+  vx = solve(Vx*(G2 + go0 + gm0) == Itest, Vx);
+  printf('=== Zin ===\n'); pretty(simplify(vx/Itest))
+
+  % output impedance: Itest into Vout, (6) keeps Vx = 0
+  sol = solve([Vout*(G3 + go1) + gm1*Vx == Itest, eq6], [Vout, Vx]);
+  printf('=== Zout ===\n'); pretty(simplify(sol.Vout/Itest))
+\end{lstlisting}

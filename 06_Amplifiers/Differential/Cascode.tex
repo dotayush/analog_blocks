@@ -1,0 +1,117 @@
+\subsection{Cascode Amplifier}\label{sec:amp_cascode}
+
+\subsubsection{Overview}
+A common source \(M_1\) stacked under a common gate \(M_2\) (gate at DC
+bias \(V_{B2}\)). \(M_2\) shields the drain of \(M_1\) from the output, which
+multiplies the output impedance by \(\approx g_{m2} r_{o2}\) and removes the
+Miller effect on \(C_{gd1}\). It is the half circuit of every cascoded op-amp
+below.
+
+\subsubsection{Schematic}
+\begin{circuitfig}
+  \draw (0,0) node[nmos](M1){}; \node[right] at (0.3,0) {$M_1$};
+  \draw (0,2) node[nmos](M2){}; \node[right] at (0.3,2) {$M_2$};
+  \draw (M1.G) -- ++(-0.5,0) node[circ]{} node[left]{$V_{in}$};
+  \draw (M2.G) -- ++(-0.5,0) node[left]{$V_{B2}$};
+  \draw (M1.S) node[ground]{};
+  \draw (M1.D) -- (M2.S); \draw (0,1) node[circ]{} node[left]{$V_x$};
+  \draw (M2.D) -- (0,3.3) node[circ]{} to[american current source, l_={$G_L$}] (0,5.1) node[vcc]{$V_{dd}$};
+  \draw (0,3.3) -- (1.8,3.3) node[circ]{} node[right]{$V_{out}$};
+\end{circuitfig}
+
+\subsubsection{Transfer Function}
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}:
+    \(I_{D1} = I_{D2}\); \(V_{GS2} = V_{th} + V_{ov2}\), so
+    \(V_X = V_{B2} - V_{GS2} = V_{B2} - V_{th} - V_{ov2}\). Both saturated needs
+    \begin{align*}
+      M_1: \hspace{0.3cm} V_{DS1} = V_X &\geq V_{ov1} \\
+      M_2: \hspace{0.3cm} V_{DS2} = V_{OUT} - V_X &\geq V_{ov2} \hspace{0.5cm} \Rightarrow \hspace{0.5cm} V_{OUT} \geq V_X + V_{ov2}
+    \end{align*}
+    The lowest \(V_X\) allowed is \(V_{ov1}\), reached with
+    \(V_{B2} = V_{th} + V_{ov1} + V_{ov2}\), so
+    \(V_{OUT,\min} = V_{ov1} + V_{ov2}\).
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}:
+    \(I_{d1} = g_{m1} V_{in} + g_{o1} V_x\),
+    \(I_{d2} = g_{m2}(0 - V_x) + g_{mb2}(0 - V_x) + g_{o2}(V_{out} - V_x) = -(g_{m2} + g_{mb2}) V_x + g_{o2}(V_{out} - V_x)\); write
+    \(g_{m2}' = g_{m2} + g_{mb2}\).\\
+    KCL at \(V_x\) and \(V_{out}\):
+    \begin{align*}
+      I_{d1} &= I_{d2} \tag{1} \\
+      V_{out} G_L + I_{d2} &= 0 \hspace{0.5cm} \Rightarrow \hspace{0.5cm} I_{d2} = -V_{out} G_L \tag{2}
+    \end{align*}
+    From (1), (2): \(g_{m1} V_{in} + g_{o1} V_x = -V_{out} G_L\), so
+    \[
+      V_x = -\frac{V_{out} G_L + g_{m1} V_{in}}{g_{o1}} \tag{3}
+    \]
+    From (2):
+    \begin{align*}
+      -(g_{m2}' + g_{o2}) V_x + g_{o2} V_{out} &= -V_{out} G_L \\
+      (g_{m2}' + g_{o2}) V_x &= V_{out}(g_{o2} + G_L) \tag{4}
+    \end{align*}
+    Substituting (3) into (4) and multiplying by \(-g_{o1}\):
+    \begin{align*}
+      -(g_{m2}' + g_{o2})\frac{V_{out} G_L + g_{m1} V_{in}}{g_{o1}} &= V_{out}(g_{o2} + G_L) \\
+      (g_{m2}' + g_{o2}) G_L V_{out} + (g_{m2}' + g_{o2}) g_{m1} V_{in} &= -g_{o1}(g_{o2} + G_L) V_{out} \\
+      -V_{out}\left[(g_{m2}' + g_{o2}) G_L + g_{o1}(g_{o2} + G_L)\right] &= (g_{m2}' + g_{o2}) g_{m1} V_{in} \\
+      -V_{out}\left[(g_{m2}' + g_{o2} + g_{o1}) G_L + g_{o1} g_{o2}\right] &= (g_{m2}' + g_{o2}) g_{m1} V_{in}
+    \end{align*}
+    \[
+      A_V = \frac{V_{out}}{V_{in}} = -\frac{g_{m1}(g_{m2}' + g_{o2})}{(g_{m2}' + g_{o2} + g_{o1}) G_L + g_{o1} g_{o2}} \tag{5}
+    \]
+\end{enumerate}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Output Impedance}: dividing numerator and denominator of
+    (5) by \((g_{m2}' + g_{o2} + g_{o1})\):
+    \begin{align*}
+      A_V &= -\frac{\frac{g_{m1}(g_{m2}' + g_{o2})}{g_{m2}' + g_{o2} + g_{o1}}}{G_L + \frac{g_{o1} g_{o2}}{g_{m2}' + g_{o2} + g_{o1}}} = -\frac{G_m}{G_L + \frac{1}{Z_{dn}}} = -G_m (Z_{dn} \parallel R_L) \hspace{1cm} \left[R_L = \tfrac{1}{G_L}\right]
+    \end{align*}
+    with
+    \begin{align*}
+      Z_{dn} &= \frac{g_{m2}' + g_{o2} + g_{o1}}{g_{o1} g_{o2}} = \frac{g_{m2}'}{g_{o1} g_{o2}} + \frac{1}{g_{o1}} + \frac{1}{g_{o2}} = r_{o1} + r_{o2} + g_{m2}' r_{o1} r_{o2} \approx g_{m2} r_{o2} r_{o1} \\
+      G_m &= \frac{g_{m1}(g_{m2}' + g_{o2})}{g_{m2}' + g_{o2} + g_{o1}} \approx g_{m1} \hspace{1cm} [g_{o1} \ll g_{m2}']
+    \end{align*}
+    \(Z_{dn}\) is the common gate result of Section~\ref{sec:amp_cg} with
+    \(R_S = r_{o1}\).
+  \item \textbf{Gain}: ideal current source load (\(G_L \to 0\)) in (5):
+    \[
+      A_{V0} = -\frac{g_{m1}(g_{m2}' + g_{o2})}{g_{o1} g_{o2}} \approx -\frac{g_{m1} g_{m2}}{g_{o1} g_{o2}} = -(g_{m1} r_{o1})(g_{m2} r_{o2}) \approx -(g_m r_o)^2
+    \]
+    the square of the intrinsic gain. With a simple current source load
+    (\(G_L = g_{oL} \gg \frac{1}{Z_{dn}}\)):
+    \(A_V = -\frac{G_m}{g_{oL} + \frac{1}{Z_{dn}}} \approx -\frac{g_{m1}}{g_{oL}} = -g_{m1} r_{oL}\),
+    back to a single stage gain: the load must be cascoded too (telescopic cascode).
+  \item \textbf{Miller Effect}: the gain from the gate to the drain of \(M_1\)
+    follows from (4) and (5):
+    \begin{align*}
+      \frac{V_x}{V_{in}} &= \frac{g_{o2} + G_L}{g_{m2}' + g_{o2}} \cdot \frac{V_{out}}{V_{in}} = -\frac{g_{m1}(g_{o2} + G_L)}{(g_{m2}' + g_{o2} + g_{o1}) G_L + g_{o1} g_{o2}}
+    \end{align*}
+    For a low impedance load (\(G_L \gg g_{o2}\), i.e. \(R_L \ll r_{o2}\)) the
+    \(G_L\) terms dominate:
+    \(\frac{V_x}{V_{in}} \approx -\frac{g_{m1} G_L}{g_{m2}' G_L} = -\frac{g_{m1}}{g_{m2}'} \approx -1\),
+    so \(C_{gd1}\) is multiplied by only \(1 + 1 = 2\). For \(R_L = r_{o2}\)
+    (\(G_L = g_{o2}\)) it is \(\approx -2\), and for an ideal current source load
+    (\(G_L \to 0\)) it rises to \(-\frac{g_{m1} g_{o2}}{g_{o1} g_{o2}} = -g_{m1} r_{o1}\):
+    but only below the (dominant) output pole \(\frac{1}{Z_{dn} C_L}\); above it
+    \(C_L\) acts as a small \(R_L\) and \(\frac{V_x}{V_{in}}\) returns to
+    \(\approx -\frac{g_{m1}}{g_{m2}'}\), so at the frequencies where \(C_{gd1}\)
+    matters it is still multiplied by \(\approx 2\).
+\end{enumerate}
+
+\subsubsection{Question}
+\(I_D = 100\,\mu\)A, \(V_{ov} = 0.2\,\)V and \(K_{CLM} = 0.1\,\)V\(^{-1}\) for both
+devices, body effect neglected (\(g_{m2}' = g_{m2}\)). Find \(Z_{dn}\), \(A_{V0}\)
+with an ideal current source load, and \(A_V\) with \(R_L = 100\,k\Omega\).
+\paragraph{Solution:}
+\begin{align*}
+  g_{m1} &= g_{m2} = \frac{2 \cdot 100\,\mu A}{0.2\,V} = 1\,mS \hspace{1cm}
+  g_{o1} = g_{o2} = 0.1 \cdot 100\,\mu A = 10\,\mu S \hspace{1cm} r_o = 100\,k\Omega \\
+  Z_{dn} &= r_{o1} + r_{o2} + g_{m2} r_{o1} r_{o2} = 100\,k + 100\,k + 10^{-3} \cdot 10^{5} \cdot 10^{5} = 0.2\,M + 10\,M = 10.2\,M\Omega \\
+  A_{V0} &= -\frac{g_{m1}(g_{m2} + g_{o2})}{g_{o1} g_{o2}} = -\frac{10^{-3} \cdot 1.01 \times 10^{-3}}{10^{-5} \cdot 10^{-5}} = -\frac{1.01 \times 10^{-6}}{10^{-10}} = -10100 \hspace{0.5cm} (80.1\,dB) \\
+  A_V &= -\frac{g_{m1}(g_{m2} + g_{o2})}{(g_{m2} + g_{o2} + g_{o1}) G_L + g_{o1} g_{o2}}
+       = -\frac{1.01 \times 10^{-6}}{1.02 \times 10^{-3} \cdot 10^{-5} + 10^{-10}} = -\frac{1.01 \times 10^{-6}}{1.03 \times 10^{-8}} = -98.1 \\
+  A_V &= -G_m (Z_{dn} \parallel R_L) = -0.990\,mS \cdot \frac{10.2\,M \cdot 0.1\,M}{10.2\,M + 0.1\,M} = -0.990\,mS \cdot 99.0\,k\Omega = -98.1 \hspace{0.5cm} [\text{check}]
+\end{align*}
+The \(100\,k\Omega\) load throws away almost all of the \(10100\): \(A_V \approx -g_{m1} R_L\).

@@ -23,6 +23,7 @@
 /mermaid/
 /dist/
 /temp/
+/.tmp/
 
 # Editor / OS
 .vscode/

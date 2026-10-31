@@ -1,0 +1,139 @@
+\subsection{Folded Cascode Op-Amp}\label{sec:amp_folded}
+
+\subsubsection{Overview}
+The input pair current is \emph{folded} into common gate devices of the
+opposite type: a PMOS pair \(M_1\), \(M_2\) drives the sources of NMOS
+cascodes \(M_3\), \(M_4\), each sitting on an NMOS current sink \(M_{B}\)
+(conductance \(g_{oB}\)), loaded by PMOS cascodes \(M_5\)--\(M_8\). The input
+and output stacks are separate, so the input common mode can reach a rail
+and the output swing is larger than the telescopic cascode's.
+
+\subsubsection{Schematic (half circuit)}
+\begin{circuitfig}
+  \draw (0,0) node[nmos](MB){}; \node[right] at (0.3,0) {$M_B$};
+  \draw (0,2.2) node[nmos](M3){}; \node[right] at (0.3,2.2) {$M_3$};
+  \draw (0,4.5) node[pmos](M5){}; \node[right] at (0.3,4.5) {$M_5$};
+  \draw (0,6.5) node[pmos](M7){}; \node[right] at (0.3,6.5) {$M_7$};
+  \draw (MB.G) -- ++(-0.5,0) node[left]{$V_{BB}$};
+  \draw (M3.G) -- ++(-0.5,0) node[left]{$V_{B3}$};
+  \draw (M5.G) -- ++(-0.5,0) node[left]{$V_{B5}$};
+  \draw (M7.G) -- ++(-0.5,0) node[left]{$V_{B7}$};
+  \draw (MB.S) node[ground]{};
+  \draw (MB.D) -- (M3.S);
+  \draw (M3.D) -- (M5.D);
+  \draw (M5.S) -- (M7.D);
+  \draw (M7.S) node[vcc]{$V_{dd}$};
+  \draw (2.5,6.0) node[vcc]{$V_{dd}$} to[american current source, l={$\frac{I_T}{2} + \frac{g_{m1} V_{id}}{2}$ (from $M_1$)}] (2.5,1.1);
+  \draw (0,1.1) node[circ]{} node[left]{$V_f$} -- (2.5,1.1);
+  \draw (0,3.35) node[circ]{} -- (-1.8,3.35) node[circ]{} node[left]{$V_{o1}$};
+\end{circuitfig}
+
+\subsubsection{Transfer Function}
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}:
+    \(M_B\) sinks \(I_B\) and the pair supplies \(\frac{I_T}{2}\) into the fold node.
+    KCL at \(V_F\):
+    \begin{align*}
+      \frac{I_T}{2} + I_{D3} &= I_B \hspace{1cm} \Rightarrow \hspace{1cm} I_{D3} = I_B - \frac{I_T}{2}
+    \end{align*}
+    and \(M_5\), \(M_7\) carry the same \(I_B - \frac{I_T}{2}\). During slewing one side
+    receives all of \(I_T\), so \(I_{D3} = I_B - I_T \geq 0\) needs \(I_B \geq I_T\).
+    Saturation of the output stack (\(|V_{DS}| \geq |V_{ov}|\) for each device):
+    \begin{align*}
+      V_{O,\min} &= V_{DSB,\min} + V_{DS3,\min} = V_{ov,B} + V_{ov3} \\
+      V_{O,\max} &= V_{dd} - |V_{DS7,\min}| - |V_{DS5,\min}| = V_{dd} - |V_{ov7}| - |V_{ov5}|
+    \end{align*}
+    Input common mode (PMOS pair, tail of overdrive \(|V_{ov,T}|\) from \(V_{dd}\)):
+    \(M_1\) saturated needs \(V_S - V_F \geq |V_{ov1}|\) with \(V_S = V_{IC} + |V_{GS1}|\):
+    \begin{align*}
+      V_{IC} + |V_{GS1}| - V_F &\geq |V_{ov1}| \hspace{1cm} \Rightarrow \hspace{1cm} V_{IC} \geq V_F + |V_{ov1}| - |V_{GS1}| = V_F - |V_{th1}| \\
+      V_{IC,\min} &= V_{ov,B} - |V_{th1}| \hspace{1cm} [V_{F,\min} = V_{ov,B}] \\
+      V_{IC,\max} &= V_{dd} - |V_{ov,T}| - |V_{GS1}|
+    \end{align*}
+    \(V_{IC,\min}\) can sit below ground: the input range reaches the
+    negative rail, independent of the output stack.
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}:
+    differential drive, \(V_s = 0\) (Section~\ref{sec:amp_diffpair}), so \(M_1\)
+    injects \(I_{in} = \frac{g_{m1} V_{id}}{2}\) into the fold node, which sees
+    \(R_f = r_{o1} \parallel r_{oB}\) (\(G_f = g_{o1} + g_{oB}\)) to AC ground; \(M_3\) is a
+    common gate stage (gate at AC ground, \(g_{m3}' = g_{m3} + g_{mb3}\),
+    Section~\ref{sec:amp_cg}). The output node is linear, so it is solved as a
+    Norton source: short circuit current \(I_{sc}\) times output impedance.\\
+    \textbf{Short Circuit Current} (\(V_{o1} = 0\)): the \(M_3\) drain to source current is
+    \begin{align*}
+      I_{d3} &= g_{m3}'(0 - V_f) + g_{o3}(0 - V_f) = -(g_{m3}' + g_{o3}) V_f
+    \end{align*}
+    KCL at \(V_f\) (\(I_{in}\) and \(I_{d3}\) enter, \(G_f V_f\) leaves):
+    \begin{align*}
+      I_{in} + I_{d3} &= G_f V_f \\
+      I_{in} - (g_{m3}' + g_{o3}) V_f &= (g_{o1} + g_{oB}) V_f \\
+      V_f &= \frac{I_{in}}{g_{m3}' + g_{o3} + g_{o1} + g_{oB}} \\
+      |I_{sc}| = |I_{d3}| &= \frac{g_{m3}' + g_{o3}}{g_{m3}' + g_{o3} + g_{o1} + g_{oB}} I_{in}
+    \end{align*}
+    nearly all of \(I_{in}\) (the source of \(M_3\) is \(\approx \frac{1}{g_{m3}'}\), far below \(R_f\)).\\
+    \textbf{Output Impedance Down} (\(I_{in} = 0\), test voltage \(V_t\) on the drain of
+    \(M_3\), test current \(I_t\) flowing down through \(M_3\) and \(R_f\), so \(V_f = I_t R_f\)):
+    \begin{align*}
+      I_t &= g_{m3}'(0 - V_f) + g_{o3}(V_t - V_f) = -g_{m3}' I_t R_f + g_{o3} V_t - g_{o3} I_t R_f \\
+      I_t (1 + g_{m3}' R_f + g_{o3} R_f) &= g_{o3} V_t \\
+      Z_{dn} &= \frac{V_t}{I_t} = \frac{1 + g_{m3}' R_f + g_{o3} R_f}{g_{o3}} = r_{o3} + g_{m3}' r_{o3} R_f + R_f
+    \end{align*}
+    \textbf{Output Impedance Up}: the same steps for the common gate \(M_5\) over
+    \(R_S = r_{o7}\): \(Z_{up} = r_{o5} + g_{m5}' r_{o5} r_{o7} + r_{o7}\).\\
+    \textbf{Gain}: \(|V_{o1}| = |I_{sc}| (Z_{dn} \parallel Z_{up})\). The other half is driven by
+    \(-\frac{V_{id}}{2}\), so \(V_{o2} = -V_{o1}\) and
+    \begin{align*}
+      |A_d| &= \frac{|V_{o1} - V_{o2}|}{V_{id}} = \frac{2|V_{o1}|}{V_{id}}
+             = \frac{2}{V_{id}}\cdot\frac{g_{m3}' + g_{o3}}{g_{m3}' + g_{o3} + g_{o1} + g_{oB}}\cdot\frac{g_{m1} V_{id}}{2}(Z_{dn} \parallel Z_{up}) \\
+      |A_d| &= g_{m1} \frac{g_{m3}' + g_{o3}}{g_{m3}' + g_{o3} + g_{o1} + g_{oB}} (Z_{dn} \parallel Z_{up})
+             \approx g_{m1}\left[g_{m3} r_{o3}(r_{o1} \parallel r_{oB}) \parallel g_{m5} r_{o5} r_{o7}\right]
+    \end{align*}
+    keeping the \(g_m r_o\) terms of each impedance and the fraction \(\approx 1\).
+\end{enumerate}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Gain}: \(Z_{dn}\) holds \(r_{o1} \parallel r_{oB}\) where the telescopic
+    cascode holds \(r_{o1}\). \(M_B\) carries \(I_B \geq I_T\), at least twice the
+    \(\frac{I_T}{2}\) of \(M_1\), so \(r_{oB} \leq \frac{r_{o1}}{2}\) and
+    \(r_{o1} \parallel r_{oB} \leq \frac{r_{o1} \cdot r_{o1}/2}{r_{o1} + r_{o1}/2} = \frac{r_{o1}}{3}\):
+    \(Z_{dn}\) drops to about a third, and the gain to about \(\frac{1}{2}\) of the
+    telescopic value when \(Z_{up} \approx Z_{dn,telescopic}\).
+  \item \textbf{Poles}: dominant at the output,
+    \(p_1 = \frac{1}{(Z_{dn} \parallel Z_{up}) C_L}\), so
+    \begin{align*}
+      GB &= \frac{A_d\, p_1}{2\pi} \approx \frac{1}{2\pi}\cdot g_{m1}(Z_{dn} \parallel Z_{up})\cdot\frac{1}{(Z_{dn} \parallel Z_{up}) C_L} = \frac{g_{m1}}{2\pi C_L}
+    \end{align*}
+    The non-dominant pole is at the fold node,
+    \(p_2 \approx \frac{g_{m3}'}{C_f}\) (at frequencies near \(GB\), \(C_L\) shorts the
+    output and the source of \(M_3\) is \(\approx \frac{1}{g_{m3}'}\)), with \(C_f\) larger than
+    in the telescopic case (it includes \(C_{db1}\), \(C_{db,B}\), \(C_{gs3}\)).
+  \item \textbf{Power}: \(V_{dd}\) supplies the tail \(I_T\) and both PMOS loads,
+    \(I_{dd} = I_T + 2\left(I_B - \frac{I_T}{2}\right) = 2 I_B \geq 2 I_T\): at least twice the
+    telescopic \(I_T\) for the same \(g_{m1}\).
+  \item \textbf{Slew, Large Signal, Time Domain, AC Input Analysis (Q6)}: all
+    of \(I_T\) enters one fold node, so that output loses
+    \(\frac{I_T}{2}\) of its quiescent \(M_3\) current while the other gains it;
+    each output slews at \(\frac{I_T/2}{C_L}\) in opposite directions, and the
+    differential output at \(SR = \frac{I_T}{C_L}\), provided \(I_B \geq I_T\).
+\end{enumerate}
+
+\subsubsection{Question}
+\(I_T = 200\,\mu A\), \(I_B = 200\,\mu A\), every \(|V_{ov}| = 0.2\,V\),
+\(K_{CLM} = 0.1\,\)V\(^{-1}\) for all devices, body effect neglected, \(C_L = 2\,pF\).
+Find \(A_d\), \(GB\), \(SR\) and \(I_{dd}\).
+\paragraph{Solution:}
+\begin{align*}
+  I_{D1} &= \frac{I_T}{2} = 100\,\mu A \hspace{1cm} I_{D3} = I_{D5} = I_{D7} = I_B - \frac{I_T}{2} = 100\,\mu A \hspace{1cm} I_{DB} = 200\,\mu A \\
+  g_{m1} &= g_{m3} = g_{m5} = \frac{2 \cdot 100\,\mu A}{0.2\,V} = 1\,mS \\
+  r_{o1} &= r_{o3} = r_{o5} = r_{o7} = \frac{1}{0.1 \cdot 100\,\mu A} = 100\,k\Omega \hspace{1cm} r_{oB} = \frac{1}{0.1 \cdot 200\,\mu A} = 50\,k\Omega \\
+  R_f &= \frac{100\,k \cdot 50\,k}{100\,k + 50\,k} = 33.3\,k\Omega \\
+  Z_{dn} &= 100\,k + 10^{-3} \cdot 10^{5} \cdot 33.3 \times 10^{3} + 33.3\,k = 100\,k + 3.333\,M + 33.3\,k = 3.467\,M\Omega \\
+  Z_{up} &= 100\,k + 10^{-3} \cdot 10^{5} \cdot 10^{5} + 100\,k = 10.2\,M\Omega \\
+  Z_{dn} \parallel Z_{up} &= \frac{3.467 \cdot 10.2}{3.467 + 10.2}\,M\Omega = \frac{35.36}{13.667}\,M\Omega = 2.588\,M\Omega \\
+  \frac{g_{m3} + g_{o3}}{g_{m3} + g_{o3} + g_{o1} + g_{oB}} &= \frac{1 + 0.01}{1 + 0.01 + 0.01 + 0.02} = \frac{1.01}{1.04} = 0.971 \hspace{1cm} [\text{in mS}] \\
+  |A_d| &= 10^{-3} \cdot 0.971 \cdot 2.588 \times 10^{6} = 2513 \hspace{1cm} (20\log_{10} 2513 = 68\,dB) \\
+  GB &= \frac{g_{m1}}{2\pi C_L} = \frac{10^{-3}}{2\pi \cdot 2 \times 10^{-12}}\,Hz = 79.6\,MHz \hspace{1cm}
+  SR = \frac{I_T}{C_L} = \frac{200\,\mu A}{2\,pF} = 100\,V/\mu s \\
+  I_{dd} &= 2 I_B = 400\,\mu A
+\end{align*}

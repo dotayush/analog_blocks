@@ -1,0 +1,61 @@
+\section{Phase Detectors and Charge Pump}\label{sec:pll_pd}
+
+All loop quantities are written in the phase domain: a signal
+\(\cos(\omega_0 t + \theta(t))\) is represented by its excess phase \(\theta\).
+Frequency is the derivative of phase, \(\omega = \frac{d\theta}{dt}\), so in
+Q4 \(\theta(s) = \frac{\omega(s)}{s}\).
+
+\subsection{XOR Phase Detector}
+\textbf{Large Signal, Time Domain, AC Input Analysis (Q6)}, averaged over one
+period \(T_{ref}\).
+For two square waves of duty cycle \(\frac{1}{2}\) and phase difference
+\(\theta_e = \theta_{ref} - \theta_{div}\), \(0 \leq \theta_e \leq \pi\), the
+edges are shifted by \(t_e = \frac{\theta_e}{2\pi} T_{ref}\). The inputs differ
+(XOR high) for \(t_e\) after the rising edges and \(t_e\) after the falling
+edges, so the XOR output is high for a fraction \(\frac{\theta_e}{\pi}\) of each period:
+\begin{align*}
+  \overline{V_{pd}} &= \frac{1}{T_{ref}}\int_0^{T_{ref}} V_{pd}(t)\,dt = \frac{V_{dd}\cdot 2 t_e}{T_{ref}} = \frac{2 V_{dd}}{T_{ref}}\cdot\frac{\theta_e}{2\pi} T_{ref} = V_{dd}\frac{\theta_e}{\pi} \\
+  K_{pd} &= \frac{d\overline{V_{pd}}}{d\theta_e} = \frac{V_{dd}}{\pi} \ \text{[V/rad]}
+\end{align*}
+The characteristic is periodic and folds back beyond \(\pi\); the output
+ripple at \(2 f_{ref}\) (two pulses per period) must be filtered.
+
+\subsection{Phase Frequency Detector (PFD) and Charge Pump}
+Two flip-flops: a reference edge sets \(UP\), a divided edge sets \(DN\), and
+when both are high both reset. \(UP\) is high for \(\frac{\theta_e}{2\pi} T_{ref}\) each
+cycle when \(\theta_e > 0\) (and \(DN\) for \(\theta_e < 0\)). The charge pump sources
+\(I_{cp}\) during \(UP\) and sinks \(I_{cp}\) during \(DN\).
+\textbf{Large Signal, Time Domain, AC Input Analysis (Q6)}, averaged over one
+period \(T_{ref}\):
+\begin{align*}
+  \overline{I_{cp}} &= \frac{1}{T_{ref}}\int_0^{T_{ref}} I_{cp}(t)\,dt = \frac{1}{T_{ref}}\cdot I_{cp}\frac{\theta_e}{2\pi}T_{ref} = I_{cp}\frac{\theta_e}{2\pi}, \hspace{1cm} -2\pi < \theta_e < 2\pi \\
+  K_{pd} &= \frac{d\overline{I_{cp}}}{d\theta_e} = \frac{I_{cp}}{2\pi} \ \text{[A/rad]}
+\end{align*}
+For a frequency difference \(\theta_e\) grows without bound and the PFD
+holds \(UP\) (or \(DN\)) most of the time: it detects frequency too, so the loop
+always acquires lock. The averaged (continuous time) model is valid for
+loop bandwidths below \(\approx \frac{f_{ref}}{10}\).
+
+\textbf{Mismatch}: if the sink is \(I_{cp}(1 + e)\), in lock the net charge per
+cycle must be zero; with a minimum reset pulse \(t_{on}\) on both outputs,
+\(UP\) is high for \(t_{on} + \frac{\theta_e}{2\pi}T_{ref}\) and \(DN\) for \(t_{on}\):
+\begin{align*}
+  I_{cp}\left(t_{on} + \frac{\theta_e}{2\pi}T_{ref}\right) &= I_{cp}(1 + e)\, t_{on} \\
+  t_{on} + \frac{\theta_e}{2\pi}T_{ref} &= t_{on} + e\, t_{on} \\
+  \frac{\theta_e}{2\pi}T_{ref} &= e\, t_{on} \\
+  \theta_e &= 2\pi e \frac{t_{on}}{T_{ref}}
+\end{align*}
+a static phase offset and a reference spur.
+
+\subsection{Question}
+An XOR detector on \(V_{dd} = 1.8\,V\), and a PFD with \(I_{cp} = 100\,\mu A\),
+\(f_{ref} = 10\,MHz\), sink mismatch \(e = 5\%\), reset pulse \(t_{on} = 100\,ps\).
+Find both gains and the PFD static phase offset.
+\paragraph{Solution:}
+\begin{align*}
+  K_{pd,XOR} &= \frac{V_{dd}}{\pi} = \frac{1.8\,V}{3.1416} = 0.573\,V/rad \\
+  K_{pd,PFD} &= \frac{I_{cp}}{2\pi} = \frac{100\,\mu A}{6.2832} = 15.9\,\mu A/rad \\
+  T_{ref} &= \frac{1}{f_{ref}} = \frac{1}{10^7\,Hz} = 100\,ns \\
+  \theta_e &= 2\pi e \frac{t_{on}}{T_{ref}} = 6.2832 \cdot 0.05 \cdot \frac{100\,ps}{100\,ns} = 0.31416 \cdot 10^{-3} = 3.14 \times 10^{-4}\,rad = 0.018^\circ
+\end{align*}
+

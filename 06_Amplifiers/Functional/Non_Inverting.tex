@@ -1,0 +1,74 @@
+\subsection{Non-Inverting Amplifier}\label{sec:amp_noninverting}
+
+\subsubsection{Overview}
+Input at \(V_+\); \(V_-\) taps the output through the divider \(G_2\)
+(feedback) and \(G_1\) (to ground). Gain \(1 + \frac{R_2}{R_1}\), input
+impedance \(\to \infty\).
+
+\subsubsection{Schematic}
+\begin{circuitfig}
+  \draw (0,0) node[op amp, noinv input up](A){};
+  \draw (A.+) -- ++(-1.8,0) node[circ]{} node[left]{$V_{in}$};
+  \draw (A.-) -- ++(-0.6,0) coordinate(n) node[circ]{} node[above left]{$V_-$} to[european resistor, l={$G_1$}] ++(-2.2,0) -- ++(0,-0.6) node[ground]{};
+  \draw (n) |- (-0.5,-1.8) to[european resistor, l_={$G_2$}] (1.6,-1.8) -| (A.out);
+  \draw (A.out) to[short, -o] ++(0.8,0) node[right]{$V_{out}$};
+\end{circuitfig}
+
+\subsubsection{Transfer Function}
+\textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}, \(A = A(s)\)
+(\(A = A_0\) gives the Large Signal, Time Domain, DC Input Analysis (Q5)).
+Applying KCL at \(V_-\) (no current into the op-amp):
+\begin{align*}
+  (V_- - 0) G_1 + (V_- - V_{out}) G_2 &= 0 \\
+  V_- G_1 + V_- G_2 - V_{out} G_2 &= 0 \\
+  V_- (G_1 + G_2) &= V_{out} G_2 \\
+  V_- &= \frac{G_2}{G_1 + G_2} V_{out} = F V_{out} \\
+  F &= \frac{G_2}{G_1 + G_2} = \frac{\frac{1}{R_2}}{\frac{R_1 + R_2}{R_1 R_2}} = \frac{R_1}{R_1 + R_2}
+\end{align*}
+With \(V_+ = V_{in}\) and \(V_{out} = A(V_+ - V_-)\):
+\begin{align*}
+  V_{out} &= A(V_{in} - F V_{out}) \\
+  V_{out} + AF V_{out} &= A V_{in} \\
+  V_{out}(1 + AF) &= A V_{in} \\
+  H = \frac{V_{out}}{V_{in}} &= \frac{A}{1 + AF} = \frac{1}{F}\cdot\frac{AF}{1 + AF} \xrightarrow{A \to \infty} \frac{1}{F} = \frac{R_1 + R_2}{R_1} = 1 + \frac{R_2}{R_1}
+\end{align*}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Bandwidth, Small Signal, Frequency Domain, AC Input Analysis
+    (Q4)}: with \(A(s) = \frac{2\pi GB}{s}\),
+    \begin{align*}
+      H(s) &= \frac{\frac{2\pi GB}{s}}{1 + \frac{2\pi GB F}{s}} = \frac{2\pi GB}{s + 2\pi GB F} \hspace{1cm} [\times \tfrac{s}{s}] \\
+      H(s) &= \frac{1}{F}\cdot\frac{2\pi GB F}{s + 2\pi GB F} = \frac{1}{F}\cdot\frac{1}{1 + \frac{s}{2\pi F \cdot GB}} \hspace{1cm} [\div 2\pi GB F]
+    \end{align*}
+    so \(f_{-3dB} = F \cdot GB\) and the gain bandwidth product is
+    \(\frac{1}{F}\cdot F \cdot GB = GB\).
+  \item \textbf{Impedances}:
+    \paragraph{At Input:} a test voltage \(V_{test}\) at \(V_+\) gives
+    \(V_- = F V_{out} = \frac{AF}{1 + AF} V_{test}\), so
+    \begin{align*}
+      V_+ - V_- &= V_{test}\left(1 - \frac{AF}{1 + AF}\right) = \frac{V_{test}}{1 + AF} \\
+      I_{test} &= \frac{V_+ - V_-}{R_{id}} = \frac{V_{test}}{R_{id}(1 + AF)} \\
+      Z_{in} &= \frac{V_{test}}{I_{test}} = R_{id}(1 + AF) \to \infty
+    \end{align*}
+    \paragraph{At Output:} \(V_{in} = 0\), a test voltage \(V_{test}\) at the
+    output, \(V_- = F V_{test}\) (\(R_1 + R_2 \gg R_o\)), internal source
+    \(A(0 - F V_{test})\) behind \(R_o\):
+    \begin{align*}
+      I_{test} &= \frac{V_{test} - (-AF V_{test})}{R_o} = \frac{V_{test}(1 + AF)}{R_o} \\
+      Z_{out} &= \frac{V_{test}}{I_{test}} = \frac{R_o}{1 + AF}
+    \end{align*}
+  \item \textbf{Common Mode}: \(V_+ = V_{in}\) and \(V_- = F V_{out} \approx V_{in}\),
+    so both inputs swing with the input; the op-amp input common mode range
+    limits the input swing.
+\end{enumerate}
+
+\subsubsection{Question}
+\(R_1 = 1\,k\Omega\), \(R_2 = 9\,k\Omega\), \(A_0 = 10^5\), \(GB = 1\,\)MHz.
+Find the exact DC gain and the bandwidth.
+\paragraph{Solution:}
+\begin{align*}
+  F &= \frac{1\,k}{1\,k + 9\,k} = 0.1 \hspace{1cm} A_0 F = 10^5 \cdot 0.1 = 10^4 \\
+  H &= \frac{A_0}{1 + A_0 F} = \frac{10^5}{1 + 10^4} = \frac{10^5}{10001} = 9.9990 \\
+  f_{-3dB} &= F \cdot GB = 0.1 \cdot 1\,MHz = 100\,kHz
+\end{align*}

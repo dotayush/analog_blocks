@@ -1,0 +1,142 @@
+\section{Voltage Controlled Oscillators}\label{sec:vco}
+
+An oscillator is a loop with gain \(A(s)\) and feedback \(F(s)\) whose
+closed loop \(\frac{A}{1 - AF}\) (positive feedback) has poles on the
+\(j\omega\) axis. The Barkhausen conditions at \(\omega_0\):
+\[
+  |A(j\omega_0) F(j\omega_0)| = 1 \hspace{1cm} \angle A(j\omega_0) F(j\omega_0) = 0 + 2\pi k
+\]
+(in practice \(|AF| > 1\) at start-up, and amplitude limiting brings it to 1:
+a Q6 effect). A VCO adds a control \(V_c\) with gain
+\(K_{vco} = \frac{df_0}{dV_c}\) [Hz/V], \(K_v = 2\pi K_{vco}\) [rad/s/V].
+
+\subsection{Ring Oscillator VCO}\label{sec:vco_ring}
+\subsubsection{Overview}
+\(N\) (odd) inverting stages in a loop. Each stage: DC gain \(-A_0\), pole
+\(\omega_p = \frac{g_o}{C}\).
+
+\subsubsection{Schematic (\(N = 3\))}
+\begin{circuitfig}
+  \draw (0,0) node[not port](I1){} (3,0) node[not port](I2){} (6,0) node[not port](I3){};
+  \draw (I1.out) -- (I2.in 1); \draw (I2.out) -- (I3.in 1);
+  \draw (I3.out) -- ++(0.6,0) coordinate(o) node[circ]{} node[above]{$V_{out}$} -- ++(0,-1.4) -| ($(I1.in 1) + (-0.6,0)$) -- (I1.in 1);
+  \foreach \n in {I1, I2, I3} \draw (\n.out) ++(0.3,0) node[circ]{} to[capacitor, l_={$C$}] ++(0,-1) node[ground]{};
+\end{circuitfig}
+
+\subsubsection{Small Signal, Frequency Domain, AC Input Analysis (Q4)}
+\begin{align*}
+  A(s) &= \left(\frac{-A_0}{1 + \frac{s}{\omega_p}}\right)^N, \hspace{1cm} F = 1
+\end{align*}
+\(N\) odd gives \(180^\circ\) from the inversions (\((-A_0)^N = -A_0^N\)); the poles must give the other
+\(180^\circ\), \(\frac{180^\circ}{N}\) each. At \(s = j\omega\):
+\begin{align*}
+  A(j\omega) &= \frac{-A_0^N}{\left(1 + j\frac{\omega}{\omega_p}\right)^N} \hspace{0.5cm}
+  |A(j\omega)| = \frac{A_0^N}{\left(1 + \frac{\omega^2}{\omega_p^2}\right)^{N/2}} \hspace{0.5cm}
+  \angle A(j\omega) = \pi - N\tan^{-1}\frac{\omega}{\omega_p} \\
+  \angle A(j\omega_0) = 0 &\hspace{0.3cm} \Rightarrow \hspace{0.3cm} N\tan^{-1}\frac{\omega_0}{\omega_p} = \pi \hspace{0.3cm} \Rightarrow \hspace{0.3cm} \tan^{-1}\frac{\omega_0}{\omega_p} = \frac{\pi}{N} \hspace{0.3cm} \Rightarrow \hspace{0.3cm} \omega_0 = \omega_p \tan\frac{\pi}{N} \\
+  |A(j\omega_0)| \geq 1 &\hspace{0.3cm} \Rightarrow \hspace{0.3cm} \frac{A_0^N}{\left(1 + \tan^2\frac{\pi}{N}\right)^{N/2}} \geq 1 \hspace{0.3cm} \Rightarrow \hspace{0.3cm} A_0 \geq \left(1 + \tan^2\frac{\pi}{N}\right)^{1/2} = \sqrt{\frac{1}{\cos^2\frac{\pi}{N}}} = \frac{1}{\cos\frac{\pi}{N}}
+\end{align*}
+\(N = 3\): \(\omega_0 = \omega_p\tan 60^\circ = \sqrt{3}\,\omega_p\), \(A_0 \geq \frac{1}{\cos 60^\circ} = \frac{1}{1/2} = 2\).
+
+\subsubsection{Large Signal, Time Domain, AC Input Analysis (Q6)}
+Each stage switches fully; a transition takes \(t_d\), and the signal must
+travel around the loop twice per period:
+\[
+  f_0 = \frac{1}{2 N t_d}
+\]
+\textbf{Current starved}: each stage charges its load \(C\) with a current
+\(I(V_c)\) through half the supply (\(I\,t_d = C\frac{V_{dd}}{2}\)), \(t_d = \frac{C V_{dd}}{2 I}\):
+\begin{align*}
+  f_0 &= \frac{1}{2N t_d} = \frac{1}{2N\frac{C V_{dd}}{2I}} = \frac{I}{N C V_{dd}} \hspace{1cm}
+  K_{vco} = \frac{df_0}{dV_c} = \frac{1}{N C V_{dd}} \frac{dI}{dV_c} = \frac{g_m}{N C V_{dd}}
+\end{align*}
+with \(g_m\) the transconductance of the starving device.
+
+\subsection{LC VCO}\label{sec:vco_lc}
+\subsubsection{Overview}
+A tank \(L \parallel C\) whose losses are lumped in \(R_p = Q_L \omega_0 L\)
+(\(Q_L\) the inductor quality factor), kept oscillating by a cross-coupled
+pair \(M_1\), \(M_2\) (tail \(I_T\)) that presents a negative resistance across the
+tank. Tuning by a varactor (a reverse biased diode,
+\(C_j(V)\), Chapter~\ref{ch:devices}).
+
+\subsubsection{Schematic}
+\begin{circuitfig}
+  \draw (0,0) node[nmos, xscale=-1](M1){}; \node[left] at (-0.3,0) {$M_1$};
+  \draw (4,0) node[nmos](M2){}; \node[right] at (4.3,0) {$M_2$};
+  \draw (M1.D) -- (0,1.6) node[circ]{} node[left]{$V_{o1}$};
+  \draw (M2.D) -- (4,1.6) node[circ]{} node[right]{$V_{o2}$};
+  \draw (0,1.6) to[american inductor, l_={$L$}] (0,3.4);
+  \draw (4,1.6) to[american inductor, l={$L$}] (4,3.4);
+  \draw (0,1.6) -- (-1.3,1.6) to[capacitor, l={$C$}] (-1.3,3.4) -- (0,3.4);
+  \draw (4,1.6) -- (5.3,1.6) to[capacitor, l_={$C$}] (5.3,3.4) -- (4,3.4);
+  \draw (0,3.4) -- (4,3.4); \draw (2,3.4) node[vcc]{$V_{dd}$};
+  \draw (M1.G) -- (4,1.6); \draw (M2.G) -- (0,1.6);
+  \draw (M1.S) |- (2,-1.1) node[circ]{} -| (M2.S);
+  \draw (2,-1.1) to[american current source, l={$I_T$}] (2,-2.6) node[ground]{};
+\end{circuitfig}
+Tank losses are lumped in \(R_p\) across each \(L\) (not drawn); \(C\)
+includes the varactor.
+
+\subsubsection{Small Signal, Frequency Domain, AC Input Analysis (Q4)}
+Negative resistance: apply \(V_x\) between the two drains (\(+\frac{V_x}{2}\),
+\(-\frac{V_x}{2}\)). Each gate sees the other drain, so
+\(I_{d1} = g_m\left(-\frac{V_x}{2}\right)\) flows into drain 1:
+\[
+  I_x = -\frac{g_m V_x}{2} \hspace{0.5cm} \Rightarrow \hspace{0.5cm} R_{neg} = \frac{V_x}{I_x} = -\frac{2}{g_m}
+\]
+The differential tank (\(2L\), \(\frac{C}{2}\), \(2R_p\)) in parallel with
+\(-\frac{2}{g_m}\):
+\begin{align*}
+  Y(s) &= \frac{1}{2R_p} - \frac{g_m}{2} + s\frac{C}{2} + \frac{1}{2sL} \\
+  Y(s)\cdot 2sL &= \frac{sL}{R_p} - g_m sL + s^2 LC + 1 \\
+  Y(s) = 0 \hspace{0.3cm} &\Rightarrow \hspace{0.3cm} s^2 LC + s L(1 - g_m R_p)/R_p + 1 = 0
+\end{align*}
+Poles on (or right of) the \(j\omega\) axis need the damping term \(\leq 0\):
+\begin{align*}
+  \frac{L(1 - g_m R_p)}{R_p} \leq 0 \hspace{0.3cm} &\Rightarrow \hspace{0.3cm} g_m R_p \geq 1 \hspace{0.5cm} \text{(start-up, usually designed for } g_m R_p \approx 2\text{--}3) \\
+  g_m R_p = 1: \hspace{0.3cm} s^2 LC + 1 = 0 \hspace{0.3cm} &\Rightarrow \hspace{0.3cm} s = \pm\frac{j}{\sqrt{LC}} \hspace{0.3cm} \Rightarrow \hspace{0.3cm} \omega_0 = \frac{1}{\sqrt{LC}}
+\end{align*}
+
+\subsubsection{Large Signal, Time Domain, AC Input Analysis (Q6)}
+The pair switches \(I_T\) fully from side to side: the tank is driven by a
+square wave current of amplitude \(\pm\frac{I_T}{2}\) (drain currents \(I_T\), \(0\) and
+then \(0\), \(I_T\): differential current \(\frac{I_{D1} - I_{D2}}{2} = \pm\frac{I_T}{2}\)). A square
+wave of amplitude \(I_a\) has the Fourier series \(\frac{4I_a}{\pi}\left(\sin\omega_0 t + \frac{1}{3}\sin 3\omega_0 t + \cdots\right)\),
+so its fundamental is \(\frac{4}{\pi}\cdot\frac{I_T}{2}\) (\(I_a = \frac{I_T}{2}\)); the tank (impedance \(2R_p\) at \(\omega_0\))
+passes only the fundamental:
+\[
+  V_{amp,diff} = \frac{4}{\pi}\cdot\frac{I_T}{2}\cdot 2R_p = \frac{4}{\pi} I_T R_p
+\]
+\textbf{Tuning}: \(C = C_{fix} + C_{var}(V_c)\):
+\[
+  K_{vco} = \frac{df_0}{dV_c} = \frac{d}{dC}\left(\frac{1}{2\pi\sqrt{L}}C^{-1/2}\right)\frac{dC}{dV_c} = -\frac{1}{2}\cdot\frac{1}{2\pi\sqrt{L}}C^{-3/2}\frac{dC_{var}}{dV_c} = -\frac{1}{2C}\cdot\frac{1}{2\pi\sqrt{LC}}\frac{dC_{var}}{dV_c} = -\frac{f_0}{2C}\frac{dC_{var}}{dV_c}
+\]
+\textbf{Phase Noise} (Leeson), output power \(P_s\), noise factor \(F_n\), flicker
+corner \(f_c\), offset \(f_m\):
+\[
+  L(f_m) = 10\log_{10}\left[\frac{2 F_n k T}{P_s}\left(1 + \left(\frac{f_0}{2Q_L f_m}\right)^2\right)\left(1 + \frac{f_c}{f_m}\right)\right] \ \text{[dBc/Hz]}
+\]
+
+\subsubsection{Question}
+\(L = 2\,\)nH, \(Q_L = 10\), \(f_0 = 5\,\)GHz, \(I_T = 2\,\)mA. Find \(C\), \(R_p\), the
+minimum \(g_m\) and the amplitude.
+\paragraph{Solution:}
+\begin{align*}
+  \omega_0 &= 2\pi f_0 = 2\pi \cdot 5 \times 10^9 = 3.14 \times 10^{10}\,\text{rad/s} \\
+  C &= \frac{1}{(2\pi f_0)^2 L} = \frac{1}{(3.14 \times 10^{10})^2 \cdot 2\,n} = \frac{1}{9.87 \times 10^{20} \cdot 2 \times 10^{-9}} = \frac{1}{1.97 \times 10^{12}} = 507\,fF \\
+  R_p &= Q_L\omega_0 L = 10 \cdot 3.14 \times 10^{10} \cdot 2\,n = 628\,\Omega \\
+  g_m &\geq \frac{1}{R_p} = \frac{1}{628} = 1.6\,mS \\
+  V_{amp,diff} &= \frac{4}{\pi} I_T R_p = \frac{4}{\pi}\cdot 2\,mA \cdot 628 = 1.273 \cdot 1.257 = 1.6\,V
+\end{align*}
+
+\subsection{Relaxation VCO}\label{sec:vco_relax}
+A current \(I = g_c V_c\) charges and then discharges \(C\) between the two
+thresholds \(V_H\), \(V_L\) of a Schmitt trigger (\(dV = V_H - V_L\)).
+\textbf{Large Signal, Time Domain, AC Input Analysis (Q6)}: each ramp lasts
+\(t\), from \(I = C\frac{dV}{t}\), \(t = \frac{C\, dV}{I}\):
+\[
+  T = 2t = \frac{2 C\, dV}{I} \hspace{1cm} f_0 = \frac{1}{T} = \frac{I}{2 C\, dV} = \frac{g_c V_c}{2 C\, dV} \hspace{1cm} K_{vco} = \frac{df_0}{dV_c} = \frac{g_c}{2 C\, dV}
+\]
+Very linear and wide tuning, but the threshold noise of the comparator
+makes its phase noise the worst of the three.

@@ -1,0 +1,31 @@
+\chapter{Data Converters}\label{ch:data_converters}
+
+A data converter moves a signal between the continuous (analog) and the
+discrete (digital) world. A Digital to Analog Converter (DAC) maps an
+\(n\)-bit code onto one of \(2^n\) analog levels. An Analog to Digital
+Converter (ADC) maps an analog level onto the \(n\)-bit code whose level
+is closest to it.
+
+\input{07_Data_Converters/Characterization}
+
+\section{Digital to Analog Converters (DAC)}\label{sec:dac}
+\input{07_Data_Converters/DAC/String}
+\input{07_Data_Converters/DAC/R2R}
+\input{07_Data_Converters/DAC/Current_Steering}
+\input{07_Data_Converters/DAC/Charge_Redistribution}
+\input{07_Data_Converters/DAC/Other_DACs}
+
+\section{Analog to Digital Converters (ADC)}\label{sec:adc}
+Nyquist rate converters (\(f_s \geq 2 f_{in,\max}\), one code per sample):
+Flash, Two/Multi-Step Flash, Pipeline, Cyclic, SAR, Interpolating,
+Folding, Dual Slope. Over-sampled converters (\(f_s \gg 2 f_B\), resolution
+from averaging and noise shaping): Delta-Sigma of first or higher order,
+single or multi-bit, discrete or continuous time.
+\input{07_Data_Converters/ADC/Flash}
+\input{07_Data_Converters/ADC/Multi_Step_Flash}
+\input{07_Data_Converters/ADC/Pipeline}
+\input{07_Data_Converters/ADC/Cyclic}
+\input{07_Data_Converters/ADC/SAR}
+\input{07_Data_Converters/ADC/Interpolating_Folding}
+\input{07_Data_Converters/ADC/Dual_Slope}
+\input{07_Data_Converters/ADC/Delta_Sigma}

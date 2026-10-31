@@ -1,0 +1,85 @@
+\subsection{Current Source, Current Sink and Current Steering DACs}\label{sec:dac_current}
+
+\subsubsection{Overview}
+The output is a sum of unit currents \(I_u\) (PMOS current \emph{sources} or
+NMOS current \emph{sinks}, built from the mirrors of
+Chapter~\ref{ch:Current_Mirrors}) delivered into a load \(R_L\) or the virtual
+ground of an op-amp. In a switched source/sink DAC unused currents are
+turned off. In a \emph{current steering} DAC every unit current always
+flows and a differential pair switch steers it to \(I_{OUT+}\) or
+\(I_{OUT-}\) (no turn-on transient, differential output). The units are
+either binary weighted (\(2^k I_u\) for bit \(k\)) or unary (one unit per LSB,
+thermometer decoded, a single unit switching per step).
+
+\subsubsection{Transfer Function}
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}:
+    \begin{align*}
+      I_{OUT+} &= I_u \sum_{k=0}^{n-1} b_k 2^k = D I_u \hspace{1cm}
+      I_{OUT-} = (2^n - 1 - D) I_u \\
+      V_{OUT} &= D I_u R_L \hspace{1cm} [\text{ideal sources}]
+    \end{align*}
+  \item \textbf{Finite Output Impedance} (\textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}):
+    each connected unit has conductance \(g_u\); code \(D\) puts \(D g_u\) in
+    parallel with \(G_L\). KCL at the output:
+    \begin{align*}
+      D I_u &= G_L V_{OUT} + D g_u V_{OUT} \\
+      V_{OUT} &= \frac{D I_u}{G_L + D g_u} = \frac{D I_u R_L}{1 + g_u R_L D} = \frac{D I_u R_L}{1 + a D}, \hspace{1cm} a = g_u R_L \\
+      \frac{V_{OUT}}{I_u R_L} &= D (1 + aD)^{-1} = D\left(1 - aD + (aD)^2 - \cdots\right) \approx D - a D^2 \hspace{1cm} [aD \ll 1]
+    \end{align*}
+    The end point line through \(D = 0\) (value 0) and \(D \approx N = 2^n\)
+    (value \(N - aN^2\)) has slope \(\frac{N - aN^2}{N} = 1 - aN\), i.e.
+    \(D(1 - aN)\); the deviation is
+    \begin{align*}
+      INL(D) &= D - aD^2 - D(1 - aN) = - aD^2 + aND = a D (N - D) \\
+      \frac{dINL}{dD} &= a(N - 2D) = 0 \hspace{0.5cm} \Rightarrow \hspace{0.5cm} D = \frac{N}{2} \\
+      INL_{\max} &= a \frac{N}{2}\left(N - \frac{N}{2}\right) = a \frac{N^2}{4}
+    \end{align*}
+    so \(INL_{\max} < \frac{1}{2}\) LSB requires
+    \(a\frac{N^2}{4} < \frac{1}{2} \Rightarrow g_u R_L < \frac{2}{N^2} = \frac{2}{2^{2n}}\): a
+    cascoded (Section~\ref{sec:amp_cascode}) unit source.
+\end{enumerate}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{DNL, binary}: at mid scale the MSB (\(2^{n-1}\) units) replaces
+    \(2^{n-1} - 1\) units; with independent unit errors \(dI_i\) of SD \(S_I I_u\),
+    \begin{align*}
+      DNL_{N/2-1} &= \frac{I_{OUT}(1000\ldots) - I_{OUT}(0111\ldots)}{I_u} - 1
+      = \frac{\sum_{i \in MSB} dI_i - \sum_{i \notin MSB} dI_i}{I_u} \\
+      \text{var}(DNL_{N/2-1}) &= \frac{2^{n-1} (S_I I_u)^2 + (2^{n-1} - 1)(S_I I_u)^2}{I_u^2} = (2^{n-1} + 2^{n-1} - 1) S_I^2 = (2^n - 1) S_I^2 \\
+      SD(DNL) &= \sqrt{2^n - 1}\, S_I
+    \end{align*}
+  \item \textbf{DNL, unary}: each step adds one unit,
+    \(DNL_k = \frac{I_u + dI_k}{I_u} - 1 = \frac{dI_k}{I_u}\), \(SD(DNL) = S_I\), and the
+    DAC is monotonic by construction. Both have the same mid scale INL: with
+    \(X\) the sum of the \(\frac{N}{2}\) units on at mid scale and \(Y\) the sum
+    of the other \(\frac{N}{2}\), the end-point line passes through \(\frac{X + Y}{2}\):
+    \begin{align*}
+      INL_{N/2} &= \frac{X - \frac{X + Y}{2}}{I_u} = \frac{dX - dY}{2 I_u} \\
+      SD(INL_{N/2}) &= \frac{\sqrt{\frac{N}{2} + \frac{N}{2}}\, S_I I_u}{2 I_u} = \frac{\sqrt{2^n}}{2} S_I
+      \hspace{1cm} \text{(as the string DAC)}
+    \end{align*}
+  \item \textbf{Segmented}: \(m\) unary MSBs (\(2^m - 1\) elements of
+    \(2^{n-m}\) units each) and \(n - m\) binary LSBs (\(2^{n-m} - 1\) units in all).
+    The worst step switches one unary element in and all binary LSBs out:
+    \[
+      \text{var}(DNL) = \left(2^{n-m} + 2^{n-m} - 1\right) S_I^2 \hspace{0.5cm} \Rightarrow \hspace{0.5cm}
+      SD(DNL) = \sqrt{2^{n-m+1} - 1}\, S_I
+    \]
+    traded against the \(2^m - 1\) output thermometer decoder.
+  \item \textbf{Speed}: no internal high impedance nodes; the output pole is
+    \(\frac{1}{R_L C_L}\), which makes current steering the architecture of
+    choice above \(\approx 100\,\)MS/s.
+\end{enumerate}
+
+\subsubsection{Question}
+A 12-bit unary/binary DAC drives \(R_L = 50\,\Omega\). Find the unit source
+output resistance needed for \(INL < \frac{1}{2}\) LSB, and \(SD(DNL)\) of a fully
+binary version with \(S_I = 0.1\%\).
+\paragraph{Solution:}
+\begin{align*}
+  g_u &< \frac{2}{2^{2n} R_L} = \frac{2}{2^{24} \cdot 50} = \frac{2}{8.39 \cdot 10^{8}} = 2.38\,nS \hspace{1cm}
+  r_u = \frac{1}{g_u} > 419\,M\Omega \\
+  SD(DNL) &= \sqrt{2^{12} - 1}\, S_I = \sqrt{4095} \cdot 0.001 = 64.0 \cdot 0.001 = 0.064\,\text{LSB}
+\end{align*}

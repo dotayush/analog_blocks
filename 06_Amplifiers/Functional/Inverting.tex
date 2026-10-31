@@ -1,0 +1,75 @@
+\subsection{Inverting Amplifier}\label{sec:amp_inverting}
+
+\subsubsection{Overview}
+An op-amp with \(V_+\) at ground, input through \(G_1\) into \(V_-\) and
+feedback through \(G_2\). Gain \(-\frac{R_2}{R_1}\), input impedance \(R_1\).
+All functional blocks are analysed with the finite gain model
+\(V_{out} = A(V_+ - V_-)\) of Section~\ref{sec:devices_opamp}; the ideal
+result is the limit \(A \to \infty\). The op-amp is linear, so the Large
+Signal, Time Domain, DC Input (Q5) result with \(A = A_0\) and the Small
+Signal, Frequency Domain, AC Input (Q4) result with \(A = A(s)\) are the
+same expression inside the output swing; Q5 is Q4 at \(s = 0\).
+
+\subsubsection{Schematic}
+\begin{circuitfig}
+  \draw (0,0) node[op amp](A){};
+  \draw (A.-) -- ++(-0.6,0) coordinate(n) node[circ]{} node[below left]{$V_-$} to[european resistor, l_={$G_1$}] ++(-2.4,0) node[circ]{} node[left]{$V_{in}$};
+  \draw (n) |- (-0.5,1.6) to[european resistor, l={$G_2$}] (1.6,1.6) -| (A.out);
+  \draw (A.+) -- ++(-0.6,0) node[ground]{};
+  \draw (A.out) to[short, -o] ++(0.8,0) node[right]{$V_{out}$};
+\end{circuitfig}
+
+\subsubsection{Transfer Function}
+\textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}, \(A = A(s)\)
+(\(A = A_0\) gives the Large Signal, Time Domain, DC Input Analysis (Q5)):
+\(V_+ = 0\), so \(V_{out} = -A V_- \Rightarrow V_- = -\frac{V_{out}}{A}\).
+Applying KCL at \(V_-\) (no current into the op-amp):
+\begin{align*}
+  (V_- - V_{in}) G_1 + (V_- - V_{out}) G_2 &= 0 \\
+  \left(-\frac{V_{out}}{A} - V_{in}\right) G_1 + \left(-\frac{V_{out}}{A} - V_{out}\right) G_2 &= 0 \\
+  -\frac{G_1}{A} V_{out} - G_1 V_{in} - \frac{G_2}{A} V_{out} - G_2 V_{out} &= 0 \\
+  -V_{out}\left(\frac{G_1}{A} + \frac{G_2}{A} + G_2\right) &= V_{in} G_1 \\
+  H = \frac{V_{out}}{V_{in}} &= -\frac{G_1}{G_2 + \frac{G_1 + G_2}{A}} \xrightarrow{A \to \infty} -\frac{G_1}{G_2} = -\frac{R_2}{R_1}
+\end{align*}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Feedback Factor}: with \(V_{in} = 0\), KCL at \(V_-\) is
+    \(V_- G_1 + (V_- - V_{out}) G_2 = 0\), so \(V_- = \frac{G_2}{G_1 + G_2} V_{out}\) and
+    \[
+      F = \frac{G_2}{G_1 + G_2} = \frac{\frac{1}{R_2}}{\frac{R_1 + R_2}{R_1 R_2}} = \frac{R_1}{R_1 + R_2}
+    \]
+    Multiplying numerator and denominator of \(H\) by \(\frac{A}{G_1 + G_2}\), the finite gain result is
+    \begin{align*}
+      H &= -\frac{G_1 \frac{A}{G_1 + G_2}}{\frac{A G_2}{G_1 + G_2} + 1} = -\frac{G_1}{G_2}\cdot\frac{\frac{A G_2}{G_1 + G_2}}{1 + \frac{A G_2}{G_1 + G_2}} \\
+      H &= -\frac{R_2}{R_1} \cdot \frac{AF}{1 + AF}
+    \end{align*}
+  \item \textbf{Bandwidth, Small Signal, Frequency Domain, AC Input Analysis (Q4)}: with \(A(s) = \frac{2\pi GB}{s}\),
+    \begin{align*}
+      H(s) &= -\frac{R_2}{R_1} \cdot \frac{\frac{2\pi GB F}{s}}{1 + \frac{2\pi GB F}{s}}
+            = -\frac{R_2}{R_1} \cdot \frac{2\pi GB F}{s + 2\pi GB F} \hspace{1cm} [\times \tfrac{s}{s}] \\
+      H(s) &= -\frac{R_2}{R_1} \cdot \frac{1}{1 + \frac{s}{2\pi F \cdot GB}} \hspace{1cm} [\div 2\pi GB F]
+    \end{align*}
+    a single pole at \(s = -2\pi F \cdot GB\), so
+    \(f_{-3dB} = F \cdot GB = \frac{R_1}{R_1 + R_2} GB\).
+  \item \textbf{Impedances}: \(V_- = -\frac{V_{out}}{A} \to 0\) (virtual ground) so
+    \(Z_{in} = \frac{V_{in}}{(V_{in} - 0)G_1} = R_1\). The loop drives the
+    output impedance down: with \(V_{in} = 0\), the op-amp output resistance
+    \(R_o\) (Section~\ref{sec:devices_opamp}) in series with its internal source
+    \(A(V_+ - V_-) = -A V_-\), and a test voltage \(V_{test}\) at the output
+    (\(V_- = F V_{test}\), divider current neglected, \(R_1 + R_2 \gg R_o\)):
+    \begin{align*}
+      I_{test} &= \frac{V_{test} - (-A F V_{test})}{R_o} = \frac{V_{test}(1 + AF)}{R_o} \\
+      Z_{out} &= \frac{V_{test}}{I_{test}} = \frac{R_o}{1 + AF}
+    \end{align*}
+\end{enumerate}
+
+\subsubsection{Question}
+\(R_1 = 1\,k\Omega\), \(R_2 = 10\,k\Omega\), \(A_0 = 10^5\), \(GB = 1\,\)MHz.
+Find the exact DC gain and the bandwidth.
+\paragraph{Solution:}
+\begin{align*}
+  F &= \frac{1\,k}{1\,k + 10\,k} = \frac{1}{11} \hspace{1cm} A_0 F = \frac{10^5}{11} = 9090.9 \\
+  H &= -10 \cdot \frac{9090.9}{1 + 9090.9} = -10 \cdot 0.99989 = -9.9989 \hspace{1cm}
+  f_{-3dB} = F \cdot GB = \frac{1\,MHz}{11} = 90.9\,kHz
+\end{align*}

@@ -1,0 +1,143 @@
+\subsection{Two-Stage Miller Op-Amp}\label{sec:amp_two_stage}
+
+\subsubsection{Overview}
+A 5T OTA (first stage, Section~\ref{sec:amp_5t}: NMOS pair \(M_1\), \(M_2\),
+PMOS mirror \(M_3\), \(M_4\), tail \(M_5\); transconductance \(g_{m1}\), output
+conductance \(G_1 = g_{o2} + g_{o4}\), node capacitance \(C_1\)) followed by a
+PMOS common source stage \(M_6\) with an NMOS current sink \(M_7\) (mirrored
+from the tail bias, \(G_2 = g_{o6} + g_{o7}\), load \(C_L\)). The gain is the
+product of two stages; a Miller capacitor \(C_c\) across the second stage
+makes the first pole dominant (compensation). Its small signal model is the
+CS stage of Section~\ref{sec:amp_cs} with \(C_c\) in the place of \(C_{gd}\).
+
+\subsubsection{Schematic}
+\begin{circuitfig}
+  \draw (0,0) node[draw, minimum width=1.6cm, minimum height=1.2cm](S1){$g_{m1}$, $G_1$};
+  \draw (S1.west) ++(0,0.3) -- ++(-0.8,0) node[circ]{} node[left]{$V_{i1}$};
+  \draw (S1.west) ++(0,-0.3) -- ++(-0.8,0) node[circ]{} node[left]{$V_{i2}$};
+  \draw (S1.east) -- (2.4,0) node[circ]{} node[below right]{$V_1$} to[capacitor, l_={$C_1$}] (2.4,-2) node[ground]{};
+  \draw (5,2.2) node[pmos](M6){}; \node[right] at (5.3,2.2) {$M_6$};
+  \draw (2.4,0) -- (2.4,0.8) node[circ]{} |- (M6.G);
+  \draw (M6.S) -- (5,3.4) node[vcc]{$V_{dd}$};
+  \draw (2.4,0.8) to[capacitor, l={$C_c$}] (5,0.8);
+  \draw (M6.D) -- (5,0.8) node[circ]{} to[american current source, l={$M_7$}] (5,-2) node[ground]{};
+  \draw (5,0.8) -- (8,0.8) node[circ]{} node[above]{$V_{out}$} to[capacitor, l={$C_L$}] (8,-2) node[ground]{};
+\end{circuitfig}
+
+\subsubsection{Transfer Function}
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}:
+    the tail \(M_5\) carries \(I_5\), so \(I_{D4} = \frac{I_5}{2}\), and \(M_7\) shares the
+    gate of \(M_5\): \(I_7 = \frac{(W/L)_7}{(W/L)_5} I_5\). For zero systematic
+    offset the first stage output must sit where it does with the stage
+    balanced, \(V_1 = V_{dd} - |V_{GS3}| = V_{dd} - |V_{GS4}|\), so
+    \(V_{SG6} = V_{SG4}\) and \(M_6\) carries
+    \begin{align*}
+      I_{D6} &= \frac{K_{P,p}}{2}\left(\frac{W}{L}\right)_6 (V_{SG4} - |V_{th}|)^2 = \frac{(W/L)_6}{(W/L)_4} I_{D4} = \frac{(W/L)_6}{(W/L)_4}\cdot\frac{I_5}{2}
+    \end{align*}
+    KCL at \(V_{OUT}\) requires \(I_{D6} = I_7\):
+    \begin{align*}
+      \frac{(W/L)_6}{(W/L)_4}\cdot\frac{I_5}{2} &= \frac{(W/L)_7}{(W/L)_5} I_5 \hspace{1cm} \Rightarrow \hspace{1cm}
+      \frac{(W/L)_6}{(W/L)_4} = 2\frac{(W/L)_7}{(W/L)_5}
+    \end{align*}
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}:
+    the first stage injects \(g_{m1} V_{id}\) into \(V_1\) (Section~\ref{sec:amp_5t}),
+    and \(M_6\) (source at AC ground) draws \(g_{m6} V_1\) out of \(V_{out}\) (its
+    source to drain current \(g_{m6}(0 - V_1)\) flows into \(V_{out}\)).\\
+    Applying KCL at \(V_1\):
+    \begin{align*}
+      V_1 (G_1 + sC_1) + (V_1 - V_{out}) sC_c &= g_{m1} V_{id} \\
+      V_1 (G_1 + s(C_1 + C_c)) - V_{out} sC_c &= g_{m1} V_{id} \tag{1}
+    \end{align*}
+    Applying KCL at \(V_{out}\):
+    \begin{align*}
+      V_{out}(G_2 + sC_L) + (V_{out} - V_1) sC_c + g_{m6} V_1 &= 0 \\
+      V_{out}(G_2 + s(C_L + C_c)) + V_1 (g_{m6} - sC_c) &= 0 \\
+      V_1 &= -\frac{G_2 + s(C_L + C_c)}{g_{m6} - sC_c} V_{out} \tag{2}
+    \end{align*}
+    Substituting (2) into (1) and putting both terms over \(g_{m6} - sC_c\):
+    \begin{align*}
+      -V_{out}\frac{(G_2 + s(C_L + C_c))(G_1 + s(C_1 + C_c))}{g_{m6} - sC_c} - V_{out}\frac{sC_c (g_{m6} - sC_c)}{g_{m6} - sC_c} &= g_{m1} V_{id} \\
+      -V_{out}\left(\frac{(G_2 + s(C_L + C_c))(G_1 + s(C_1 + C_c)) + sC_c (g_{m6} - sC_c)}{g_{m6} - sC_c}\right) &= g_{m1} V_{id}
+    \end{align*}
+    Expanding the bracket:
+    \begin{align*}
+      (G_2 + s(C_L + C_c))(G_1 + s(C_1 + C_c)) &= G_1 G_2 + s G_2 (C_1 + C_c) + s G_1 (C_L + C_c) + s^2 (C_L + C_c)(C_1 + C_c) \\
+      (C_L + C_c)(C_1 + C_c) - C_c^2 &= C_1 C_L + C_L C_c + C_1 C_c + C_c^2 - C_c^2 = C_1 C_L + C_1 C_c + C_L C_c \\
+      D(s) &= G_1 G_2 + s\left[G_2(C_1 + C_c) + G_1(C_L + C_c) + g_{m6} C_c\right] + s^2\left[C_1 C_L + C_1 C_c + C_L C_c\right]
+    \end{align*}
+    so
+    \begin{align*}
+      A(s) = \frac{V_{out}}{V_{id}} &= \frac{-g_{m1}(g_{m6} - sC_c)}{D(s)} = \frac{-g_{m1}(g_{m6} - sC_c)}{a_0 + a_1 s + a_2 s^2}
+    \end{align*}
+    (the sign is that of the inverting second stage; swapping \(V_{i1}\),
+    \(V_{i2}\) restores a positive gain).
+\end{enumerate}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{DC Gain}: \(s = 0\),
+    \(|A_{V0}| = \frac{g_{m1} g_{m6}}{G_1 G_2} = \frac{g_{m1}}{g_{o2} + g_{o4}} \cdot \frac{g_{m6}}{g_{o6} + g_{o7}}\).
+  \item \textbf{Poles}: \(D(s) = a_0\left(1 + \frac{s}{p_1}\right)\left(1 + \frac{s}{p_2}\right) = a_0 + a_0\left(\frac{1}{p_1} + \frac{1}{p_2}\right)s + \frac{a_0}{p_1 p_2}s^2\).
+    Matching coefficients with \(p_1 \ll p_2\) (\(\frac{1}{p_1} + \frac{1}{p_2} \approx \frac{1}{p_1}\)):
+    \begin{align*}
+      p_1 &\approx \frac{a_0}{a_1} \approx \frac{G_1 G_2}{g_{m6} C_c} \hspace{1cm} [g_{m6} C_c \text{ dominates } a_1;\ C_c \text{ Miller multiplied by } \tfrac{g_{m6}}{G_2}] \\
+      p_2 &= \frac{a_0}{a_2 p_1} \approx \frac{a_1}{a_2} \approx \frac{g_{m6} C_c}{C_1 C_L + C_1 C_c + C_L C_c} \xrightarrow{C_c \gg C_1} \frac{g_{m6} C_c}{C_c (C_L + C_1)} = \frac{g_{m6}}{C_L + C_1} \approx \frac{g_{m6}}{C_L}
+    \end{align*}
+  \item \textbf{Zero}: \(g_{m6} - sC_c = 0 \Rightarrow s = +\frac{g_{m6}}{C_c}\), \(z = \frac{g_{m6}}{C_c}\) in
+    the right half plane: its magnitude rises like a left half plane zero but
+    its phase lags.
+  \item \textbf{Gain-Bandwidth}:
+    \(2\pi GB = |A_{V0}|\, p_1 = \frac{g_{m1} g_{m6}}{G_1 G_2} \cdot \frac{G_1 G_2}{g_{m6} C_c} = \frac{g_{m1}}{C_c}\).
+  \item \textbf{Compensation}: unity feedback (\(F = 1\)). For
+    \(s \gg p_1\) and \(z \to \infty\), \(A(s) \approx \frac{|A_{V0}| p_1 p_2}{(s + p_1)(s + p_2)} \approx \frac{2\pi GB \cdot p_2}{s(s + p_2)}\):
+    \begin{align*}
+      \frac{A}{1 + A} &= \frac{\frac{2\pi GB\, p_2}{s(s + p_2)}}{1 + \frac{2\pi GB\, p_2}{s(s + p_2)}} = \frac{2\pi GB\, p_2}{s^2 + p_2 s + 2\pi GB\, p_2} \hspace{1cm} [\times s(s + p_2)] \\
+      \omega_n^2 &= 2\pi GB\, p_2 \hspace{1cm} \frac{\omega_n}{Q} = p_2 \hspace{1cm} \Rightarrow \hspace{1cm} Q = \frac{\omega_n}{p_2} = \frac{\sqrt{2\pi GB\, p_2}}{p_2} = \sqrt{\frac{2\pi GB}{p_2}}
+    \end{align*}
+    \(Q = \frac{1}{\sqrt{2}}\) (no peaking): \(\frac{2\pi GB}{p_2} = \frac{1}{2}\), \(p_2 = 2 \cdot 2\pi GB\).
+    The phase of \(A(j\omega)\) at \(\omega = 2\pi GB\) (\(|A| \approx 1\) there) is
+    \(-\tan^{-1}\frac{\omega}{p_1} - \tan^{-1}\frac{\omega}{p_2} - \tan^{-1}\frac{\omega}{z}\), the RHP zero
+    lagging like a pole, with \(\tan^{-1}\frac{\omega}{p_1} \approx 90^\circ\):
+    \begin{align*}
+      PM &= 180^\circ + \angle A = 90^\circ - \tan^{-1}\frac{2\pi GB}{p_2} - \tan^{-1}\frac{2\pi GB}{z} \\
+      PM &= 90^\circ - \tan^{-1}\frac{1}{2} - 0 = 90^\circ - 26.6^\circ = 63.4^\circ \hspace{1cm} [p_2 = 2 \cdot 2\pi GB,\ z \to \infty]
+    \end{align*}
+    With \(g_{m6} = 10 g_{m1}\): \(\frac{z}{2\pi GB} = \frac{g_{m6}/C_c}{g_{m1}/C_c} = 10\), and for \(PM = 60^\circ\):
+    \begin{align*}
+      \tan^{-1}\frac{2\pi GB}{p_2} &= 90^\circ - 60^\circ - \tan^{-1}\frac{1}{10} = 30^\circ - 5.71^\circ = 24.29^\circ \\
+      \frac{2\pi GB}{p_2} &= \tan 24.29^\circ = 0.451 \hspace{1cm} \Rightarrow \hspace{1cm} p_2 = 2.2 \cdot 2\pi GB \\
+      \frac{p_2}{2\pi GB} &= \frac{g_{m6}/C_L}{g_{m1}/C_c} = \frac{10 g_{m1} C_c}{g_{m1} C_L} = \frac{10 C_c}{C_L} \geq 2.2 \hspace{1cm} \Rightarrow \hspace{1cm} C_c \geq 0.22 C_L
+    \end{align*}
+  \item \textbf{Nulling Resistor}: \(R_z\) in series with \(C_c\) replaces \(sC_c\) by the
+    series admittance \(\frac{1}{R_z + \frac{1}{sC_c}} = \frac{sC_c}{1 + sR_z C_c}\). The numerator of \(A\)
+    becomes \(g_{m6} - \frac{sC_c}{1 + sR_z C_c}\); its root:
+    \begin{align*}
+      g_{m6}(1 + sR_z C_c) - sC_c &= 0 \hspace{1cm} [\times (1 + sR_z C_c)] \\
+      g_{m6} + s g_{m6} R_z C_c - s C_c &= 0 \\
+      s(C_c - g_{m6} R_z C_c) &= g_{m6} \\
+      s &= \frac{g_{m6}}{C_c(1 - g_{m6} R_z)} = \frac{1}{C_c\left(\frac{1}{g_{m6}} - R_z\right)} \hspace{1cm} [\div g_{m6} \text{ top and bottom}]
+    \end{align*}
+    For \(R_z < \frac{1}{g_{m6}}\) the root is positive (RHP zero), \(R_z = \frac{1}{g_{m6}}\) sends
+    it to infinity, and \(R_z > \frac{1}{g_{m6}}\) puts it in the left half plane where
+    it can cancel \(p_2\).
+  \item \textbf{Slew Rate, Large Signal, Time Domain, AC Input Analysis (Q6)}:
+    the first stage can deliver at most \(I_5\) into \(C_c\), whose right plate is
+    held by the second stage, so \(\frac{dV_{OUT}}{dt} \leq \frac{I_5}{C_c}\); the output
+    can be pulled down by at most \(I_7\) less the \(I_5\) going into \(C_c\), so
+    \(\frac{dV_{OUT}}{dt} \leq \frac{I_7 - I_5}{C_L}\):
+    \(SR = \min\left(\frac{I_5}{C_c}, \frac{I_7 - I_5}{C_L}\right)\).
+\end{enumerate}
+
+\subsubsection{Question}
+\(C_L = 5\,\)pF, \(GB = 10\,\)MHz, \(PM = 60^\circ\), \(g_{m6} = 10 g_{m1}\).
+Find \(C_c\), \(g_{m1}\), \(g_{m6}\) and check \(p_2\).
+\paragraph{Solution:}
+\begin{align*}
+  C_c &= 0.22\, C_L = 0.22 \cdot 5\,pF = 1.1\,pF \\
+  g_{m1} &= 2\pi GB \cdot C_c = 2\pi \cdot 10^{7}\,Hz \cdot 1.1 \times 10^{-12}\,F = 69.1\,\mu S \hspace{1cm}
+  g_{m6} = 10 \cdot 69.1\,\mu S = 691\,\mu S \\
+  \frac{p_2}{2\pi} &= \frac{g_{m6}}{2\pi C_L} = \frac{691 \times 10^{-6}\,S}{2\pi \cdot 5 \times 10^{-12}\,F} = 22.0\,MHz = 2.2\,GB \\
+  \frac{z}{2\pi} &= \frac{g_{m6}}{2\pi C_c} = \frac{691 \times 10^{-6}\,S}{2\pi \cdot 1.1 \times 10^{-12}\,F} = 100\,MHz \\
+  PM &= 90^\circ - \tan^{-1}\frac{10}{22.0} - \tan^{-1}\frac{10}{100} = 90^\circ - 24.4^\circ - 5.7^\circ = 59.9^\circ
+\end{align*}

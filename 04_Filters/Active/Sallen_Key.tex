@@ -1,0 +1,126 @@
+\subsection{Sallen-Key (Unity Gain) Low Pass and High Pass}\label{sec:filt_sallen_key}
+
+\subsubsection{Overview}
+Two RC sections with the op-amp as a unity gain buffer; positive feedback
+through \(C_1\) from the output to the middle node creates complex poles.
+
+\subsubsection{Schematic}
+\begin{circuitfig}
+  \draw (0,0) node[circ]{} node[left]{$V_{in}$} to[european resistor, l={$G_1$}] (2.2,0) node[circ]{} node[below left]{$V_x$} to[european resistor, l={$G_2$}] (4.4,0) node[circ]{} node[below left]{$V_y$};
+  \draw (4.4,0) to[capacitor, l={$C_2$}] (4.4,-2) node[ground]{};
+  \draw (7.6,-0.48) node[op amp, noinv input up](A){};
+  \draw (4.4,0) -- (A.+);
+  \draw (A.-) -- ++(-0.3,0) |- (9,-1.8) -- (9,-0.48);
+  \draw (A.out) -- (9.5,-0.48) node[circ]{} node[right]{$V_{out}$};
+  \draw (2.2,0) -- (2.2,1.5) to[capacitor, l={$C_1$}] (9,1.5) -- (9,-0.48);
+\end{circuitfig}
+
+\subsubsection{Transfer Function}
+\textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)} with an ideal
+op-amp wired as a buffer: \(V_- = V_{out}\) and \(V_+ = V_-\), so
+\(V_{out} = V_y\); no current enters \(V_+\).\\
+KCL at \(V_y\):
+\begin{align*}
+  (V_y - V_x) G_2 + (V_y - 0) sC_2 &= 0 \\
+  V_y G_2 + V_y sC_2 &= V_x G_2 \\
+  V_x &= V_y \frac{G_2 + sC_2}{G_2} \tag{1}
+\end{align*}
+Subtracting \(V_y\) from (1):
+\begin{align*}
+  V_x - V_y &= V_y \frac{G_2 + sC_2}{G_2} - V_y\frac{G_2}{G_2} = V_y\frac{sC_2}{G_2} \tag{1a}
+\end{align*}
+KCL at \(V_x\) (\(C_1\) returns to \(V_{out} = V_y\)):
+\begin{align*}
+  (V_x - V_{in}) G_1 + (V_x - V_y) G_2 + (V_x - V_y) sC_1 &= 0 \tag{2}
+\end{align*}
+Substituting (1) for \(V_x\) in the first term and (1a) for \(V_x - V_y\) in the
+other two:
+\begin{align*}
+  V_y\frac{(G_2 + sC_2) G_1}{G_2} - V_{in} G_1 + V_y\frac{sC_2}{G_2} G_2 + V_y\frac{sC_2}{G_2} sC_1 &= 0 \\
+  V_y\frac{(G_2 + sC_2) G_1}{G_2} - V_{in} G_1 + V_y sC_2 + V_y\frac{s^2 C_1 C_2}{G_2} &= 0 \\
+  V_y\left((G_2 + sC_2) G_1 + sC_2 G_2 + s^2 C_1 C_2\right) - V_{in} G_1 G_2 &= 0 \hspace{1cm} [\times G_2] \\
+  V_y\left(G_1 G_2 + sC_2 G_1 + sC_2 G_2 + s^2 C_1 C_2\right) &= V_{in} G_1 G_2 \\
+  H_{LP}(s) = \frac{V_{out}}{V_{in}} = \frac{V_y}{V_{in}} &= \frac{G_1 G_2}{s^2 C_1 C_2 + s C_2 (G_1 + G_2) + G_1 G_2}
+\end{align*}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Normalising} (Section~\ref{sec:theory_cs_second_order}): dividing
+    numerator and denominator by \(C_1 C_2\),
+    \begin{align*}
+      H_{LP}(s) &= \frac{\frac{G_1 G_2}{C_1 C_2}}{s^2 + s\frac{G_1 + G_2}{C_1} + \frac{G_1 G_2}{C_1 C_2}}
+      \equiv \frac{\omega_0^2}{s^2 + s\frac{\omega_0}{Q} + \omega_0^2}
+    \end{align*}
+    Matching coefficients:
+    \begin{align*}
+      \omega_0^2 &= \frac{G_1 G_2}{C_1 C_2} = \frac{\frac{1}{R_1}\cdot\frac{1}{R_2}}{C_1 C_2} = \frac{1}{R_1 R_2 C_1 C_2} \\
+      \frac{\omega_0}{Q} &= \frac{G_1 + G_2}{C_1} \\
+      Q &= \frac{\omega_0 C_1}{G_1 + G_2} = \frac{C_1}{G_1 + G_2}\sqrt{\frac{G_1 G_2}{C_1 C_2}} \\
+      Q &= \frac{C_1 R_1 R_2}{R_1 + R_2}\cdot\frac{1}{\sqrt{R_1 R_2 C_1 C_2}} \hspace{1cm} \text{(\(G_1 + G_2 = \frac{R_1 + R_2}{R_1 R_2}\))} \\
+      Q &= \frac{\sqrt{R_1 R_2}\,C_1}{(R_1 + R_2)\sqrt{C_1 C_2}} = \frac{\sqrt{R_1 R_2}}{R_1 + R_2}\sqrt{\frac{C_1}{C_2}}
+    \end{align*}
+  \item \textbf{Equal Resistors} \(R_1 = R_2 = R\):
+    \begin{align*}
+      Q &= \frac{\sqrt{R \cdot R}}{R + R}\sqrt{\frac{C_1}{C_2}} = \frac{R}{2R}\sqrt{\frac{C_1}{C_2}} = \frac{1}{2}\sqrt{\frac{C_1}{C_2}}
+    \end{align*}
+    Butterworth (\(Q = \frac{1}{\sqrt{2}}\)):
+    \begin{align*}
+      \frac{1}{2}\sqrt{\frac{C_1}{C_2}} &= \frac{1}{\sqrt{2}} \\
+      \sqrt{\frac{C_1}{C_2}} &= \frac{2}{\sqrt{2}} = \sqrt{2} \\
+      C_1 &= 2 C_2
+    \end{align*}
+  \item \textbf{DC Gain}: \(H_{LP}(0) = \frac{G_1 G_2}{0 + 0 + G_1 G_2} = 1\); two poles,
+    no finite zeros: \(-40\,\)dB/decade above \(f_0\).
+\end{enumerate}
+
+\subsubsection{High Pass Schematic}
+\(C_1\) from \(V_{in}\) to \(V_x\), \(C_2\) from \(V_x\) to \(V_y\), \(G_2\) from \(V_y\) to
+ground and \(G_1\) from \(V_x\) to \(V_{out}\).
+\begin{circuitfig}
+  \draw (0,0) node[circ]{} node[left]{$V_{in}$} to[capacitor, l={$C_1$}] (2.2,0) node[circ]{} node[below left]{$V_x$} to[capacitor, l={$C_2$}] (4.4,0) node[circ]{} node[below left]{$V_y$};
+  \draw (4.4,0) to[european resistor, l={$G_2$}] (4.4,-2) node[ground]{};
+  \draw (7.6,-0.48) node[op amp, noinv input up](A){};
+  \draw (4.4,0) -- (A.+);
+  \draw (A.-) -- ++(-0.3,0) |- (9,-1.8) -- (9,-0.48);
+  \draw (A.out) -- (9.5,-0.48) node[circ]{} node[right]{$V_{out}$};
+  \draw (2.2,0) -- (2.2,1.5) to[european resistor, l={$G_1$}] (9,1.5) -- (9,-0.48);
+\end{circuitfig}
+
+\subsubsection{High Pass Transfer Function}
+\textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}, buffer
+\(V_{out} = V_y\).\\
+KCL at \(V_y\):
+\begin{align*}
+  (V_y - V_x) sC_2 + (V_y - 0) G_2 &= 0 \\
+  V_x &= V_y \frac{sC_2 + G_2}{sC_2} \tag{3} \\
+  V_x - V_y &= V_y \frac{sC_2 + G_2}{sC_2} - V_y\frac{sC_2}{sC_2} = V_y\frac{G_2}{sC_2} \tag{3a}
+\end{align*}
+KCL at \(V_x\):
+\begin{align*}
+  (V_x - V_{in}) sC_1 + (V_x - V_y) sC_2 + (V_x - V_y) G_1 &= 0 \\
+  V_y\frac{(sC_2 + G_2) sC_1}{sC_2} - V_{in} sC_1 + V_y\frac{G_2}{sC_2} sC_2 + V_y\frac{G_2}{sC_2} G_1 &= 0 \hspace{1cm} \text{(Substituting (3), (3a))} \\
+  V_y\left((sC_2 + G_2) sC_1 + sC_2 G_2 + G_1 G_2\right) - V_{in} s^2 C_1 C_2 &= 0 \hspace{1cm} [\times sC_2] \\
+  V_y\left(s^2 C_1 C_2 + sC_1 G_2 + sC_2 G_2 + G_1 G_2\right) &= V_{in} s^2 C_1 C_2 \\
+  H_{HP}(s) = \frac{V_{out}}{V_{in}} &= \frac{s^2 C_1 C_2}{s^2 C_1 C_2 + s G_2 (C_1 + C_2) + G_1 G_2}
+\end{align*}
+Dividing by \(C_1 C_2\): \(\omega_0^2 = \frac{G_1 G_2}{C_1 C_2} = \frac{1}{R_1 R_2 C_1 C_2}\)
+(as the low pass), \(\frac{\omega_0}{Q} = \frac{G_2 (C_1 + C_2)}{C_1 C_2}\), so
+\begin{align*}
+  Q &= \frac{\omega_0 C_1 C_2}{G_2 (C_1 + C_2)} = \frac{C_1 C_2 R_2}{C_1 + C_2}\cdot\frac{1}{\sqrt{R_1 R_2 C_1 C_2}}
+     = \frac{\sqrt{C_1 C_2}}{C_1 + C_2}\sqrt{\frac{R_2}{R_1}}
+\end{align*}
+Equal capacitors \(C\): \(Q = \frac{C}{2C}\sqrt{\frac{R_2}{R_1}} = \frac{1}{2}\sqrt{\frac{R_2}{R_1}}\);
+Butterworth needs \(\sqrt{\frac{R_2}{R_1}} = \sqrt{2}\), \(R_2 = 2R_1\). Gain at
+\(s \to \infty\) is \(\frac{s^2 C_1 C_2}{s^2 C_1 C_2} = 1\); two zeros at \(s = 0\):
+\(+40\,\)dB/decade below \(f_0\).
+
+\subsubsection{Question}
+Butterworth low pass, \(f_0 = 1\,\)kHz, \(R_1 = R_2 = 10\,k\Omega\).
+\paragraph{Solution:}
+Equal resistors so \(C_1 = 2C_2\); then
+\begin{align*}
+  \omega_0 &= \frac{1}{\sqrt{R \cdot R \cdot 2C_2 \cdot C_2}} = \frac{1}{R\sqrt{2}\,C_2} \\
+  C_2 &= \frac{1}{\omega_0 R \sqrt{2}} = \frac{1}{2\pi \cdot 1000\,Hz \cdot 10^4\,\Omega \cdot 1.4142}
+       = \frac{1}{8.886 \times 10^7\,\Omega/s} = 11.25\,nF \\
+  C_1 &= 2 \cdot 11.25\,nF = 22.5\,nF
+\end{align*}

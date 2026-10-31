@@ -1,0 +1,453 @@
+\subsection{Wilson Mirror}
+
+\subsubsection{Overview}
+Constructed from three transistors, it improves
+upon the Basic Mirror by providing a higher output
+impedance (negative feedback through \(M_0\) holds
+\(V_X\), and so \(I_{M_1} = I_{OUT}\), constant), which
+results in better current source/sink performance.
+
+\subsubsection{Schematic}
+\begin{circuitfig}
+  % Paths, nodes and wires:
+  \node[shape=rectangle, draw={rgb,255:red,255;green,0;blue,0}, line width=1pt, dash pattern={on 4pt off 2pt on 1pt off 2pt on 1pt off 2pt}, minimum width=1.465cm, minimum height=2.195cm] at (6.25, 7.135){};
+  \draw (3.23, 8.04) to[american voltage source, l_={$V_{cc}$}] (1.98, 8.04);
+  \node[nmos, arrowmos, xscale=-1] (N1) at (3.5, 2.75){} node[anchor=east] at (N1.text){$M_0$};
+  \node[nmos, arrowmos] (N2) at (6, 2.75){} node[anchor=west] at (N2.text){$M_1$};
+  \draw (3.5, 7.54) to[european resistor, l={$G_3$}] (3.5, 6.04);
+  \draw (6, 5.79) |- (6, 5.25);
+  \draw (4.75, 2.75) |- (6, 3.71);
+  \draw (5.02, 2.75) -- (4.48, 2.75);
+  \draw (3.5, 1.98) -| (3.5, 1.75) -| (6, 1.98);
+  \draw (4, 1) to[american voltage source, l={$V_{ee}$}] (2.75, 1);
+  \draw (4, 1) -| (4.75, 1.75);
+  \node[ground, rotate=-90] at (1.98, 8.04){};
+  \node[ground, rotate=-90] at (2.75, 1){};
+  \draw[dash pattern={on 0.4pt off 0.8pt}, -stealth] (6, 5.79) -- (6.5, 5.79);
+  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N3) at (7, 5.75){} node[anchor=center] at (N3.text){$V_{out}$};
+  \draw (6, 7.5) to[european resistor, l={\textcolor{rgb,255:red,255;green,0;blue,0}{$G_4$}}] (6, 6);
+  \draw (6, 5.79) -- (6, 6.02);
+  \draw (3.5, 7.54) |- (3.23, 8.04);
+  \draw (3.5, 8.04) -| (6, 7.5);
+  \draw (10.25, 10.75) -- (10.25, -0);
+  \node[shape=rectangle, minimum width=4.59cm, minimum height=1.09cm] at (5.187, 9.813){} node[anchor=north, align=center, text width=4.202cm, inner sep=6pt] at (5.187, 10.375){Large Signal Schematic\\(Sink)};
+  \node[shape=rectangle, minimum width=3.09cm, minimum height=2.465cm] at (8.687, 7){} node[anchor=north west, align=left, text width=2.702cm, inner sep=6pt] at (7.125, 8.25){\textcolor{rgb,255:red,255;green,0;blue,0}{\footnotesize Exists Only For Analysis. In  Implementation take output directly from V\_\{out\}}};
+  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N4) at (7, 3.71){} node[anchor=center] at (N4.text){$V_{x}$};
+  \draw[dash pattern={on 0.4pt off 0.8pt}, -stealth] (6, 3.71) |- (6.5, 3.71);
+  \draw (3.5, 4.5) -| (3.5, 6.04);
+  \draw (17.625, 2.562) to[american current source, l_={$g_{m_1}V_{gs}$}] (17.625, 1.062);
+  \draw (19.125, 2.562) to[european resistor, l_={$g_{o_1}$}] (19.125, 1.062);
+  \draw (17.625, 1.062) -- (19.125, 1.062);
+  \draw (19.125, 2.562) -- (17.625, 2.562);
+  \draw (17.625, 1.062) -- (16.375, 1.062);
+  \draw (16.375, 2.562) -- (15.625, 2.562);
+  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (16.375, 2.312){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (16.375, 2.312){\footnotesize G};
+  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (16.375, 1.312){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (16.375, 1.312){\footnotesize S};
+  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (19.625, 2.312){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (19.625, 2.312){\footnotesize D};
+  \draw (15.625, 2.562) -- (14.875, 2.562);
+  \draw (13.375, 2.562) to[american current source, l={$g_{m_0}V_{gs}$}] (13.375, 1.062);
+  \draw (11.875, 2.562) to[european resistor, l={$g_{o_0}$}] (11.875, 1.062);
+  \draw (13.375, 2.563) -- (11.875, 2.563);
+  \draw (13.375, 1.063) -- (11.875, 1.063);
+  \draw (14.875, 1.062) -- (13.375, 1.062);
+  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (14.875, 2.312){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (14.875, 2.312){\footnotesize G};
+  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (14.875, 1.312){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (14.875, 1.312){\footnotesize S};
+  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (11.375, 2.312){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (11.375, 2.312){\footnotesize D};
+  \draw (11.875, 7.563) to[european resistor, l={$G_3$}] (11.875, 6.063);
+  \draw (11.875, 6.063) -| (11.875, 5.562);
+  \draw (11.875, 7.563) -| (11.875, 8.062) -- (12.625, 8.062) -| (12.625, 7.812);
+  \draw (19.125, 7.563) to[european resistor, l={\textcolor{rgb,255:red,255;green,0;blue,0}{$G_4$}}] (19.125, 6.063);
+  \draw (19.125, 6.063) -| (19.125, 5.562);
+  \draw (19.125, 7.563) -| (19.125, 8.062) |- (18.375, 8.062) -| (18.375, 7.812);
+  \node[ground] at (14.875, 1.062){};
+  \node[ground] at (16.375, 1.062){};
+  \node[ground] at (12.625, 7.812){};
+  \node[ground] at (18.375, 7.812){};
+  \node[shape=rectangle, minimum width=4.215cm, minimum height=1.09cm] at (15.5, 9.813){} node[anchor=north, align=center, text width=3.827cm, inner sep=6pt] at (15.5, 10.375){Small Signal Schematic\\(Sink)};
+  \draw (6, 3.52) -| (6, 3.71);
+  \node[nmos, arrowmos] (N5) at (6, 4.48){} node[anchor=west] at (N5.text){$M_2$};
+  \draw (5.02, 4.48) -| (3.5, 3.52);
+  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N6) at (2.5, 4.5){} node[anchor=center] at (N6.text){$V_{y}$};
+  \draw[dash pattern={on 0.4pt off 0.8pt}, -stealth] (3.5, 4.48) -- (3, 4.48);
+  \draw (17.625, 5.562) to[american current source, l_={$g_{m_2}V_{gs}$}] (17.625, 4.062);
+  \draw (19.125, 5.562) to[european resistor, l_={$g_{o_2}$}] (19.125, 4.062);
+  \draw (17.625, 4.062) -- (19.125, 4.062);
+  \draw (19.125, 5.562) -- (17.625, 5.562);
+  \draw (17.625, 4.062) -- (16.375, 4.062);
+  \draw (16.375, 5.562) -- (15.625, 5.562);
+  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (16.375, 5.312){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (16.375, 5.312){\footnotesize G};
+  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (16.375, 4.312){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (16.375, 4.312){\footnotesize S};
+  \draw (19.125, 4.062) -- (19.125, 2.562);
+  \draw (15.625, 2.562) -| (15.625, 3.313) -- (19.125, 3.313);
+  \node[circ] at (3.5, 8.04){};
+  \node[circ] at (3.5, 4.48){};
+  \node[circ] at (4.75, 2.75){};
+  \node[circ] at (6, 3.71){};
+  \node[circ] at (4.75, 1.75){};
+  \node[circ] at (15.625, 2.562){};
+  \node[circ] at (19.125, 3.313){};
+  \draw (11.875, 2.562) |- (15.625, 5.562);
+  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N7) at (10.875, 5.582){} node[anchor=center] at (N7.text){$V_{y}$};
+  \draw[dash pattern={on 0.4pt off 0.8pt}, -stealth] (11.875, 5.562) |- (11.375, 5.562);
+  \node[circ] at (11.875, 5.562){};
+  \draw[dash pattern={on 0.4pt off 0.8pt}, -stealth] (19.125, 5.562) -- (19.625, 5.562);
+  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N8) at (20.125, 5.522){} node[anchor=center] at (N8.text){$V_{out}$};
+  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N9) at (14.625, 3.333){} node[anchor=center] at (N9.text){$I_G$};
+  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N10) at (20.125, 3.313){} node[anchor=center] at (N10.text){$V_{x}$};
+  \draw[dash pattern={on 0.4pt off 0.8pt}, -stealth] (19.125, 3.313) |- (19.625, 3.313);
+  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N11) at (3.75, 3.73){} node[anchor=center] at (N11.text){$I_G$};
+  \node[shape=rectangle, draw={rgb,255:red,255;green,0;blue,0}, line width=1pt, dash pattern={on 4pt off 2pt on 1pt off 2pt on 1pt off 2pt}, minimum width=1.59cm, minimum height=2.527cm] at (19.312, 7.094){};
+  \draw[dash pattern={on 0.4pt off 0.8pt}, -stealth] (4.75, 3.71) -- (4.25, 3.71);
+  \draw[dash pattern={on 0.4pt off 0.8pt}, -stealth] (15.625, 3.313) -- (15.125, 3.313);
+\end{circuitfig}
+
+\subsubsection{Transfer Function}
+Here's a table of the voltages at each terminal of the transistors:
+
+\begin{tabularx}{\linewidth}{|X|X|X|X|X|X|} \hline
+  Transistor & Gate (G) & Source (S) & Drain (D) & $V_{GS}$ & $V_{DS}$ \\ \hline
+  $M_0$ & $V_{X}$ & $V_{ee}$ & $V_{Y}$ & $V_{X} - V_{ee}$ & $V_{Y} - V_{ee}$ \\ \hline
+  $M_1$ & $V_{X}$ & $V_{ee}$ & $V_{X}$ & $V_{X} - V_{ee}$ & $V_{X} - V_{ee}$ \\ \hline
+  $M_2$ & $V_{Y}$ & $V_{X}$ & $V_{OUT}$ & $V_{Y} - V_{X}$ & $V_{OUT} - V_{X}$ \\ \hline
+\end{tabularx}
+
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}:
+    Applying KCL at $V_{OUT}$:
+    \begin{align*}
+      (V_{OUT} - V_{cc})G_4 + I_{M_2} &= 0 \hspace{1cm} \text{[KCL at } V_{OUT}\text{]} \\
+      V_{OUT} &= V_{cc} - \frac{I_{M_2}}{G_4} \tag{1} \\
+      (V_{Y} - V_{cc})G_3 + I_{M_0} + I_{G_2} &= 0 \hspace{1cm} \text{[KCL at } V_{Y}\text{, } I_{G_2} \text{ into the gate of } M_2\text{]} \\
+      (V_{Y} - V_{cc})G_3 + I_{M_0} &= 0 \hspace{1cm} \text{[} I_{G_2} \approx 0 \text{ by MOS physics]} \\
+      V_{Y} &= V_{cc} - \frac{I_{M_0}}{G_3} \tag{2} \\
+      I_{M_1} + I_{G} - I_{M_2} &= 0 \hspace{1cm} \text{[KCL at } V_{X}\text{]} \\
+      I_{M_1} + I_{G} &= I_{M_2} \tag{3}
+    \end{align*}
+    Using transistor equations for $I_{M_0}$, $I_{M_1}$ and $I_{M_2}$
+    and applying the voltages:
+    \begin{align*}
+      I_{M_0} &= k_{n_0}(V_{GS_0} - V_{th})^2 \cdot (1 + K_{CLM} V_{DS_0}) \\
+              &= k_{n_0}((V_{X} - V_{ee}) - V_{th})^2 \cdot (1 + K_{CLM} (V_{Y} - V_{ee})) \\
+              &= k_{n_0}\left(V_{X} - V_{ee} - V_{th}\right)^2 \cdot \left(1 + K_{CLM} \left(V_{cc} - \frac{I_{M_0}}{G_3} - V_{ee}\right)\right) \\
+              &= k_{n_0}\left(V_{X} - V_{ee} - V_{th}\right)^2 \quad \text{[assuming } K_{CLM} = 0 \text{]} \tag{4} \\ \\
+      I_{M_1} &= k_{n_1}(V_{GS_1} - V_{th})^2 \cdot (1 + K_{CLM} V_{DS_1}) \\
+              &= k_{n_1}((V_{X} - V_{ee}) - V_{th})^2 \cdot (1 + K_{CLM} (V_{X} - V_{ee})) \\
+              &= k_{n_1}\left(V_{X} - V_{ee} - V_{th}\right)^2 \cdot \left(1 + K_{CLM} (V_{X} - V_{ee})\right) \\
+              &= k_{n_1}\left(V_{X} - V_{ee} - V_{th}\right)^2 \quad \text{[assuming } K_{CLM} = 0 \text{]} \tag{5} \\ \\
+      I_{M_2} &= k_{n_2}(V_{GS_2} - V_{th})^2 \cdot (1 + K_{CLM} V_{DS_2}) \\
+              &= k_{n_2}((V_{Y} - V_{X}) - V_{th})^2 \cdot (1 + K_{CLM} (V_{OUT} - V_{X})) \\
+              &= k_{n_2}\left(V_{Y} - V_{X} - V_{th}\right)^2 \cdot \left(1 + K_{CLM} \left(V_{cc} - \frac{I_{M_2}}{G_4} - V_{X}\right)\right) \\
+              &= k_{n_2}\left(V_{Y} - V_{X} - V_{th}\right)^2 \quad \text{[assuming } K_{CLM} = 0 \text{]} \tag{6}
+    \end{align*}
+    The input current is the current through \(G_3\) and the output
+    current is the drain current of \(M_2\):
+    \begin{align*}
+      I_{IN} &= (V_{cc} - V_Y)G_3 = I_{M_0} \quad \text{[from (2)]} \\
+      I_{OUT} &= I_{M_2} = I_{M_1} + I_{G} \approx I_{M_1} \quad \text{[from (3), } I_{G} \approx 0 \text{ by MOS physics]}
+    \end{align*}
+    \(M_0\) and \(M_1\) share \(V_{GS} = V_X - V_{ee}\), so dividing the
+    second line of (5) by the second line of (4) cancels the square term:
+    \begin{align*}
+      \frac{I_{M_1}}{I_{M_0}} &= \frac{k_{n_1}(V_{X} - V_{ee} - V_{th})^2 (1 + K_{CLM} (V_{X} - V_{ee}))}{k_{n_0}(V_{X} - V_{ee} - V_{th})^2 (1 + K_{CLM} (V_{Y} - V_{ee}))} \\
+                              &= \frac{k_{n_1}}{k_{n_0}} \cdot \frac{1 + K_{CLM} (V_{X} - V_{ee})}{1 + K_{CLM} (V_{Y} - V_{ee})} \\
+                              &= \frac{k_{n_1}}{k_{n_0}} \quad \text{[assuming } K_{CLM} = 0 \text{]}
+    \end{align*}
+    With \(K_{CLM} \neq 0\) the factor stays, since
+    \(V_Y - V_X = V_{GS_2} \neq 0\): \(V_{DS_0} \neq V_{DS_1}\). This is the
+    systematic error removed by the Modified Wilson Mirror. Thus, with
+    \(k_n = \frac{K_P}{2}\frac{W}{L}\),
+    \begin{align*}
+      \frac{I_{OUT}}{I_{IN}} \approx \frac{I_{M_2}}{I_{M_0}} \approx \frac{I_{M_1}}{I_{M_0}} \approx \frac{k_{n_1}}{k_{n_0}} = \frac{\frac{K_P}{2} \frac{W_1}{L_1}}{\frac{K_P}{2} \frac{W_0}{L_0}} = \frac{\frac{W_1}{L_1}}{\frac{W_0}{L_0}} = \frac{W_1 L_0}{L_1 W_0}
+    \end{align*}
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}:\\
+    Applying KCL at $V_{out}$:
+    \begin{align*}
+      V_{out}G_4 + (V_{out} - V_{x})g_{o_2} + g_{m_2}(V_{y} - V_{x}) &= 0 \\
+      V_{out}(G_4 + g_{o_2}) - V_{x}(g_{o_2} + g_{m_2}) + g_{m_2}V_{y} &= 0 \tag{7}
+    \end{align*}
+    Applying KCL at $V_{x}$:
+    \begin{align*}
+      (V_{x} - V_{out})g_{o_2} + V_{x}g_{o_1} + g_{m_1}V_{x} - g_{m_2}(V_{y} - V_{x}) + I_{G} &= 0 \\
+      (V_{x} - V_{out})g_{o_2} + V_{x}g_{o_1} + g_{m_1}V_{x} - g_{m_2}(V_{y} - V_{x}) &= 0 \quad \text{[as } I_{G} \approx 0 \text{ by MOS physics]} \\
+      V_{x}g_{o_2} - V_{out}g_{o_2} + V_{x}g_{o_1} + g_{m_1}V_{x} - g_{m_2}V_{y} + g_{m_2}V_{x} &= 0 \\
+      V_{x}(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) - V_{out}g_{o_2} - g_{m_2}V_{y} &= 0 \tag{8}
+    \end{align*}
+    Applying KCL at $V_{y}$:
+    \begin{align*}
+      V_{y}G_3 + V_{y}g_{o_0} + g_{m_0}V_{x} &= 0 \\
+      V_{y}(G_3 + g_{o_0}) + g_{m_0}V_{x} &= 0 \tag{9}
+    \end{align*}
+    Adding voltage source $V_s$ at $V_y$ that supplies
+    a current $I_s$ into $V_y$, we get:
+    \begin{align*}
+      V_{y}(G_3 + g_{o_0}) + g_{m_0}V_{x} - I_{s} &= 0 \tag{10}
+    \end{align*}
+    Fourth equation arises from Voltage source:
+    \begin{align*}
+      V_{y} &= V_{s} \tag{11}
+    \end{align*}
+    Solving equations (7), (8), (10) and (11),
+    \begin{align*}
+      V_{out}(G_4 + g_{o_2}) - V_{x}(g_{o_2} + g_{m_2}) + g_{m_2}V_{y} &= 0 \\
+      V_{out}(G_4 + g_{o_2}) - V_{x}(g_{o_2} + g_{m_2}) + g_{m_2}V_{s} &= 0 \quad \text{[from (11)]} \tag{12} \\
+      \\
+      V_{x}(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) - V_{out}g_{o_2} - g_{m_2}V_{y} &= 0 \\
+      V_{x}(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) - V_{out}g_{o_2} - g_{m_2}V_{s} &= 0 \quad \text{[from (11)]} \\
+      V_{x}(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) &= V_{out}g_{o_2} + g_{m_2}V_{s} \\
+      V_{x} &= \frac{V_{out}g_{o_2} + g_{m_2}V_{s}}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}} \tag{13}
+    \end{align*}
+    Putting (13) in (12),
+    \begin{align*}
+      V_{out}(G_4 + g_{o_2}) - \left(\frac{V_{out}g_{o_2} + g_{m_2}V_{s}}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}}\right)(g_{o_2} + g_{m_2}) + g_{m_2}V_{s} &= 0 \\
+      V_{out}(G_4 + g_{o_2}) - \frac{V_{out}g_{o_2}(g_{o_2} + g_{m_2})}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}} - \frac{g_{m_2}V_{s}(g_{o_2} + g_{m_2})}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}} + g_{m_2}V_{s} &= 0 \\
+      V_{out}\left((G_4 + g_{o_2}) - \frac{g_{o_2}(g_{o_2} + g_{m_2})}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}}\right) + V_{s}\left(g_{m_2} - \frac{g_{m_2}(g_{o_2} + g_{m_2})}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}}\right) &= 0 \\
+      V_{out}\left(\frac{(G_4 + g_{o_2})(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) - g_{o_2}(g_{o_2} + g_{m_2})}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}}\right) \\ \qquad \, = -V_{s}\left(\frac{g_{m_2}(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) - g_{m_2}(g_{o_2} + g_{m_2})}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}}\right) \\
+      V_{out}\left(\frac{G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) - g_{o_2}(g_{o_2} + g_{m_2})}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}}\right) \\ \qquad \, = -V_{s}\left(\frac{g_{m_2}(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) - g_{m_2}(g_{o_2} + g_{m_2})}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}}\right) \\
+      V_{out}\left(\frac{G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1}) + g_{o_2}(g_{o_2} + g_{m_2}) - g_{o_2}(g_{o_2} + g_{m_2})}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}}\right) \\ \qquad \, = -V_{s}\left(\frac{g_{m_2}(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) - g_{m_2}(g_{o_2} + g_{m_2})}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}}\right) \\
+      V_{out}\left(\frac{G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}}\right) \\ \qquad \, = -V_{s}\left(\frac{g_{m_2}(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) - g_{m_2}(g_{o_2} + g_{m_2})}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}}\right) \\
+      V_{out}(G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})) \\ \qquad \, = -V_{s}(g_{m_2}(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) - g_{m_2}(g_{o_2} + g_{m_2})) \\\\
+      V_{out}(G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})) \\ \qquad \, = -V_{s}(g_{m_2}g_{o_2} + g_{m_2}g_{o_1} + g_{m_2}g_{m_1} + g_{m_2}^2 - g_{m_2}g_{o_2} - g_{m_2}^2) \\\\
+      V_{out}(G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})) \\ \qquad \, = -V_{s}(g_{m_2}g_{o_1} + g_{m_2}g_{m_1}) \\\\
+      V_{out}(G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})) \\ \qquad \, = -V_{s}(g_{m_2}(g_{o_1} + g_{m_1})) \\\\
+      \therefore \frac{V_{out}}{V_s} = \frac{-g_{m_2}(g_{o_1} + g_{m_1})}{G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})} \tag{14}
+    \end{align*}
+\end{enumerate}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Impedances, Small Signal, Frequency Domain, AC Input (Q4)}:
+    \paragraph{At Input:} Applying a test current $I_{test}$
+      at $V_{y}$, from equation (9):
+      \begin{align*}
+        V_{y}(G_3 + g_{o_0}) + g_{m_0}V_{x} &= I_{test}
+      \end{align*}
+      Substituting (14) into (13) (\(V_s = V_y\) by (11), and (14) holds for
+      any \(V_y\) since it follows from (7) and (8) only):
+      \begin{align*}
+        V_{x} &= \frac{V_{out}g_{o_2} + g_{m_2}V_{y}}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}} \\
+              &= \frac{\left(V_{y} \cdot \frac{-g_{m_2}(g_{o_1} + g_{m_1})}{G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})}\right)g_{o_2} + g_{m_2}V_{y}}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}} \\
+              &= \frac{V_{y}\frac{-g_{m_2}g_{o_2}(g_{o_1} + g_{m_1})}{G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})} + g_{m_2}V_{y}}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}} \\
+              &= V_{y} \cdot \frac{g_{m_2} - \frac{g_{m_2}g_{o_2}(g_{o_1} + g_{m_1})}{G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})}}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}} \\
+              &= V_{y} \cdot \frac{g_{m_2}G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{m_2}g_{o_2}(g_{o_1} + g_{m_1}) - g_{m_2}g_{o_2}(g_{o_1} + g_{m_1})}{(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2})G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2})} \\
+              &= V_{y} \cdot \frac{g_{m_2}G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2})}{(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2})G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2})} \\
+              &= V_{y} \cdot \frac{g_{m_2}G_4}{G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})} \tag{15}
+      \end{align*}
+      Substituting (15) into (9):
+      \begin{align*}
+        V_{y}(G_3 + g_{o_0}) + g_{m_0}\left(V_{y} \cdot \frac{g_{m_2}G_4}{G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})}\right) &= I_{test} \\
+        V_{y}\left((G_3 + g_{o_0}) + \frac{g_{m_0}g_{m_2}G_4}{G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})}\right) &= I_{test} \\
+        V_{y}\left(\frac{(G_3 + g_{o_0})(G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})) + g_{m_0}g_{m_2}G_4}{G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})}\right) &= I_{test} \\
+        \therefore Z_{in} = \frac{V_{y}}{I_{test}} = \frac{G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})}{(G_3 + g_{o_0})(G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})) + g_{m_0}g_{m_2}G_4}
+      \end{align*}
+    \paragraph{At Output:} Applying a test current $I_{test}$
+      at $V_{out}$ (the input current source is opened, so (9) holds
+      unchanged). Let \(S = g_{o_1} + g_{m_1} + g_{o_2} + g_{m_2}\) and
+      \(H = G_3 + g_{o_0}\). From (7), (8) and (9):
+      \begin{align*}
+        V_{out}(G_4 + g_{o_2}) - V_{x}(g_{o_2} + g_{m_2}) + g_{m_2}V_{y} &= I_{test} \tag{16} \\
+        V_{x} S - V_{out}g_{o_2} - g_{m_2}V_{y} &= 0 \tag{17} \\
+        V_{y} H + g_{m_0}V_{x} = 0 \quad \Rightarrow \quad V_{y} &= -\frac{g_{m_0}}{H} V_{x} \tag{18}
+      \end{align*}
+      Substituting (18) into (17):
+      \begin{align*}
+        V_{x} S + \frac{g_{m_0} g_{m_2}}{H} V_{x} &= V_{out}g_{o_2} \\
+        V_{x} \left( \frac{S H + g_{m_0} g_{m_2}}{H} \right) &= V_{out}g_{o_2} \\
+        V_{x} &= \frac{g_{o_2} H}{S H + g_{m_0} g_{m_2}} V_{out} \tag{19}
+      \end{align*}
+      Substituting (18) into (16):
+      \begin{align*}
+        V_{out}(G_4 + g_{o_2}) - V_{x}(g_{o_2} + g_{m_2}) - \frac{g_{m_0} g_{m_2}}{H} V_{x} &= I_{test} \\
+        V_{out}(G_4 + g_{o_2}) - V_{x} \left( \frac{(g_{o_2} + g_{m_2}) H + g_{m_0} g_{m_2}}{H} \right) &= I_{test} \tag{20}
+      \end{align*}
+      Substituting (19) into (20):
+      \begin{align*}
+        V_{out}(G_4 + g_{o_2}) - V_{out} \frac{g_{o_2} \left( (g_{o_2} + g_{m_2}) H + g_{m_0} g_{m_2} \right)}{S H + g_{m_0} g_{m_2}} &= I_{test} \\
+        V_{out} \left( \frac{(G_4 + g_{o_2})(S H + g_{m_0} g_{m_2}) - g_{o_2}(g_{o_2} + g_{m_2}) H - g_{o_2} g_{m_0} g_{m_2}}{S H + g_{m_0} g_{m_2}} \right) &= I_{test} \\
+        V_{out} \left( \frac{G_4 (S H + g_{m_0} g_{m_2}) + g_{o_2} S H - g_{o_2}(g_{o_2} + g_{m_2}) H}{S H + g_{m_0} g_{m_2}} \right) &= I_{test} \\
+        V_{out} \left( \frac{G_4 (S H + g_{m_0} g_{m_2}) + g_{o_2} H (g_{o_1} + g_{m_1})}{S H + g_{m_0} g_{m_2}} \right) &= I_{test} \hspace{1cm} [S - g_{o_2} - g_{m_2} = g_{o_1} + g_{m_1}]
+      \end{align*}
+      \begin{align*}
+        \therefore Z_{out} = \frac{V_{out}}{I_{test}} = \frac{S H + g_{m_0} g_{m_2}}{G_4 (S H + g_{m_0} g_{m_2}) + g_{o_2} H (g_{o_1} + g_{m_1})}
+      \end{align*}
+      which is the load \(G_4\) in parallel with the mirror's own output
+      impedance. Dividing numerator and denominator by \(S H + g_{m_0} g_{m_2}\):
+      \begin{align*}
+        Z_{out} &= \frac{1}{G_4 + \frac{g_{o_2} H (g_{o_1} + g_{m_1})}{S H + g_{m_0} g_{m_2}}} = \frac{1}{G_4 + \frac{1}{Z_{out,mirror}}}
+      \end{align*}
+      so the mirror alone is (\(G_4 \to 0\)):
+      \begin{align*}
+        Z_{out,mirror} &= \frac{S H + g_{m_0} g_{m_2}}{g_{o_2} (g_{o_1} + g_{m_1}) H} = \frac{(G_3 + g_{o_0}) S + g_{m_0} g_{m_2}}{g_{o_2} (g_{o_1} + g_{m_1}) (G_3 + g_{o_0})}
+      \end{align*}
+      With an ideal input current source (\(G_3 \to 0\), \(H = g_{o_0}\)) and
+      \(g_m \gg g_o\) (\(S \approx g_{m_1} + g_{m_2}\), \(g_{o_1} + g_{m_1} \approx g_{m_1}\)):
+      \begin{align*}
+        Z_{out,mirror} &= \frac{g_{o_0} S + g_{m_0} g_{m_2}}{g_{o_2} (g_{o_1} + g_{m_1}) g_{o_0}} \\
+                       &\approx \frac{g_{o_0}(g_{m_1} + g_{m_2}) + g_{m_0} g_{m_2}}{g_{o_2} g_{m_1} g_{o_0}} \\
+                       &\approx \frac{g_{m_0} g_{m_2}}{g_{o_0} g_{o_2} g_{m_1}} \quad \text{[} g_{o_0}(g_{m_1} + g_{m_2}) \ll g_{m_0} g_{m_2} \text{]}
+      \end{align*}
+      With \(g_m = \frac{2I}{V_{ov}}\), \(g_o = K_{CLM} I\), equal \(V_{ov}\) and
+      \(I_{M_1} = I_{M_2} = I_{OUT}\), \(I_{M_0} = I_{IN}\):
+      \begin{align*}
+        Z_{out,mirror} &\approx \frac{\frac{2I_{IN}}{V_{ov}} \cdot \frac{2I_{OUT}}{V_{ov}}}{K_{CLM} I_{IN} \cdot K_{CLM} I_{OUT} \cdot \frac{2I_{OUT}}{V_{ov}}}
+                        = \frac{\frac{4 I_{IN} I_{OUT}}{V_{ov}^2}}{\frac{2 K_{CLM}^2 I_{IN} I_{OUT}^2}{V_{ov}}}
+                        = \frac{4 I_{IN} I_{OUT} V_{ov}}{2 K_{CLM}^2 I_{IN} I_{OUT}^2 V_{ov}^2}
+                        = \frac{2}{K_{CLM}^2 I_{OUT} V_{ov}}
+      \end{align*}
+  \item \textbf{Output Load (Max), Large Signal, Time Domain, DC Input (Q5)}:
+    \(M_2\) saturated needs \(V_{DS_2} \geq V_{ov_2} = V_{GS_2} - V_{th}\):
+    \begin{align*}
+      V_{OUT} - V_X &\geq V_{Y} - V_{X} - V_{th} \\
+      V_{OUT} &\geq V_Y - V_{th} \\
+      V_{OUT,\min} &= V_Y - V_{th} \\
+      R_{L,\max} &= \frac{V_{cc} - V_{OUT,\min}}{I_{OUT}}
+    \end{align*}
+\end{enumerate}
+
+\subsubsection{Design}
+Large Signal, Time Domain, DC Input Analysis (Q5) can be used to set the bias
+currents and voltages in this circuit.
+\begin{enumerate}
+  \item Choose appropriate transistor dimensions
+    ($W$ and $L$) for transistors $M_0$ and $M_1$
+    to achieve the desired current gain.
+    \begin{align*}
+      \frac{I_{OUT}}{I_{IN}} &= \frac{W_1 L_0}{L_1 W_0}
+    \end{align*}
+  \item Choose a suitable overdrive voltage value
+    ($V_{ov}$) for setting the bias voltages at
+    nodes $V_{X}$ and $V_{Y}$.
+    \begin{align*}
+      V_{ov_0} &= V_{GS_0} - V_{th} \\
+      V_{ov_0} &= (V_{X} - V_{ee}) - V_{th} \\
+      V_{X} &= V_{ov_0} + V_{th} + V_{ee} \\
+      \\
+      V_{ov_2} &= V_{GS_2} - V_{th} \\
+      V_{ov_2} &= (V_{Y} - V_{X}) - V_{th} \\
+      V_{Y} &= V_{ov_2} + V_{th} + V_{X}
+    \end{align*}
+  \item Using the chosen $V_{ov}$, compute $W_0$
+    to set the required bias current $I_{IN}$.
+    \begin{align*}
+      I_{IN} = I_{M_0} &= \frac{K_P}{2} \frac{W_0}{L_0} V_{ov_0}^2 \\
+      \therefore W_0 &= \frac{2 I_{IN} L_0}{K_P V_{ov_0}^2}
+    \end{align*}
+    $W_1$ can then be computed using the current
+    gain relation from step (a). \(M_2\) carries \(I_{M_2} = I_{OUT}\)
+    at the chosen \(V_{ov_2}\):
+    \begin{align*}
+      I_{OUT} = I_{M_2} &= \frac{K_P}{2} \frac{W_2}{L_2} V_{ov_2}^2 \\
+      \therefore W_2 &= \frac{2 I_{OUT} L_2}{K_P V_{ov_2}^2}
+    \end{align*}
+  \item Compute the required value of $G_3$ (or
+    $R_3$) to ensure that the voltage at node
+    $V_{Y}$ is as calculated in step (b).
+    \begin{align*}
+      (V_{Y} - V_{cc})G_3 + I_{M_0} &= 0 \\
+      (V_{cc} - V_{Y})G_3 &= I_{M_0} \\
+      \therefore G_3 &= \frac{I_{IN}}{V_{cc} - V_{Y}} \quad \text{[}I_{M_0} = I_{IN} \text{]} \\
+      R_3 &= \frac{1}{G_3} = \frac{V_{cc} - V_{Y}}{I_{IN}}
+    \end{align*}
+\end{enumerate}
+
+\subsubsection{Question}
+Design a Wilson Current Mirror (Sink) that meets the
+following requirements. The mirror must provide a current
+gain at the output of 5. The input current must be
+$I_{IN} = 100 \mu A$. The mirror must operate with
+$V_{cc} = 5V$ and $V_{ee} = 0V$. Assume the following
+transistor parameters: $V_{th} = 1V$, $K_{CLM} = 0.02 V^{-1}$,
+$K_P = 200 \mu A/V^2$ and
+$L = 1 \mu m$ for all transistors. Find the output impedance
+and the maximum possible load that can be connected at the
+output, with the load returned to $V_{cc}$.
+\paragraph{Solution:}
+\begin{enumerate}
+  \item \textbf{Choose appropriate transistor dimensions:}
+    \begin{align*}
+      \frac{I_{OUT}}{I_{IN}} &= \frac{W_1 L_0}{L_1 W_0} = 5 \\
+      \text{Assuming } L_0 &= L_1 = 1 \mu m \\
+      \frac{W_1 \cdot 1 \mu m}{1 \mu m \cdot W_0} &= 5 \\
+      \therefore W_1 &= 5 W_0 \tag{i}
+    \end{align*}
+  \item \textbf{Choose a suitable overdrive voltage and determine
+    the resulting bias voltages:} Assuming $V_{ov_0} = V_{ov_2} = 0.2V$,
+    \begin{align*}
+      V_{X} &= V_{ov_0} + V_{th} + V_{ee} = 0.2V + 1V + 0V = 1.2V \\
+      V_{Y} &= V_{ov_2} + V_{th} + V_{X} = 0.2V + 1V + 1.2V = 2.4V
+    \end{align*}
+  \item \textbf{Compute $W_0$ to set the required bias current:}
+    For $I_{IN} = 100 \mu A$
+    \begin{align*}
+      W_0 &= \frac{2 I_{IN} L_0}{K_P V_{ov_0}^2} \\
+          &= \frac{2 \cdot 100 \mu A \cdot 1 \mu m}{200 \mu A/V^2 \cdot (0.2V)^2} \\
+          &= 25 \mu m \\
+      W_1 &= 5 W_0 = 5 \cdot 25 \mu m = 125 \mu m \quad \text{[from (i)]}
+    \end{align*}
+    \(M_2\) carries \(I_{OUT} = 5 \cdot 100 \mu A = 500 \mu A\) at \(V_{ov_2} = 0.2V\):
+    \begin{align*}
+      W_2 &= \frac{2 I_{OUT} L_2}{K_P V_{ov_2}^2} = \frac{2 \cdot 500 \mu A \cdot 1 \mu m}{200 \mu A/V^2 \cdot (0.2V)^2} = 125 \mu m
+    \end{align*}
+  \item \textbf{Compute the required value of $G_3$ (or $R_3$):}
+    \begin{align*}
+      R_3 &= \frac{1}{G_3} = \frac{V_{cc} - V_{Y}}{I_{IN}} \\
+          &= \frac{5V - 2.4V}{100 \mu A} = \frac{2.6V}{100 \mu A} = 26k \Omega
+    \end{align*}
+  \item \textbf{Compute the output impedance:} \(M_2\) is sized like \(M_1\)
+    (\(V_{ov_2} = 0.2V\) at \(500\,\mu A\)). With \(g_m = \frac{2 I_D}{V_{ov}}\),
+    \(g_o = K_{CLM} I_D\):
+    \begin{align*}
+      g_{m_0} &= \frac{2 \cdot 100 \mu A}{0.2V} = 1 mS \hspace{1cm}
+      g_{m_1} = g_{m_2} = \frac{2 \cdot 500 \mu A}{0.2V} = 5 mS \\
+      g_{o_0} &= 0.02 \cdot 100 \mu A = 2 \mu S \hspace{1cm}
+      g_{o_1} = g_{o_2} = 0.02 \cdot 500 \mu A = 10 \mu S \\
+      G_3 &= \frac{1}{26 k\Omega} = 38.46 \mu S \hspace{1cm}
+      S = g_{o_1} + g_{m_1} + g_{o_2} + g_{m_2} = 10 \mu S + 5 mS + 10 \mu S + 5 mS = 10.02 mS
+    \end{align*}
+    Ideal input current source (\(G_3 \to 0\)):
+    \begin{align*}
+      Z_{out,mirror} &\approx \frac{2}{K_{CLM}^2 I_{OUT} V_{ov}} = \frac{2}{0.02^2 \cdot 500 \mu A \cdot 0.2V} = \frac{2}{4 \times 10^{-8} \, A} = 50 M\Omega
+    \end{align*}
+    Input current set by \(R_3\) (\(H = G_3 + g_{o_0} = 40.46\,\mu S\)):
+    \begin{align*}
+      Z_{out,mirror} &= \frac{H S + g_{m_0} g_{m_2}}{g_{o_2} (g_{o_1} + g_{m_1}) H} = \frac{(40.46 \mu)(10.02 m) + (1 m)(5 m)}{(10 \mu)(5.01 m)(40.46 \mu)} \\
+                     &= \frac{0.405 \times 10^{-6} + 5 \times 10^{-6}}{2.027 \times 10^{-12}} = \frac{5.405 \times 10^{-6}}{2.027 \times 10^{-12}} \approx 2.67 M\Omega
+    \end{align*}
+    \(R_3\) shunts the feedback node \(V_Y\), which is why the Wilson mirror
+    is fed from a high impedance current source in practice.
+  \item \textbf{Compute the maximum load that can be connected
+    at the output:}
+    \begin{align*}
+      V_{OUT,\min} &= V_Y - V_{th} = 2.4V - 1V = 1.4V \\
+      R_{L, \max} &= \frac{V_{cc} - V_{OUT,\min}}{I_{M_2}} = \frac{5V - 1.4V}{500 \mu A} = 7.2 k\Omega
+    \end{align*}
+\end{enumerate}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms Vy Vx Vout Itest
+  syms G3 G4 go0 gm0 go1 gm1 go2 gm2
+
+  % small signal kcl, equations (7), (8) and (9)
+  eq7 = Vout*(G4 + go2) - Vx*(go2 + gm2) + gm2*Vy == 0;          % KCL at Vout
+  eq8 = Vx*(go2 + go1 + gm1 + gm2) - Vout*go2 - gm2*Vy == 0;     % KCL at Vx
+  eq9 = Vy*(G3 + go0) + gm0*Vx == 0;                             % KCL at Vy
+
+  % voltage transfer (14): Vy forced by a source, so (9) drops out
+  sol = solve([eq7, eq8], [Vout, Vx]);
+  printf('=== Vout/Vy ===\n'); pretty(factor(simplify(sol.Vout/Vy)))
+
+  % input impedance: Itest into Vy
+  sol = solve([eq7, eq8, Vy*(G3 + go0) + gm0*Vx == Itest], [Vout, Vx, Vy]);
+  printf('=== Zin ===\n'); pretty(factor(simplify(sol.Vy/Itest)))
+
+  % output impedance (16): Itest into Vout, load G4 kept
+  eq16 = Vout*(G4 + go2) - Vx*(go2 + gm2) + gm2*Vy == Itest;
+  sol = solve([eq16, eq8, eq9], [Vout, Vx, Vy]);
+  zout = factor(simplify(sol.Vout/Itest));
+  printf('=== Zout ===\n'); pretty(zout)
+  printf('=== Zout, mirror alone (G4 = 0) ===\n');
+  pretty(factor(subs(zout, G4, 0)))
+\end{lstlisting}

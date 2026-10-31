@@ -1,0 +1,81 @@
+\subsection{Buffer (Voltage Follower)}\label{sec:amp_buffer}
+
+\subsubsection{Overview}
+The non-inverting amplifier with \(G_2 \to \infty\) (output shorted to
+\(V_-\)) and \(G_1 \to 0\): \(F = 1\). Unity gain, infinite input
+impedance, near zero output impedance. Used to stop loading
+(Section~\ref{sec:theory_general_loading}).
+
+\subsubsection{Schematic}
+\begin{circuitfig}
+  \draw (0,0) node[op amp](A){};
+  \draw (A.+) -- ++(-1.2,0) node[circ]{} node[left]{$V_{in}$};
+  \draw (A.-) -- ++(-0.4,0) |- (1.6,1.4) -| (A.out);
+  \draw (A.out) to[short, -o] ++(0.8,0) node[right]{$V_{out}$};
+\end{circuitfig}
+
+\subsubsection{Transfer Function}
+\textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}, \(A = A(s)\)
+(\(A = A_0\) gives the Large Signal, Time Domain, DC Input Analysis (Q5)):
+\(V_+ = V_{in}\) and \(V_- = V_{out}\), so
+\begin{align*}
+  V_{out} &= A(V_+ - V_-) = A(V_{in} - V_{out}) \\
+  V_{out} + A V_{out} &= A V_{in} \\
+  V_{out}(1 + A) &= A V_{in} \\
+  H = \frac{V_{out}}{V_{in}} &= \frac{A}{1 + A} = \frac{(1 + A) - 1}{1 + A} = 1 - \frac{1}{1 + A} \xrightarrow{A \to \infty} 1
+\end{align*}
+The gain error is \(\frac{1}{1 + A}\). This is the non-inverting result
+\(\frac{A}{1 + AF}\) (Section~\ref{sec:amp_noninverting}) with \(F = 1\).
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Bandwidth, Small Signal, Frequency Domain, AC Input Analysis
+    (Q4)}: with \(A(s) = \frac{2\pi GB}{s}\),
+    \begin{align*}
+      H(s) &= \frac{\frac{2\pi GB}{s}}{1 + \frac{2\pi GB}{s}} = \frac{2\pi GB}{s + 2\pi GB} \hspace{1cm} [\times \tfrac{s}{s}] \\
+      H(s) &= \frac{1}{1 + \frac{s}{2\pi GB}} \hspace{1cm} [\div 2\pi GB]
+    \end{align*}
+    a single pole at \(s = -2\pi GB\): \(f_{-3dB} = GB\), the widest of any
+    configuration, and also the hardest to stabilise (\(F = 1\) is the largest
+    loop gain \(AF\)).
+  \item \textbf{Impedances}: with the op-amp model of
+    Section~\ref{sec:devices_opamp} (\(R_{id}\) between \(V_+\) and \(V_-\)).
+    \paragraph{At Input:} a test voltage \(V_{test}\) at \(V_+\) gives
+    \(V_- = V_{out} = \frac{A}{1 + A} V_{test}\), so
+    \begin{align*}
+      V_+ - V_- &= V_{test} - \frac{A}{1 + A} V_{test} = V_{test}\frac{1 + A - A}{1 + A} = \frac{V_{test}}{1 + A} \\
+      I_{test} &= \frac{V_+ - V_-}{R_{id}} = \frac{V_{test}}{R_{id}(1 + A)} \\
+      Z_{in} &= \frac{V_{test}}{I_{test}} = R_{id}(1 + A)
+    \end{align*}
+    \paragraph{At Output:} \(V_{in} = 0\), a test voltage \(V_{test}\) at the
+    output, \(V_- = V_{test}\), the internal source is
+    \(A(0 - V_{test}) = -A V_{test}\) behind \(R_o\) (current into \(R_{id}\)
+    neglected):
+    \begin{align*}
+      I_{test} &= \frac{V_{test} - (-A V_{test})}{R_o} = \frac{V_{test}(1 + A)}{R_o} \\
+      Z_{out} &= \frac{V_{test}}{I_{test}} = \frac{R_o}{1 + A}
+    \end{align*}
+  \item \textbf{Step Response, Small Signal, Time Domain, AC Input Analysis
+    (Q2)}: a step of height \(V_s\) is \(\frac{V_s}{s}\), so
+    \begin{align*}
+      V_{out}(s) &= \frac{V_s}{s}\cdot\frac{2\pi GB}{s + 2\pi GB} = V_s\left(\frac{1}{s} - \frac{1}{s + 2\pi GB}\right) \hspace{1cm} \text{(Partial fractions)} \\
+      V_{out}(t) &= V_s\left(1 - e^{-2\pi GB\, t}\right) \\
+      \frac{dV_{out}}{dt} &= V_s \cdot 2\pi GB\, e^{-2\pi GB\, t} \hspace{1cm} \Rightarrow \hspace{1cm} \left.\frac{dV_{out}}{dt}\right|_{\max} = V_s \cdot 2\pi GB \hspace{0.5cm} [t = 0]
+    \end{align*}
+  \item \textbf{Slew, Large Signal, Time Domain, AC Input Analysis (Q6)}: the
+    output cannot move faster than \(SR\). The Q2 slope exceeds it when
+    \begin{align*}
+      V_s \cdot 2\pi GB &> SR \hspace{1cm} \Rightarrow \hspace{1cm} V_s > \frac{SR}{2\pi GB}
+    \end{align*}
+    and the output then ramps at \(SR\), reaching \(V_s\) after
+    \(\approx \frac{V_s}{SR}\); otherwise the Q2 exponential holds.
+\end{enumerate}
+
+\subsubsection{Question}
+\(A_0 = 10^5\), \(GB = 1\,\)MHz, \(SR = 1\,V/\mu s\). Find the DC gain error and
+the largest step that does not slew.
+\paragraph{Solution:}
+\begin{align*}
+  \frac{1}{1 + A_0} &= \frac{1}{1 + 10^5} = 9.9999 \times 10^{-6} \approx 0.001\,\% \\
+  V_{s,\max} &= \frac{SR}{2\pi GB} = \frac{10^6\,V/s}{2\pi \cdot 10^6\,Hz} = \frac{1}{6.283}\,V = 0.159\,V
+\end{align*}
