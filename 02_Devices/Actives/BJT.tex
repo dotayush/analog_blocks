@@ -9,7 +9,8 @@ process.
 
 The three terminals are the base (B), the collector (C) and the
 emitter (E). It is often called a \emph{current controlled device}
-because of its base-collector current relationship \(I_C = B_F I_B\).
+because of the relationship between its base and collector currents,
+\(I_C = B_F I_B\).
 In reality, the base-emitter voltage controls the collector current
 (\(I_C \propto e^{V_{BE}/V_T}\)) and the base current is a by-product.
 
@@ -103,11 +104,20 @@ The behaviour of a BJT can be approximated well by the below equations.
         We \textbf{can also derive the base and emitter currents} from the collector
         current model.
         \begin{itemize}
-          \item Common emitter and common base gains:
+          \item Common emitter and common base gains. In forward active
+            \(|I_R| \approx I_{RS} \ll I_F\), so \(I_R\) is dropped from
+            \(I_C = A_F I_F - I_R\) and \(I_B = (1 - A_F) I_F + (1 - A_R) I_R\):
             \begin{align*}
-              B_F &= \frac{I_C}{I_B} = \frac{A_F I_F}{(1 - A_F) I_F} = \frac{A_F}{1 - A_F}
-              \hspace{1cm} \Leftrightarrow \hspace{1cm} A_F = \frac{B_F}{1 + B_F} \\
-              B_R &= \frac{A_R}{1 - A_R}
+              B_F &= \frac{I_C}{I_B} = \frac{A_F I_F}{(1 - A_F) I_F} = \frac{A_F}{1 - A_F} \\
+              B_F (1 - A_F) &= A_F \\
+              B_F &= A_F (1 + B_F) \\
+              A_F &= \frac{B_F}{1 + B_F}
+            \end{align*}
+            In reverse active (\(I_F \approx 0\)) the emitter collects,
+            \(-I_E = A_R I_R\) and \(I_B = (1 - A_R) I_R\), so in the same way
+            \begin{align*}
+              B_R &= \frac{-I_E}{I_B} = \frac{A_R I_R}{(1 - A_R) I_R} = \frac{A_R}{1 - A_R}
+              \hspace{1cm} \Leftrightarrow \hspace{1cm} A_R = \frac{B_R}{1 + B_R}
             \end{align*}
           \item Base Current (\(I_B\)):
             \[
@@ -117,7 +127,8 @@ The behaviour of a BJT can be approximated well by the below equations.
             \begin{align*}
               I_E &= I_C + I_B \\
               I_E &= I_C + \frac{I_C}{B_F} \\
-              I_E &= I_C \left( 1 + \frac{1}{B_F} \right) = \frac{I_C}{A_F} \\
+              I_E &= I_C \left( 1 + \frac{1}{B_F} \right) \\
+              I_E &= I_C \cdot \frac{1 + B_F}{B_F} = \frac{I_C}{A_F} \hspace{1cm} \left[A_F = \frac{B_F}{1 + B_F}\right] \\
               I_E &\approx I_C \hspace{1cm} \text{[for large \(B_F\)]}
             \end{align*}
         \end{itemize}
@@ -151,13 +162,15 @@ The behaviour of a BJT can be approximated well by the below equations.
           g_m &= \frac{\partial}{\partial V_{BE}} \left[ I_S \left( e^{\frac{V_{BE}}{V_T}} - 1 \right) \right]_{Q} \\
           g_m &= \frac{\partial}{\partial V_{BE}} \left[ I_S e^{\frac{V_{BE}}{V_T}} - I_S \right]_{Q} \\
           g_m &= I_S e^{\frac{V_{BE(Q)}}{V_T}} \times \frac{1}{V_T} \\
-          g_m &= \frac{I_{C(Q)} + I_S}{V_T} \approx \frac{I_{C(Q)}}{V_T}
+          g_m &= \frac{I_{C(Q)} + I_S}{V_T} \hspace{1cm} \left[I_{C(Q)} = I_S e^{\frac{V_{BE(Q)}}{V_T}} - I_S\right] \\
+          g_m &\approx \frac{I_{C(Q)}}{V_T} \hspace{1cm} [I_{C(Q)} \gg I_S]
         \end{align*}
         \(g_{be}\) can be calculated as follows:
         \begin{align*}
           g_{be} &= \left.\frac{\partial I_B}{\partial V_{BE}} \right|_{V_{CE(Q)}} \\
           g_{be} &= \frac{\partial}{\partial V_{BE}} \left[ \frac{I_S}{B_F} \left( e^{\frac{V_{BE}}{V_T}} - 1 \right) \right]_{Q} \\
           g_{be} &= \frac{1}{B_F} \cdot \frac{I_S e^{\frac{V_{BE(Q)}}{V_T}}}{V_T} \\
+          g_{be} &= \frac{1}{B_F} \cdot g_m \hspace{1cm} \left[g_m = \frac{I_S e^{\frac{V_{BE(Q)}}{V_T}}}{V_T}\right] \\
           g_{be} &= \frac{g_m}{B_F} \hspace{1cm} \left[r_{be} = \frac{B_F}{g_m} = \frac{B_F V_T}{I_{C(Q)}}\right]
         \end{align*}
         \(g_o\) can be calculated as follows:
@@ -165,7 +178,14 @@ The behaviour of a BJT can be approximated well by the below equations.
           g_o &= \left.\frac{\partial I_C}{\partial V_{CE}} \right|_{V_{BE(Q)}} \\
           g_o &= \frac{\partial}{\partial V_{CE}} \left[ I_S \left( e^{\frac{V_{BE}}{V_T}} - 1 \right) \left( 1 + \frac{V_{CE}}{V_A} \right) \right]_{Q} \\
           g_o &= I_S \left(e^{\frac{V_{BE(Q)}}{V_T}} - 1 \right) \times \frac{1}{V_A} \\
-          g_o &= \frac{I_{C(Q)}}{1 + \frac{V_{CE(Q)}}{V_A}} \cdot \frac{1}{V_A} = \frac{I_{C(Q)}}{V_A + V_{CE(Q)}} \approx \frac{I_{C(Q)}}{V_A} \hspace{1cm} [V_A \gg V_{CE(Q)}]
+          g_o &= \frac{I_{C(Q)}}{1 + \frac{V_{CE(Q)}}{V_A}} \cdot \frac{1}{V_A} \hspace{1cm} \left[I_S \left(e^{\frac{V_{BE(Q)}}{V_T}} - 1 \right) = \frac{I_{C(Q)}}{1 + \frac{V_{CE(Q)}}{V_A}}\right] \\
+          g_o &= \frac{I_{C(Q)}}{V_A + V_{CE(Q)}} \approx \frac{I_{C(Q)}}{V_A} \hspace{1cm} [V_A \gg V_{CE(Q)}]
+        \end{align*}
+        For example, at \(I_{C(Q)} = 1\,\text{mA}\), \(B_F = 100\), \(V_A = 100\,\text{V}\):
+        \begin{align*}
+          g_m &= \frac{1\,\text{mA}}{26\,\text{mV}} \approx 38.5\,\text{mS} \hspace{1cm}
+          g_{be} = \frac{38.5\,\text{mS}}{100} = 385\,\mu\text{S} \ (r_{be} = 2.6\,\text{k}\Omega) \hspace{1cm}
+          g_o = \frac{1\,\text{mA}}{100\,\text{V}} = 10\,\mu\text{S}
         \end{align*}
         The model is valid while \(|V_{be}| \ll 2V_T \approx 52\,\text{mV}\)
         (the bound of Section~\ref{sec:analysis_linearization} with \(n = 1\)).
@@ -245,8 +265,8 @@ The behaviour of a BJT can be approximated well by the below equations.
       \item \textbf{Switching}:
         A BJT can be used as a switch by being driven between \textbf{cutoff}
         (off) and \textbf{saturation} (on). The idea is to size the base resistor
-        such that there is enough \(I_C\) -- it collapses  \(V_{CE}\) to
-        \(V_{CE(sat)}\) (typically \(0.2\text{--}0.3 V\)) through whatever load
+        such that there is enough \(I_B\) for the resulting \(I_C\) to collapse \(V_{CE}\) to
+        \(V_{CE(sat)}\) (typically \(0.2\text{--}0.3\,\mathrm{V}\)) through whatever load
         that exists on the collector. You only need to,
         \begin {itemize}
           \item Find the required collector current \(I_C\) to drive the load.
@@ -295,15 +315,19 @@ The behaviour of a BJT can be approximated well by the below equations.
     \end{itemize}
   \item \textbf{Noise}:
       BJTs are also affected by noise namely, thermal noise, shot noise and flicker
-      noise. You can read more about these noises in~\ref{sec:theory_general_noise}.
+      noise. You can read more about these noises in Section~\ref{sec:theory_general_noise}.
   \item \textbf{Circuit Analysis}:
-    Depending upon Axes of Linearity requirements, You can either use the
+    Depending upon Axis of Linearity requirements, you can either use the
     Non-Linear or Linear model to analyse the behaviour of a BJT while
     performing your circuit analysis.
     \begin{itemize}
-      \item \textbf{Non-Linear Analysis (Q5, Q6, Q8)}:
+      \item \textbf{Non-Linear Analysis} (Large Signal, Time Domain, DC
+        Input Analysis (Q5); Large Signal, Time Domain, AC Input Analysis
+        (Q6); Large Signal, Frequency Domain, AC Input Analysis (Q8)):
         Use Ebers-Moll model to analyse the behaviour of a BJT in a circuit.
-      \item \textbf{Linear Analysis (Q4, Q2)}:
+      \item \textbf{Linear Analysis} (Small Signal, Frequency Domain, AC
+        Input Analysis (Q4); Small Signal, Time Domain, AC Input Analysis
+        (Q2)):
         Use the hybrid-pi model, evaluated at the Q5 bias point, to analyse
         the behaviour of a BJT in a circuit.
     \end{itemize}
