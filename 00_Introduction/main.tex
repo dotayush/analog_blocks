@@ -28,3 +28,79 @@ repository or reach out to me directly.
 \\
 Best regards,\\
 Ayush Gupta
+
+\chapter*{Organisation}
+\addcontentsline{toc}{chapter}{Organisation}
+Every block is a combination of devices. Every block is analysed with
+the octant system of Chapter~\ref{ch:analysis}. The notebook therefore
+reads bottom up:
+\begin{verbatim}
+ Analysis ......... octant system (how to analyse anything below)
+ Devices .......... Passives: Resistor, Capacitor, Inductor, Diode
+                    Actives:  BJT, MOSFET, Op-Amp
+ General .......... Voltage Dividers, Current Dividers
+ Filters .......... Passive: Single Pole (RC, RL), Double Pole (LC, RLC)
+                    Active:  Single Pole, Sallen-Key, Multiple Feedback
+ Current Mirrors .. Basic, Widlar, Wilson, Modified Wilson, Cascode
+ Amplifiers ....... Common:       CS, CG, CD, CE, CB, CC
+                    Functional:   Buffer, Inverting, Non-Inverting,
+                                  Summing, Difference, Integrator,
+                                  Differentiator
+                    Differential: Differential Pair, 5T OTA, Cascode,
+                                  Telescopic Cascode, Regulated Cascode,
+                                  Folded Cascode, Folded Regulated
+                                  Cascode, Current Mirror Op-Amp,
+                                  Two-Stage Op-Amp
+ Data Converters .. Characterisation
+                    DAC: String, R-2R, Current Source/Sink, MDAC,
+                         Current Steering (1-Steering), SAR, Pipeline,
+                         Delta-Sigma
+                    ADC: Nyquist Rate: Flash, Two-Step Flash, Multi-Step
+                         Flash, Pipeline, Cyclic, Interpolating,
+                         Folding, SAR, Dual Slope
+                         Over-Sampled: First Order, Higher Order,
+                         Single-Bit, Multi-Bit, Continuous-Time
+ PLLs and VCOs .... Phase Detectors, Charge Pump, Loop Filter, PLL,
+                    Ring VCO, LC VCO, Relaxation VCO
+ RF ............... (reserved)
+ Electromechanics . Motors
+ Appendix ......... Theory: General, Controls, Electromagnetics
+\end{verbatim}
+Each block follows the same layout: \textbf{Overview}, \textbf{Schematic},
+\textbf{Transfer Function} (Large Signal, Q5, and Small Signal, Q4),
+\textbf{Analysis} (poles, zeros, gains, impedances), \textbf{Design},
+\textbf{Question} and, where the algebra is heavy, \textbf{Code}.
+
+\chapter*{Notation}
+\addcontentsline{toc}{chapter}{Notation}
+Greek letters are kept only for units and for universal constants and
+angles (\(\Omega\), \(\pi\), \(\omega = 2\pi f\), \(\theta\), \(\phi\),
+\(\psi\), the micro prefix \(\mu\)). Every quantity that a designer
+chooses or a device exhibits is written with english letters.
+\begin{table}[H]
+  \centering
+  \begin{tabular}{|c|c|l|} \hline
+    \textbf{Usual} & \textbf{Here} & \textbf{Meaning} \\ \hline
+    \(\beta_F, \beta_R\) & \(B_F, B_R\) & BJT forward/reverse current gain \(I_C/I_B\) \\ \hline
+    \(\alpha_F, \alpha_R\) & \(A_F, A_R\) & BJT common base current gain \(I_C/I_E\) \\ \hline
+    \(g_\pi, r_\pi\) & \(g_{be}, r_{be}\) & BJT small signal base-emitter conductance/resistance \\ \hline
+    \(\lambda\) & \(K_{CLM}\) & MOSFET channel length modulation coefficient (V\(^{-1}\)) \\ \hline
+    \(\mu_n C_{ox}\) & \(K_P\) & MOSFET process transconductance (A/V\(^2\)) \\ \hline
+    \(\zeta\) & \(D_R\) & damping ratio of a second order system \\ \hline
+    \(\tau\) & \(T_c\) & time constant \\ \hline
+    \(\beta\) (feedback) & \(F\) & feedback factor \\ \hline
+    \(\phi_M\) & \(PM\) & phase margin \\ \hline
+    \(\Delta\) & \(d\) & small change (\(dV\), \(dI\)) \\ \hline
+  \end{tabular}
+\end{table}
+\noindent Other conventions:
+\begin{enumerate}
+  \item Upper case symbols with upper case subscripts (\(V_{GS}\), \(I_D\))
+    are large signal quantities. Lower case symbols with lower case
+    subscripts (\(v_{gs}\), \(i_d\)) are small signal quantities. Where
+    a node voltage keeps the same name in both, the section heading
+    (Large Signal / Small Signal) decides which is meant.
+  \item Conductances \(G = 1/R\), \(g_m\), \(g_o = 1/r_o\) are preferred
+    over resistances since KCL is written in conductances.
+  \item \(A \parallel B = \dfrac{AB}{A + B}\).
+\end{enumerate}
