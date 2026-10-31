@@ -119,7 +119,7 @@ analysis technique that arises from it.
       It is the Laplace Transform of \textbf{Q5}, differing only in the
       Mathematical Representation used. It does contain information about
       the circuit, namely the frequency response to a DC input but since
-      it is only a single frequency bin at zero, This analysis is
+      it is only a single frequency bin at zero, this analysis is
       \textbf{not useful}.
     \item \textbf{Q8: Large Signal, Frequency Domain, AC Input:}
       It is the Laplace Transform of \textbf{Q6},
@@ -136,7 +136,7 @@ analysis technique that arises from it.
 \end{itemize}
 
 Removing \textbf{Q1}, \textbf{Q3} and \textbf{Q7} due to lack of usefulness,
-We can summarize the octants and the analysis techniques that arise
+we can summarize the octants and the analysis techniques that arise
 from them:
 \begin{table}[H]
     \centering
@@ -213,7 +213,8 @@ The small signal conductance is \(g = f'(V_Q)\). The approximation holds
 when the second order term is negligible against the first:
 \begin{align*}
   \left|\frac{f''(V_Q)}{2} V_d^2\right| &\ll \left| f'(V_Q) V_d \right| \\
-  |V_d| &\ll 2 \left| \frac{f'(V_Q)}{f''(V_Q)} \right|
+  \frac{|f''(V_Q)|}{2} |V_d| &\ll |f'(V_Q)| \hspace{1cm} [\text{divide by } |V_d|] \\
+  |V_d| &\ll 2 \left| \frac{f'(V_Q)}{f''(V_Q)} \right| \hspace{1cm} [\text{multiply by } \tfrac{2}{|f''(V_Q)|}]
 \end{align*}
 For a device with more than one controlling voltage, \(I = f(V_1, V_2)\),
 the same expansion gives one conductance per controlling voltage:
@@ -226,37 +227,40 @@ This is where \(g_m = \partial I_D/\partial V_{GS}\) and
 
 \paragraph{Example (diode):} \(f(V) = I_S\left(e^{V/(nV_T)} - 1\right)\).
 \begin{align*}
-  f'(V_Q) &= \frac{I_S e^{V_Q/(nV_T)}}{nV_T} = \frac{I_Q + I_S}{nV_T} \\
-  f''(V_Q) &= \frac{I_S e^{V_Q/(nV_T)}}{(nV_T)^2} = \frac{I_Q + I_S}{(nV_T)^2} \\
-  2\left|\frac{f'(V_Q)}{f''(V_Q)}\right| &= 2 n V_T \approx 52\,\text{mV} \hspace{1cm} [n = 1,\ V_T = 26\,\text{mV}]
+  f'(V_Q) &= \frac{I_S e^{V_Q/(nV_T)}}{nV_T} = \frac{I_Q + I_S}{nV_T} \hspace{1cm} [I_S e^{V_Q/(nV_T)} = I_Q + I_S] \\
+  f''(V_Q) &= \frac{d}{dV}\left[\frac{I_S e^{V/(nV_T)}}{nV_T}\right]_{V_Q} = \frac{I_S e^{V_Q/(nV_T)}}{(nV_T)^2} = \frac{I_Q + I_S}{(nV_T)^2} \\
+  2\left|\frac{f'(V_Q)}{f''(V_Q)}\right| &= 2 \cdot \frac{I_Q + I_S}{nV_T} \cdot \frac{(nV_T)^2}{I_Q + I_S} = 2 n V_T \\
+  2 n V_T &= 2 \cdot 1 \cdot 26\,\text{mV} = 52\,\text{mV} \hspace{1cm} [n = 1,\ V_T = 26\,\text{mV}]
 \end{align*}
 Requiring the second order term to stay below \(10\%\) of the first:
 \begin{align*}
   \frac{f''(V_Q)}{2} |V_d|^2 &\leq 0.1\, f'(V_Q) |V_d| \\
-  |V_d| &\leq 0.2\, n V_T \approx 5.2\,\text{mV}
+  |V_d| &\leq 0.2 \cdot \frac{f'(V_Q)}{f''(V_Q)} \hspace{1cm} [\text{divide by } \tfrac{f''(V_Q)}{2} |V_d|] \\
+  |V_d| &\leq 0.2\, n V_T \hspace{1cm} \left[\frac{f'(V_Q)}{f''(V_Q)} = nV_T\right] \\
+  |V_d| &\leq 0.2 \cdot 26\,\text{mV} = 5.2\,\text{mV}
 \end{align*}
 
 \section{Applying the Octants to a Block}\label{sec:analysis_workflow}
 Every block in this notebook is analysed in the same order.
 \begin{enumerate}
-  \item \textbf{Q5 (Large Signal, Time, DC):} Set every source to its DC
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5):} Set every source to its DC
     value, open capacitors, short inductors, keep full device equations.
     Write KCL at every node and solve for the bias point \((V_Q, I_Q)\).
     Check every device is in the intended region.
   \item \textbf{Linearize:} Replace every non-linear device by its small
     signal model evaluated at \((V_Q, I_Q)\)
     (Section~\ref{sec:analysis_linearization}).
-  \item \textbf{Q4 (Small Signal, Frequency, AC):} Short DC voltage
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4):} Short DC voltage
     sources, open DC current sources, write KCL in admittances
     (\(G\), \(sC\), \(\frac{1}{sL}\), \(g_m\), \(g_o\)). Solve for
     \(H(s) = \frac{N(s)}{D(s)}\), \(Z_{in}\), \(Z_{out}\). Poles are roots
     of \(D(s)\), zeros are roots of \(N(s)\).
-  \item \textbf{Q2 (Small Signal, Time, AC):} \(V_{out}(t) =
+  \item \textbf{Small Signal, Time Domain, AC Input Analysis (Q2):} \(V_{out}(t) =
     \mathcal{L}^{-1}\{H(s) V_{in}(s)\}\).
-  \item \textbf{Q6 (Large Signal, Time, AC):} Needed only when the input
+  \item \textbf{Large Signal, Time Domain, AC Input Analysis (Q6):} Needed only when the input
     violates \(|V_d| \ll 2|f'/f''|\). Solve the non-linear differential
     equations (by hand when possible, otherwise TRAN).
-  \item \textbf{Q8 (Large Signal, Frequency, AC):} Fourier series of the
+  \item \textbf{Large Signal, Frequency Domain, AC Input Analysis (Q8):} Fourier series of the
     periodic Q6 output. Harmonics measure distortion:
     \[
       THD = \frac{\sqrt{\sum_{k=2}^{\infty} A_k^2}}{A_1}
@@ -267,28 +271,48 @@ Every block in this notebook is analysed in the same order.
 \(H(s) = \frac{1}{1 + sRC}\). A step of height \(V\) has
 \(V_{in}(s) = \frac{V}{s}\).
 \begin{align*}
-  V_{out}(s) &= \frac{V}{s(1 + sRC)} \\
-  V_{out}(s) &= V\left(\frac{1}{s} - \frac{RC}{1 + sRC}\right) \hspace{1cm} [\text{partial fractions}] \\
-  V_{out}(s) &= V\left(\frac{1}{s} - \frac{1}{s + \frac{1}{RC}}\right) \\
-  V_{out}(t) &= V\left(1 - e^{-t/(RC)}\right) \hspace{1cm} [\text{Q2}, \ T_c = RC]
+  V_{out}(s) &= H(s) V_{in}(s) = \frac{V}{s(1 + sRC)} \\
+  \frac{1}{s(1 + sRC)} &= \frac{a}{s} + \frac{b}{1 + sRC} \hspace{1cm} [\text{partial fractions}] \\
+  1 &= a(1 + sRC) + b s \\
+  s = 0 &: \hspace{0.5cm} 1 = a \\
+  s = -\tfrac{1}{RC} &: \hspace{0.5cm} 1 = -\tfrac{b}{RC} \Rightarrow b = -RC \\
+  V_{out}(s) &= V\left(\frac{1}{s} - \frac{RC}{1 + sRC}\right) \\
+  V_{out}(s) &= V\left(\frac{1}{s} - \frac{1}{s + \frac{1}{RC}}\right) \hspace{1cm} [\text{divide top and bottom by } RC] \\
+  V_{out}(t) &= V\left(1 - e^{-t/(RC)}\right) \hspace{1cm} \left[\mathcal{L}^{-1}\left\{\tfrac{1}{s}\right\} = 1,\ \mathcal{L}^{-1}\left\{\tfrac{1}{s + \frac{1}{RC}}\right\} = e^{-t/(RC)}\right] \\
+  V_{out}(t) &= V\left(1 - e^{-t/T_c}\right) \hspace{1cm} [\text{Q2}, \ T_c = RC]
 \end{align*}
 
 \paragraph{Example (Q6 to Q8):} A diode biased at \(I_Q\) is driven by
 \(V_d = V_p \cos(\omega t)\) with \(V_p\) not small. With
 \(I_Q \gg I_S\) and \(x = \frac{V_p}{nV_T}\):
 \begin{align*}
+  I &= I_S\left(e^{\frac{V_Q + V_d}{nV_T}} - 1\right) \approx I_S e^{\frac{V_Q}{nV_T}} e^{\frac{V_d}{nV_T}} \hspace{1cm} [I \gg I_S] \\
+  I &= I_Q e^{\frac{V_p \cos(\omega t)}{nV_T}} \hspace{1cm} \left[I_Q \approx I_S e^{\frac{V_Q}{nV_T}}\right] \\
   I &= I_Q e^{x \cos(\omega t)} \\
-  I &= I_Q \left(1 + x\cos(\omega t) + \frac{x^2}{2}\cos^2(\omega t) + \frac{x^3}{6}\cos^3(\omega t) + \cdots \right) \\
-  I &= I_Q \left(1 + x\cos(\omega t) + \frac{x^2}{4}\left(1 + \cos(2\omega t)\right) + \frac{x^3}{24}\left(3\cos(\omega t) + \cos(3\omega t)\right) + \cdots \right)
+  I &= I_Q \left(1 + x\cos(\omega t) + \frac{x^2}{2}\cos^2(\omega t) + \frac{x^3}{6}\cos^3(\omega t) + \cdots \right) \hspace{1cm} \left[e^u = \sum_{k} \frac{u^k}{k!}\right]
 \end{align*}
-Collecting terms up to \(x^3\):
+Using \(\cos^2\theta = \frac{1 + \cos 2\theta}{2}\) and
+\(\cos^3\theta = \frac{3\cos\theta + \cos 3\theta}{4}\):
+\begin{align*}
+  \frac{x^2}{2}\cos^2(\omega t) &= \frac{x^2}{2} \cdot \frac{1 + \cos(2\omega t)}{2} = \frac{x^2}{4}\left(1 + \cos(2\omega t)\right) \\
+  \frac{x^3}{6}\cos^3(\omega t) &= \frac{x^3}{6} \cdot \frac{3\cos(\omega t) + \cos(3\omega t)}{4} = \frac{x^3}{24}\left(3\cos(\omega t) + \cos(3\omega t)\right) \\
+  I &= I_Q \left(1 + x\cos(\omega t) + \frac{x^2}{4}\left(1 + \cos(2\omega t)\right) + \frac{x^3}{24}\left(3\cos(\omega t) + \cos(3\omega t)\right) + \cdots \right) \\
+  I &= I_Q \left[\left(1 + \frac{x^2}{4}\right) + \left(x + \frac{3x^3}{24}\right)\cos(\omega t) + \frac{x^2}{4}\cos(2\omega t) + \frac{x^3}{24}\cos(3\omega t) + \cdots \right]
+\end{align*}
+Collecting terms up to \(x^3\) (\(\frac{3x^3}{24} = \frac{x^3}{8}\)):
 \begin{align*}
   A_0 &= I_Q\left(1 + \frac{x^2}{4}\right) \hspace{1cm}
   A_1 = I_Q\left(x + \frac{x^3}{8}\right) \hspace{1cm}
   A_2 = I_Q\frac{x^2}{4} \hspace{1cm}
   A_3 = I_Q\frac{x^3}{24} \\
-  HD_2 &= \frac{A_2}{A_1} \approx \frac{x}{4} = \frac{V_p}{4nV_T} \hspace{1cm}
-  HD_3 = \frac{A_3}{A_1} \approx \frac{x^2}{24}
+  HD_2 &= \frac{A_2}{A_1} = \frac{\frac{x^2}{4}}{x + \frac{x^3}{8}} = \frac{x}{4\left(1 + \frac{x^2}{8}\right)} \approx \frac{x}{4} = \frac{V_p}{4nV_T} \hspace{1cm} [x^2 \ll 8] \\
+  HD_3 &= \frac{A_3}{A_1} = \frac{\frac{x^3}{24}}{x + \frac{x^3}{8}} = \frac{x^2}{24\left(1 + \frac{x^2}{8}\right)} \approx \frac{x^2}{24}
 \end{align*}
+For example, at the \(10\%\) bound above, \(V_p = 5.2\,\text{mV}\) and
+\(nV_T = 26\,\text{mV}\) give \(x = \frac{5.2}{26} = 0.2\). The second order
+term is then \(\frac{x^2/2}{x} = \frac{x}{2} = 10\%\) of the first, and half
+of it lands at \(2\omega\) (the other half is the DC shift):
+\(HD_2 \approx \frac{0.2}{4} = 5\%\) and
+\(HD_3 \approx \frac{0.2^2}{24} = \frac{0.04}{24} \approx 0.17\%\).
 The bias shift \(A_0 - I_Q\) and the harmonics exist only in Q6/Q8; Q4
 predicts \(A_1 = I_Q x\) and nothing else.
