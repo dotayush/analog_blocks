@@ -65,8 +65,8 @@ natural frequency, and damping ratio through three key comparisons.
     \noindent From the table, we have:
     \[ \frac{a_1}{a_2} = p_1 + p_2 \quad \text{and} \quad \frac{a_0}{a_2} = p_1 p_2 \]
     The discriminant
-    \(\displaystyle \Delta = \left( \frac{a_1}{a_2} \right)^2 - 4 \left( \frac{a_0}{a_2} \right) \)
-    determines three pole configurations:
+    \(\displaystyle B^2 - 4AC = \left( \frac{a_1}{a_2} \right)^2 - 4 \left( \frac{a_0}{a_2} \right) \)
+    (positive, zero or negative) determines three pole configurations:
     \begin{enumerate}
       \item \textbf{Two distinct real poles (overdamped):} Assume \( p_2 = k p_1 \) with \( k \in \mathbb{R} \), \( k \neq 1 \).
         \begin{align*}
@@ -75,12 +75,12 @@ natural frequency, and damping ratio through three key comparisons.
         \end{align*}
         Substituting (i) into (ii):
         \begin{align*}
-        k \left( \frac{a_1}{a_2(1 + k)} \right)^2 = \frac{a_0}{a_2}
-        \quad \Rightarrow \quad
-        \frac{k}{(1+k)^2} = \frac{a_0 a_2}{a_1^2}
+        k \left( \frac{a_1}{a_2(1 + k)} \right)^2 &= \frac{a_0}{a_2} \\
+        \frac{k\, a_1^2}{a_2^2 (1 + k)^2} &= \frac{a_0}{a_2} \\
+        \frac{k}{(1+k)^2} &= \frac{a_0}{a_2}\cdot\frac{a_2^2}{a_1^2} = \frac{a_0 a_2}{a_1^2} \hspace{1cm} [\times \tfrac{a_2^2}{a_1^2}]
         \end{align*}
-        For large \(k\):
-        \[ k \approx \frac{a_1^2}{a_0 a_2} \]
+        For large \(k\), \((1 + k)^2 \approx k^2\), so \(\frac{k}{(1+k)^2} \approx \frac{k}{k^2} = \frac{1}{k}\):
+        \[ \frac{1}{k} \approx \frac{a_0 a_2}{a_1^2} \hspace{1cm} \Rightarrow \hspace{1cm} k \approx \frac{a_1^2}{a_0 a_2} \]
       \item \textbf{One repeated real pole (critically damped):} Let \( p_1 = p_2 = p \).
         \begin{align*}
           \frac{a_1}{a_2} &= 2p \quad \Rightarrow \quad p = \frac{a_1}{2a_2} \tag{i} \\
@@ -88,9 +88,9 @@ natural frequency, and damping ratio through three key comparisons.
         \end{align*}
         Substituting (i) into (ii):
         \begin{align*}
-          \left( \frac{a_1}{2a_2} \right)^2 = \frac{a_0}{a_2}
-          \quad \Rightarrow \quad
-          a_1^2 = 4 a_0 a_2
+          \left( \frac{a_1}{2a_2} \right)^2 &= \frac{a_0}{a_2} \\
+          \frac{a_1^2}{4 a_2^2} &= \frac{a_0}{a_2} \\
+          a_1^2 &= 4 a_0 a_2 \hspace{1cm} [\times 4 a_2^2]
         \end{align*}
       \item \textbf{Two complex conjugate poles (underdamped):} Let \( p_{1,2} = p_r \pm j p_i \), with \( p_r, p_i \in \mathbb{R} \).
         \begin{align*}
@@ -99,9 +99,9 @@ natural frequency, and damping ratio through three key comparisons.
         \end{align*}
         Substituting (i) into (ii):
         \begin{align*}
-          \left( \frac{a_1}{2a_2} \right)^2 + p_i^2 = \frac{a_0}{a_2}
-          \quad \Rightarrow \quad
-          p_i = \sqrt{\frac{a_0}{a_2} - \frac{a_1^2}{4a_2^2}}
+          \left( \frac{a_1}{2a_2} \right)^2 + p_i^2 &= \frac{a_0}{a_2} \\
+          p_i^2 &= \frac{a_0}{a_2} - \frac{a_1^2}{4a_2^2} \\
+          p_i &= \sqrt{\frac{a_0}{a_2} - \frac{a_1^2}{4a_2^2}} \hspace{1cm} [\text{real for } a_1^2 < 4 a_0 a_2]
         \end{align*}
     \end{enumerate}
     These relations help determine pole locations from
@@ -114,12 +114,11 @@ natural frequency, and damping ratio through three key comparisons.
     \[ \omega_n = \sqrt{\frac{a_0}{a_2}} \tag{ii} \]
     Substituting (ii) into the first:
     \begin{align*}
-    \frac{a_1}{a_2} = 2D_R \sqrt{\frac{a_0}{a_2}}
-    \quad \Rightarrow \quad
-    D_R = \frac{a_1}{2\sqrt{a_0 a_2}}
+    \frac{a_1}{a_2} &= 2D_R \sqrt{\frac{a_0}{a_2}} \\
+    D_R &= \frac{a_1}{2 a_2}\sqrt{\frac{a_2}{a_0}} = \frac{a_1}{2\sqrt{a_2^2}}\cdot\frac{\sqrt{a_2}}{\sqrt{a_0}} = \frac{a_1}{2\sqrt{a_0 a_2}}
     \end{align*}
-    Since quality factor \( Q = 1/(2D_R) \):
-    \[ Q = \frac{\sqrt{a_0 a_2}}{a_1} \]
+    Since quality factor \( Q = \frac{1}{2D_R} \) (matching \(2D_R\omega_n = \frac{\omega_n}{Q}\)):
+    \[ Q = \frac{1}{2\cdot\frac{a_1}{2\sqrt{a_0 a_2}}} = \frac{\sqrt{a_0 a_2}}{a_1} \]
     Unlike the factored form, comparison with the natural form does
     not require separate algebraic cases; the three damping regimes
     emerge solely from the numerical value of \(D_R\). These
@@ -132,25 +131,24 @@ natural frequency, and damping ratio through three key comparisons.
     \[ \omega_n = \sqrt{p_1 p_2} \tag{ii} \]
     Substituting (ii) into the first:
     \begin{align*}
-      p_1 + p_2 = 2D_R \sqrt{p_1 p_2}
-      \quad \Rightarrow \quad
-      D_R = \frac{p_1 + p_2}{2\sqrt{p_1 p_2}}
+      p_1 + p_2 &= 2D_R \sqrt{p_1 p_2} \\
+      D_R &= \frac{p_1 + p_2}{2\sqrt{p_1 p_2}}
     \end{align*}
     Expressed in terms of quality factor:
-    \[ Q = \frac{\sqrt{p_1 p_2}}{p_1 + p_2}\]
+    \[ Q = \frac{1}{2D_R} = \frac{2\sqrt{p_1 p_2}}{2(p_1 + p_2)} = \frac{\sqrt{p_1 p_2}}{p_1 + p_2}\]
     We now examine the three pole configurations:
     \begin{enumerate}
       \item \textbf{Two distinct real poles (overdamped):} With \( p_2 = k p_1 \),
-        \[ Q = \frac{\sqrt{k p_1^2}}{p_1 + k p_1} = \frac{\sqrt{k}}{1+k} \]
-        For large k:
-        \[ Q \approx \frac{1}{\sqrt{k}} \]
+        \[ Q = \frac{\sqrt{k p_1^2}}{p_1 + k p_1} = \frac{p_1\sqrt{k}}{p_1(1+k)} = \frac{\sqrt{k}}{1+k} \]
+        For large k, \(1 + k \approx k\):
+        \[ Q \approx \frac{\sqrt{k}}{k} = \frac{1}{\sqrt{k}} \]
       \item \textbf{One repeated real pole (critically damped):} With \( p_1 = p_2 = p \),
         \[ Q = \frac{\sqrt{p^2}}{p + p} = \frac{p}{2p} = \frac{1}{2} \hspace{1cm} [D_R = 1] \]
       \item \textbf{Two complex conjugate poles (underdamped):} With \( p_{1,2} = p_r \pm j p_i \),
         \begin{align*}
            Q &= \frac{\sqrt{(p_r + j p_i)(p_r - j p_i)}}{(p_r + j p_i) + (p_r - j p_i)}
-           = \frac{\sqrt{p_r^2 + p_i^2}}{2p_r} \\
-           Q &> \frac{1}{2} \hspace{1cm} [p_i \neq 0]
+           = \frac{\sqrt{p_r^2 - j^2 p_i^2}}{2p_r} = \frac{\sqrt{p_r^2 + p_i^2}}{2p_r} \hspace{1cm} [j^2 = -1] \\
+           Q &> \frac{\sqrt{p_r^2}}{2p_r} = \frac{1}{2} \hspace{1cm} [p_i \neq 0 \Rightarrow p_r^2 + p_i^2 > p_r^2]
          \end{align*}
     \end{enumerate}
     These relations help determine natural frequency and
@@ -185,7 +183,14 @@ Here's  table summarizing the relationships:
       \end{align*}
     \item Determine pole configuration:
       Since \( D_R \approx 0.6667 < 1 \), the system is underdamped with
-      complex conjugate poles.
+      complex conjugate poles. Check with the normalised form
+      \(s^2 + \frac{12}{3}s + \frac{27}{3} = s^2 + 4s + 9\):
+      \begin{align*}
+        p_r &= \frac{a_1}{2a_2} = \frac{12}{6} = 2 \hspace{1cm}
+        p_i = \sqrt{\frac{27}{3} - \frac{144}{36}} = \sqrt{9 - 4} = \sqrt{5} = 2.236 \\
+        s &= -p_r \mp j p_i = -2 \mp j\,2.236 \hspace{1cm}
+        Q = \frac{1}{2D_R} = \frac{1}{2 \cdot \frac{2}{3}} = \frac{3}{4} = 0.75
+      \end{align*}
   \end{enumerate}
   \item Given the second order polynomial \( 2s^2 + (8 + x)s + 16 \),
   determine the value of \( x \) for critical damping.
@@ -195,11 +200,11 @@ Here's  table summarizing the relationships:
       \[ a_2 = 2, \quad a_1 = 8 + x, \quad a_0 = 16 \]
     \item Apply critical damping condition:
       \begin{align*}
-        a_1^2 = 4 a_0 a_2 \\
-        (8 + x)^2 = 4 \cdot 16 \cdot 2 \\
-        (8 + x)^2 = 128 \\
-        8 + x = \sqrt{128} \\
-        x = \sqrt{128} - 8 \approx 3.3137
+        a_1^2 &= 4 a_0 a_2 \\
+        (8 + x)^2 &= 4 \cdot 16 \cdot 2 \\
+        (8 + x)^2 &= 128 \\
+        8 + x &= \sqrt{128} = 8\sqrt{2} \hspace{1cm} [a_1 > 0 \text{ for stable poles; } -\sqrt{128} \text{ rejected}] \\
+        x &= 8\sqrt{2} - 8 = 11.3137 - 8 \approx 3.3137
       \end{align*}
   \end{enumerate}
   Thus, \( x \approx 3.3137 \) for critical damping.
