@@ -42,6 +42,8 @@ flowing out of the drain (Section~\ref{sec:theory_general_complementary}).
         \(\frac{K_P}{C_{ox}} \frac{dV}{dy}\) (mobility times field):
         \begin{align*}
           I_D &= C_{ox} W (V_{GS} - V(y) - V_{th}) \cdot \frac{K_P}{C_{ox}} \frac{dV}{dy} \\
+          I_D &= K_P W (V_{GS} - V_{th} - V) \frac{dV}{dy} \hspace{1cm} [C_{ox} \text{ cancels}] \\
+          I_D \, dy &= K_P W (V_{GS} - V_{th} - V) \, dV \hspace{1cm} [\times dy] \\
           \int_0^L I_D \, dy &= \int_0^{V_{DS}} K_P W (V_{GS} - V_{th} - V) \, dV \\
           I_D \left[ y \right]_0^L &= K_P W \left[ (V_{GS} - V_{th}) V - \frac{V^2}{2} \right]_0^{V_{DS}} \hspace{1cm} [I_D \text{ is the same at every } y] \\
           I_D L &= K_P W \left[ (V_{GS} - V_{th}) V_{DS} - \frac{V_{DS}^2}{2} \right] \\
@@ -143,7 +145,7 @@ flowing out of the drain (Section~\ref{sec:theory_general_complementary}).
     \begin{align*}
       I_D &= K_P \frac{W}{L} \left[ V_{ov} V_{DS} - \frac{V_{DS}^2}{2} \right] \\
       I_D &\approx K_P \frac{W}{L} V_{ov} V_{DS} \\
-      R_{on} &= \frac{V_{DS}}{I_D} = \frac{1}{K_P \frac{W}{L} (V_{GS} - V_{th})}
+      R_{on} &= \frac{V_{DS}}{I_D} = \frac{V_{DS}}{K_P \frac{W}{L} V_{ov} V_{DS}} = \frac{1}{K_P \frac{W}{L} (V_{GS} - V_{th})}
     \end{align*}
   \item \textbf{Capacitances}: In saturation, with overlap capacitance
     \(C_{ov}\) per side:
