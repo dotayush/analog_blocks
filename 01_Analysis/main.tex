@@ -52,15 +52,28 @@ build a classification space.
 \end{enumerate}
 
 \begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{01_ANALYSIS_CLASSES.png}
-    \caption{Classification space for analysis techniques.}\label{fig:analysis-classes}
+  \centering
+  \begin{tikzpicture}[x={(1cm,0cm)}, y={(0cm,1cm)}, z={(0.55cm,0.45cm)}, >=stealth]
+    \draw[->, thick, blue!70!black] (-3,0,0) -- (3,0,0) node[right] {\(+X\): AC / Perturbation};
+    \node[left, blue!70!black] at (-3,0,0) {DC / Bias: \(-X\)};
+    \draw[->, thick, orange!80!black] (0,-2.4,0) -- (0,2.4,0) node[above] {\(+Y\): Frequency Domain};
+    \node[below, orange!80!black] at (0,-2.4,0) {\(-Y\): Time Domain};
+    \draw[->, thick, purple] (0,0,-3.2) -- (0,0,3.2) node[above right] {\(+Z\): Large Signal};
+    \node[below left, purple] at (0,0,-3.2) {\(-Z\): Small Signal};
+    \foreach \x/\y/\z/\q in {-1/-1/-1/Q1, 1/-1/-1/Q2, -1/1/-1/Q3, 1/1/-1/Q4,
+                             -1/-1/1/Q5, 1/-1/1/Q6, -1/1/1/Q7, 1/1/1/Q8}
+      \node[draw, rounded corners=1pt, fill=white, inner sep=1.5pt, font=\scriptsize]
+        at (1.3*\x, 1.1*\y, 1.6*\z) {\q};
+  \end{tikzpicture}
+  \caption{Classification space for analysis techniques. Octant
+    \(Q_k\) has \(k - 1 = 4Z + 2Y + X\) with \(X, Y, Z \in \{0, 1\}\).}\label{fig:analysis-classes}
 \end{figure}
 
 \section{Analysis Techniques}
 
-The resulting space has eight quadrants, each corresponding to a distinct
-analysis technique. Let us now consider each quadrant in turn, and the
+The resulting space has eight octants (I call them quadrants Q1 to Q8),
+each corresponding to a distinct analysis technique. Let us now consider
+each octant in turn, and the
 analysis technique that arises from it.
 
 \begin{itemize}
@@ -117,13 +130,13 @@ analysis technique that arises from it.
       linearized, so superposition does not hold. The resulting spectrum
       is only valid for the specific input amplitude and waveform used to
       compute it, not a general transfer function; changing the input
-      requires recomputing this quadrant from \textbf{Q6},
+      requires recomputing this octant from \textbf{Q6},
       rather than scaling the result. In simulators like ngspice, it is
       implemented as FOUR analysis.
 \end{itemize}
 
 Removing \textbf{Q1}, \textbf{Q3} and \textbf{Q7} due to lack of usefulness,
-We can summarize of the quadrants and the analysis techniques that arise
+We can summarize the octants and the analysis techniques that arise
 from them:
 \begin{table}[H]
     \centering
@@ -135,12 +148,12 @@ from them:
       Q6 & 101 & Large Signal & Time      & AC & TRAN \\ \hline
       Q8 & 111 & Large Signal & Frequency & AC & FOUR \\ \hline
     \end{tabular}
-    \caption{Summary of the eight quadrants of analysis techniques.}\label{tab:quadrant-summary}
+    \caption{Summary of the five useful octants of analysis techniques.}\label{tab:quadrant-summary}
 \end{table}
 
-\section{Quadrant/Axes Dependencies}
+\section{Octant/Axes Dependencies}
 
-Certain Quadrants and Axes are dependent on each other, and this is important to
+Certain Octants and Axes are dependent on each other, and this is important to
 understand when analysing circuits.
 \begin{itemize}
     \item \textbf{Q2} and \textbf{Q4} depend on \textbf{Q5} to find a bias
@@ -185,3 +198,97 @@ should be replaced with a short circuit and \textbf{Open} indicates that the
 device should be replaced with an open circuit. \textbf{Linearize} indicates
 that the full non-linear model of a device should be replaced with its
 small-signal linearized model (about a bias point).
+
+\section{Linearization (moving from +Z to -Z)}\label{sec:analysis_linearization}
+Let a non-linear device be described by \(i = f(v)\). Q5 gives the bias
+point \(V_Q\) and \(I_Q = f(V_Q)\). Write the total voltage as bias plus
+perturbation, \(v = V_Q + v_d\), and expand about \(V_Q\):
+\begin{align*}
+  i &= f(V_Q + v_d) \\
+  i &= f(V_Q) + f'(V_Q) v_d + \frac{f''(V_Q)}{2} v_d^2 + \frac{f'''(V_Q)}{6} v_d^3 + \cdots \\
+  i - I_Q &= f'(V_Q) v_d + \frac{f''(V_Q)}{2} v_d^2 + \frac{f'''(V_Q)}{6} v_d^3 + \cdots \hspace{1cm} [I_Q = f(V_Q)] \\
+  i_d &\approx f'(V_Q) v_d = g\, v_d \hspace{1cm} [\text{keep first order term only}]
+\end{align*}
+The small signal conductance is \(g = f'(V_Q)\). The approximation holds
+when the second order term is negligible against the first:
+\begin{align*}
+  \left|\frac{f''(V_Q)}{2} v_d^2\right| &\ll \left| f'(V_Q) v_d \right| \\
+  |v_d| &\ll 2 \left| \frac{f'(V_Q)}{f''(V_Q)} \right|
+\end{align*}
+For a device with more than one controlling voltage, \(i = f(v_1, v_2)\),
+the same expansion gives one conductance per controlling voltage:
+\begin{align*}
+  i_d &\approx \left.\frac{\partial f}{\partial v_1}\right|_{Q} v_{1d}
+             + \left.\frac{\partial f}{\partial v_2}\right|_{Q} v_{2d}
+\end{align*}
+This is where \(g_m = \partial I_D/\partial V_{GS}\) and
+\(g_o = \partial I_D/\partial V_{DS}\) of a transistor come from.
+
+\paragraph{Example (diode):} \(f(v) = I_S\left(e^{v/(nV_T)} - 1\right)\).
+\begin{align*}
+  f'(V_Q) &= \frac{I_S e^{V_Q/(nV_T)}}{nV_T} = \frac{I_Q + I_S}{nV_T} \\
+  f''(V_Q) &= \frac{I_S e^{V_Q/(nV_T)}}{(nV_T)^2} = \frac{I_Q + I_S}{(nV_T)^2} \\
+  2\left|\frac{f'(V_Q)}{f''(V_Q)}\right| &= 2 n V_T \approx 52\,\text{mV} \hspace{1cm} [n = 1,\ V_T = 26\,\text{mV}]
+\end{align*}
+Requiring the second order term to stay below \(10\%\) of the first:
+\begin{align*}
+  \frac{f''(V_Q)}{2} |v_d|^2 &\leq 0.1\, f'(V_Q) |v_d| \\
+  |v_d| &\leq 0.2\, n V_T \approx 5.2\,\text{mV}
+\end{align*}
+
+\section{Applying the Octants to a Block}\label{sec:analysis_workflow}
+Every block in this notebook is analysed in the same order.
+\begin{enumerate}
+  \item \textbf{Q5 (Large Signal, Time, DC):} Set every source to its DC
+    value, open capacitors, short inductors, keep full device equations.
+    Write KCL at every node and solve for the bias point \((V_Q, I_Q)\).
+    Check every device is in the intended region.
+  \item \textbf{Linearize:} Replace every non-linear device by its small
+    signal model evaluated at \((V_Q, I_Q)\)
+    (Section~\ref{sec:analysis_linearization}).
+  \item \textbf{Q4 (Small Signal, Frequency, AC):} Short DC voltage
+    sources, open DC current sources, write KCL in admittances
+    (\(G\), \(sC\), \(\frac{1}{sL}\), \(g_m\), \(g_o\)). Solve for
+    \(H(s) = \frac{N(s)}{D(s)}\), \(Z_{in}\), \(Z_{out}\). Poles are roots
+    of \(D(s)\), zeros are roots of \(N(s)\).
+  \item \textbf{Q2 (Small Signal, Time, AC):} \(v_{out}(t) =
+    \mathcal{L}^{-1}\{H(s) V_{in}(s)\}\).
+  \item \textbf{Q6 (Large Signal, Time, AC):} Needed only when the input
+    violates \(|v_d| \ll 2|f'/f''|\). Solve the non-linear differential
+    equations (by hand when possible, otherwise TRAN).
+  \item \textbf{Q8 (Large Signal, Frequency, AC):} Fourier series of the
+    periodic Q6 output. Harmonics measure distortion:
+    \[
+      THD = \frac{\sqrt{\sum_{k=2}^{\infty} A_k^2}}{A_1}
+    \]
+\end{enumerate}
+
+\paragraph{Example (Q4 to Q2):} An RC low pass has (Q4)
+\(H(s) = \frac{1}{1 + sRC}\). A step of height \(V\) has
+\(V_{in}(s) = \frac{V}{s}\).
+\begin{align*}
+  V_{out}(s) &= \frac{V}{s(1 + sRC)} \\
+  V_{out}(s) &= V\left(\frac{1}{s} - \frac{RC}{1 + sRC}\right) \hspace{1cm} [\text{partial fractions}] \\
+  V_{out}(s) &= V\left(\frac{1}{s} - \frac{1}{s + \frac{1}{RC}}\right) \\
+  v_{out}(t) &= V\left(1 - e^{-t/(RC)}\right) \hspace{1cm} [\text{Q2}, \ T_c = RC]
+\end{align*}
+
+\paragraph{Example (Q6 to Q8):} A diode biased at \(I_Q\) is driven by
+\(v_d = V_p \cos(\omega t)\) with \(V_p\) not small. With
+\(I_Q \gg I_S\) and \(x = \frac{V_p}{nV_T}\):
+\begin{align*}
+  i &= I_Q e^{x \cos(\omega t)} \\
+  i &= I_Q \left(1 + x\cos(\omega t) + \frac{x^2}{2}\cos^2(\omega t) + \frac{x^3}{6}\cos^3(\omega t) + \cdots \right) \\
+  i &= I_Q \left(1 + x\cos(\omega t) + \frac{x^2}{4}\left(1 + \cos(2\omega t)\right) + \frac{x^3}{24}\left(3\cos(\omega t) + \cos(3\omega t)\right) + \cdots \right)
+\end{align*}
+Collecting terms up to \(x^3\):
+\begin{align*}
+  A_0 &= I_Q\left(1 + \frac{x^2}{4}\right) \hspace{1cm}
+  A_1 = I_Q\left(x + \frac{x^3}{8}\right) \hspace{1cm}
+  A_2 = I_Q\frac{x^2}{4} \hspace{1cm}
+  A_3 = I_Q\frac{x^3}{24} \\
+  HD_2 &= \frac{A_2}{A_1} \approx \frac{x}{4} = \frac{V_p}{4nV_T} \hspace{1cm}
+  HD_3 = \frac{A_3}{A_1} \approx \frac{x^2}{24}
+\end{align*}
+The bias shift \(A_0 - I_Q\) and the harmonics exist only in Q6/Q8; Q4
+predicts \(A_1 = I_Q x\) and nothing else.
