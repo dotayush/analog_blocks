@@ -29,6 +29,14 @@ There are two ways to express the total flux density functions \( \mathbf{D} \) 
       \mathbf{D(x,y,z,t)} &= \mathbf{K}_E(x,y,z,t) \cdot \mathbf{E(x,y,z,t)} \tag{11a} \\
       \mathbf{B(x,y,z,t)} &= \mathbf{K}_M(x,y,z,t) \cdot \mathbf{H(x,y,z,t)} \tag{11b}
     \end{align*}
+    (\(\cdot\) here is the matrix times vector product). This instantaneous product
+    is exact only for a \textbf{non-dispersive} medium (below). A dispersive
+    medium responds to the past of the field, so in time the product becomes
+    a convolution and in frequency it becomes a product again:
+    \begin{align*}
+      \mathbf{D}(t) &= \int_0^{\infty} \mathbf{K}_E(t') \cdot \mathbf{E}(t - t')\, dt' \hspace{1cm}
+      \mathbf{D}(\omega) = \mathbf{K}_E(\omega) \cdot \mathbf{E}(\omega)
+    \end{align*}
     \( \mathbf{K}_E \) (permittivity) and \( \mathbf{K}_M \)
     (permeability) are, in general, \textbf{rank-2 tensors} i.e. \( 3 \times 3 \)
     matrices with 9 elements each:
@@ -143,8 +151,8 @@ classified along (at least) five independent axes, each describing what the
     \( \mathbf{K}_M \) do not depend on frequency \( \omega \). It is
     \textbf{dispersive} if they do, \( K_{E,ij}(\omega) \). Equivalently in
     the time domain, the medium's response depends on the field's past
-    values (memory), not just its instantaneous value. Vacuum, Air
-    are examples of Non-Dispersive media. Glass, Water (in Microwave and
+    values (memory), not just its instantaneous value. Vacuum is exactly
+    non-dispersive; air is very nearly so. Glass, Water (in Microwave and
     Optical frequencies) and Metals are examples of Dispersive media.
   \item \textbf{Time-Variance} [dependence on time]: A medium is
     \textbf{time-invariant} if \( \mathbf{K}_E \) and
@@ -152,15 +160,16 @@ classified along (at least) five independent axes, each describing what the
     \textbf{time-varying} if the medium's own properties are being actively
     modulated in time \( K_{E,ij}(t) \), distinct from dispersion,
     which is memory of the field's past, not modulation of the medium
-    itself. All passive materials are time-invariant. Varactor Diode,
-    Plasma with time varying electron density and Space-Time Metamaterials
-    are examples of Time-Varying media.
+    itself. A material left alone (not modulated) is time-invariant. A
+    varactor whose bias is modulated, a plasma with time varying electron
+    density and space-time metamaterials are examples of Time-Varying media.
 \end{itemize}
 \textbf{These axes are independent of each other}. The most general case is when a material
 is inhomogeneous, anisotropic, nonlinear, dispersive, and time-varying, with all 9
-tensor elements being arbitrary functions of position, direction, field magnitude,
-frequency, and time. The simplest case is homogeneous, isotropic, linear,
-non-dispersive, and time-invariant, with all 9 tensor elements being equal constants.
+tensor elements independent (anisotropy) and each an arbitrary function of position,
+field, frequency, and time. The simplest case is homogeneous, isotropic, linear,
+non-dispersive, and time-invariant: the three diagonal elements are one equal
+constant and the six off-diagonal elements are zero.
 Most real media fall somewhere in between these two extremes.
 
 \subsubsection{Vacuum as the Isotropic, Homogeneous Reference}
