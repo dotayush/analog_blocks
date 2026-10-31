@@ -90,7 +90,14 @@ mitigate the impact of variations:
     variations decrease as the area of the component increases.
     This is known as Pelgrom's Law. By increasing the size of
     components, you can reduce the impact of random variations
-    (by approximately the square root of the area). The down
+    (by approximately the square root of the area):
+    \[
+      \sigma(dP) = \frac{K_{dP}}{\sqrt{W L}} \hspace{0.5cm} \Rightarrow \hspace{0.5cm}
+      \frac{\sigma(dP)\big|_{4WL}}{\sigma(dP)\big|_{WL}} = \frac{\sqrt{WL}}{\sqrt{4WL}} = \frac{1}{2}
+    \]
+    where \(dP\) is the mismatch of a parameter between two identical devices of area
+    \(WL\) and \(K_{dP}\) its Pelgrom coefficient: four times the area halves the
+    spread. The down
     side is that larger components take up more space and may
     have higher parasitic capacitances, which can affect circuit
     performance.
