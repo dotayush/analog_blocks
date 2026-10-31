@@ -135,7 +135,7 @@ magnetic field.
         Example: a mains transformer stepping 230V down to 12V, or a
         pulse transformer isolating a gate-drive signal.
     \end{itemize}
-  \item \textbf{Advise:} These are some important things to keep in mind when
+  \item \textbf{Advice:} These are some important things to keep in mind when
     working with inductors.
     \begin{itemize}
       \item \textbf{Kickback Voltage:} When an inductor is suddenly
@@ -144,20 +144,25 @@ magnetic field.
         magnetic field}. This phenomenon is known as kickback and
         \textbf{can damage other components} in the circuit. To prevent
         frying your circuit, a diode is often placed across the inductor
-        to safely dissipate the energy towards. Other names for this
+        to give the inductor current a path to circulate in while the
+        stored energy \(\frac{1}{2}LI^2\) is dissipated. The spike follows from
+        \(V = L\frac{dI}{dt}\): forcing \(I\) to zero in a time \(dt \to 0\)
+        gives \(|V| = L\frac{|dI|}{dt} \to \infty\). Other names for this
         phenomenon include flyback voltage, back EMF, and inductive
         kickback. Other names for the diode used to protect are
         flyback, freewheeling, snubber, clamp, catch or suppressor diode.
       \item \textbf{Saturation:} Inductors have a maximum current rating,
-        beyond which the \textbf{core material can become saturated and cannot
-        increase current proportionally with the applied voltage}. This
+        beyond which the \textbf{core material becomes saturated and the flux
+        linkage \(\Phi\) can no longer increase in proportion to the current}. This
         is known as the saturation current. It leads to a loss of inductance
-        and energy storage ability. You must ensure that the current through
+        and energy storage ability (\(L = \frac{d\Phi}{dI}\) collapses, so
+        \(\frac{dI}{dt} = \frac{V}{L}\) rises sharply). You must ensure that the current through
         the inductor does not exceed this limit.
     \end{itemize}
   \item \textbf{Circuit Analysis:}
     The behaviour of inductor is affected by the kind of Input Signal (AC
-    or DC) applied to it. Find the admittance \(\frac{1}{sL}\) (Q4) before deciding whether to
+    or DC) applied to it. Find the admittance \(\frac{1}{sL}\) in the Small
+    Signal, Frequency Domain, AC Input Analysis (Q4) before deciding whether to
     Short, Open or keep the inductor as is within your analysis. Table~\ref{tab:hand-analysis-simplifications}
     serves as a quick reference.
 \end{itemize}
