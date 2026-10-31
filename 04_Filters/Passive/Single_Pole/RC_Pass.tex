@@ -50,7 +50,9 @@ down into two types: Low Pass and High Pass.
 \end{circuitfig}
 
 \subsubsection{Transfer Function}
-Applying KCL (Q4) at $V_{out}$ on Full Schematic, we get:
+\textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)} (only
+linear devices are present, so no linearization is needed). Applying KCL
+at $V_{out}$ on Full Schematic, we get:
 \[
   (V_{out} - V_{1}){G_1} + (V_{out} - V_{2}){sC_1} = 0
 \]
@@ -63,7 +65,8 @@ Applying KCL (Q4) at $V_{out}$ on Full Schematic, we get:
       V_{out}G_1 - V_{1}G_1 + V_{out}sC_1 &= 0 \\
       V_{out}(G_1 + sC_1) - V_{1}G_1 &= 0 \\
       V_{out}(G_1 + sC_1) &= V_{1}G_1 \\
-      H_1(s) = \frac{N_1(s)}{D_1(s)} = \frac{V_{out_1}}{V_{1}} &= \frac{G_1}{G_1 + sC_1}
+      H_1(s) = \frac{N_1(s)}{D_1(s)} = \frac{V_{out_1}}{V_{1}} &= \frac{G_1}{G_1 + sC_1} \\
+      H_1(s) &= \frac{G_1 R_1}{(G_1 + sC_1) R_1} = \frac{1}{1 + sR_1C_1} \hspace{1cm} \text{(Multiplying by \(\frac{R_1}{R_1}\), \(G_1 R_1 = 1\))}
     \end{align*}
   \item Due to \(V_{2}\) alone (\(V_{1} = 0V\)):
     This is the high-pass characteristic of the RC Pass Filter.
@@ -72,7 +75,8 @@ Applying KCL (Q4) at $V_{out}$ on Full Schematic, we get:
       V_{out}G_1 + V_{out}sC_1 - V_{2}sC_1 &= 0 \\
       V_{out}(G_1 + sC_1) - V_{2}sC_1 &= 0 \\
       V_{out}(G_1 + sC_1) &= V_{2}sC_1 \\
-      H_2(s) = \frac{N_2(s)}{D_2(s)} = \frac{V_{out_2}}{V_{2}} &= \frac{sC_1}{G_1 + sC_1}
+      H_2(s) = \frac{N_2(s)}{D_2(s)} = \frac{V_{out_2}}{V_{2}} &= \frac{sC_1}{G_1 + sC_1} \\
+      H_2(s) &= \frac{sC_1 R_1}{(G_1 + sC_1) R_1} = \frac{sR_1C_1}{1 + sR_1C_1} \hspace{1cm} \text{(Multiplying by \(\frac{R_1}{R_1}\), \(G_1 R_1 = 1\))}
     \end{align*}
 \end{enumerate}
 
@@ -89,16 +93,21 @@ low-pass and high-pass characteristics.
   \item \textbf{Poles (\(D(s) = 0\)):} \\
     For both low pass \(H_1(s)\) and high pass \(H_2(s)\):
       \begin{align*}
-        D(s) \quad\rightarrow\quad G_1 + sC_1 = 0 \\
-        s_p &= -\frac{G_1}{C_1} \\
+        D(s) = G_1 + sC_1 &= 0 \\
+        sC_1 &= -G_1 \\
+        s_p &= -\frac{G_1}{C_1} = -\frac{1}{R_1 C_1} \hspace{1cm} \text{[let \(s = s_p\)]}
       \end{align*}
     Negative real pole indicates a stable first-order system.
     Frequency corresponding to this pole:
     \begin{align*}
-      s &= -2 \pi f_p \\
-      -2 \pi f_p &= -\frac{G_1}{C_1} \\
-      f_p = \frac{G_1}{2 \pi C_1} = \frac{1}{2 \pi R_1 C_1}
+      f_p &= \frac{|s_p|}{2\pi} \\
+      f_p &= \frac{1}{2\pi}\cdot\frac{G_1}{C_1} \\
+      f_p &= \frac{G_1}{2 \pi C_1} = \frac{1}{2 \pi R_1 C_1}
     \end{align*}
+    At \(f_p\) (\(s = j 2\pi f_p\), so \(sR_1C_1 = j\)):
+    \(|H_1| = \frac{1}{|1 + j|} = \frac{1}{\sqrt{2}}\) and
+    \(|H_2| = \frac{|j|}{|1 + j|} = \frac{1}{\sqrt{2}}\), i.e.\ both are
+    \(-3\,dB\), so \(f_p\) is the cutoff frequency of both filters.
   \item \textbf{Zeroes (\(N(s) = 0\)):} \\
     For low pass $H_1(s)$:
       \begin{align*}
@@ -118,13 +127,13 @@ low-pass and high-pass characteristics.
     For low pass \(H_1(s)\):
       \begin{align*}
         H_1(0) &= \frac{G_1}{G_1 + 0 \cdot C_1} = 1 \\
-        A_{DC_1} = 1 = 0 dB
+        A_{DC_1} &= 1 = 20\log_{10}(1) = 0 dB
       \end{align*}
     Unity DC gain for \(H_1(s)\). \\
     For high pass \(H_2(s)\):
       \begin{align*}
         H_2(0) &= \frac{0 \cdot C_1}{G_1 + 0 \cdot C_1} = 0 \\
-        A_{DC_2} = 0 = -\infty dB
+        A_{DC_2} &= 0 = 20\log_{10}(0) \to -\infty dB
       \end{align*}
     Zero DC gain for \(H_2(s)\).
   \item \textbf{Gain-Bandwidth Product (\(GBW\)):}
@@ -147,22 +156,26 @@ low-pass and high-pass characteristics.
     Both low pass and high pass filters have the same input
     and output impedance.
     Substituting \(G_1 = \frac{1}{R_1}\) and \(s = j \omega\):
-    \paragraph{At Input:}
+    \paragraph{At Input:} (looking in from the driving source with the other
+    source shorted, \(R_1\) and \(C_1\) are in series)
       \begin{align*}
-        Z_{in} = R_1 + \frac{1}{sC_1} \\
-        \text{Substituting } s = j \omega &: \\
-        Z_{in} = R_1 - j \frac{1}{\omega C_1}
+        Z_{in} &= R_1 + \frac{1}{sC_1} \\
+        Z_{in} &= R_1 + \frac{1}{j \omega C_1} \hspace{1cm} \text{(Substituting \(s = j \omega\))} \\
+        Z_{in} &= R_1 + \frac{1}{j \omega C_1} \cdot \frac{j}{j} = R_1 + \frac{j}{-\omega C_1} \hspace{1cm} \text{(\(j^2 = -1\))} \\
+        Z_{in} &= R_1 - j \frac{1}{\omega C_1}
       \end{align*}
-    \paragraph{At Output:}
+    \paragraph{At Output:} (looking in from \(V_{out}\) with both sources
+    shorted, \(R_1\) and \(C_1\) are in parallel)
       \begin{align*}
-        Z_{out} &= R1 \parallel \frac{1}{sC_1} \\
-        Z_{out} &= \frac{R1 \cdot \frac{1}{sC_1}}{R1 + \frac{1}{sC_1}} \\
+        Z_{out} &= R_1 \parallel \frac{1}{sC_1} \\
+        Z_{out} &= \frac{R_1 \cdot \frac{1}{sC_1}}{R_1 + \frac{1}{sC_1}} \\
         Z_{out} &= \frac{\frac{R_1}{sC_1}}{\frac{sC_1 R_1 + 1}{sC_1}} \\
         Z_{out} &= \frac{R_1}{sC_1 R_1 + 1} \\
-        \text{Substituting } s = j \omega &: \\
+        Z_{out} &= \frac{R_1}{1 + j \omega R_1 C_1} \hspace{1cm} \text{(Substituting \(s = j \omega\))} \\
         Z_{out} &= \frac{R_1}{1 + j \omega R_1 C_1} \cdot \frac{1 - j \omega R_1 C_1}{1 - j \omega R_1 C_1} \\
-        Z_{out} &= \frac{R_1 - j \omega R_1^2 C_1}{1 + (\omega R_1 C_1)^2} \\
-        Z_{out} = \frac{R_1}{1 + (\omega R_1 C_1)^2} - j \frac{\omega R_1^2 C_1}{1 + (\omega R_1 C_1)^2}
+        Z_{out} &= \frac{R_1 (1 - j \omega R_1 C_1)}{1 - (j \omega R_1 C_1)^2} \\
+        Z_{out} &= \frac{R_1 - j \omega R_1^2 C_1}{1 + (\omega R_1 C_1)^2} \hspace{1cm} \text{(\(j^2 = -1\))} \\
+        Z_{out} &= \frac{R_1}{1 + (\omega R_1 C_1)^2} - j \frac{\omega R_1^2 C_1}{1 + (\omega R_1 C_1)^2}
       \end{align*}
 \end{enumerate}
 
@@ -177,21 +190,24 @@ Also compute the input and output impedance at
     \begin{align*}
       f_p &= \frac{1}{2 \pi R_1 C_1} \\
       R_1 &= \frac{1}{2 \pi f_p C_1} \\
-      &= \frac{1}{2 \pi (45kHz)(1\mu F)} \\
+      &= \frac{1}{2 \pi (45 \times 10^3 Hz)(1 \times 10^{-6} F)} \\
+      &= \frac{1}{0.2827 \, \Omega^{-1}} \\
       R_1 &\approx 3.54 \Omega
     \end{align*}
   \item Calculating \(Z_{in}\) and \(Z_{out}\) at \(f = 10kHz\):
     \begin{align*}
       \omega &= 2 \pi f = 2 \pi (10kHz) = 62,832 \text{ rad/s} \\
       Z_{in} &= R_1 - j \frac{1}{\omega C_1} \\
-             &= 3.54 \Omega - j \frac{1}{(62,832)(1\mu F)} \\
+             &= 3.54 \Omega - j \frac{1}{(62,832)(1 \times 10^{-6})} \\
+             &= 3.54 \Omega - j \frac{1}{0.062832} \Omega \\
              &\approx 3.54 \Omega - j 15.9 \Omega
     \end{align*}
     \begin{align*}
             Z_{out} &= \frac{R_1}{1 + (\omega R_1 C_1)^2} - j \frac{\omega R_1^2 C_1}{1 + (\omega R_1 C_1)^2} \\
               &= \frac{3.54 \Omega}{1 + (62,832 \cdot 3.54 \Omega \cdot 1\mu F)^2} - j \frac{(62,832)(3.54 \Omega)^2 (1\mu F)}{1 + (62,832 \cdot 3.54 \Omega \cdot 1\mu F)^2} \\
-              &= \frac{3.54 \Omega}{1 + (0.222)^2} - j \frac{(62,832)(12.52 \Omega^2)(1\mu F)}{1 + (0.222)^2} \\
-              &\approx \frac{3.54 \Omega}{1.049} - j \frac{0.786 \Omega}{1.049} \\
+              &= \frac{3.54 \Omega}{1 + (0.2224)^2} - j \frac{(62,832)(12.53 \Omega^2)(1\mu F)}{1 + (0.2224)^2} \\
+              &= \frac{3.54 \Omega}{1 + 0.04947} - j \frac{0.7874 \Omega}{1 + 0.04947} \\
+              &\approx \frac{3.54 \Omega}{1.0495} - j \frac{0.7874 \Omega}{1.0495} \\
               &\approx 3.37 \Omega - j 0.75 \Omega
     \end{align*}
 \end{enumerate}
@@ -205,7 +221,8 @@ Also compute the input and output impedance at
     \begin{align*}
       f_p &= \frac{1}{2 \pi R_1 C_1} \\
       R_1 &= \frac{1}{2 \pi f_p C_1} \\
-          &= \frac{1}{2 \pi (1kHz)(1\mu F)} \\
+          &= \frac{1}{2 \pi (1 \times 10^3 Hz)(1 \times 10^{-6} F)} \\
+          &= \frac{1}{6.2832 \times 10^{-3} \, \Omega^{-1}} \\
           &= 159.15 \Omega \\
       R_1 &\approx 159 \Omega
     \end{align*}
@@ -213,14 +230,16 @@ Also compute the input and output impedance at
     \begin{align*}
       \omega &= 2 \pi f = 2 \pi (75Hz) = 471.24 \text{ rad/s} \\
       Z_{in} &= R_1 - j \frac{1}{\omega C_1} \\
-             &= 159 \Omega - j \frac{1}{(471.24)(1\mu F)} \\
+             &= 159 \Omega - j \frac{1}{(471.24)(1 \times 10^{-6})} \\
+             &= 159 \Omega - j \frac{1}{4.7124 \times 10^{-4}} \Omega \\
              &\approx 159 \Omega - j 2122.07 \Omega
     \end{align*}
     \begin{align*}
           Z_{out} &= \frac{R_1}{1 + (\omega R_1 C_1)^2} - j \frac{\omega R_1^2 C_1}{1 + (\omega R_1 C_1)^2} \\
               &= \frac{159 \Omega}{1 + (471.24 \cdot 159 \Omega \cdot 1\mu F)^2} - j \frac{(471.24)(159 \Omega)^2 (1\mu F)}{1 + (471.24 \cdot 159 \Omega \cdot 1\mu F)^2} \\
-              &= \frac{159 \Omega}{1 + (0.0749)^2} - j \frac{(471.24)(25281 \Omega^2)(1\mu F)}{1 + (0.0749)^2} \\
-              &= \frac{159 \Omega}{1.00561} - j \frac{11.913 \Omega}{1.00561} \\
+              &= \frac{159 \Omega}{1 + (0.07493)^2} - j \frac{(471.24)(25281 \Omega^2)(1\mu F)}{1 + (0.07493)^2} \\
+              &= \frac{159 \Omega}{1 + 0.005614} - j \frac{11.913 \Omega}{1 + 0.005614} \\
+              &= \frac{159 \Omega}{1.005614} - j \frac{11.913 \Omega}{1.005614} \\
               &\approx 158.11 \Omega - j 11.85 \Omega
     \end{align*}
 \end{enumerate}
