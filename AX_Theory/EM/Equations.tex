@@ -16,7 +16,7 @@ where
     \begin{align*}
       \nabla = \left( \frac{\partial}{\partial x}, \frac{\partial}{\partial y}, \frac{\partial}{\partial z} \right)
     \end{align*}
-  \item \( \mathbf{E(x,y,z,t)} \): electric function.\( \frac{V}{m} \)
+  \item \( \mathbf{E(x,y,z,t)} \): electric field function. \( \frac{V}{m} \)
   \item \( \mathbf{B(x,y,z,t)} \): magnetic flux density function.
     \( \frac{Wb}{m^2} \)
   \item \( \mathbf{J_m(x,y,z,t)} \): magnetic current density function.
@@ -48,7 +48,10 @@ is constant over time}. Magnetic Charge has never been observed in nature.
 Thus magnetic charge density and magnetic current density are both zero. This
 means that there are no sources and sinks of magnetic flux density and thus
 \( \nabla \cdot \mathbf{B(x,y,z,t)} = 0 \) for all time \(t\). This is
-the origin of \textbf{Gauss's Law for Magnetism}.
+the origin of \textbf{Gauss's Law for Magnetism}:
+\begin{align*}
+  \nabla \cdot \mathbf{B(x,y,z,t)} = 0 \tag{2}
+\end{align*}
 
 \subsubsection{Ampere's Law}
 
@@ -66,8 +69,10 @@ where
     \( \frac{A}{m^2} \). In nature, \( \mathbf{J_e(x,y,z,t)} \neq 0 \)
     since electric charges exist.
     \begin{align*}
-      \mathbf{J_e(x,y,z,t)} = \rho_e(x,y,z,t) \mathbf{v(x,y,z,t)}
+      \mathbf{J_e(x,y,z,t)} = Q_V(x,y,z,t) \mathbf{v(x,y,z,t)}
     \end{align*}
+    with \(Q_V\) the volume charge density (\(\frac{C}{m^3}\)) and \(\mathbf{v}\) the
+    charge velocity (\(\frac{m}{s}\)).
 \end{itemize}
 Let's have some fun with this equation.
 \begin{align*}
@@ -91,37 +96,38 @@ changes over time}. To find anything meaningful we must find more information
 about the divergence of the electric current density function. This is given
 to us by the \textbf{charge continuity equation}:
 \begin{align*}
-  Q(t) &= \int_V \rho_e(x,y,z,t) \, dV \hspace{1cm} \text{[Total Charge in a Volume]} \\
+  Q(t) &= \int_V Q_V(x,y,z,t) \, dV \hspace{1cm} \text{[Total Charge in a Volume]} \\
   \text{[Rate of Change of Total Charge]} \\
-  \frac{dQ(t)}{dt} &= \int_V \frac{\partial \rho_e(x,y,z,t)}{\partial t} \, dV \hspace{1cm} \text{[In a Volume]} \\
+  \frac{dQ(t)}{dt} &= \int_V \frac{\partial Q_V(x,y,z,t)}{\partial t} \, dV \hspace{1cm} \text{[In a Volume]} \\
   \frac{dQ(t)}{dt} &= - \oint_S \mathbf{J_e(x,y,z,t)} \cdot d\mathbf{S} \hspace{1cm} \text{[Out of a Volume]} \\
   \text{[Continuity; In = Out]} \\
-  - \oint_S \mathbf{J_e(x,y,z,t)} \cdot d\mathbf{S} &= \int_V \frac{\partial \rho_e(x,y,z,t)}{\partial t} \, dV \\
-  - \int_V \nabla \cdot \mathbf{J_e(x,y,z,t)} \, dV &= \int_V \frac{\partial \rho_e(x,y,z,t)}{\partial t} \, dV \hspace{1cm} \left[\oint_S \mathbf{J_e} \cdot d\mathbf{S} = \int_V \nabla \cdot \mathbf{J_e} \, dV\right] \\
-  \text{[Differentiating both sides with respect to Volume]} \\
-  \frac{\partial}{\partial V} \left(- \int_V \nabla \cdot \mathbf{J_e(x,y,z,t)} \, dV\right) &= \frac{\partial}{\partial V} \left(\int_V \frac{\partial \rho_e(x,y,z,t)}{\partial t} \, dV\right) \\
-  - \nabla \cdot \mathbf{J_e(x,y,z,t)} &= \frac{\partial \rho_e(x,y,z,t)}{\partial t} \tag{4}
+  - \oint_S \mathbf{J_e(x,y,z,t)} \cdot d\mathbf{S} &= \int_V \frac{\partial Q_V(x,y,z,t)}{\partial t} \, dV \\
+  - \int_V \nabla \cdot \mathbf{J_e(x,y,z,t)} \, dV &= \int_V \frac{\partial Q_V(x,y,z,t)}{\partial t} \, dV \hspace{1cm} \left[\oint_S \mathbf{J_e} \cdot d\mathbf{S} = \int_V \nabla \cdot \mathbf{J_e} \, dV\right] \\
+  \int_V \left(- \nabla \cdot \mathbf{J_e(x,y,z,t)} - \frac{\partial Q_V(x,y,z,t)}{\partial t}\right) dV &= 0 \\
+  \text{[True for every volume \(V\), however small, so the integrand is zero]} \\
+  - \nabla \cdot \mathbf{J_e(x,y,z,t)} &= \frac{\partial Q_V(x,y,z,t)}{\partial t} \tag{4}
 \end{align*}
-Substituting (4) into (3), we get
+Substituting (4) into the time integrated result above, we get
 \begin{align*}
   \nabla \cdot \mathbf{D(x,y,z,t_1)} &= \nabla \cdot \mathbf{D(x,y,z,t_0)} - \int_{t_0}^{t_1} \nabla \cdot \mathbf{J_e(x,y,z,t)} \, dt \\
-  \nabla \cdot \mathbf{D(x,y,z,t_1)} &= \nabla \cdot \mathbf{D(x,y,z,t_0)} - \int_{t_0}^{t_1} - \frac{\partial \rho_e(x,y,z,t)}{\partial t} \, dt \\
-  \nabla \cdot \mathbf{D(x,y,z,t_1)} &= \nabla \cdot \mathbf{D(x,y,z,t_0)} + [\rho_e(x,y,z,t_1) - \rho_e(x,y,z,t_0)] \\
-  \nabla \cdot \mathbf{D(x,y,z,t_1)} &= \nabla \cdot \mathbf{D(x,y,z,t_0)} + \rho_e(x,y,z,t_1) - \rho_e(x,y,z,t_0)
+  \nabla \cdot \mathbf{D(x,y,z,t_1)} &= \nabla \cdot \mathbf{D(x,y,z,t_0)} - \int_{t_0}^{t_1} - \frac{\partial Q_V(x,y,z,t)}{\partial t} \, dt \\
+  \nabla \cdot \mathbf{D(x,y,z,t_1)} &= \nabla \cdot \mathbf{D(x,y,z,t_0)} + \int_{t_0}^{t_1} \frac{\partial Q_V(x,y,z,t)}{\partial t} \, dt \\
+  \nabla \cdot \mathbf{D(x,y,z,t_1)} &= \nabla \cdot \mathbf{D(x,y,z,t_0)} + [Q_V(x,y,z,t_1) - Q_V(x,y,z,t_0)] \\
+  \nabla \cdot \mathbf{D(x,y,z,t_1)} &= \nabla \cdot \mathbf{D(x,y,z,t_0)} + Q_V(x,y,z,t_1) - Q_V(x,y,z,t_0)
 \end{align*}
 If you assume that at \(t_0\), the divergence of the electric flux density
 function and the charge density function are both zero, then we can simplify
 the above equation to:
 \begin{align*}
-  \nabla \cdot \mathbf{D(x,y,z,t_1)} &= \rho_e(x,y,z,t_1)
+  \nabla \cdot \mathbf{D(x,y,z,t_1)} &= Q_V(x,y,z,t_1)
 \end{align*}
 We find that the divergence of the electric flux density function changes as
 the charge density function changes over time \( \nabla \cdot \mathbf{D(x,y,z,t)} =
-\rho_e(x,y,z,t) \). This is \textbf{the origin of Gauss's Law of Electricity}.
+Q_V(x,y,z,t) \). This is \textbf{the origin of Gauss's Law of Electricity}.
 
 \subsubsection{Statics \& Quasi-Statics Approximation}
 
-Faraday's and Ampere's Law (alongisde Gauss Conditions) fully define any electromagnetic system
+Faraday's and Ampere's Law (alongside Gauss Conditions) fully define any electromagnetic system
 at all times and space. Both equations are \textbf{first order partial differential
 equations (PDEs)} which \textbf{are coupled with each other}. Sadly, for solving the
 full system is mathematically very expensive. One therefore wonders, \textbf{Is it
@@ -182,10 +188,10 @@ or \(\mathbf{J}_e\) (\& \(\mathbf{J}_m\)).
     point a is zero, \emph{at that instant}.
     \begin{align*}
       \text{[At every instant \(t\)]} \\
-      -\nabla \times \mathbf{E(x,y,z,t)} &= 0 \\
-      \nabla \times (\nabla V(x,y,z,t)) &= 0 \hspace{1cm} \left[\nabla \times (\nabla F) = 0 \right] \\
-      -\nabla \times \mathbf{E(x,y,z,t)} &= \nabla \times (\nabla V(x,y,z,t)) \\
-      \mathbf{E(x,y,z,t)} &= -\nabla V(x,y,z,t) \\
+      \nabla \times \mathbf{E(x,y,z,t)} &= 0 \\
+      \text{[A curl free field on a region without holes is a gradient; define } V \text{ by]} \\
+      V(\mathbf{r},t) &= -\int_{\mathbf{r}_0}^{\mathbf{r}} \mathbf{E} \cdot d\mathbf{l} \hspace{1cm} \text{[path independent: zero curl, Stokes]} \\
+      \mathbf{E(x,y,z,t)} &= -\nabla V(x,y,z,t) \hspace{1cm} \left[\nabla \times (-\nabla V) = 0 \text{ checks: curl of a gradient}\right] \\
       \text{[Line Integral of Electric Function: A to B to A]} \\
       \oint_a^b \mathbf{E(x,y,z,t)} \cdot d\mathbf{l} &= \oint_a^b -\nabla V(x,y,z,t) \cdot d\mathbf{l} \\
                                                 &= \int_a^b -\nabla V(x,y,z,t) \cdot d\mathbf{l} + \int_b^a -\nabla V(x,y,z,t) \cdot d\mathbf{l} \\
@@ -196,7 +202,7 @@ or \(\mathbf{J}_e\) (\& \(\mathbf{J}_m\)).
     around any closed loop is zero. Notice this did not require \(\mathbf{E}\) or \(V\)
     to be time-independent, only that \(\nabla\times\mathbf{E}=0\) holds instant by
     instant. This is precisely why KVL remains valid in the quasi-static (slowly
-    time-varying, \(L \lll \lambda\)) regime, not just in true DC.\
+    time-varying, circuit size much smaller than the wavelength) regime, not just in true DC.
   \item \textbf{Equation 6}: Taking the divergence of both sides of
     equation (6), at each instant \(t\):
     \begin{align*}
@@ -208,17 +214,17 @@ or \(\mathbf{J}_e\) (\& \(\mathbf{J}_m\)).
       \item \textbf{Charge Density Is Genuinely Time-Independent}:
         Substituting (4) into (7):
         \begin{align*}
-          0 &= -\frac{\partial \rho_e(x,y,z,t)}{\partial t} \tag{8}
+          0 &= -\frac{\partial Q_V(x,y,z,t)}{\partial t} \tag{8}
         \end{align*}
         Equation (8) \textbf{shows the total charge enclosed by that
         surface genuinely does not change with time.} Unlike
         \(\mathbf{E}\), \(\mathbf{H}\), and \(\mathbf{J}_e\) above,
         this is a genuine, non-instantaneous result: it says
-        \(\rho_e\)'s rate of change is zero \emph{for all} \(t\), not
+        \(Q_V\)'s rate of change is zero \emph{for all} \(t\), not
         just at a single instant. This is the one function we can
         honestly write without \(t\):
         \begin{align*}
-          \rho_e(x,y,z,t) = \rho_e(x,y,z) \tag{8a}
+          Q_V(x,y,z,t) = Q_V(x,y,z) \tag{8a}
         \end{align*}
       \item \textbf{Zero Total Current Out of a Volume}: Integrating
         both sides of equation (7) over a volume \(V\), at a fixed
