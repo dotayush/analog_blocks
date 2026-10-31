@@ -30,7 +30,7 @@ flowing out of the drain (Section~\ref{sec:theory_general_complementary}).
       \item \(V_{ov} = V_{GS} - V_{th}\): overdrive voltage.
       \item \(K_{CLM}\): channel length modulation coefficient (V\(^{-1}\)).
     \end{itemize}
-  \item \textbf{Mathematical Model (Square Law, Q5)}:
+  \item \textbf{Mathematical Model (Square Law; Large Signal, Time Domain, DC Input Analysis, Q5)}:
     \begin{itemize}
       \item \textbf{Cutoff} (\(V_{GS} < V_{th}\)): no channel.
         \[
@@ -43,6 +43,7 @@ flowing out of the drain (Section~\ref{sec:theory_general_complementary}).
         \begin{align*}
           I_D &= C_{ox} W (V_{GS} - V(y) - V_{th}) \cdot \frac{K_P}{C_{ox}} \frac{dV}{dy} \\
           \int_0^L I_D \, dy &= \int_0^{V_{DS}} K_P W (V_{GS} - V_{th} - V) \, dV \\
+          I_D \left[ y \right]_0^L &= K_P W \left[ (V_{GS} - V_{th}) V - \frac{V^2}{2} \right]_0^{V_{DS}} \hspace{1cm} [I_D \text{ is the same at every } y] \\
           I_D L &= K_P W \left[ (V_{GS} - V_{th}) V_{DS} - \frac{V_{DS}^2}{2} \right] \\
           I_D &= K_P \frac{W}{L} \left[ V_{ov} V_{DS} - \frac{V_{DS}^2}{2} \right]
         \end{align*}
@@ -51,7 +52,7 @@ flowing out of the drain (Section~\ref{sec:theory_general_complementary}).
         \begin{align*}
           \frac{\partial I_D}{\partial V_{DS}} = K_P \frac{W}{L} \left[ V_{ov} - V_{DS} \right] &= 0
           \hspace{1cm} \Rightarrow \hspace{1cm} V_{DS} = V_{ov} \\
-          I_D = K_P \frac{W}{L} \left[ V_{ov}^2 - \frac{V_{ov}^2}{2} \right] &= \frac{K_P}{2} \frac{W}{L} V_{ov}^2
+          I_D = K_P \frac{W}{L} \left[ V_{ov} \cdot V_{ov} - \frac{V_{ov}^2}{2} \right] = K_P \frac{W}{L} \left[ V_{ov}^2 - \frac{V_{ov}^2}{2} \right] &= \frac{K_P}{2} \frac{W}{L} V_{ov}^2 \hspace{1cm} [V_{DS} = V_{ov}]
         \end{align*}
         The channel pinches off at the drain and further \(V_{DS}\) only
         shortens the effective channel, captured by \(K_{CLM}\):
@@ -71,7 +72,7 @@ flowing out of the drain (Section~\ref{sec:theory_general_complementary}).
     \[
       V_{th} = V_{th0} + K_B \left( \sqrt{2V_F + V_{SB}} - \sqrt{2V_F} \right)
     \]
-  \item \textbf{Linear Model (Q4)}: Linearizing the saturation equation
+  \item \textbf{Linear Model (Small Signal, Frequency Domain, AC Input Analysis, Q4)}: Linearizing the saturation equation
     about \(Q = (V_{GS(Q)}, V_{DS(Q)}, V_{SB(Q)}, I_{D(Q)})\):
     \begin{align*}
       I_d &= g_m V_{gs} + g_{mb} V_{bs} + g_o V_{ds} \\
@@ -90,20 +91,28 @@ flowing out of the drain (Section~\ref{sec:theory_general_complementary}).
     \begin{align*}
       g_m &= \left.\frac{\partial I_D}{\partial V_{GS}}\right|_{Q} \\
       g_m &= \frac{\partial}{\partial V_{GS}} \left[ \frac{K_P}{2} \frac{W}{L} (V_{GS} - V_{th})^2 (1 + K_{CLM} V_{DS}) \right]_{Q} \\
+      g_m &= \frac{K_P}{2} \frac{W}{L} \cdot 2 (V_{GS(Q)} - V_{th}) \cdot (1 + K_{CLM} V_{DS(Q)}) \hspace{1cm} [\text{chain rule}] \\
       g_m &= K_P \frac{W}{L} V_{ov} (1 + K_{CLM} V_{DS(Q)}) \\
-      g_m &= \frac{2 I_{D(Q)}}{V_{ov}} \hspace{1cm} \left[\text{dividing } I_{D(Q)} \text{ by } \frac{V_{ov}}{2}\right] \\
-      g_m &= \sqrt{2 K_P \frac{W}{L} I_{D(Q)} (1 + K_{CLM} V_{DS(Q)})} \approx \sqrt{2 K_P \frac{W}{L} I_{D(Q)}}
+      g_m &= \frac{2}{V_{ov}} \cdot \frac{K_P}{2} \frac{W}{L} V_{ov}^2 (1 + K_{CLM} V_{DS(Q)}) \hspace{1cm} \left[\text{multiply and divide by } \frac{V_{ov}}{2}\right] \\
+      g_m &= \frac{2 I_{D(Q)}}{V_{ov}} \\
+      \intertext{Eliminating \(V_{ov}\) instead, with \(V_{ov} = \sqrt{\frac{2 I_{D(Q)}}{K_P \frac{W}{L} (1 + K_{CLM} V_{DS(Q)})}}\) from the saturation equation:}
+      g_m &= K_P \frac{W}{L} (1 + K_{CLM} V_{DS(Q)}) \sqrt{\frac{2 I_{D(Q)}}{K_P \frac{W}{L} (1 + K_{CLM} V_{DS(Q)})}} \\
+      g_m &= \sqrt{2 K_P \frac{W}{L} I_{D(Q)} (1 + K_{CLM} V_{DS(Q)})} \approx \sqrt{2 K_P \frac{W}{L} I_{D(Q)}} \hspace{1cm} [K_{CLM} V_{DS(Q)} \ll 1]
     \end{align*}
     \(g_o\) can be calculated as follows:
     \begin{align*}
       g_o &= \left.\frac{\partial I_D}{\partial V_{DS}}\right|_{Q} \\
+      g_o &= \frac{\partial}{\partial V_{DS}} \left[ \frac{K_P}{2} \frac{W}{L} V_{ov}^2 (1 + K_{CLM} V_{DS}) \right]_{Q} \\
       g_o &= \frac{K_P}{2} \frac{W}{L} V_{ov}^2 K_{CLM} \\
-      g_o &= \frac{K_{CLM} I_{D(Q)}}{1 + K_{CLM} V_{DS(Q)}} \approx K_{CLM} I_{D(Q)}
+      g_o &= \frac{K_{CLM} I_{D(Q)}}{1 + K_{CLM} V_{DS(Q)}} \hspace{1cm} \left[\frac{K_P}{2} \frac{W}{L} V_{ov}^2 = \frac{I_{D(Q)}}{1 + K_{CLM} V_{DS(Q)}}\right] \\
+      g_o &\approx K_{CLM} I_{D(Q)} \hspace{1cm} [K_{CLM} V_{DS(Q)} \ll 1]
     \end{align*}
     \(g_{mb}\) can be calculated as follows:
     \begin{align*}
       g_{mb} &= \left.\frac{\partial I_D}{\partial V_{BS}}\right|_{Q}
               = \frac{\partial I_D}{\partial V_{th}} \cdot \frac{\partial V_{th}}{\partial V_{BS}} \\
+      \frac{\partial I_D}{\partial V_{th}} &= -\frac{K_P}{2} \frac{W}{L} \cdot 2 (V_{GS} - V_{th}) (1 + K_{CLM} V_{DS}) = -g_m \\
+      \frac{\partial V_{th}}{\partial V_{BS}} &= \frac{\partial}{\partial V_{BS}} \left[ V_{th0} + K_B \left( \sqrt{2V_F - V_{BS}} - \sqrt{2V_F} \right) \right] = -\frac{K_B}{2\sqrt{2V_F - V_{BS}}} \hspace{1cm} [V_{SB} = -V_{BS}] \\
       g_{mb} &= \left(-g_m\right) \cdot \left(-\frac{K_B}{2\sqrt{2V_F + V_{SB(Q)}}}\right) \\
       g_{mb} &= g_m \frac{K_B}{2\sqrt{2V_F + V_{SB(Q)}}}
     \end{align*}
@@ -111,12 +120,26 @@ flowing out of the drain (Section~\ref{sec:theory_general_complementary}).
     \[
       \frac{g_m}{g_o} \approx \frac{\frac{2 I_{D(Q)}}{V_{ov}}}{K_{CLM} I_{D(Q)}} = \frac{2}{K_{CLM} V_{ov}}
     \]
-    In subthreshold \(g_m = \frac{I_{D(Q)}}{n V_T}\), the largest \(g_m\) per
-    unit current a MOSFET can give. The square law model is valid while
-    \(|V_{gs}| \ll 2 \left|\frac{f'}{f''}\right| = 2 \cdot \frac{K_P \frac{W}{L} V_{ov}}{K_P \frac{W}{L}} = 2V_{ov}\).
-  \item \textbf{Triode as a Resistor (Switch)}: For \(V_{DS} \ll 2V_{ov}\)
-    the quadratic term vanishes,
+    In subthreshold
     \begin{align*}
+      g_m &= \frac{\partial}{\partial V_{GS}} \left[ I_{D0} \frac{W}{L} e^{\frac{V_{GS} - V_{th}}{n V_T}} \left(1 - e^{-\frac{V_{DS}}{V_T}}\right) \right]_Q
+           = \frac{1}{n V_T} \cdot I_{D(Q)} = \frac{I_{D(Q)}}{n V_T},
+    \end{align*}
+    the largest \(g_m\) per unit current a MOSFET can give
+    (\(\frac{g_m}{I_D} = \frac{1}{nV_T}\) against \(\frac{2}{V_{ov}}\) in saturation).
+    The square law, \(f(V_{GS}) = \frac{K_P}{2}\frac{W}{L}(V_{GS} - V_{th})^2\), has
+    \(f' = K_P \frac{W}{L} V_{ov}\) and \(f'' = K_P \frac{W}{L}\), so the
+    small signal model is valid while
+    \(|V_{gs}| \ll 2 \left|\frac{f'}{f''}\right| = 2 \cdot \frac{K_P \frac{W}{L} V_{ov}}{K_P \frac{W}{L}} = 2V_{ov}\).
+  \item \textbf{Triode as a Resistor (Switch)}: The quadratic term is
+    negligible when
+    \begin{align*}
+      \frac{V_{DS}^2}{2} &\ll V_{ov} V_{DS} \\
+      V_{DS} &\ll 2 V_{ov}
+    \end{align*}
+    and then
+    \begin{align*}
+      I_D &= K_P \frac{W}{L} \left[ V_{ov} V_{DS} - \frac{V_{DS}^2}{2} \right] \\
       I_D &\approx K_P \frac{W}{L} V_{ov} V_{DS} \\
       R_{on} &= \frac{V_{DS}}{I_D} = \frac{1}{K_P \frac{W}{L} (V_{GS} - V_{th})}
     \end{align*}
@@ -124,20 +147,34 @@ flowing out of the drain (Section~\ref{sec:theory_general_complementary}).
     \(C_{ov}\) per side:
     \begin{align*}
       C_{gs} &= \frac{2}{3} W L C_{ox} + C_{ov} \hspace{1cm}
-      C_{gd} = C_{ov} \\
-      f_T &= \frac{g_m}{2\pi (C_{gs} + C_{gd})} \approx \frac{g_m}{2\pi \cdot \frac{2}{3} W L C_{ox}} = \frac{3 K_P V_{ov}}{4\pi C_{ox} L^2}
+      C_{gd} = C_{ov}
     \end{align*}
-    \(f_T\) is the frequency at which the short circuit current gain
-    \(\frac{I_d}{I_g} = \frac{g_m}{s(C_{gs} + C_{gd})}\) falls to unity.
+    \(f_T\) is the frequency at which the short circuit current gain falls
+    to unity. With the drain shorted to the source (\(V_{ds} = 0\)) and
+    \(g_m \gg \omega C_{gd}\):
+    \begin{align*}
+      I_g &= s(C_{gs} + C_{gd}) V_{gs} \\
+      I_d &= g_m V_{gs} - s C_{gd} V_{gs} \approx g_m V_{gs} \\
+      \frac{I_d}{I_g} &= \frac{g_m}{s(C_{gs} + C_{gd})} \\
+      \left|\frac{I_d}{I_g}\right|_{s = j 2\pi f_T} &= \frac{g_m}{2\pi f_T (C_{gs} + C_{gd})} = 1 \\
+      f_T &= \frac{g_m}{2\pi (C_{gs} + C_{gd})} \\
+      f_T &\approx \frac{g_m}{2\pi \cdot \frac{2}{3} W L C_{ox}} \hspace{1cm} [C_{ov} \ll W L C_{ox}] \\
+      f_T &= \frac{K_P \frac{W}{L} V_{ov}}{\frac{4\pi}{3} W L C_{ox}} \hspace{1cm} [g_m = K_P \frac{W}{L} V_{ov}] \\
+      f_T &= \frac{3 K_P V_{ov}}{4\pi C_{ox} L^2}
+    \end{align*}
   \item \textbf{Noise}: thermal noise of the channel
     \(\overline{I_n^2} = 4kT \cdot \frac{2}{3} g_m \cdot df\) and flicker noise
     referred to the gate \(\overline{V_n^2} = \frac{K_f}{C_{ox} W L f} df\)
     (Section~\ref{sec:theory_general_noise}).
   \item \textbf{Circuit Analysis}:
     \begin{itemize}
-      \item \textbf{Non-Linear Analysis (Q5, Q6, Q8)}: Use the square law
+      \item \textbf{Non-Linear Analysis} (Large Signal, Time Domain, DC
+        Input Analysis (Q5); Large Signal, Time Domain, AC Input Analysis
+        (Q6); Large Signal, Frequency Domain, AC Input Analysis (Q8)): Use the square law
         with the region checks \(V_{GS} \gtrless V_{th}\), \(V_{DS} \gtrless V_{ov}\).
-      \item \textbf{Linear Analysis (Q4, Q2)}: Use \(g_m\), \(g_{mb}\), \(g_o\),
+      \item \textbf{Linear Analysis} (Small Signal, Frequency Domain, AC
+        Input Analysis (Q4); Small Signal, Time Domain, AC Input Analysis
+        (Q2)): Use \(g_m\), \(g_{mb}\), \(g_o\),
         \(C_{gs}\), \(C_{gd}\) evaluated at the Q5 bias point. \(I_G = 0\),
         so the gate node draws no current in KCL.
     \end{itemize}
@@ -148,11 +185,13 @@ An NMOS with \(K_P = 200\,\mu\)A/V\(^2\), \(V_{th} = 0.5\,\)V,
 \(K_{CLM} = 0.05\,\)V\(^{-1}\) and \(L = 0.5\,\mu\)m must carry
 \(I_D = 100\,\mu\)A at \(V_{ov} = 0.2\,\)V. Find \(W\), \(g_m\), \(g_o\), the
 intrinsic gain and the minimum \(V_{DS}\).
-\paragraph{Solution:}
+\paragraph{Solution:} Neglecting \(K_{CLM}\) for sizing
+(\(I_D = \frac{K_P}{2}\frac{W}{L}V_{ov}^2\)):
 \begin{align*}
-  W &= \frac{2 I_D L}{K_P V_{ov}^2} = \frac{2 \cdot 100\,\mu\text{A} \cdot 0.5\,\mu\text{m}}{200\,\mu\text{A/V}^2 \cdot (0.2\,\text{V})^2} = 12.5\,\mu\text{m} \\
+  \frac{W}{L} &= \frac{2 I_D}{K_P V_{ov}^2} = \frac{2 \cdot 100\,\mu\text{A}}{200\,\mu\text{A/V}^2 \cdot 0.04\,\text{V}^2} = \frac{200\,\mu\text{A}}{8\,\mu\text{A}} = 25 \\
+  W &= 25 \cdot L = 25 \cdot 0.5\,\mu\text{m} = 12.5\,\mu\text{m} \\
   g_m &= \frac{2 I_D}{V_{ov}} = \frac{2 \cdot 100\,\mu\text{A}}{0.2\,\text{V}} = 1\,\text{mS} \\
   g_o &\approx K_{CLM} I_D = 0.05 \cdot 100\,\mu\text{A} = 5\,\mu\text{S} \hspace{1cm} [r_o = 200\,\text{k}\Omega] \\
-  \frac{g_m}{g_o} &= \frac{1\,\text{mS}}{5\,\mu\text{S}} = 200 = \frac{2}{0.05 \cdot 0.2} \\
+  \frac{g_m}{g_o} &= \frac{1\,\text{mS}}{5\,\mu\text{S}} = 200 \hspace{1cm} \left[\text{check: } \frac{2}{K_{CLM} V_{ov}} = \frac{2}{0.05 \cdot 0.2} = \frac{2}{0.01} = 200\right] \\
   V_{DS,\min} &= V_{ov} = 0.2\,\text{V}
 \end{align*}
