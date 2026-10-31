@@ -109,9 +109,10 @@ The behaviour of a BJT can be approximated well by the below equations.
             \(I_C = A_F I_F - I_R\) and \(I_B = (1 - A_F) I_F + (1 - A_R) I_R\):
             \begin{align*}
               B_F &= \frac{I_C}{I_B} = \frac{A_F I_F}{(1 - A_F) I_F} = \frac{A_F}{1 - A_F} \\
-              B_F (1 - A_F) &= A_F \\
-              B_F &= A_F (1 + B_F) \\
-              A_F &= \frac{B_F}{1 + B_F}
+              B_F (1 - A_F) &= A_F \hspace{1cm} [\times (1 - A_F)] \\
+              B_F - B_F A_F &= A_F \\
+              B_F &= A_F + B_F A_F = A_F (1 + B_F) \\
+              A_F &= \frac{B_F}{1 + B_F} \hspace{1cm} [\div (1 + B_F)]
             \end{align*}
             In reverse active (\(I_F \approx 0\)) the emitter collects,
             \(-I_E = A_R I_R\) and \(I_B = (1 - A_R) I_R\), so in the same way
