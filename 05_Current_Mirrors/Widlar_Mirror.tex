@@ -39,26 +39,43 @@ As in Section~\ref{sec:mirror_basic}, \(G_3\) exists only for analysis
       (V_s - V_{ee}) G_S &= I_{out}
         \hspace{0.5cm} \Rightarrow \hspace{0.5cm} V_s - V_{ee} = \frac{I_{out}}{G_S} \tag{3}
     \end{align*}
-    Adding (2) and (3) and equating with (1):
+    Each square law is solved for its gate-source voltage, e.g.\ for (1):
+    \begin{align*}
+      (V_x - V_{ee} - V_{th})^2 &= \frac{I_{in}}{k_{n_0}} \\
+      V_x - V_{ee} - V_{th} &= \sqrt{\frac{I_{in}}{k_{n_0}}} \quad \text{[positive root, } M_0 \text{ on]}
+    \end{align*}
+    Adding (2) and (3), the left sides sum to \((V_x - V_s) + (V_s - V_{ee}) = V_x - V_{ee}\),
+    which is the left side of (1). Equating the right sides:
     \begin{align*}
       V_{th} + \sqrt{\frac{I_{out}}{k_{n_1}}} + \frac{I_{out}}{G_S} &= V_{th} + \sqrt{\frac{I_{in}}{k_{n_0}}} \\
       \frac{I_{out}}{G_S} + \sqrt{\frac{I_{out}}{k_{n_1}}} - \sqrt{\frac{I_{in}}{k_{n_0}}} &= 0 \tag{4}
     \end{align*}
-    With \(u = \sqrt{I_{out}}\), (4) is a quadratic,
-    \(\frac{1}{G_S} u^2 + \frac{1}{\sqrt{k_{n_1}}} u - \sqrt{\frac{I_{in}}{k_{n_0}}} = 0\):
+    With \(u = \sqrt{I_{out}}\), so that \(I_{out} = u^2\) and
+    \(\sqrt{\frac{I_{out}}{k_{n_1}}} = \frac{u}{\sqrt{k_{n_1}}}\), (4) is a quadratic
+    \(a u^2 + b u + c = 0\) with
+    \(a = \frac{1}{G_S}\), \(b = \frac{1}{\sqrt{k_{n_1}}}\), \(c = -\sqrt{\frac{I_{in}}{k_{n_0}}}\):
     \begin{align*}
-      u &= \frac{-\frac{1}{\sqrt{k_{n_1}}} + \sqrt{\frac{1}{k_{n_1}} + \frac{4}{G_S}\sqrt{\frac{I_{in}}{k_{n_0}}}}}{\frac{2}{G_S}} \hspace{1cm} [u > 0] \\
-      I_{out} &= \frac{G_S^2}{4} \left( \sqrt{\frac{1}{k_{n_1}} + \frac{4}{G_S}\sqrt{\frac{I_{in}}{k_{n_0}}}} - \frac{1}{\sqrt{k_{n_1}}} \right)^2
+      u &= \frac{-b + \sqrt{b^2 - 4ac}}{2a} \hspace{1cm} [u > 0 \text{, the other root is negative}] \\
+        &= \frac{-\frac{1}{\sqrt{k_{n_1}}} + \sqrt{\frac{1}{k_{n_1}} + \frac{4}{G_S}\sqrt{\frac{I_{in}}{k_{n_0}}}}}{\frac{2}{G_S}} \\
+        &= \frac{G_S}{2} \left( \sqrt{\frac{1}{k_{n_1}} + \frac{4}{G_S}\sqrt{\frac{I_{in}}{k_{n_0}}}} - \frac{1}{\sqrt{k_{n_1}}} \right) \\
+      I_{out} = u^2 &= \frac{G_S^2}{4} \left( \sqrt{\frac{1}{k_{n_1}} + \frac{4}{G_S}\sqrt{\frac{I_{in}}{k_{n_0}}}} - \frac{1}{\sqrt{k_{n_1}}} \right)^2
     \end{align*}
-    For design it is easier to invert (4) for \(G_S\):
+    For design it is easier to invert (4) for \(G_S\). From the square
+    law, \(\sqrt{\frac{I_{D}}{k_{n}}} = V_{GS} - V_{th} = V_{ov}\):
     \begin{align*}
+      \frac{I_{out}}{G_S} &= \sqrt{\frac{I_{in}}{k_{n_0}}} - \sqrt{\frac{I_{out}}{k_{n_1}}} \\
       \frac{1}{G_S} = R_S &= \frac{\sqrt{\frac{I_{in}}{k_{n_0}}} - \sqrt{\frac{I_{out}}{k_{n_1}}}}{I_{out}} = \frac{V_{ov_0} - V_{ov_1}}{I_{out}}
     \end{align*}
-    \(G_S \to \infty\) gives back the basic mirror,
-    \(\sqrt{I_{out}/k_{n_1}} = \sqrt{I_{in}/k_{n_0}}\).
-  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}: (\(g_{mb}\) neglected)\\
-    Applying KCL at $V_{x}$:
+    \(G_S \to \infty\) sends \(\frac{I_{out}}{G_S} \to 0\) in (4) and gives back the basic mirror:
     \begin{align*}
+      \sqrt{\frac{I_{out}}{k_{n_1}}} &= \sqrt{\frac{I_{in}}{k_{n_0}}}
+      \hspace{0.5cm} \Rightarrow \hspace{0.5cm} \frac{I_{out}}{I_{in}} = \frac{k_{n_1}}{k_{n_0}}
+    \end{align*}
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}: (\(g_{mb}\) neglected)\\
+    Applying KCL at $V_{x}$ with the input current \(I_{in}\) injected
+    (\(M_0\) has \(V_{gs_0} = V_{ds_0} = V_x\), \(I_G = 0\)):
+    \begin{align*}
+      V_x G_2 + g_{m_0} V_x + g_{o_0} V_x - I_{in} &= 0 \\
       V_x(G_2 + g_{o_0} + g_{m_0}) &= I_{in} \tag{5}
     \end{align*}
     Applying KCL at $V_{s}$ (current into \(G_S\) equals drain current of \(M_1\)):
@@ -66,21 +83,26 @@ As in Section~\ref{sec:mirror_basic}, \(G_3\) exists only for analysis
       V_s G_S &= g_{m_1}(V_x - V_s) + g_{o_1}(V_{out} - V_s) \\
       V_s (G_S + g_{m_1} + g_{o_1}) &= g_{m_1} V_x + g_{o_1} V_{out} \tag{6}
     \end{align*}
-    Applying KCL at $V_{out}$:
+    Applying KCL at $V_{out}$, and replacing the drain current of \(M_1\),
+    \(g_{m_1}(V_x - V_s) + g_{o_1}(V_{out} - V_s)\), by \(V_s G_S\) (first line of (6)):
     \begin{align*}
       V_{out} G_3 + g_{m_1}(V_x - V_s) + g_{o_1}(V_{out} - V_s) &= 0 \\
-      V_{out} G_3 + V_s G_S &= 0 \hspace{1cm} \text{[using (6)]} \tag{7}
+      V_{out} G_3 + V_s G_S &= 0 \tag{7}
     \end{align*}
 \end{enumerate}
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \textbf{Current Gain}: output at AC ground (\(V_{out} = 0\)),
-    \(I_{out} = V_s G_S\). From (6) and (5):
+  \item \textbf{Current Gain, Small Signal, Frequency Domain, AC Input (Q4)}:
+    output at AC ground (\(V_{out} = 0\)); the drain current of \(M_1\) is
+    the current in \(G_S\), \(I_{out} = V_s G_S\). From (6) with \(V_{out} = 0\) and (5):
     \begin{align*}
+      V_s (G_S + g_{m_1} + g_{o_1}) &= g_{m_1} V_x + g_{o_1} \cdot 0 \\
       V_s &= \frac{g_{m_1} V_x}{G_S + g_{m_1} + g_{o_1}} \\
-      I_{out} &= \frac{G_S\, g_{m_1}}{G_S + g_{m_1} + g_{o_1}} \cdot \frac{I_{in}}{G_2 + g_{o_0} + g_{m_0}} \\
-      \frac{I_{out}}{I_{in}} &\approx \frac{g_{m_1}}{g_{m_0}} \cdot \frac{1}{1 + g_{m_1} R_S} \hspace{1cm} [g_{o_1} \ll G_S,\ G_2, g_{o_0} \ll g_{m_0}]
+      V_x &= \frac{I_{in}}{G_2 + g_{o_0} + g_{m_0}} \quad \text{[from (5)]} \\
+      I_{out} = V_s G_S &= \frac{G_S\, g_{m_1}}{G_S + g_{m_1} + g_{o_1}} \cdot \frac{I_{in}}{G_2 + g_{o_0} + g_{m_0}} \\
+      \frac{I_{out}}{I_{in}} &= \frac{g_{m_1}}{1 + (g_{m_1} + g_{o_1}) R_S} \cdot \frac{1}{G_2 + g_{o_0} + g_{m_0}} \quad \text{[dividing by } G_S = \tfrac{1}{R_S} \text{]} \\
+                             &\approx \frac{g_{m_1}}{g_{m_0}} \cdot \frac{1}{1 + g_{m_1} R_S} \hspace{1cm} [g_{o_1} \ll g_{m_1},\ G_2, g_{o_0} \ll g_{m_0}]
     \end{align*}
   \item \textbf{Impedances}:
     \paragraph{At Input:} identical to the basic mirror, from (5):
@@ -94,13 +116,16 @@ As in Section~\ref{sec:mirror_basic}, \(G_3\) exists only for analysis
         \frac{I_{test}}{G_S}(G_S + g_{m_1} + g_{o_1}) &= g_{o_1} V_{out} \\
         I_{test}\left(1 + \frac{g_{m_1} + g_{o_1}}{G_S}\right) &= g_{o_1} V_{out} \\
         Z_{out} = \frac{V_{out}}{I_{test}} &= \frac{1 + (g_{m_1} + g_{o_1}) R_S}{g_{o_1}} \\
-        Z_{out} &= r_{o_1} + R_S + g_{m_1} r_{o_1} R_S \approx r_{o_1}(1 + g_{m_1} R_S)
+                &= \frac{1}{g_{o_1}} + \frac{g_{m_1} R_S}{g_{o_1}} + \frac{g_{o_1} R_S}{g_{o_1}} \\
+        Z_{out} &= r_{o_1} + g_{m_1} r_{o_1} R_S + R_S \approx r_{o_1}(1 + g_{m_1} R_S) \quad \text{[} R_S \ll r_{o_1} \text{]}
       \end{align*}
       The degeneration multiplies the basic mirror output impedance by
       \(1 + g_{m_1} R_S\).
-  \item \textbf{Output Load (Max)}: \(M_1\) saturated needs
-    \(V_{out} - V_s \geq V_{ov_1}\):
+  \item \textbf{Output Load (Max), Large Signal, Time Domain, DC Input (Q5)}:
+    \(M_1\) saturated needs \(V_{DS_1} = V_{out} - V_s \geq V_{ov_1}\), with
+    \(V_s = V_{ee} + \frac{I_{out}}{G_S} = V_{ee} + I_{out} R_S\) from (3):
     \begin{align*}
+      V_{out} &\geq V_s + V_{ov_1} \\
       V_{out,\min} &= V_{ee} + I_{out} R_S + V_{ov_1} \\
       R_{L,\max} &= \frac{V_{cc} - V_{out,\min}}{I_{out}}
     \end{align*}
@@ -110,7 +135,8 @@ As in Section~\ref{sec:mirror_basic}, \(G_3\) exists only for analysis
 \begin{enumerate}
   \item Choose \(V_{ov_0}\); then \(V_x = V_{ee} + V_{th} + V_{ov_0}\) and
     \(W_0 = \frac{2 I_{in} L_0}{K_P V_{ov_0}^2}\).
-  \item Choose \(W_1\) (often \(W_1 = W_0\)); then
+  \item Choose \(W_1\) (often \(W_1 = W_0\)); then from
+    \(I_{out} = \frac{K_P}{2}\frac{W_1}{L_1} V_{ov_1}^2\),
     \(V_{ov_1} = \sqrt{\frac{2 I_{out} L_1}{K_P W_1}}\).
   \item \(R_S = \frac{V_{ov_0} - V_{ov_1}}{I_{out}}\) and
     \(R_2 = \frac{V_{cc} - V_x}{I_{in}}\).
@@ -126,14 +152,18 @@ basic mirror delivering the same \(10\,\mu\)A.
 \begin{align*}
   W_0 &= \frac{2 \cdot 100\,\mu A \cdot 1\,\mu m}{200\,\mu A/V^2 \cdot (0.2V)^2} = 25\,\mu m = W_1 \\
   k_{n_1} &= \frac{K_P}{2}\frac{W_1}{L_1} = 100\,\mu A/V^2 \cdot 25 = 2.5\,mA/V^2 \\
-  V_{ov_1} &= \sqrt{\frac{I_{out}}{k_{n_1}}} = \sqrt{\frac{10\,\mu A}{2.5\,mA/V^2}} = 63.2\,mV \\
-  R_S &= \frac{0.2V - 0.0632V}{10\,\mu A} = 13.68\,k\Omega \\
-  R_2 &= \frac{5V - (0 + 1 + 0.2)V}{100\,\mu A} = 38\,k\Omega \\
-  g_{m_1} &= \frac{2 \cdot 10\,\mu A}{0.0632V} = 316\,\mu S \hspace{1cm}
-  r_{o_1} = \frac{1}{0.02 \cdot 10\,\mu A} = 5\,M\Omega \\
-  Z_{out} &= 5\,M\Omega + 13.68\,k\Omega + (316\,\mu S)(5\,M\Omega)(13.68\,k\Omega) \approx 26.6\,M\Omega \\
-  Z_{out,basic} &= r_{o_1} = 5\,M\Omega \\
-  V_{out,\min} &= 0.1368V + 0.0632V = 0.2V \hspace{1cm} R_{L,\max} = \frac{5V - 0.2V}{10\,\mu A} = 480\,k\Omega
+  V_{ov_1} &= \sqrt{\frac{I_{out}}{k_{n_1}}} = \sqrt{\frac{10\,\mu A}{2.5\,mA/V^2}} = \sqrt{0.004\,V^2} = 63.2\,mV \\
+  R_S &= \frac{V_{ov_0} - V_{ov_1}}{I_{out}} = \frac{0.2V - 0.0632V}{10\,\mu A} = \frac{0.1368V}{10\,\mu A} = 13.68\,k\Omega \\
+  V_x &= V_{ee} + V_{th} + V_{ov_0} = (0 + 1 + 0.2)V = 1.2V \\
+  R_2 &= \frac{V_{cc} - V_x}{I_{in}} = \frac{5V - 1.2V}{100\,\mu A} = 38\,k\Omega \\
+  g_{m_1} &= \frac{2 I_{out}}{V_{ov_1}} = \frac{2 \cdot 10\,\mu A}{0.0632V} = 316\,\mu S \hspace{1cm}
+  r_{o_1} = \frac{1}{K_{CLM} I_{out}} = \frac{1}{0.02 \cdot 10\,\mu A} = 5\,M\Omega \\
+  g_{m_1} R_S &= 316\,\mu S \cdot 13.68\,k\Omega = 4.32 \\
+  Z_{out} &= r_{o_1} + R_S + g_{m_1} r_{o_1} R_S = 5\,M\Omega + 13.68\,k\Omega + 4.32 \cdot 5\,M\Omega \\
+          &= 5\,M\Omega + 0.014\,M\Omega + 21.6\,M\Omega \approx 26.6\,M\Omega \\
+  Z_{out,basic} &= r_{o_1} = 5\,M\Omega \hspace{1cm} \frac{Z_{out}}{Z_{out,basic}} \approx 1 + g_{m_1} R_S = 5.32 \\
+  V_{out,\min} &= V_{ee} + I_{out} R_S + V_{ov_1} = 0 + 10\,\mu A \cdot 13.68\,k\Omega + 0.0632V = 0.1368V + 0.0632V = 0.2V \\
+  R_{L,\max} &= \frac{V_{cc} - V_{out,\min}}{I_{out}} = \frac{5V - 0.2V}{10\,\mu A} = 480\,k\Omega
 \end{align*}
 \(V_{ov_1} = 63\,\)mV is close to weak inversion where the square law
 overestimates \(I_D\); the result should be checked in Q5 simulation
