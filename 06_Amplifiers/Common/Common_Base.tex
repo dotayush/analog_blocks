@@ -18,9 +18,9 @@ voltage gain.
 
 \subsubsection{Transfer Function}
 \begin{enumerate}
-  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}: \(I_E = \frac{V_e - V_{IN}}{R_S}\),
-    \(V_e = V_B - V_{BE} = V_B - V_T \ln\frac{I_C}{I_S}\), \(I_C = A_F I_E\),
-    \(V_{OUT} = V_{cc} - I_C R_C\). Substituting \(V_e\) into \(I_E\):
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}: \(I_E = \frac{V_E - V_{IN}}{R_S}\),
+    \(V_E = V_B - V_{BE} = V_B - V_T \ln\frac{I_C}{I_S}\), \(I_C = A_F I_E\),
+    \(V_{OUT} = V_{cc} - I_C R_C\). Substituting \(V_E\) into \(I_E\):
     \begin{align*}
       \frac{I_C}{A_F} &= \frac{V_B - V_T \ln\frac{I_C}{I_S} - V_{IN}}{R_S} \\
       I_C^{(k+1)} &= \frac{A_F}{R_S}\left(V_B - V_{IN} - V_T \ln\frac{I_C^{(k)}}{I_S}\right)

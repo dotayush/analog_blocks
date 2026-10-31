@@ -22,11 +22,11 @@ The DC path for the drain current goes through \(G_S\) and the source
 \begin{enumerate}
   \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}: (\(K_{CLM} = 0\))
     \begin{align*}
-      I_D &= (V_s - V_{IN}) G_S \tag{1} \\
-      I_D &= k_n (V_B - V_s - V_{th})^2 \tag{2} \\
-      V_{out} &= V_{dd} - \frac{I_D}{G_D} \tag{3}
+      I_D &= (V_S - V_{IN}) G_S \tag{1} \\
+      I_D &= k_n (V_B - V_S - V_{th})^2 \tag{2} \\
+      V_{OUT} &= V_{dd} - \frac{I_D}{G_D} \tag{3}
     \end{align*}
-    Let \(V_{ov} = V_B - V_s - V_{th}\), so \(V_s = V_B - V_{th} - V_{ov}\). Equating
+    Let \(V_{ov} = V_B - V_S - V_{th}\), so \(V_S = V_B - V_{th} - V_{ov}\). Equating
     (1) and (2):
     \begin{align*}
       k_n V_{ov}^2 &= (V_B - V_{th} - V_{ov} - V_{IN}) G_S \\
@@ -35,11 +35,11 @@ The DC path for the drain current goes through \(G_S\) and the source
       V_{ov} &= \frac{-G_S + \sqrt{G_S^2 - 4 k_n \cdot \left(-G_S (V_B - V_{th} - V_{IN})\right)}}{2 k_n} \quad [\text{positive root}] \\
       V_{ov} &= \frac{-G_S + \sqrt{G_S^2 + 4 k_n G_S (V_B - V_{th} - V_{IN})}}{2 k_n}
     \end{align*}
-    Then \(I_D = k_n V_{ov}^2\) and \(V_{out}\) follows from (3).
+    Then \(I_D = k_n V_{ov}^2\) and \(V_{OUT}\) follows from (3).
     Saturation requires \(V_{DS} \geq V_{ov}\):
     \begin{align*}
-      V_{out} - V_s &\geq V_{ov} \\
-      V_{out} &\geq V_s + V_{ov} = (V_B - V_{th} - V_{ov}) + V_{ov} = V_B - V_{th}
+      V_{OUT} - V_S &\geq V_{ov} \\
+      V_{OUT} &\geq V_S + V_{ov} = (V_B - V_{th} - V_{ov}) + V_{ov} = V_B - V_{th}
     \end{align*}
   \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}: \(V_g = 0\). The drain current
     (drain to source) is

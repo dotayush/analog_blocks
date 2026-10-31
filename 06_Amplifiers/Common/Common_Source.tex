@@ -22,43 +22,43 @@ outside the symbol.
 
 \subsubsection{Transfer Function}
 \begin{enumerate}
-  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}: \(I_G = 0\) so \(V_g = V_{in}\).
-    KCL at \(V_{out}\):
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}: \(I_G = 0\) so \(V_G = V_{IN}\).
+    KCL at \(V_{OUT}\):
     \begin{align*}
-      (V_{out} - V_{dd})G_D + I_D &= 0 \\
-      V_{out} &= V_{dd} - \frac{I_D}{G_D} \tag{1}
+      (V_{OUT} - V_{dd})G_D + I_D &= 0 \\
+      V_{OUT} &= V_{dd} - \frac{I_D}{G_D} \tag{1}
     \end{align*}
     \begin{enumerate}
-      \item Cutoff, \(V_{in} < V_{th}\): \(I_D = 0\), \(V_{out} = V_{dd}\).
-      \item Saturation, \(V_{in} \geq V_{th}\), \(V_{out} \geq V_{in} - V_{th}\):
+      \item Cutoff, \(V_{IN} < V_{th}\): \(I_D = 0\), \(V_{OUT} = V_{dd}\).
+      \item Saturation, \(V_{IN} \geq V_{th}\), \(V_{OUT} \geq V_{IN} - V_{th}\):
         \begin{align*}
-          V_{out} &= V_{dd} - \frac{k_n (V_{in} - V_{th})^2 (1 + K_{CLM} V_{out})}{G_D} \quad [V_{DS} = V_{out}] \\
-          V_{out} &= V_{dd} - \frac{k_n (V_{in} - V_{th})^2}{G_D} - \frac{k_n K_{CLM} (V_{in} - V_{th})^2}{G_D} V_{out} \\
-          V_{out}\left(1 + \frac{k_n K_{CLM} (V_{in} - V_{th})^2}{G_D}\right) &= V_{dd} - \frac{k_n (V_{in} - V_{th})^2}{G_D} \\
-          V_{out}\left(G_D + k_n K_{CLM} (V_{in} - V_{th})^2\right) &= V_{dd} G_D - k_n (V_{in} - V_{th})^2 \quad [\times G_D] \\
-          V_{out} &= \frac{V_{dd} G_D - k_n (V_{in} - V_{th})^2}{G_D + k_n K_{CLM} (V_{in} - V_{th})^2}
+          V_{OUT} &= V_{dd} - \frac{k_n (V_{IN} - V_{th})^2 (1 + K_{CLM} V_{OUT})}{G_D} \quad [V_{DS} = V_{OUT}] \\
+          V_{OUT} &= V_{dd} - \frac{k_n (V_{IN} - V_{th})^2}{G_D} - \frac{k_n K_{CLM} (V_{IN} - V_{th})^2}{G_D} V_{OUT} \\
+          V_{OUT}\left(1 + \frac{k_n K_{CLM} (V_{IN} - V_{th})^2}{G_D}\right) &= V_{dd} - \frac{k_n (V_{IN} - V_{th})^2}{G_D} \\
+          V_{OUT}\left(G_D + k_n K_{CLM} (V_{IN} - V_{th})^2\right) &= V_{dd} G_D - k_n (V_{IN} - V_{th})^2 \quad [\times G_D] \\
+          V_{OUT} &= \frac{V_{dd} G_D - k_n (V_{IN} - V_{th})^2}{G_D + k_n K_{CLM} (V_{IN} - V_{th})^2}
         \end{align*}
-      \item Edge of saturation (\(K_{CLM} = 0\)), \(V_{out} = V_{in} - V_{th} = V_{ov}\):
+      \item Edge of saturation (\(K_{CLM} = 0\)), \(V_{OUT} = V_{IN} - V_{th} = V_{ov}\):
         \begin{align*}
           V_{ov} &= V_{dd} - \frac{k_n V_{ov}^2}{G_D} \\
           \frac{k_n}{G_D} V_{ov}^2 + V_{ov} - V_{dd} &= 0 \\
           V_{ov,edge} &= \frac{-1 + \sqrt{1^2 - 4 \cdot \frac{k_n}{G_D} \cdot (-V_{dd})}}{2 \cdot \frac{k_n}{G_D}} \hspace{1cm} [\text{positive root}] \\
           V_{ov,edge} &= \frac{-1 + \sqrt{1 + \frac{4 k_n V_{dd}}{G_D}}}{\frac{2 k_n}{G_D}} = \frac{G_D}{2 k_n}\left(\sqrt{1 + \frac{4 k_n V_{dd}}{G_D}} - 1\right)
         \end{align*}
-      \item Triode, \(V_{out} < V_{in} - V_{th}\), with
-        \(I_D = K_P \frac{W}{L}\left[(V_{in} - V_{th}) V_{out} - \frac{V_{out}^2}{2}\right] = 2 k_n \left[\ldots\right]\)
-        and \(V_x = V_{in} - V_{th}\):
+      \item Triode, \(V_{OUT} < V_{IN} - V_{th}\), with
+        \(I_D = K_P \frac{W}{L}\left[(V_{IN} - V_{th}) V_{OUT} - \frac{V_{OUT}^2}{2}\right] = 2 k_n \left[\ldots\right]\)
+        and \(V_X = V_{IN} - V_{th}\):
         \begin{align*}
-          V_{out} &= V_{dd} - \frac{2 k_n}{G_D}\left[ V_x V_{out} - \frac{V_{out}^2}{2} \right] \\
-          V_{out} &= V_{dd} - \frac{2 k_n V_x}{G_D} V_{out} + \frac{k_n}{G_D} V_{out}^2 \\
-          \frac{k_n}{G_D} V_{out}^2 - \left(1 + \frac{2 k_n V_x}{G_D}\right) V_{out} + V_{dd} &= 0 \\
-          k_n V_{out}^2 - \left(G_D + 2 k_n V_x\right) V_{out} + G_D V_{dd} &= 0 \hspace{1cm} [\times G_D] \\
-          V_{out} &= \frac{G_D + 2 k_n V_x - \sqrt{(G_D + 2 k_n V_x)^2 - 4 k_n G_D V_{dd}}}{2 k_n}
+          V_{OUT} &= V_{dd} - \frac{2 k_n}{G_D}\left[ V_X V_{OUT} - \frac{V_{OUT}^2}{2} \right] \\
+          V_{OUT} &= V_{dd} - \frac{2 k_n V_X}{G_D} V_{OUT} + \frac{k_n}{G_D} V_{OUT}^2 \\
+          \frac{k_n}{G_D} V_{OUT}^2 - \left(1 + \frac{2 k_n V_X}{G_D}\right) V_{OUT} + V_{dd} &= 0 \\
+          k_n V_{OUT}^2 - \left(G_D + 2 k_n V_X\right) V_{OUT} + G_D V_{dd} &= 0 \hspace{1cm} [\times G_D] \\
+          V_{OUT} &= \frac{G_D + 2 k_n V_X - \sqrt{(G_D + 2 k_n V_X)^2 - 4 k_n G_D V_{dd}}}{2 k_n}
         \end{align*}
-        taking the smaller root (the larger one gives \(V_{out} > V_x\), outside triode).
+        taking the smaller root (the larger one gives \(V_{OUT} > V_X\), outside triode).
     \end{enumerate}
     The amplifier is biased in saturation, between
-    \(V_{in} = V_{th}\) and \(V_{in} = V_{th} + V_{ov,edge}\).
+    \(V_{IN} = V_{th}\) and \(V_{IN} = V_{th} + V_{ov,edge}\).
   \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}: \(V_{dd}\) is AC ground.
     Let \(G_o = G_D + g_o\).\\
     Applying KCL at \(V_g\):

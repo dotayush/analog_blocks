@@ -23,22 +23,22 @@ a voltage buffer.
 \begin{enumerate}
   \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}: (\(K_{CLM} = 0\))
     \begin{align*}
-      V_{out} G_L &= I_D = k_n (V_{in} - V_{out} - V_{th})^2 \\
-      V_{in} - V_{out} - V_{th} &= \sqrt{\frac{V_{out} G_L}{k_n}} \\
-      V_{out} &= V_{in} - V_{th} - \sqrt{\frac{V_{out} G_L}{k_n}} = V_{in} - V_{th} - V_{ov}
+      V_{OUT} G_L &= I_D = k_n (V_{IN} - V_{OUT} - V_{th})^2 \\
+      V_{IN} - V_{OUT} - V_{th} &= \sqrt{\frac{V_{OUT} G_L}{k_n}} \\
+      V_{OUT} &= V_{IN} - V_{th} - \sqrt{\frac{V_{OUT} G_L}{k_n}} = V_{IN} - V_{th} - V_{ov}
     \end{align*}
-    With \(u = \sqrt{V_{out}}\) (so \(V_{out} = u^2\)):
+    With \(u = \sqrt{V_{OUT}}\) (so \(V_{OUT} = u^2\)):
     \begin{align*}
-      u^2 &= V_{in} - V_{th} - \sqrt{\frac{G_L}{k_n}} u \\
-      u^2 + \sqrt{\frac{G_L}{k_n}} u - (V_{in} - V_{th}) &= 0 \\
-      u &= \frac{-\sqrt{\frac{G_L}{k_n}} + \sqrt{\left(\sqrt{\frac{G_L}{k_n}}\right)^2 + 4(V_{in} - V_{th})}}{2} \hspace{1cm} [u \geq 0] \\
-      V_{out} = u^2 &= \left(\frac{-\sqrt{\frac{G_L}{k_n}} + \sqrt{\frac{G_L}{k_n} + 4(V_{in} - V_{th})}}{2}\right)^2
+      u^2 &= V_{IN} - V_{th} - \sqrt{\frac{G_L}{k_n}} u \\
+      u^2 + \sqrt{\frac{G_L}{k_n}} u - (V_{IN} - V_{th}) &= 0 \\
+      u &= \frac{-\sqrt{\frac{G_L}{k_n}} + \sqrt{\left(\sqrt{\frac{G_L}{k_n}}\right)^2 + 4(V_{IN} - V_{th})}}{2} \hspace{1cm} [u \geq 0] \\
+      V_{OUT} = u^2 &= \left(\frac{-\sqrt{\frac{G_L}{k_n}} + \sqrt{\frac{G_L}{k_n} + 4(V_{IN} - V_{th})}}{2}\right)^2
     \end{align*}
-    \(V_{th}\) itself rises with \(V_{out}\) through the body effect
-    (\(V_{SB} = V_{out}\)). Saturation needs \(V_{DS} \geq V_{ov}\):
+    \(V_{th}\) itself rises with \(V_{OUT}\) through the body effect
+    (\(V_{SB} = V_{OUT}\)). Saturation needs \(V_{DS} \geq V_{ov}\):
     \begin{align*}
-      V_{dd} - V_{out} &\geq V_{in} - V_{out} - V_{th} \\
-      V_{in} &\leq V_{dd} + V_{th}
+      V_{dd} - V_{OUT} &\geq V_{IN} - V_{OUT} - V_{th} \\
+      V_{IN} &\leq V_{dd} + V_{th}
     \end{align*}
   \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}: \(V_d = 0\), \(V_b = 0\).\\
     Applying KCL at \(V_{out}\) (the drain current
