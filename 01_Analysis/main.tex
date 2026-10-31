@@ -37,7 +37,10 @@ address this with worked examples.
 Figure~\ref{fig:analysis-classes} considers three such characteristics to
 build a classification space.
 \begin{enumerate}
-    \item \textbf{Input Excitation:} The input signal is either DC or AC.
+    \item \textbf{Input Excitation:} The input is an entirely new signal of
+      interest, injected at a node so that the transfer function to another
+      node (acting as the output) can be computed. It is not the bias of the
+      circuit. This input is either DC or AC.
       This forms the Axis of Input Excitation, the X-axis of the
       classification space.
     \item \textbf{Mathematical Representation:} The response is computed
@@ -54,8 +57,8 @@ build a classification space.
 \begin{figure}[H]
   \centering
   \begin{tikzpicture}[x={(1cm,0cm)}, y={(0cm,1cm)}, z={(0.55cm,0.45cm)}, >=stealth]
-    \draw[->, thick, blue!70!black] (-3,0,0) -- (3,0,0) node[right] {\(+X\): AC / Perturbation};
-    \node[left, blue!70!black] at (-3,0,0) {DC / Bias: \(-X\)};
+    \draw[->, thick, blue!70!black] (-3,0,0) -- (3,0,0) node[right] {\(+X\): AC Input};
+    \node[left, blue!70!black] at (-3,0,0) {DC Input: \(-X\)};
     \draw[->, thick, orange!80!black] (0,-2.4,0) -- (0,2.4,0) node[above] {\(+Y\): Frequency Domain};
     \node[below, orange!80!black] at (0,-2.4,0) {\(-Y\): Time Domain};
     \draw[->, thick, purple] (0,0,-3.2) -- (0,0,3.2) node[above right] {\(+Z\): Large Signal};
