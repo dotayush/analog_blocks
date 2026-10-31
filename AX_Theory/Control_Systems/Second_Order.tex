@@ -30,14 +30,15 @@ polynomial. I have listed four common forms below:
       (s + p_1)(s + p_2) \\
       s^2 + (p_1 + p_2)s + p_1 p_2
     \end{align*}
-    where \( p_1 \) and \( p_2 \) are the roots (poles) of the polynomial.
+    where the roots (poles) of the polynomial are \( -p_1 \) and \( -p_2 \)
+    (\(p_1, p_2 > 0\) for a stable system).
   \item The Natural form: We express the polynomial
     in terms of its natural frequency and damping ratio.
     \begin{align*}
-      s^2 + 2 \zeta \omega_n s + \omega_n^2 \\
+      s^2 + 2 D_R \omega_n s + \omega_n^2 \\
       s^2 + \frac{\omega_n}{Q} s + \omega_n^2
     \end{align*}
-    where \( \omega_n \) is the natural frequency and \( \zeta \) is the
+    where \( \omega_n \) is the natural frequency and \( D_R \) is the
     damping ratio and \( Q\) is the quality factor.
 \end{enumerate}
 
@@ -50,7 +51,7 @@ Here is a summary table of the coefficients across different forms:
     \hline
     \(s^2\) & \(a\) & 1 & 1 & 1 \\
     \hline
-    \(s\) & \(b\) & \(\displaystyle\frac{a_1}{a_2}\) & \(p_1 + p_2\) & \(2\zeta\omega_n\) \\
+    \(s\) & \(b\) & \(\displaystyle\frac{a_1}{a_2}\) & \(p_1 + p_2\) & \(2D_R\omega_n\) \\
     \hline
     Constant & \(c\) & \(\displaystyle\frac{a_0}{a_2}\) & \(p_1 p_2\) & \(\omega_n^2\) \\
     \hline
@@ -91,49 +92,49 @@ natural frequency, and damping ratio through three key comparisons.
           \quad \Rightarrow \quad
           a_1^2 = 4 a_0 a_2
         \end{align*}
-      \item \textbf{Two complex conjugate poles (underdamped):} Let \( p_{1,2} = \alpha \pm j\beta \), with \( \alpha, \beta \in \mathbb{R} \).
+      \item \textbf{Two complex conjugate poles (underdamped):} Let \( p_{1,2} = p_r \pm j p_i \), with \( p_r, p_i \in \mathbb{R} \).
         \begin{align*}
-          \frac{a_1}{a_2} &= 2\alpha \quad \Rightarrow \quad \alpha = \frac{a_1}{2a_2} \tag{i} \\
-          \frac{a_0}{a_2} &= \alpha^2 + \beta^2 \quad \Rightarrow \quad \alpha^2 + \beta^2 = \frac{a_0}{a_2} \tag{ii}
+          \frac{a_1}{a_2} &= 2p_r \quad \Rightarrow \quad p_r = \frac{a_1}{2a_2} \tag{i} \\
+          \frac{a_0}{a_2} &= p_r^2 + p_i^2 \quad \Rightarrow \quad p_r^2 + p_i^2 = \frac{a_0}{a_2} \tag{ii}
         \end{align*}
         Substituting (i) into (ii):
         \begin{align*}
-          \left( \frac{a_1}{2a_2} \right)^2 + \beta^2 = \frac{a_0}{a_2}
+          \left( \frac{a_1}{2a_2} \right)^2 + p_i^2 = \frac{a_0}{a_2}
           \quad \Rightarrow \quad
-          \beta = \sqrt{\frac{a_0}{a_2} - \frac{a_1^2}{4a_2^2}}
+          p_i = \sqrt{\frac{a_0}{a_2} - \frac{a_1^2}{4a_2^2}}
         \end{align*}
     \end{enumerate}
     These relations help determine pole locations from
     polynomial coefficients and help in pole placement
-    design (chose k to set pole separation).
+    design (choose k to set pole separation).
   \item \textbf{Normalized Form vs. Natural Form}
     \noindent From the table:
-    \[ \frac{a_1}{a_2} = 2\zeta\omega_n \quad \text{and} \quad \frac{a_0}{a_2} = \omega_n^2 \]
+    \[ \frac{a_1}{a_2} = 2D_R\omega_n \quad \text{and} \quad \frac{a_0}{a_2} = \omega_n^2 \]
     From the second equation:
     \[ \omega_n = \sqrt{\frac{a_0}{a_2}} \tag{ii} \]
     Substituting (ii) into the first:
     \begin{align*}
-    \frac{a_1}{a_2} = 2\zeta \sqrt{\frac{a_0}{a_2}}
+    \frac{a_1}{a_2} = 2D_R \sqrt{\frac{a_0}{a_2}}
     \quad \Rightarrow \quad
-    \zeta = \frac{a_1}{2\sqrt{a_0 a_2}}
+    D_R = \frac{a_1}{2\sqrt{a_0 a_2}}
     \end{align*}
-    Since quality factor \( Q = 1/(2\zeta) \):
+    Since quality factor \( Q = 1/(2D_R) \):
     \[ Q = \frac{\sqrt{a_0 a_2}}{a_1} \]
     Unlike the factored form, comparison with the natural form does
     not require separate algebraic cases; the three damping regimes
-    emerge solely from the numerical value of \(\zeta\). These
+    emerge solely from the numerical value of \(D_R\). These
     relations help determine natural frequency and damping ratio from
     polynomial coefficients.
   \item \textbf{Factored Form vs. Natural Form}
     \noindent From the table:
-    \[ p_1 + p_2 = 2\zeta\omega_n \quad \text{and} \quad p_1 p_2 = \omega_n^2 \]
+    \[ p_1 + p_2 = 2D_R\omega_n \quad \text{and} \quad p_1 p_2 = \omega_n^2 \]
     From the second equation:
     \[ \omega_n = \sqrt{p_1 p_2} \tag{ii} \]
     Substituting (ii) into the first:
     \begin{align*}
-      p_1 + p_2 = 2\zeta \sqrt{p_1 p_2}
+      p_1 + p_2 = 2D_R \sqrt{p_1 p_2}
       \quad \Rightarrow \quad
-      \zeta = \frac{p_1 + p_2}{2\sqrt{p_1 p_2}}
+      D_R = \frac{p_1 + p_2}{2\sqrt{p_1 p_2}}
     \end{align*}
     Expressed in terms of quality factor:
     \[ Q = \frac{\sqrt{p_1 p_2}}{p_1 + p_2}\]
@@ -144,12 +145,12 @@ natural frequency, and damping ratio through three key comparisons.
         For large k:
         \[ Q \approx \frac{1}{\sqrt{k}} \]
       \item \textbf{One repeated real pole (critically damped):} With \( p_1 = p_2 = p \),
-        \[ Q = \frac{2\sqrt{p^2}}{p + p} = 1 \]
-      \item \textbf{Two complex conjugate poles (underdamped):} With \( p_{1,2} = \alpha \pm j\beta \),
+        \[ Q = \frac{\sqrt{p^2}}{p + p} = \frac{p}{2p} = \frac{1}{2} \hspace{1cm} [D_R = 1] \]
+      \item \textbf{Two complex conjugate poles (underdamped):} With \( p_{1,2} = p_r \pm j p_i \),
         \begin{align*}
-           Q = \frac{2\sqrt{(\alpha + j\beta)(\alpha - j\beta)}}{2\alpha}
-           = \frac{2\sqrt{\alpha^2 + \beta^2}}{2\alpha} \\
-            Q = \frac{\sqrt{\alpha^2 + \beta^2}}{\alpha}
+           Q &= \frac{\sqrt{(p_r + j p_i)(p_r - j p_i)}}{(p_r + j p_i) + (p_r - j p_i)}
+           = \frac{\sqrt{p_r^2 + p_i^2}}{2p_r} \\
+           Q &> \frac{1}{2} \hspace{1cm} [p_i \neq 0]
          \end{align*}
     \end{enumerate}
     These relations help determine natural frequency and
@@ -159,9 +160,9 @@ Here's  table summarizing the relationships:
 \begin{center}
   \begin{tabularx}{\linewidth}{|X|X|X|X|} \hline
     \textbf{Comparison} & \textbf{Key Equations} & \textbf{Pole Configurations} & \textbf{Design Insights} \\ \hline
-    Normalized vs. Factored & \(\frac{a_1}{a_2} = p_1 + p_2\) \newline \(\frac{a_0}{a_2} = p_1 p_2\) & Over: \(k \approx \frac{a_1^2}{a_0 a_2}\) \newline Critical: \(a_1^2 = 4 a_0 a_2\) \newline Under: \(\beta = \sqrt{\frac{a_0}{a_2} - \frac{a_1^2}{4a_2^2}}\) & Determine pole locations from coefficients; pole placement design. \\ \hline
-    Normalized vs. Natural & \(\frac{a_1}{a_2} = 2\zeta\omega_n\) \newline \(\frac{a_0}{a_2} = \omega_n^2\) & \(\omega_n = \sqrt{\frac{a_0}{a_2}}\) \newline \(\zeta = \frac{a_1}{2\sqrt{a_0 a_2}}\) & Determine natural frequency and damping ratio from coefficients. \\ \hline
-    Factored vs. Natural & \(p_1 + p_2 = 2\zeta\omega_n\) \newline \(p_1 p_2 = \omega_n^2\) & Over: \(Q \approx \frac{1}{\sqrt{k}}\) \newline Critical: \(Q = 1\) \newline Under: \(Q = \frac{\sqrt{\alpha^2 + \beta^2}}{\alpha}\) & Determine natural frequency and damping ratio from pole locations. \\ \hline
+    Normalized vs. Factored & \(\frac{a_1}{a_2} = p_1 + p_2\) \newline \(\frac{a_0}{a_2} = p_1 p_2\) & Over: \(k \approx \frac{a_1^2}{a_0 a_2}\) \newline Critical: \(a_1^2 = 4 a_0 a_2\) \newline Under: \(p_i = \sqrt{\frac{a_0}{a_2} - \frac{a_1^2}{4a_2^2}}\) & Determine pole locations from coefficients; pole placement design. \\ \hline
+    Normalized vs. Natural & \(\frac{a_1}{a_2} = 2D_R\omega_n\) \newline \(\frac{a_0}{a_2} = \omega_n^2\) & \(\omega_n = \sqrt{\frac{a_0}{a_2}}\) \newline \(D_R = \frac{a_1}{2\sqrt{a_0 a_2}}\) & Determine natural frequency and damping ratio from coefficients. \\ \hline
+    Factored vs. Natural & \(p_1 + p_2 = 2D_R\omega_n\) \newline \(p_1 p_2 = \omega_n^2\) & Over: \(Q \approx \frac{1}{\sqrt{k}}\) \newline Critical: \(Q = \frac{1}{2}\) \newline Under: \(Q = \frac{\sqrt{p_r^2 + p_i^2}}{2p_r}\) & Determine natural frequency and damping ratio from pole locations. \\ \hline
   \end{tabularx}
 \end{center}
 
@@ -180,10 +181,10 @@ Here's  table summarizing the relationships:
       \end{align*}
     \item Calculate damping ratio:
       \begin{align*}
-        \zeta = \frac{a_1}{2\sqrt{a_0 a_2}} = \frac{12}{2\sqrt{27 \cdot 3}} = \frac{12}{2\sqrt{81}} = \frac{12}{18} = \frac{2}{3} \approx 0.6667
+        D_R = \frac{a_1}{2\sqrt{a_0 a_2}} = \frac{12}{2\sqrt{27 \cdot 3}} = \frac{12}{2\sqrt{81}} = \frac{12}{18} = \frac{2}{3} \approx 0.6667
       \end{align*}
     \item Determine pole configuration:
-      Since \( \zeta \approx 0.6667 < 1 \), the system is underdamped with
+      Since \( D_R \approx 0.6667 < 1 \), the system is underdamped with
       complex conjugate poles.
   \end{enumerate}
   \item Given the second order polynomial \( 2s^2 + (8 + x)s + 16 \),

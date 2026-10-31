@@ -1,11 +1,11 @@
 \subsection{Loading Effect}\label{sec:theory_general_loading}
 
 Two adjacent circuit stages can load each other if the adjoining
-impedances (output -> input or input -> output) are within the same
+impedances (output \(\to\) input or input \(\to\) output) are within the same
 order of magnitude (say, within a factor of 10 of each other). This
 can cause the voltage or current levels to drop significantly as
 the adjacent stages form a voltage or current divider. \textbf{Loading
-is a pseudo rule and doesn't hold true if under a few special cases
+is a pseudo rule and doesn't hold true under a few special cases
 as discussed below}.
 
 For example, Consider three generic circuit stages shown as boxes
@@ -23,7 +23,7 @@ input impedance and an output impedance.
   \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N6) at (12, 8){} node[anchor=center] at (N6.text){\textcolor{rgb,255:red,0;green,0;blue,0}{$Z_{out_2}$}};
   \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N7) at (15.75, 8){} node[anchor=center] at (N7.text){\textcolor{rgb,255:red,30;green,0;blue,255}{$Z_{out_3}$}};
   \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N8) at (13.25, 8){} node[anchor=center] at (N8.text){\textcolor{rgb,255:red,0;green,8;blue,255}{$Z_{in_3}$}};
-  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N9) at (9.5, 8){} node[anchor=center] at (N9.text){$Z_{in_3}$};
+  \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N9) at (9.5, 8){} node[anchor=center] at (N9.text){$Z_{in_2}$};
   \draw[line width=1pt, dash pattern={on 4pt off 4pt}] (8.75, 4.25) -| (8.75, 9);
   \draw[line width=1pt, dash pattern={on 4pt off 4pt}] (12.5, 4.25) -| (12.5, 9);
 \end{circuitfig}
@@ -41,7 +41,8 @@ In these cases, we can summarize the loading effect as follows:
     levels without stages loading each other. Therefore, the output
     impedance of the driving stage to be very low (at least 10x lesser)
     than the input impedance of the driven stage. If Box 2 was a Passive
-    Circuit, Loading can be minimized if \(Z_{out_2} << 10 x Z_{in_3}\).
+    Circuit, Loading can be minimized if \(Z_{out_2} \leq \frac{Z_{in_3}}{10}\), since
+    \(\frac{V_{in_3}}{V_{out_2}} = \frac{Z_{in_3}}{Z_{out_2} + Z_{in_3}} \geq \frac{10}{11} \approx 0.91\).
   \item \textbf{Active Circuits}: You have to determine what the
     input and output impedance of the specific circuit stage would
     be and then decide if loading is an issue or not between two
@@ -57,7 +58,14 @@ In these cases, we can summarize the loading effect as follows:
   \item \textbf{RF Circuits}: Transmission lines require impedance matching
     to avoid reflections and transfer power from Point A to Point B. In
     this case, if Box 2 and Box 3 were an RF circuit, we would want
-    \(Z_{out_2} = Z_{in_3}\). If the impedance were not equal, we place a
-    matching network between Box 2 and Box 3 to ensure maximum power transfer.
+    \(Z_{in_3} = Z_{out_2}^*\) (complex conjugate) for maximum power transfer,
+    and both equal to the line impedance \(Z_0\) for no reflection. With
+    \(Z_{out} = R_o + jX_o\) and \(Z_{in} = R_i + jX_i\):
+    \begin{align*}
+      P_{in} &= \frac{|V_s|^2}{2} \cdot \frac{R_i}{(R_o + R_i)^2 + (X_o + X_i)^2}
+    \end{align*}
+    is maximised by \(X_i = -X_o\) and then \(R_i = R_o\). If the
+    impedances are not matched, we place a matching network between Box 2
+    and Box 3.
 \end{enumerate}
 
