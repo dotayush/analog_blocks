@@ -124,18 +124,18 @@ Here's a table of the voltages at each terminal of the transistors:
     Using transistor equations for $I_{M_0}$, $I_{M_1}$ and $I_{M_2}$
     and applying the voltages:
     \begin{align*}
-      I_{M_0} &= k_{n_0}(V_{gs_0} - V_{th})^2 \cdot (1 + \lambda V_{ds_0}) \\
-              &= k_{n_0}((V_{x} - V_{ee}) - V_{th})^2 \cdot (1 + \lambda (V_{y} - V_{ee})) \\
-              &= k_{n_0}\left(V_{x} - V_{ee} - V_{th}\right)^2 \cdot \left(1 + \lambda \left(V_{cc} - \frac{I_{M_0}}{G_3} - V_{ee}\right)\right) \\
-              &= k_{n_0}\left(V_{x} - V_{ee} - V_{th}\right)^2 \quad \text{[assuming } \lambda = 0 \text{]} \tag{4} \\ \\
-      I_{M_1} &= k_{n_1}(V_{gs_1} - V_{th})^2 \cdot (1 + \lambda V_{ds_1}) \\
-              &= k_{n_1}((V_{x} - V_{ee}) - V_{th})^2 \cdot (1 + \lambda (V_{x} - V_{ee})) \\
-              &= k_{n_1}\left(V_{x} - V_{ee} - V_{th}\right)^2 \cdot \left(1 + \lambda (V_{x} - V_{ee})\right) \\
-              &= k_{n_1}\left(V_{x} - V_{ee} - V_{th}\right)^2 \quad \text{[assuming } \lambda = 0 \text{]} \tag{5} \\ \\
-      I_{M_2} &= k_{n_2}(V_{gs_2} - V_{th})^2 \cdot (1 + \lambda V_{ds_2}) \\
-              &= k_{n_2}((V_{y} - V_{x}) - V_{th})^2 \cdot (1 + \lambda (V_{out} - V_{x})) \\
-              &= k_{n_2}\left(V_{y} - V_{x} - V_{th}\right)^2 \cdot \left(1 + \lambda \left(V_{cc} - \frac{I_{M_2}}{G_4} - V_{x}\right)\right) \\
-              &= k_{n_2}\left(V_{y} - V_{x} - V_{th}\right)^2 \quad \text{[assuming } \lambda = 0 \text{]} \tag{6} \\
+      I_{M_0} &= k_{n_0}(V_{gs_0} - V_{th})^2 \cdot (1 + K_{CLM} V_{ds_0}) \\
+              &= k_{n_0}((V_{x} - V_{ee}) - V_{th})^2 \cdot (1 + K_{CLM} (V_{y} - V_{ee})) \\
+              &= k_{n_0}\left(V_{x} - V_{ee} - V_{th}\right)^2 \cdot \left(1 + K_{CLM} \left(V_{cc} - \frac{I_{M_0}}{G_3} - V_{ee}\right)\right) \\
+              &= k_{n_0}\left(V_{x} - V_{ee} - V_{th}\right)^2 \quad \text{[assuming } K_{CLM} = 0 \text{]} \tag{4} \\ \\
+      I_{M_1} &= k_{n_1}(V_{gs_1} - V_{th})^2 \cdot (1 + K_{CLM} V_{ds_1}) \\
+              &= k_{n_1}((V_{x} - V_{ee}) - V_{th})^2 \cdot (1 + K_{CLM} (V_{x} - V_{ee})) \\
+              &= k_{n_1}\left(V_{x} - V_{ee} - V_{th}\right)^2 \cdot \left(1 + K_{CLM} (V_{x} - V_{ee})\right) \\
+              &= k_{n_1}\left(V_{x} - V_{ee} - V_{th}\right)^2 \quad \text{[assuming } K_{CLM} = 0 \text{]} \tag{5} \\ \\
+      I_{M_2} &= k_{n_2}(V_{gs_2} - V_{th})^2 \cdot (1 + K_{CLM} V_{ds_2}) \\
+              &= k_{n_2}((V_{y} - V_{x}) - V_{th})^2 \cdot (1 + K_{CLM} (V_{out} - V_{x})) \\
+              &= k_{n_2}\left(V_{y} - V_{x} - V_{th}\right)^2 \cdot \left(1 + K_{CLM} \left(V_{cc} - \frac{I_{M_2}}{G_4} - V_{x}\right)\right) \\
+              &= k_{n_2}\left(V_{y} - V_{x} - V_{th}\right)^2 \quad \text{[assuming } K_{CLM} = 0 \text{]} \tag{6} \\
     \end{align*}
     It can be seen that,
     \begin{align*}
@@ -144,7 +144,7 @@ Here's a table of the voltages at each terminal of the transistors:
     \end{align*}
     Thus,
     \begin{align*}
-      \frac{I_{out}}{I_{in}} \approx \frac{I_{M_2}}{I_{M_0}} \approx \frac{I_{M_1}}{I_{M_0}} \approx \frac{k_{n_1}}{k_{n_0}} = \frac{\frac{\mu_n C_{ox} W_1}{L_1}}{\frac{\mu_n C_{ox} W_0}{L_0}} = \frac{\frac{W_1}{L_1}}{\frac{W_0}{L_0}} = \frac{W_1 L_0}{L_1 W_0}
+      \frac{I_{out}}{I_{in}} \approx \frac{I_{M_2}}{I_{M_0}} \approx \frac{I_{M_1}}{I_{M_0}} \approx \frac{k_{n_1}}{k_{n_0}} = \frac{\frac{K_P W_1}{L_1}}{\frac{K_P W_0}{L_0}} = \frac{\frac{W_1}{L_1}}{\frac{W_0}{L_0}} = \frac{W_1 L_0}{L_1 W_0}
     \end{align*}
   \item \textbf{Small Signal Analysis}:\\
     Applying KCL at $V_{out}$:
@@ -250,7 +250,7 @@ Here's a table of the voltages at each terminal of the transistors:
               &= V_{out} \left(\frac{\frac{g_{o_2}(g_{o_1} + g_{m_1}) - G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) - g_{o_2}(g_{o_1} + g_{m_1})}{(g_{o_1} + g_{m_1})}}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}}\right) \\
               &= V_{out} \left(\frac{- G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2})}{(g_{o_1} + g_{m_1})(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2})}\right) \\
               &= V_{out} \left(\frac{- G_4}{(g_{o_1} + g_{m_1})}\right) \tag{17}
-      \end{align*}`
+      \end{align*}
       Substituting (17) into (16):
       \begin{align*}
         V_{out}(G_4 + g_{o_2}) - \left(V_{out} \left(\frac{-G_4}{(g_{o_1} + g_{m_1})}\right)\right)\left(\frac{(g_{o_2} + g_{m_2})(G_3 + g_{o_0}) + g_{m_2}g_{m_0}}{G_3 + g_{o_0}}\right) &= I_{test} \\
@@ -289,8 +289,8 @@ currents and voltages in this circuit.
   \item Using the chosen $V_{ov}$, compute $W_0$
     to set the required bias current $I_{in}$.
     \begin{align*}
-      I_{in} = I_{M_0} &= \frac{1}{2} \mu_n C_{ox} \frac{W_0}{L_0} V_{ov_0}^2 \\
-      \therefore W_0 &= \frac{2 I_{in} L_0}{\mu_n C_{ox} V_{ov_0}^2}
+      I_{in} = I_{M_0} &= \frac{K_P}{2} \frac{W_0}{L_0} V_{ov_0}^2 \\
+      \therefore W_0 &= \frac{2 I_{in} L_0}{K_P V_{ov_0}^2}
     \end{align*}
     $W_1$ can then be computed using the current
     gain relation from step (a).
@@ -310,8 +310,8 @@ following requirements. The mirror must provide a current
 gain at the output of 5. The input current must be
 $I_{in} = 100 \mu A$. The mirror must operate with
 $V_{cc} = 5V$ and $V_{ee} = 0V$. Assume the following
-transistor parameters: $V_{th} = 1V$, $\lambda = 0.02 V^{-1}$,
-$\frac{1}{2} \mu_n C_{ox} = 100 \mu A/V^2$ and
+transistor parameters: $V_{th} = 1V$, $K_{CLM} = 0.02 V^{-1}$,
+$\frac{K_P}{2} = 100 \mu A/V^2$ and
 $L = 1 \mu m$ for all transistors. Find the output impedance
 and the maximum possible load that can be connected at the
 output assuming $V_{L, \max} = V_{cc}$.
@@ -332,7 +332,7 @@ output assuming $V_{L, \max} = V_{cc}$.
   \item \textbf{Compute $W_0$ to set the required bias current:}
     For $I_{in} = 100 \mu A$
     \begin{align*}
-      W_0 &= \frac{2 I_{in} L_0}{\mu_n C_{ox} V_{ov_0}^2} \\
+      W_0 &= \frac{2 I_{in} L_0}{K_P V_{ov_0}^2} \\
           &= \frac{2 \cdot 100 \mu A \cdot 1 \mu m}{100 \mu A/V^2 \cdot (0.2V)^2} \\
           &= 25 \mu m \\
       W_1 &= 5 W_0 = 125 \mu m
@@ -344,7 +344,7 @@ output assuming $V_{L, \max} = V_{cc}$.
     \end{align*}
   \item \textbf{Compute the output impedance:}
     \begin{align*}
-      Z_{out} &\approx \frac{2}{\lambda_{M_1} \lambda_{M_2} I_{M_1} ((V_{y} - V_{x}) - V_{th})} \\
+      Z_{out} &\approx \frac{2}{K_{CLM} K_{CLM} I_{M_1} ((V_{y} - V_{x}) - V_{th})} \\
               &= \frac{2}{0.02 \cdot 0.02 \cdot 500 \mu A \cdot (2.4V - 1.2V - 1V)} \\
               &= 50 M \Omega
     \end{align*}

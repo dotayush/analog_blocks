@@ -2,8 +2,8 @@
 
 This chapter covers various types of current mirrors,
 which are circuits designed to copy (or ``mirror'') a current
-from one its branch to another (amplifying or attenuating
-it the process).
+from one of its branches to another (amplifying or attenuating
+it in the process).
 
 Ideally a current mirror should have perfect current
 replication, infinite output resistance, zero input
@@ -17,11 +17,11 @@ Channel Length Modulation and Base Width Modulation are
 worth a discussion.
 \begin{enumerate}
   \item \textbf{(MOSFET) Channel Length Modulation:} Generally
-    we assume $\lambda = 0$ in MOSFET equations when analyzing
+    we assume $K_{CLM} = 0$ in MOSFET equations when analyzing
     transistor behaviour for simplicity. In real circuits,
-    however, this is not the case. When $\lambda$ is non-zero,
+    however, this is not the case. When $K_{CLM}$ is non-zero,
     the drain current varies with changes in the drain-source
-    voltage by a factor of $(1 + \lambda V_{DS})$. This affects
+    voltage by a factor of $(1 + K_{CLM} V_{DS})$. This affects
     the accuracy of current mirroring as the output current
     will vary with changes in the drain to source voltage.
     Cascoding may help reduce the impact of channel length modulation.
@@ -34,11 +34,19 @@ worth a discussion.
 \end{enumerate}
 
 All mirrors in this chapter are implemented using N-Channel
-MOSFETs. It is possible to eadapt the configurations to
+MOSFETs. It is possible to adapt the configurations to
 BJTs, or other transistor types regardless of technology.
 Refer to~\ref{sec:theory_general_complementary} for more
 information on converting circuits to their complementary
 forms.
+
+Every mirror is analysed in two passes (Chapter~\ref{ch:analysis}):
+Large Signal (Q5) with the square law of
+Section~\ref{sec:devices_mosfet} to set bias currents and
+voltages, then Small Signal (Q4) with \(g_m\), \(g_o\) to find
+current gain, \(Z_{in}\) and \(Z_{out}\). Resistors that set the
+input current are kept in the small signal circuit (\(G\) terms),
+since they load the input node.
 
 The primary use of current mirrors is to provide a stable
 current source or sink in analog circuits. They can also

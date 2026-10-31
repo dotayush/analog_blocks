@@ -154,20 +154,20 @@ transistors:\\
     Using transistor equations for $I_{M_0}$, $I_{M_1}$, $I_{M_2}$ and $I_{M_3}$
     and applying the voltages:
     \begin{align*}
-      I_{M_0} &= k_{n_0}(V_{gs_0} - V_{th})^2 \cdot (1 + \lambda V_{ds_0}) \\
-              &= k_{n_0}((V_{x} - V_{ee}) - V_{th})^2 \cdot (1 + \lambda (V_{y} - V_{ee})) \\
-              &= k_{n_0}(V_{x} - V_{ee} - V_{th})^2 \quad \text{[assuming } \lambda = 0 \text{]} \tag{5} \\ \\
-      I_{M_1} &= k_{n_1}(V_{gs_1} - V_{th})^2 \cdot (1 + \lambda V_{ds_1}) \\
-              &= k_{n_1}((V_{x} - V_{ee}) - V_{th})^2 \cdot (1 + \lambda (V_{x} - V_{ee})) \\
-              &= k_{n_1}(V_{x} - V_{ee} - V_{th})^2 \quad \text{[assuming } \lambda = 0 \text{]} \tag{6} \\ \\
-      I_{M_2} &= k_{n_2}(V_{gs_2} - V_{th})^2 \cdot (1 + \lambda V_{ds_2}) \\
-              &= k_{n_2}((V_{z} - V_{x}) - V_{th})^2 \cdot (1 + \lambda (V_{out} - V_{x})) \\
-              &= k_{n_2}\left(\left(V_{cc} - \frac{(I_{M_3} + I_{G_2})}{G_4}\right) - V_{x} - V_{th}\right)^2 \cdot \left(1 + \lambda\left(\frac{V_{cc}G_5 - I_{M_2}}{G_5}\right) - V_{x}\right) \\
-              &= k_{n_2}\left(\left(V_{cc} - \frac{(I_{M_3} + I_{G_2})}{G_4}\right) - V_{x} - V_{th}\right)^2 \quad \text{[assuming } \lambda = 0 \text{]} \tag{7} \\ \\
-      I_{M_3} &= k_{n_3}(V_{gs_3} - V_{th})^2 \cdot (1 + \lambda V_{ds_3}) \\
-              &= k_{n_3}((V_{z} - V_{y}) - V_{th})^2 \cdot (1 + \lambda (V_{z} - V_{y})) \\
-              &= k_{n_3}\left(\left(V_{cc} - \frac{(I_{M_3} + I_{G_2})}{G_4}\right) - V_{y} - V_{th}\right)^2 \cdot \left(1 + \lambda\left(\left(V_{cc} - \frac{(I_{M_3} + I_{G_2})}{G_4}\right) - V_{y}\right)\right) \\
-              &= k_{n_3}\left(\left(V_{cc} - \frac{(I_{M_3} + I_{G_2})}{G_4}\right) - V_{y} - V_{th}\right)^2 \quad \text{[assuming } \lambda = 0 \text{]} \tag{8}
+      I_{M_0} &= k_{n_0}(V_{gs_0} - V_{th})^2 \cdot (1 + K_{CLM} V_{ds_0}) \\
+              &= k_{n_0}((V_{x} - V_{ee}) - V_{th})^2 \cdot (1 + K_{CLM} (V_{y} - V_{ee})) \\
+              &= k_{n_0}(V_{x} - V_{ee} - V_{th})^2 \quad \text{[assuming } K_{CLM} = 0 \text{]} \tag{5} \\ \\
+      I_{M_1} &= k_{n_1}(V_{gs_1} - V_{th})^2 \cdot (1 + K_{CLM} V_{ds_1}) \\
+              &= k_{n_1}((V_{x} - V_{ee}) - V_{th})^2 \cdot (1 + K_{CLM} (V_{x} - V_{ee})) \\
+              &= k_{n_1}(V_{x} - V_{ee} - V_{th})^2 \quad \text{[assuming } K_{CLM} = 0 \text{]} \tag{6} \\ \\
+      I_{M_2} &= k_{n_2}(V_{gs_2} - V_{th})^2 \cdot (1 + K_{CLM} V_{ds_2}) \\
+              &= k_{n_2}((V_{z} - V_{x}) - V_{th})^2 \cdot (1 + K_{CLM} (V_{out} - V_{x})) \\
+              &= k_{n_2}\left(\left(V_{cc} - \frac{(I_{M_3} + I_{G_2})}{G_4}\right) - V_{x} - V_{th}\right)^2 \cdot \left(1 + K_{CLM}\left(\frac{V_{cc}G_5 - I_{M_2}}{G_5}\right) - V_{x}\right) \\
+              &= k_{n_2}\left(\left(V_{cc} - \frac{(I_{M_3} + I_{G_2})}{G_4}\right) - V_{x} - V_{th}\right)^2 \quad \text{[assuming } K_{CLM} = 0 \text{]} \tag{7} \\ \\
+      I_{M_3} &= k_{n_3}(V_{gs_3} - V_{th})^2 \cdot (1 + K_{CLM} V_{ds_3}) \\
+              &= k_{n_3}((V_{z} - V_{y}) - V_{th})^2 \cdot (1 + K_{CLM} (V_{z} - V_{y})) \\
+              &= k_{n_3}\left(\left(V_{cc} - \frac{(I_{M_3} + I_{G_2})}{G_4}\right) - V_{y} - V_{th}\right)^2 \cdot \left(1 + K_{CLM}\left(\left(V_{cc} - \frac{(I_{M_3} + I_{G_2})}{G_4}\right) - V_{y}\right)\right) \\
+              &= k_{n_3}\left(\left(V_{cc} - \frac{(I_{M_3} + I_{G_2})}{G_4}\right) - V_{y} - V_{th}\right)^2 \quad \text{[assuming } K_{CLM} = 0 \text{]} \tag{8}
     \end{align*}
     It can be seen that,
     \begin{align*}
@@ -178,7 +178,7 @@ transistors:\\
     \end{align*}
     Thus,
     \begin{align*}
-      \frac{I_{out}}{I_{in}} \approx \frac{I_{M_2}}{I_{M_3}} \approx \frac{I_{M_1}}{I_{M_0}} \approx \frac{k_{n_1}}{k_{n_0}} = \frac{\frac{\mu_n C_{ox} W_1}{L_1}}{\frac{\mu_n C_{ox} W_0}{L_0}} = \frac{\frac{W_1}{L_1}}{\frac{W_0}{L_0}} = \frac{W_1 L_0}{L_1 W_0} = \frac{W_2 L_3}{L_2 W_3}
+      \frac{I_{out}}{I_{in}} \approx \frac{I_{M_2}}{I_{M_3}} \approx \frac{I_{M_1}}{I_{M_0}} \approx \frac{k_{n_1}}{k_{n_0}} = \frac{\frac{K_P W_1}{L_1}}{\frac{K_P W_0}{L_0}} = \frac{\frac{W_1}{L_1}}{\frac{W_0}{L_0}} = \frac{W_1 L_0}{L_1 W_0} = \frac{W_2 L_3}{L_2 W_3}
     \end{align*}
   \item \textbf{Small Signal Analysis}:\\
     Applying KCL at $V_{out}$:
@@ -307,10 +307,10 @@ currents and voltages in this circuit.
   \item Using the chosen $V_{ov}$, compute $W_0$
     to set the required bias current $I_{in}$.
     \begin{align*}
-      I_{in} &\approx I_{M_0} = \frac{1}{2} \mu_n C_{ox} \frac{W_0}{L_0} V_{ov_0}^2 \\
-             &\approx I_{M_3} = \frac{1}{2} \mu_n C_{ox} \frac{W_3}{L_3} V_{ov_3}^2 \\
-      \therefore W_0 &= \frac{2 I_{in} L_0}{\mu_n C_{ox} V_{ov_0}^2} \\
-                 W_3 &= \frac{2 I_{in} L_3}{\mu_n C_{ox} V_{ov_3}^2}
+      I_{in} &\approx I_{M_0} = \frac{K_P}{2} \frac{W_0}{L_0} V_{ov_0}^2 \\
+             &\approx I_{M_3} = \frac{K_P}{2} \frac{W_3}{L_3} V_{ov_3}^2 \\
+      \therefore W_0 &= \frac{2 I_{in} L_0}{K_P V_{ov_0}^2} \\
+                 W_3 &= \frac{2 I_{in} L_3}{K_P V_{ov_3}^2}
     \end{align*}
     $W_1$ can then be computed using the current
     gain relation from step (a). Similarly, $W_2$
@@ -336,7 +336,7 @@ Sink configuration to achieve a current gain of
 10\mu A$. Assume the following parameters for
 the NMOS transistors used:
 \begin{align*}
-  \mu_n C_{ox} = 100 \mu A/V^2 \spc V_{th} = 0.7 V \spc \lambda = 0.02 V^{-1} \\
+  K_P = 100 \mu A/V^2 \spc V_{th} = 0.7 V \spc K_{CLM} = 0.02 V^{-1} \\
   V_{cc} = 5 V \spc V_{ee} = 0 V \spc L_0 = L_1 = L_2 = L_3 = 1 \mu m
 \end{align*}
 Find the output impedance and the maximum
@@ -364,7 +364,7 @@ assuming $V_{L,\max} = V_{cc}$
     \end{align*}
   \item \textbf{Compute $W_0$ to set the required bias current:} For $I_{in} = 10 \mu A$
     \begin{align*}
-      W_0 &= \frac{2 I_{in} L_0}{\mu_n C_{ox} V_{ov_0}^2} \\
+      W_0 &= \frac{2 I_{in} L_0}{K_P V_{ov_0}^2} \\
           &= \frac{2 \cdot 10 \mu A \cdot 1 \mu m}{100 \mu A \cdot (0.2)^2} \\
           &= 5 \mu m
     \end{align*}
@@ -385,13 +385,13 @@ assuming $V_{L,\max} = V_{cc}$
   \item \textbf{Impedances:}
     \paragraph{At Input:}
     \begin{align*}
-      Z_{in} &\approx \frac{2}{\lambda_{M_0} \lambda_{M_3} I_{M_0} (V_{gs_3} - V_{th})} \\
+      Z_{in} &\approx \frac{2}{K_{CLM} K_{CLM} I_{M_0} (V_{gs_3} - V_{th})} \\
              &= \frac{2}{0.02 \times 0.02 \times 10 \mu A \times (1.8 - 0.9)} \\
              &= 5.56 G\Omega
     \end{align*}
     \paragraph{At Output:}
     \begin{align*}
-      Z_{out} &\approx \frac{2}{\lambda_{M_1} \lambda_{M_2} I_{M_1} (V_{gs_2} - V_{th})} \\
+      Z_{out} &\approx \frac{2}{K_{CLM} K_{CLM} I_{M_1} (V_{gs_2} - V_{th})} \\
               &= \frac{2}{0.02 \times 0.02 \times 20 \mu A \times (1.8 - 0.9)} \\
               &= 2.78 G\Omega
     \end{align*}

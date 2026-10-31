@@ -108,14 +108,14 @@ Here's a table of the voltages at each terminal of the transistors:
     Using the transistor equations for $I_{M_0}$ and
     $I_{M_1}$:
     \begin{align*}
-      I_{M_0} &= k_{n_0}(V_{gs_0} - V_{th})^2 \cdot (1 + \lambda V_{ds_0}) \\
-              &= k_{n_0}(V_{x} - V_{ee} - V_{th})^2 \cdot (1 + \lambda (V_{x} - V_{ee})) \\
-              &= k_{n_0}\left(\left(V_{cc} - \frac{(I_{M_0} + I_{G})}{G_2}\right) - V_{ee} - V_{th}\right)^2 \cdot \left(1 + \lambda \left(\left(V_{cc} - \frac{(I_{M_0} + I_{G})}{G_2}\right) - V_{ee}\right)\right) \\
-              &= k_{n_0}\left(\left(V_{cc} - \frac{(I_{M_0} + I_{G})}{G_2}\right) - V_{ee} - V_{th}\right)^2 \quad \text{[assuming } \lambda = 0 \text{]} \tag{3} \\ \\
-      I_{M_1} &= k_{n_1}(V_{gs_1} - V_{th})^2 \cdot (1 + \lambda V_{ds_1}) \\
-              &= k_{n_1}(V_{x} - V_{ee} - V_{th})^2 \cdot (1 + \lambda (V_{out} - V_{ee})) \\
-              &= k_{n_1}\left(\left(V_{cc} - \frac{(I_{M_0} + I_{G})}{G_2}\right) - V_{ee} - V_{th}\right)^2 \cdot \left(1 + \lambda \left(V_{cc} - \frac{I_{M_1}}{G_3} - V_{ee}\right)\right) \\
-              &= k_{n_1}\left(\left(V_{cc} - \frac{(I_{M_0} + I_{G})}{G_2}\right) - V_{ee} - V_{th}\right)^2 \quad \text{[assuming } \lambda = 0 \text{]} \tag{4} \\
+      I_{M_0} &= k_{n_0}(V_{gs_0} - V_{th})^2 \cdot (1 + K_{CLM} V_{ds_0}) \\
+              &= k_{n_0}(V_{x} - V_{ee} - V_{th})^2 \cdot (1 + K_{CLM} (V_{x} - V_{ee})) \\
+              &= k_{n_0}\left(\left(V_{cc} - \frac{(I_{M_0} + I_{G})}{G_2}\right) - V_{ee} - V_{th}\right)^2 \cdot \left(1 + K_{CLM} \left(\left(V_{cc} - \frac{(I_{M_0} + I_{G})}{G_2}\right) - V_{ee}\right)\right) \\
+              &= k_{n_0}\left(\left(V_{cc} - \frac{(I_{M_0} + I_{G})}{G_2}\right) - V_{ee} - V_{th}\right)^2 \quad \text{[assuming } K_{CLM} = 0 \text{]} \tag{3} \\ \\
+      I_{M_1} &= k_{n_1}(V_{gs_1} - V_{th})^2 \cdot (1 + K_{CLM} V_{ds_1}) \\
+              &= k_{n_1}(V_{x} - V_{ee} - V_{th})^2 \cdot (1 + K_{CLM} (V_{out} - V_{ee})) \\
+              &= k_{n_1}\left(\left(V_{cc} - \frac{(I_{M_0} + I_{G})}{G_2}\right) - V_{ee} - V_{th}\right)^2 \cdot \left(1 + K_{CLM} \left(V_{cc} - \frac{I_{M_1}}{G_3} - V_{ee}\right)\right) \\
+              &= k_{n_1}\left(\left(V_{cc} - \frac{(I_{M_0} + I_{G})}{G_2}\right) - V_{ee} - V_{th}\right)^2 \quad \text{[assuming } K_{CLM} = 0 \text{]} \tag{4} \\
     \end{align*}
     It can be seen that,
     \begin{align*}
@@ -124,7 +124,7 @@ Here's a table of the voltages at each terminal of the transistors:
     \end{align*}
     Thus,
     \begin{align*}
-      \frac{I_{out}}{I_{in}} \approx \frac{I_{M_1}}{I_{M_0}} \approx \frac{k_{n_1}}{k_{n_0}} = \frac{\frac{\mu_n C_{ox} W_1}{L_1}}{\frac{\mu_n C_{ox} W_0}{L_0}} = \frac{\frac{W_1}{L_1}}{\frac{W_0}{L_0}} = \frac{W_1 L_0}{L_1 W_0}
+      \frac{I_{out}}{I_{in}} \approx \frac{I_{M_1}}{I_{M_0}} \approx \frac{k_{n_1}}{k_{n_0}} = \frac{\frac{K_P W_1}{L_1}}{\frac{K_P W_0}{L_0}} = \frac{\frac{W_1}{L_1}}{\frac{W_0}{L_0}} = \frac{W_1 L_0}{L_1 W_0}
     \end{align*}
   \item \textbf{Small Signal Analysis}:\\
     Applying KCL at $V_{out}$:
@@ -180,7 +180,7 @@ Here's a table of the voltages at each terminal of the transistors:
       \end{align*}
       Ignoring $G_3$, we get:
       \begin{align*}
-        Z_{out} &\approx \frac{1}{g_{o_1}} = \frac{1}{\lambda_{M_1} I_{M_1}}
+        Z_{out} &\approx \frac{1}{g_{o_1}} = \frac{1}{K_{CLM} I_{M_1}}
       \end{align*}
 \end{enumerate}
 
@@ -205,8 +205,8 @@ currents and voltages in this circuit.
   \item Using the chosen $V_{ov}$, compute $W_0$
     to set the required bias current $I_{in}$.
     \begin{align*}
-      I_{in} = I_{M_0} &= \frac{1}{2} \mu_n C_{ox} \frac{W_0}{L_0} V_{ov_0}^2 \\
-      \therefore W_0 &= \frac{2 I_{in} L_0}{\mu_n C_{ox} V_{ov_0}^2}
+      I_{in} = I_{M_0} &= \frac{K_P}{2} \frac{W_0}{L_0} V_{ov_0}^2 \\
+      \therefore W_0 &= \frac{2 I_{in} L_0}{K_P V_{ov_0}^2}
     \end{align*}
     $W_1$ can then be computed using the current
     gain relation from step (a).
@@ -221,7 +221,7 @@ currents and voltages in this circuit.
       \therefore G_2 &= \frac{I_{M_0}}{V_{cc} - V_{x}} \\
       R_2 &= \frac{1}{G_2} = \frac{V_{cc} - V_{x}}{I_{M_0}}
     \end{align*}
-\end{enumerate}`
+\end{enumerate}
 
 \subsubsection{Question}
 Design a Widlar Current Mirror (Sink) that meets
@@ -230,7 +230,7 @@ a current gain at the output of 5. The input current
 must be $I_{in} = 100 \mu A$. The mirror must operate
 with $V_{cc} = 5V$ and $V_{ee} = 0V$. Assume the
 following transistor parameters: $V_{th} = 1V$,
-$\lambda = 0.02 V^{-1}$, $\frac{1}{2} \mu_n C_{ox} =
+$K_{CLM} = 0.02 V^{-1}$, $\frac{K_P}{2} =
 100 \mu A/V^2$ and $L = 1 \mu m$ for all transistors.
 Find the output impedance of the mirror and the
 maximum load that can be connected at the output
@@ -249,7 +249,7 @@ if $V_{L, \max} = 4V$.
     \end{align*}
   \item \textbf{Compute $W_0$ to set the required bias current:} For $I_{in} = 100 \mu A$
     \begin{align*}
-      W_0 &= \frac{2 I_{in} L_0}{\mu_n C_{ox} V_{ov_0}^2} \\
+      W_0 &= \frac{2 I_{in} L_0}{K_P V_{ov_0}^2} \\
           &= \frac{2 \cdot 100 \mu A \cdot 1 \mu m}{100 \mu A/V^2 \cdot (0.2V)^2} \\
           &= 25 \mu m \\
       \therefore W_1 &= 5 W_0 = 125 \mu m
@@ -262,7 +262,7 @@ if $V_{L, \max} = 4V$.
     \end{align*}
   \item \textbf{Compute the output impedance:}
     \begin{align*}
-      Z_{out} &\approx \frac{1}{g_{o_1}} \approx \frac{1}{\lambda_{M_1} I_{M_1}} \\
+      Z_{out} &\approx \frac{1}{g_{o_1}} \approx \frac{1}{K_{CLM} I_{M_1}} \\
               &= \frac{1}{0.02 V^{-1} \cdot 500 \mu A} \\
               &= 100 k\Omega
     \end{align*}

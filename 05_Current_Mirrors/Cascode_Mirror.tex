@@ -152,18 +152,18 @@ Here's a table of the voltages at each terminal of the transistors:
     \end{align*}
     Using the transistor equations for $I_{M_0}$, $I_{M_1}$, $I_{M_2}$, and $I_{M_3}$:
     \begin{align*}
-      I_{M_0} &= k_{n_0} (V_{gs_0} - V_{th})^2 (1 + \lambda V_{ds_0}) \\
-              &= k_{n_0} (V_{x} - V_{ee} - V_{th})^2 (1 + \lambda (V_{x} - V_{ee})) \\
-              &= k_{n_0} (V_{x} - V_{ee} - V_{th})^2 \quad \text{[assuming } \lambda \approx 0 \text{]} \tag{5} \\
-      I_{M_1} &= k_{n_1} (V_{gs_1} - V_{th})^2 (1 + \lambda V_{ds_1}) \\
-              &= k_{n_1} (V_{x} - V_{ee} - V_{th})^2 (1 + \lambda (V_{y} - V_{ee})) \\
-              &= k_{n_1} (V_{x} - V_{ee} - V_{th})^2 \quad \text{[assuming } \lambda \approx 0 \text{]} \tag{6} \\
-      I_{M_2} &= k_{n_2} (V_{gs_2} - V_{th})^2 (1 + \lambda V_{ds_2}) \\
-              &= k_{n_2} (V_{z} - V_{y} - V_{th})^2 (1 + \lambda (V_{out} - V_{y})) \\
-              &= k_{n_2} (V_{z} - V_{y} - V_{th})^2 \quad \text{[assuming } \lambda \approx 0 \text{]} \tag{7} \\
-      I_{M_3} &= k_{n_3} (V_{gs_3} - V_{th})^2 (1 + \lambda V_{ds_3}) \\
-              &= k_{n_3} (V_{z} - V_{x} - V_{th})^2 (1 + \lambda (V_{z} - V_{x})) \\
-              &= k_{n_3} (V_{z} - V_{x} - V_{th})^2 \quad \text{[assuming } \lambda \approx 0 \text{]} \tag{8}
+      I_{M_0} &= k_{n_0} (V_{gs_0} - V_{th})^2 (1 + K_{CLM} V_{ds_0}) \\
+              &= k_{n_0} (V_{x} - V_{ee} - V_{th})^2 (1 + K_{CLM} (V_{x} - V_{ee})) \\
+              &= k_{n_0} (V_{x} - V_{ee} - V_{th})^2 \quad \text{[assuming } K_{CLM} \approx 0 \text{]} \tag{5} \\
+      I_{M_1} &= k_{n_1} (V_{gs_1} - V_{th})^2 (1 + K_{CLM} V_{ds_1}) \\
+              &= k_{n_1} (V_{x} - V_{ee} - V_{th})^2 (1 + K_{CLM} (V_{y} - V_{ee})) \\
+              &= k_{n_1} (V_{x} - V_{ee} - V_{th})^2 \quad \text{[assuming } K_{CLM} \approx 0 \text{]} \tag{6} \\
+      I_{M_2} &= k_{n_2} (V_{gs_2} - V_{th})^2 (1 + K_{CLM} V_{ds_2}) \\
+              &= k_{n_2} (V_{z} - V_{y} - V_{th})^2 (1 + K_{CLM} (V_{out} - V_{y})) \\
+              &= k_{n_2} (V_{z} - V_{y} - V_{th})^2 \quad \text{[assuming } K_{CLM} \approx 0 \text{]} \tag{7} \\
+      I_{M_3} &= k_{n_3} (V_{gs_3} - V_{th})^2 (1 + K_{CLM} V_{ds_3}) \\
+              &= k_{n_3} (V_{z} - V_{x} - V_{th})^2 (1 + K_{CLM} (V_{z} - V_{x})) \\
+              &= k_{n_3} (V_{z} - V_{x} - V_{th})^2 \quad \text{[assuming } K_{CLM} \approx 0 \text{]} \tag{8}
     \end{align*}
     It can be seen that,
     \begin{align*}
@@ -175,7 +175,7 @@ Here's a table of the voltages at each terminal of the transistors:
     Thus,
     \begin{align*}
       \frac{I_{out}}{I_{in}} \approx \frac{I_{M_2}}{I_{M_3}} \approx \frac{I_{M_1}}{I_{M_0}}
-                                                                    \approx \frac{k_{n_1}}{k_{n_0}} = \frac{\frac{\mu_n C_{ox} W_1}{L_1}}{\frac{\mu_n C_{ox} W_0}{L_0}} = \frac{\frac{W_1}{L_1}}{\frac{W_0}{L_0}} = \frac{W_1 L_0}{L_1 W_0}
+                                                                    \approx \frac{k_{n_1}}{k_{n_0}} = \frac{\frac{K_P W_1}{L_1}}{\frac{K_P W_0}{L_0}} = \frac{\frac{W_1}{L_1}}{\frac{W_0}{L_0}} = \frac{W_1 L_0}{L_1 W_0}
                                                                   = \frac{W_2 L_3}{L_2 W_3} \\
     \end{align*}
   \item \textbf{Small Signal Analysis}:\\
@@ -201,7 +201,7 @@ Here's a table of the voltages at each terminal of the transistors:
     Applying KCL at $V_{z}$:
     \begin{align*}
       V_{z}G_4 + (V_{z} - V_{x})g_{o_3} + (V_{z} - V_{x})g_{m_3} + I_{G_2} &= 0 \\
-      V_{z}G_4 + (V_{z} - V_{x})g_{o_3} + (V_{z} - V_{x})g_{m_3} &= 0 \\quad \text{[as } I_{G} \approx 0 \text{ by MOS physics]} \\
+      V_{z}G_4 + (V_{z} - V_{x})g_{o_3} + (V_{z} - V_{x})g_{m_3} &= 0 \quad \text{[as } I_{G} \approx 0 \text{ by MOS physics]} \\
       V_{z}G_4 + V_{z}g_{o_3} - V_{x}g_{o_3} + V_{z}g_{m_3} - V_{x}g_{m_3} &= 0 \\
       V_{z}(G_4 + g_{o_3} + g_{m_3}) - V_{x}(g_{o_3} + g_{m_3}) &= 0 \tag{12}
     \end{align*}
@@ -292,10 +292,10 @@ currents and voltages in this circuit.
   \item Using the chosen $V_{ov}$, compute $W_0$
     to set the required bias current $I_{in}$.
     \begin{align*}
-      I_{in} &\approx I_{M_0} = \frac{1}{2} \mu_n C_{ox} \frac{W_0}{L_0} V_{ov_0}^2 \\
-             &\approx I_{M_3} = \frac{1}{2} \mu_n C_{ox} \frac{W_3}{L_3} V_{ov_3}^2 \\
-      \therefore W_0 &= \frac{2 I_{in} L_0}{\mu_n C_{ox} V_{ov_0}^2} \\
-                 W_3 &= \frac{2 I_{in} L_3}{\mu_n C_{ox} V_{ov_3}^2}
+      I_{in} &\approx I_{M_0} = \frac{K_P}{2} \frac{W_0}{L_0} V_{ov_0}^2 \\
+             &\approx I_{M_3} = \frac{K_P}{2} \frac{W_3}{L_3} V_{ov_3}^2 \\
+      \therefore W_0 &= \frac{2 I_{in} L_0}{K_P V_{ov_0}^2} \\
+                 W_3 &= \frac{2 I_{in} L_3}{K_P V_{ov_3}^2}
     \end{align*}
     $W_1$ can then be computed using the current
     gain relation from step (a). Similarly, $W_2$
@@ -321,8 +321,8 @@ Assume the following specificiatons:
 \begin{enumerate}
   \item $V_{cc} = +5$ V, $V_{ee} = 0$ V
   \item $V_{th} = 0.7$ V
-  \item $\mu_n C_{ox} = 100 \mu A/V^2$
-  \item $\lambda = 0.02$ V$^{-1}$
+  \item $K_P = 100 \mu A/V^2$
+  \item $K_{CLM} = 0.02$ V$^{-1}$
   \item $L_{\min} = 1 \mu m$
   \item $V_{L, \max} = V_{cc}$
   \item $V_{ov} = 0.2$ V for all transistors
@@ -350,8 +350,8 @@ Find the following:
       V_{z} &= V_{ov_3} + V_{x} + V_{th} = 0.2 + 0.9 + 0.7 = 1.8 \text{ V} \\
       V_{y} &= V_{z} - V_{ov_2} - V_{th} = 1.8 - 0.2 - 0.7 = 0.9 \text{ V} \\
       \\
-      W_0 &= \frac{2 I_{in} L_0}{\mu_n C_{ox} V_{ov_0}^2} = \frac{2 \times 10 \times 10^{-6} \times 1 \times 10^{-6}}{100 \times 10^{-6} \times (0.2)^2} = 5 \mu m \\
-      W_3 &= \frac{2 I_{in} L_3}{\mu_n C_{ox} V_{ov_3}^2} = \frac{2 \times 10 \times 10^{-6} \times 1 \times 10^{-6}}{100 \times 10^{-6} \times (0.2)^2} = 5 \mu m \\
+      W_0 &= \frac{2 I_{in} L_0}{K_P V_{ov_0}^2} = \frac{2 \times 10 \times 10^{-6} \times 1 \times 10^{-6}}{100 \times 10^{-6} \times (0.2)^2} = 5 \mu m \\
+      W_3 &= \frac{2 I_{in} L_3}{K_P V_{ov_3}^2} = \frac{2 \times 10 \times 10^{-6} \times 1 \times 10^{-6}}{100 \times 10^{-6} \times (0.2)^2} = 5 \mu m \\
       W_1 &= 5 \times \frac{W_0}{L_0} \times L_1 = 5 \times \frac{5}{1} \times 1 = 25 \mu m \\
       W_2 &= 5 \times \frac{W_3}{L_3} \times L_2 = 5 \times \frac{5}{1} \times 1 = 25 \mu m
     \end{align*}
@@ -369,8 +369,8 @@ Find the following:
   \item Small signal output resistance:
     \begin{align*}
       g_{m_2} &= \frac{2 I_{M_2}}{V_{ov_2}} = \frac{2 \times 10 \times 10^{-6}}{0.2} = 0.0001 \text{ S} \\
-      g_{o_1} &= I_{M_1} \lambda = 10 \times 10^{-6} \times 0.02 = 0.2 \times 10^{-6} \text{ S} \\
-      g_{o_2} &= I_{M_2} \lambda = 10 \times 10^{-6} \times 0.02 = 0.2 \times 10^{-6} \text{ S} \\
+      g_{o_1} &= I_{M_1} K_{CLM} = 10 \times 10^{-6} \times 0.02 = 0.2 \times 10^{-6} \text{ S} \\
+      g_{o_2} &= I_{M_2} K_{CLM} = 10 \times 10^{-6} \times 0.02 = 0.2 \times 10^{-6} \text{ S} \\
       G_5 &= \frac{1}{R_L} = \frac{1}{100 k\Omega} = 10^{-5} \text{ S} \\
       \\
       Z_{out} &= \frac{g_{m_2} + g_{o_1} + g_{o_2}}{G_{5}(g_{m_2} + g_{o_1} + g_{o_2}) + g_{o_1} g_{o_2}} \\
