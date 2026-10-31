@@ -1,0 +1,111 @@
+\subsection{Five Transistor OTA (5T Op-Amp)}\label{sec:amp_5t}
+
+\subsubsection{Overview}
+A differential pair \(M_1\), \(M_2\) loaded by a PMOS current mirror
+\(M_3\), \(M_4\), with tail \(M_5\). The mirror folds the current of the
+left half onto the right half, giving a single ended output with the full
+differential transconductance. Its output is a high impedance node, so it
+is an Operational Transconductance Amplifier (OTA): gain is set by the
+load and bandwidth by \(C_L\).
+
+\subsubsection{Schematic}
+\begin{circuitfig}
+  \draw (0,0) node[nmos](M1){};  \node[left] at (-1.1,0.4) {$M_1$};
+  \draw (3,0) node[nmos, xscale=-1](M2){};  \node[right] at (3.3,-0.5) {$M_2$};
+  \draw (M1.G) -- ++(-0.4,0) node[circ]{} node[left]{$V_{i1}$};
+  \draw (M2.G) -- ++(0.4,0) node[circ]{} node[right]{$V_{i2}$};
+  \draw (M1.S) |- (1.5,-1.2) node[circ]{} node[right]{$V_s$} -| (M2.S);
+  \draw (1.5,-2.2) node[nmos](M5){}; \node[right] at (1.9,-2.2) {$M_5$};
+  \draw (M5.D) -- (1.5,-1.2);
+  \draw (M5.G) -- ++(-0.4,0) node[left]{$V_{B}$};
+  \draw (M5.S) node[ground]{};
+  \draw (0,2.6) node[pmos, xscale=-1](M3){};  \node[left] at (-0.3,2.6) {$M_3$};
+  \draw (3,2.6) node[pmos](M4){};  \node[right] at (3.3,2.6) {$M_4$};
+  \draw (M3.S) -- ++(0,0.3) -| (M4.S);
+  \draw (1.5,3.67) node[vcc]{$V_{dd}$};
+  \draw (M3.D) -- (M1.D);
+  \draw (M4.D) -- (M2.D);
+  \draw (0,1.2) node[circ]{} node[left]{$V_x$};
+  \draw (M3.G) -- (M4.G);
+  \draw (M3.G) |- (0,1.6);
+  \draw (3,1.2) node[circ]{} -- (5,1.2) node[circ]{} node[above]{$V_{out}$} to[capacitor, l={$C_L$}] (5,-0.6) node[ground]{};
+\end{circuitfig}
+
+\subsubsection{Transfer Function}
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}:
+    \(I_{D5} = I_T\), \(I_{D1} = I_{D2} = I_{D3} = I_{D4} = \frac{I_T}{2}\) at
+    \(V_{id} = 0\). \(V_x = V_{dd} - |V_{GS3}|\) and, by symmetry, \(V_{OUT} = V_x\)
+    (zero systematic offset). Saturation bounds:
+    \begin{align*}
+      V_{OUT,\max} &= V_{dd} - |V_{ov4}| \hspace{1cm}
+      V_{OUT,\min} = V_{ic} - V_{th} \\
+      V_{ic,\min} &= V_{GS1} + V_{ov5} \hspace{1cm}
+      V_{ic,\max} = V_{dd} - |V_{GS3}| + V_{th}
+    \end{align*}
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}:
+    differential drive \(v_{i1} = \frac{v_{id}}{2}\), \(v_{i2} = -\frac{v_{id}}{2}\),
+    \(v_s \approx 0\), \(C_x\) the capacitance at \(V_x\) (\(\approx C_{gs3} + C_{gs4}\)).\\
+    Applying KCL at \(V_x\) (current leaves through \(M_1\) and the diode \(M_3\)):
+    \begin{align*}
+      g_{m1} v_{i1} + g_{o1} v_x + (g_{m3} + g_{o3}) v_x + sC_x v_x &= 0 \\
+      v_x &= -\frac{g_{m1}}{g_{m3} + g_{o3} + g_{o1} + sC_x} v_{i1} \tag{1}
+    \end{align*}
+    Applying KCL at \(V_{out}\) (\(M_4\) sources \(g_{m4}(0 - v_x) + g_{o4}(0 - v_{out})\) into the node):
+    \begin{align*}
+      g_{m2} v_{i2} + g_{o2} v_{out} + sC_L v_{out} &= -g_{m4} v_x - g_{o4} v_{out} \\
+      v_{out}(g_{o2} + g_{o4} + sC_L) &= -g_{m2} v_{i2} - g_{m4} v_x \tag{2}
+    \end{align*}
+    Substituting (1) into (2) with \(g_{m1} = g_{m2} = g_m\), \(g_{m3} = g_{m4}\),
+    and \(g_{o1}, g_{o3} \ll g_{m3}\):
+    \begin{align*}
+      v_{out}(g_{o2} + g_{o4} + sC_L) &= g_m \frac{v_{id}}{2} + \frac{g_{m3}\, g_m}{g_{m3} + sC_x} \cdot \frac{v_{id}}{2} \\
+      v_{out}(g_{o2} + g_{o4} + sC_L) &= \frac{g_m v_{id}}{2} \cdot \frac{2 g_{m3} + sC_x}{g_{m3} + sC_x} \\
+      A(s) = \frac{v_{out}}{v_{id}} &= \frac{g_m}{g_{o2} + g_{o4} + sC_L} \cdot \frac{1 + \frac{sC_x}{2 g_{m3}}}{1 + \frac{sC_x}{g_{m3}}}
+    \end{align*}
+\end{enumerate}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{DC Gain}: \(A_{V0} = \frac{g_{m1}}{g_{o2} + g_{o4}} = \frac{\frac{2 I_D}{V_{ov1}}}{(K_{CLM,n} + K_{CLM,p}) I_D} = \frac{2}{V_{ov1}(K_{CLM,n} + K_{CLM,p})}\).
+    \(V_{i1}\) (gate of \(M_1\), on the diode side) is the non-inverting input.
+  \item \textbf{Poles and Zero}: dominant \(p_1 = \frac{g_{o2} + g_{o4}}{C_L}\);
+    mirror pole \(p_2 = \frac{g_{m3}}{C_x}\); LHP zero \(z = \frac{2 g_{m3}}{C_x} = 2 p_2\)
+    (the fast path through \(M_2\) bypasses the mirror).
+  \item \textbf{Gain-Bandwidth}: \(GB = \frac{A_{V0}\, p_1}{2\pi} = \frac{g_{m1}}{2\pi C_L}\).
+  \item \textbf{Slew Rate (Q6)}: for a large \(v_{id}\) all of \(I_T\) flows in one
+    side and charges or discharges \(C_L\): \(SR = \frac{I_T}{C_L}\).
+  \item \textbf{Common Mode Gain}: \(i_{d1} = i_{d2} = \frac{g_{o5}}{2} v_{ic}\)
+    (tail of conductance \(g_{o5}\), Section~\ref{sec:amp_diffpair}). (1) gives
+    \(v_x = -\frac{i_{d1}}{g_{m3} + g_{o3}}\); at the output
+    \(i_{d2} + g_{o4} v_{out} = -g_{m4} v_x\):
+    \begin{align*}
+      g_{o4} v_{out} &= i_{d1}\left(\frac{g_{m4}}{g_{m3} + g_{o3}} - 1\right) \approx -\frac{g_{o3}}{g_{m3}} i_{d1} \\
+      A_c &= \frac{v_{out}}{v_{ic}} \approx -\frac{g_{o3}}{g_{o4}} \cdot \frac{g_{o5}}{2 g_{m3}} = -\frac{g_{o5}}{2 g_{m3}} \hspace{1cm}
+      CMRR = \frac{A_{V0}}{|A_c|} = \frac{2 g_{m1} g_{m3}}{g_{o5}(g_{o2} + g_{o4})}
+    \end{align*}
+  \item \textbf{Phase Margin} in unity feedback: \(PM = 90^\circ - \tan^{-1}\frac{GB}{f_{p2}} + \tan^{-1}\frac{GB}{f_z}\).
+\end{enumerate}
+
+\subsubsection{Design}
+\begin{enumerate}
+  \item \(I_T = SR \cdot C_L\).
+  \item \(g_{m1} = 2\pi GB \cdot C_L\), \(V_{ov1} = \frac{2 (I_T/2)}{g_{m1}} = \frac{I_T}{g_{m1}}\),
+    \(\frac{W_1}{L_1} = \frac{I_T}{K_{P,n} V_{ov1}^2}\).
+  \item Check \(A_{V0} = \frac{2}{V_{ov1}(K_{CLM,n} + K_{CLM,p})}\); if too low,
+    longer \(L\) (smaller \(K_{CLM}\)) or a cascoded topology.
+  \item Size \(M_3\), \(M_4\) for \(V_{ov3}\) from the output swing and
+    \(p_2 = \frac{g_{m3}}{C_x} > 2\pi \cdot 3\,GB\).
+\end{enumerate}
+
+\subsubsection{Question}
+\(C_L = 2\,\)pF, \(GB = 50\,\)MHz, \(SR = 50\,\)V/\(\mu\)s,
+\(K_{P,n} = 200\,\mu\)A/V\(^2\), \(K_{CLM,n} = K_{CLM,p} = 0.1\,\)V\(^{-1}\).
+\paragraph{Solution:}
+\begin{align*}
+  I_T &= 50\,V/\mu s \cdot 2\,pF = 100\,\mu A \hspace{1cm}
+  g_{m1} = 2\pi \cdot 50\,MHz \cdot 2\,pF = 628\,\mu S \\
+  V_{ov1} &= \frac{100\,\mu A}{628\,\mu S} = 0.159\,V \hspace{1cm}
+  \frac{W_1}{L_1} = \frac{100\,\mu A}{200\,\mu A/V^2 \cdot 0.159^2} = 19.8 \\
+  A_{V0} &= \frac{2}{0.159 \cdot 0.2} = 62.9 \hspace{1cm} (36\,dB)
+\end{align*}

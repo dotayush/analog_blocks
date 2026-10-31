@@ -1,0 +1,63 @@
+\subsection{Telescopic Cascode Op-Amp}\label{sec:amp_telescopic}
+
+\subsubsection{Overview}
+A differential pair \(M_1\), \(M_2\) cascoded by \(M_3\), \(M_4\) (NMOS) and
+loaded by PMOS cascode current sources \(M_5\)--\(M_8\), all in one stack
+between \(V_{dd}\) and the tail \(M_9\). Each half is the cascode amplifier
+of Section~\ref{sec:amp_cascode} with a cascoded load. Highest gain and
+speed per unit power of single stage op-amps, at the cost of swing.
+
+\subsubsection{Schematic (half circuit)}
+\begin{circuitfig}
+  \draw (0,0) node[nmos](M1){}; \node[right] at (0.3,0) {$M_1$};
+  \draw (0,2) node[nmos](M3){}; \node[right] at (0.3,2) {$M_3$};
+  \draw (0,4.3) node[pmos](M5){}; \node[right] at (0.3,4.3) {$M_5$};
+  \draw (0,6.3) node[pmos](M7){}; \node[right] at (0.3,6.3) {$M_7$};
+  \draw (M1.G) -- ++(-0.5,0) node[circ]{} node[left]{$\frac{v_{id}}{2}$};
+  \draw (M3.G) -- ++(-0.5,0) node[left]{$V_{B3}$};
+  \draw (M5.G) -- ++(-0.5,0) node[left]{$V_{B5}$};
+  \draw (M7.G) -- ++(-0.5,0) node[left]{$V_{B7}$};
+  \draw (M1.S) -- ++(0,-0.3) node[ground]{} node[right=2mm]{(virtual ground)};
+  \draw (M1.D) -- (M3.S);
+  \draw (M3.D) -- (M5.D);
+  \draw (M5.S) -- (M7.D);
+  \draw (M7.S) node[vcc]{$V_{dd}$};
+  \draw (0,3.15) node[circ]{} -- (1.8,3.15) node[circ]{} node[right]{$v_{o1}$};
+\end{circuitfig}
+
+\subsubsection{Transfer Function}
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}:
+    every device carries \(\frac{I_T}{2}\) (tail \(I_T\)). Stacking five
+    saturated devices from ground to \(V_{dd}\):
+    \begin{align*}
+      V_{o,\min} &= V_{ov9} + V_{ov1} + V_{ov3} \hspace{1cm}
+      V_{o,\max} = V_{dd} - |V_{ov7}| - |V_{ov5}| \\
+      \text{swing per side} &= V_{dd} - V_{ov9} - V_{ov1} - V_{ov3} - |V_{ov5}| - |V_{ov7}|
+    \end{align*}
+    and, unlike the folded cascode, the input common mode is tied to the
+    output level: \(V_{ic} \leq V_{B3} - V_{GS3} + V_{th1}\).
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}:
+    the half circuit is a cascode with load impedance
+    \(Z_{up} = r_{o5} + r_{o7} + g_{m5}' r_{o5} r_{o7}\) (common gate \(M_5\) over
+    \(R_S = r_{o7}\), Section~\ref{sec:amp_cg}). With
+    \(G_L = \frac{1}{Z_{up}}\) in the cascode result:
+    \begin{align*}
+      Z_{dn} &= r_{o1} + r_{o3} + g_{m3}' r_{o1} r_{o3} \hspace{1cm}
+      \frac{v_{o1}}{v_{id}/2} = -g_{m1}(Z_{dn} \parallel Z_{up}) \\
+      A_d &= \frac{v_{o1} - v_{o2}}{v_{id}} = -g_{m1}(Z_{dn} \parallel Z_{up}) \approx -g_{m1}\left[(g_{m3} r_{o3} r_{o1}) \parallel (g_{m5} r_{o5} r_{o7})\right]
+    \end{align*}
+\end{enumerate}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Gain}: all devices alike, \(A_d \approx -\frac{(g_m r_o)^2}{2}\).
+  \item \textbf{Bandwidth}: \(C_L\) at each output, \(p_1 = \frac{1}{(Z_{dn} \parallel Z_{up}) C_L}\),
+    \(GB = \frac{g_{m1}}{2\pi C_L}\); the non-dominant pole is at the cascode
+    node \(V_x\), \(p_2 \approx \frac{g_{m3}}{C_x}\), which is high because
+    \(M_3\) is an NMOS common gate.
+  \item \textbf{Slew}: \(SR = \frac{I_T}{C_L}\) (differential output:
+    \(\frac{I_T}{C_L}\) per side).
+  \item \textbf{Common mode feedback}: both outputs are high impedance nodes, so
+    the output common mode is set by a CMFB loop adjusting \(V_{B7}\) or the tail.
+\end{enumerate}

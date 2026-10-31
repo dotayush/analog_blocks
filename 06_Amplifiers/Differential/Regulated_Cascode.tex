@@ -1,0 +1,52 @@
+\subsection{Regulated Cascode (Gain Boosting)}\label{sec:amp_regulated}
+
+\subsubsection{Overview}
+The gate of the cascode device \(M_2\) is driven by an auxiliary amplifier of
+gain \(A_b\) that senses \(V_x\) and holds it constant. Any change of \(V_{out}\)
+that would move \(V_x\) is fought by \(A_b\), so the output impedance is
+multiplied by \(1 + A_b\) without stacking more devices (no swing cost).
+
+\subsubsection{Schematic}
+\begin{circuitfig}
+  \draw (0,0) node[nmos](M1){}; \node[right] at (0.3,0) {$M_1$};
+  \draw (0,2.2) node[nmos](M2){}; \node[right] at (0.3,2.2) {$M_2$};
+  \draw (M1.G) -- ++(-0.5,0) node[circ]{} node[left]{$v_{in}$};
+  \draw (M1.S) node[ground]{};
+  \draw (M1.D) -- (M2.S);
+  \draw (0,1.1) node[circ]{} node[right]{$V_x$};
+  \draw (-2.2,1.6) node[op amp, scale=0.6](B){};
+  \draw (0,1.1) -| (-3.2,1.4) -- (B.-);
+  \draw (B.+) -- ++(-0.4,0) node[left]{$V_{ref}$};
+  \draw (B.out) -- ++(0.3,0) |- (M2.G);
+  \node at (-2.2,2.4) {$A_b$};
+  \draw (M2.D) -- (0,3.6) node[circ]{} node[right]{$V_{out}$};
+\end{circuitfig}
+
+\subsubsection{Transfer Function}
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}:
+    the loop sets \(V_x = V_{ref}\) (\(\geq V_{ov1}\)); \(V_{G2} = V_x + V_{GS2}\);
+    \(V_{OUT,\min} = V_{ref} + V_{ov2}\), the same headroom as a plain cascode.
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}:
+    \(v_{g2} = -A_b v_x\). Output impedance (\(v_{in} = 0\), \(I_{test}\) into the
+    drain of \(M_2\), which flows through \(r_{o1}\)): \(v_x = \frac{I_{test}}{g_{o1}}\).
+    \begin{align*}
+      I_{test} &= g_{m2}(v_{g2} - v_x) + g_{o2}(v_{out} - v_x) \\
+      I_{test} &= -g_{m2}(1 + A_b) v_x - g_{o2} v_x + g_{o2} v_{out} \\
+      g_{o2} v_{out} &= I_{test} + \left(g_{m2}(1 + A_b) + g_{o2}\right)\frac{I_{test}}{g_{o1}} \\
+      Z_{out} &= \frac{v_{out}}{I_{test}} = r_{o2} + r_{o1} + g_{m2}(1 + A_b) r_{o1} r_{o2}
+    \end{align*}
+    and the gain into a load \(R_L\) is \(A_V \approx -g_{m1}(Z_{out} \parallel R_L)\).
+\end{enumerate}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item With \(A_b\) a common source stage (\(A_b = g_{mb} r_{ob}\)):
+    \(Z_{out} \approx g_{m2} r_{o2} r_{o1} \cdot g_{mb} r_{ob} \approx (g_m r_o)^2 r_o\)
+    and \(A_{V0} \approx -(g_m r_o)^3\) with an equally boosted load.
+  \item \textbf{Doublet}: \(A_b(s) = \frac{A_{b0}}{1 + s/p_b}\) makes \(Z_{out}\)
+    fall back to the plain cascode value above \(p_b\); a pole-zero pair
+    (doublet) near \(p_b\) appears in the main amplifier and slows settling
+    unless \(p_b\) lies above the main amplifier's \(GB\) and below its
+    non-dominant pole.
+\end{enumerate}

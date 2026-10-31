@@ -1,0 +1,36 @@
+\subsection{Current Mirror Op-Amp}\label{sec:amp_cmoa}
+
+\subsubsection{Overview}
+A differential pair \(M_1\), \(M_2\) with diode connected loads \(M_3\), \(M_4\).
+The drain currents are mirrored with gain \(B\) to the output: \(M_4 \to M_6\)
+directly, \(M_3 \to M_5\) (gain \(B\)) and then \(M_7 \to M_8\) (gain 1) to flip
+its direction. The mirrors multiply the transconductance by \(B\) (a
+\(g_m\) enhancement) while every internal node stays low impedance.
+
+\subsubsection{Transfer Function}
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}:
+    \(I_{D1} = I_{D2} = \frac{I_T}{2}\); \(I_{D5} = I_{D6} = I_{D7} = I_{D8} = B\frac{I_T}{2}\).
+    Total current \((1 + B) I_T\).
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}:
+    \(i_{d1} = -i_{d2} = \frac{g_{m1} v_{id}}{2}\). A diode load converts
+    \(i_{d}\) to \(v = \frac{i_d}{g_{m3}}\) and the mirror device returns
+    \(B g_{m3} v = B i_d\). The two output branches then deliver
+    \[
+      i_{out} = B i_{d1} - B i_{d2} = B g_{m1} v_{id}
+    \]
+    into the output conductance \(g_{o6} + g_{o8}\) and \(C_L\):
+    \[
+      A(s) = \frac{B g_{m1}}{g_{o6} + g_{o8} + sC_L}
+    \]
+\end{enumerate}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \(A_{V0} = \frac{B g_{m1}}{g_{o6} + g_{o8}} = \frac{B \cdot \frac{I_T}{V_{ov1}}}{(K_{CLM,n} + K_{CLM,p}) \frac{B I_T}{2}} = \frac{2}{V_{ov1}(K_{CLM,n} + K_{CLM,p})}\):
+    the same as the 5T OTA, \(B\) cancels.
+  \item \(GB = \frac{B g_{m1}}{2\pi C_L}\) and \(SR = \frac{B I_T}{C_L}\): both
+    \(B\) times larger.
+  \item Mirror poles at \(\frac{g_{m3}}{(1 + B) C_{gs3}}\) and \(\frac{g_{m7}}{2 C_{gs7}}\)
+    fall with \(B\); \(B\) is limited to a few (2--5) by phase margin.
+\end{enumerate}

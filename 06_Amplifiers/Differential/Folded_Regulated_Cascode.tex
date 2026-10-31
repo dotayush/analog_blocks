@@ -1,0 +1,30 @@
+\subsection{Folded Regulated Cascode Op-Amp}\label{sec:amp_folded_regulated}
+
+\subsubsection{Overview}
+The folded cascode of Section~\ref{sec:amp_folded} with both cascodes
+(\(M_3\) and \(M_5\)) gain boosted as in Section~\ref{sec:amp_regulated}
+by auxiliary amplifiers \(A_{bn}\), \(A_{bp}\). Folding keeps the input
+range, regulation recovers (and exceeds) the telescopic gain.
+
+\subsubsection{Transfer Function}
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}: as for the
+    folded cascode; the auxiliary loops fix the fold node and the PMOS
+    cascode node at their references, so the swing is unchanged.
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}:
+    each common gate impedance gains the factor \((1 + A_b)\):
+    \begin{align*}
+      Z_{dn} &= r_{o3} + R_f + g_{m3}'(1 + A_{bn}) r_{o3} R_f \hspace{1cm} [R_f = r_{o1} \parallel r_{oB}] \\
+      Z_{up} &= r_{o5} + r_{o7} + g_{m5}'(1 + A_{bp}) r_{o5} r_{o7} \\
+      A_d &\approx g_{m1}(Z_{dn} \parallel Z_{up}) \approx g_{m1}\left[g_{m3} A_{bn} r_{o3} R_f \parallel g_{m5} A_{bp} r_{o5} r_{o7}\right]
+    \end{align*}
+\end{enumerate}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item With \(A_{bn} \approx A_{bp} \approx g_m r_o\): \(A_d \approx (g_m r_o)^3\),
+    e.g. \(g_m r_o = 50\) gives \(\approx 10^5\) (100\,dB) in a single stage.
+  \item \(GB = \frac{g_{m1}}{2\pi C_L}\) is unchanged; the auxiliary amplifiers
+    must have \(GB_b\) between \(GB\) and the main non-dominant pole to avoid
+    slow doublets (Section~\ref{sec:amp_regulated}).
+\end{enumerate}
