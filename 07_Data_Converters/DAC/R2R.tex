@@ -22,15 +22,26 @@ Thevenin reduction from the LSB end:
 \begin{enumerate}
   \item Node \(V_0\): the termination \(2R\) to ground in parallel with the leg
     \(2R\) to \(b_0 V_{REF}\):
+    with \(G = \frac{1}{2R}\) (Millman: KCL at the open node),
     \[
-      V_{th,0} = \frac{b_0 V_{REF} \cdot G + 0 \cdot G}{G + G} = \frac{b_0 V_{REF}}{2}, \hspace{1cm} R_{th,0} = 2R \parallel 2R = R
+      V_{th,0} = \frac{b_0 V_{REF} \cdot G + 0 \cdot G}{G + G} = \frac{b_0 V_{REF}}{2}, \hspace{1cm} R_{th,0} = 2R \parallel 2R = \frac{2R \cdot 2R}{2R + 2R} = R
     \]
   \item Node \(V_k\): the source \((V_{th,k-1}, R_{th,k-1} + R = 2R)\) in parallel
     with the leg \((b_k V_{REF}, 2R)\):
     \[
-      V_{th,k} = \frac{V_{th,k-1} + b_k V_{REF}}{2}, \hspace{1cm} R_{th,k} = 2R \parallel 2R = R
+      V_{th,k} = \frac{V_{th,k-1} G + b_k V_{REF} G}{G + G} = \frac{V_{th,k-1} + b_k V_{REF}}{2}, \hspace{1cm} R_{th,k} = 2R \parallel 2R = R
     \]
-  \item Unrolling the recursion to \(k = n - 1\):
+    so every node again sees \(R\) towards the LSB end and the step repeats.
+  \item Unrolling the recursion: assume
+    \(V_{th,k-1} = V_{REF}\sum_{j=0}^{k-1} b_j 2^{j-k}\) (true for \(k - 1 = 0\):
+    \(b_0 V_{REF} 2^{-1}\)); then
+    \begin{align*}
+      V_{th,k} &= \frac{1}{2}\left(V_{REF}\sum_{j=0}^{k-1} b_j 2^{j-k} + b_k V_{REF}\right)
+      = V_{REF}\left(\sum_{j=0}^{k-1} b_j 2^{j-k-1} + b_k 2^{k-k-1}\right)
+      = V_{REF}\sum_{j=0}^{k} b_j 2^{j-(k+1)}
+    \end{align*}
+    which is the same form with \(k\) in place of \(k - 1\). At \(k = n - 1\)
+    (unloaded output, \(V_{OUT} = V_{th,n-1}\)):
     \begin{align*}
       V_{th,n-1} &= \frac{b_{n-1}V_{REF}}{2} + \frac{b_{n-2}V_{REF}}{4} + \cdots + \frac{b_0 V_{REF}}{2^n} \\
       V_{OUT} &= V_{REF} \sum_{k=0}^{n-1} b_k 2^{k - n} = \frac{D}{2^n} V_{REF}, \hspace{1cm} R_{out} = R
@@ -39,14 +50,36 @@ Thevenin reduction from the LSB end:
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \textbf{Current mode}: legs switched between ground and the virtual
-    ground of an op-amp (feedback \(R_F\)): every leg then carries a constant
-    current, the MSB leg \(\frac{V_{REF}}{2R}\), each next leg half; switches never
-    see a voltage swing and
-    \(V_{OUT} = -R_F \frac{V_{REF}}{R} \sum_{k} b_k 2^{k-n}\).
+  \item \textbf{Current mode} (\textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}):
+    \(V_{REF}\) drives the MSB node \(V_{n-1}\) and the legs are switched between
+    ground and the virtual ground of an op-amp (feedback \(R_F\)); both are at
+    0\,V, so every leg carries a constant current and switches never see a
+    voltage swing. Each node sees \(2R\) down its leg and \(R + R = 2R\)
+    towards the LSB end, so the current splits in half:
+    \begin{align*}
+      I_k &= \frac{V_k}{2R}, \hspace{1cm} V_{k-1} = V_k - R \cdot \frac{V_k}{2R} = \frac{V_k}{2}
+      \hspace{0.5cm} \Rightarrow \hspace{0.5cm} V_k = V_{REF} 2^{k - (n-1)} \\
+      I_k &= \frac{V_{REF}}{2R} 2^{k-n+1} = \frac{V_{REF}}{R} 2^{k-n}
+      \hspace{1cm} \left[I_{n-1} = \frac{V_{REF}}{2R}, \text{ each next leg half}\right] \\
+      V_{OUT} &= -R_F \sum_{k} b_k I_k = -R_F \frac{V_{REF}}{R} \sum_{k} b_k 2^{k-n}
+    \end{align*}
   \item \textbf{Matching}: the MSB leg weighs \(\frac{1}{2}\) of full scale; the
     midscale transition \(0111\ldots \to 1000\ldots\) needs the MSB leg to match
-    the sum of all others to \(\frac{1}{2^n}\), so
-    \(S_R \lesssim \frac{1}{2^n}\) for \(|DNL| < 1\)
+    the sum of all others to \(\frac{1}{2^n}\). At the output node the leg
+    (conductance \(G_M\), relative resistor error \(e_M\)) and the rest of the
+    ladder (\(G_r\), error \(e_r\)) form the weight \(w\) of \(b_{n-1}\):
+    \begin{align*}
+      V_{OUT} &= w\, b_{n-1} V_{REF} + (1 - w) V_{th,n-2}, \hspace{1cm}
+      w = \frac{G_M}{G_M + G_r}, \hspace{0.5cm} G_M = \frac{G}{1 + e_M},\ G_r = \frac{G}{1 + e_r} \\
+      dw &= \frac{G_r\, dG_M - G_M\, dG_r}{(G_M + G_r)^2} = \frac{G(-e_M G) - G(-e_r G)}{4G^2} = \frac{e_r - e_M}{4}
+    \end{align*}
+    \(V_{OUT}(1000\ldots) = w V_{REF}\) rises by \(dw\, V_{REF}\) and
+    \(V_{OUT}(0111\ldots) = (1 - w) V_{th,n-2} \approx (1 - w) V_{REF}\) falls by
+    \(dw\, V_{REF}\), so the step changes by \(2\, dw\, V_{REF}\):
+    \begin{align*}
+      DNL_{N/2 - 1} &= \frac{2\, dw\, V_{REF}}{V_{REF}/2^n} = 2^{n+1} \frac{e_r - e_M}{4} = 2^{n-1}(e_r - e_M) \\
+      SD(DNL_{N/2 - 1}) &= 2^{n-1}\sqrt{2}\, S_R < 1 \hspace{0.5cm} \Rightarrow \hspace{0.5cm} S_R < \frac{\sqrt{2}}{2^n}
+    \end{align*}
+    so \(S_R \lesssim \frac{1}{2^n}\) for \(|DNL| < 1\)
     (switch resistance must be scaled or included in each \(2R\)).
 \end{enumerate}
