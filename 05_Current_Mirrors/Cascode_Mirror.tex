@@ -118,68 +118,68 @@ Here's a table of the voltages at each terminal of the transistors:
 
 \begin{tabularx}{\linewidth}{|X|X|X|X|X|X|} \hline
   Transistor & Gate (G) & Source (S) & Drain (D) & $V_{GS}$ & $V_{DS}$ \\ \hline
-  $M_0$ & $V_{x}$ & $V_{ee}$ & $V_{x}$ & $V_{x} - V_{ee}$ & $V_{x} - V_{ee}$ \\ \hline
-  $M_1$ & $V_{x}$ & $V_{ee}$ & $V_{y}$ & $V_{x} - V_{ee}$ & $V_{y} - V_{ee}$ \\ \hline
-  $M_2$ & $V_{z}$ & $V_{y}$ & $V_{out}$ & $V_{z} - V_{y}$ & $V_{out} - V_{y}$ \\ \hline
-  $M_3$ & $V_{z}$ & $V_{x}$ & $V_{z}$ & $V_{z} - V_{x}$ & $V_{z} - V_{x}$ \\ \hline
+  $M_0$ & $V_{X}$ & $V_{ee}$ & $V_{X}$ & $V_{X} - V_{ee}$ & $V_{X} - V_{ee}$ \\ \hline
+  $M_1$ & $V_{X}$ & $V_{ee}$ & $V_{Y}$ & $V_{X} - V_{ee}$ & $V_{Y} - V_{ee}$ \\ \hline
+  $M_2$ & $V_{Z}$ & $V_{Y}$ & $V_{OUT}$ & $V_{Z} - V_{Y}$ & $V_{OUT} - V_{Y}$ \\ \hline
+  $M_3$ & $V_{Z}$ & $V_{X}$ & $V_{Z}$ & $V_{Z} - V_{X}$ & $V_{Z} - V_{X}$ \\ \hline
 \end{tabularx}
 
 \begin{enumerate}
   \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}:\\
-    Applying KCL at $V_{out}$:
+    Applying KCL at $V_{OUT}$:
     \begin{align*}
-      (V_{out} - V_{cc})G_5 + I_{M_2} &= 0 \\
-      V_{out}G_5 - V_{cc}G_5 + I_{M_2} &= 0 \\
-      V_{out} = V_{cc} - \frac{I_{M_2}}{G_5} \tag{1}
+      (V_{OUT} - V_{cc})G_5 + I_{M_2} &= 0 \\
+      V_{OUT}G_5 - V_{cc}G_5 + I_{M_2} &= 0 \\
+      V_{OUT} = V_{cc} - \frac{I_{M_2}}{G_5} \tag{1}
     \end{align*}
-    Applying KCL at $V_{x}$:
+    Applying KCL at $V_{X}$:
     \begin{align*}
       I_{M_0} + I_{G_1} - I_{M_3} &= 0 \\
       I_{M_0} + I_{G_1} = I_{M_3} \\
       I_{M_0} &\approx I_{M_3} \quad \text{[assuming } I_{G_1} \approx 0 \text{ by MOS physics]} \tag{2}
     \end{align*}
-    Applying KCL at $V_{y}$:
+    Applying KCL at $V_{Y}$:
     \begin{align*}
       I_{M_1} - I_{M_2} &= 0 \\
       I_{M_1} = I_{M_2} \tag{3}
     \end{align*}
-    Applying KCL at $V_{z}$:
+    Applying KCL at $V_{Z}$:
     \begin{align*}
-      (V_{z} - V_{cc})G_4 + I_{M_3} + I_{G_2} &= 0 \\
-      V_{z}G_4 - V_{cc}G_4 + I_{M_3} + I_{G_2} &= 0 \\
-      V_{z}G_4 &= V_{cc}G_4 - (I_{M_3} + I_{G_2}) \\
-      V_{z} &= V_{cc} - \frac{(I_{M_3} + I_{G_2})}{G_4} \tag{4}
+      (V_{Z} - V_{cc})G_4 + I_{M_3} + I_{G_2} &= 0 \\
+      V_{Z}G_4 - V_{cc}G_4 + I_{M_3} + I_{G_2} &= 0 \\
+      V_{Z}G_4 &= V_{cc}G_4 - (I_{M_3} + I_{G_2}) \\
+      V_{Z} &= V_{cc} - \frac{(I_{M_3} + I_{G_2})}{G_4} \tag{4}
     \end{align*}
     Using the transistor equations for $I_{M_0}$, $I_{M_1}$, $I_{M_2}$, and $I_{M_3}$:
     \begin{align*}
       I_{M_0} &= k_{n_0} (V_{GS_0} - V_{th})^2 (1 + K_{CLM} V_{DS_0}) \\
-              &= k_{n_0} (V_{x} - V_{ee} - V_{th})^2 (1 + K_{CLM} (V_{x} - V_{ee})) \\
-              &= k_{n_0} (V_{x} - V_{ee} - V_{th})^2 \quad \text{[assuming } K_{CLM} \approx 0 \text{]} \tag{5} \\
+              &= k_{n_0} (V_{X} - V_{ee} - V_{th})^2 (1 + K_{CLM} (V_{X} - V_{ee})) \\
+              &= k_{n_0} (V_{X} - V_{ee} - V_{th})^2 \quad \text{[assuming } K_{CLM} \approx 0 \text{]} \tag{5} \\
       I_{M_1} &= k_{n_1} (V_{GS_1} - V_{th})^2 (1 + K_{CLM} V_{DS_1}) \\
-              &= k_{n_1} (V_{x} - V_{ee} - V_{th})^2 (1 + K_{CLM} (V_{y} - V_{ee})) \\
-              &= k_{n_1} (V_{x} - V_{ee} - V_{th})^2 \quad \text{[assuming } K_{CLM} \approx 0 \text{]} \tag{6} \\
+              &= k_{n_1} (V_{X} - V_{ee} - V_{th})^2 (1 + K_{CLM} (V_{Y} - V_{ee})) \\
+              &= k_{n_1} (V_{X} - V_{ee} - V_{th})^2 \quad \text{[assuming } K_{CLM} \approx 0 \text{]} \tag{6} \\
       I_{M_2} &= k_{n_2} (V_{GS_2} - V_{th})^2 (1 + K_{CLM} V_{DS_2}) \\
-              &= k_{n_2} (V_{z} - V_{y} - V_{th})^2 (1 + K_{CLM} (V_{out} - V_{y})) \\
-              &= k_{n_2} (V_{z} - V_{y} - V_{th})^2 \quad \text{[assuming } K_{CLM} \approx 0 \text{]} \tag{7} \\
+              &= k_{n_2} (V_{Z} - V_{Y} - V_{th})^2 (1 + K_{CLM} (V_{OUT} - V_{Y})) \\
+              &= k_{n_2} (V_{Z} - V_{Y} - V_{th})^2 \quad \text{[assuming } K_{CLM} \approx 0 \text{]} \tag{7} \\
       I_{M_3} &= k_{n_3} (V_{GS_3} - V_{th})^2 (1 + K_{CLM} V_{DS_3}) \\
-              &= k_{n_3} (V_{z} - V_{x} - V_{th})^2 (1 + K_{CLM} (V_{z} - V_{x})) \\
-              &= k_{n_3} (V_{z} - V_{x} - V_{th})^2 \quad \text{[assuming } K_{CLM} \approx 0 \text{]} \tag{8}
+              &= k_{n_3} (V_{Z} - V_{X} - V_{th})^2 (1 + K_{CLM} (V_{Z} - V_{X})) \\
+              &= k_{n_3} (V_{Z} - V_{X} - V_{th})^2 \quad \text{[assuming } K_{CLM} \approx 0 \text{]} \tag{8}
     \end{align*}
     It can be seen that,
     \begin{align*}
-      I_{in} = I_{M_0} &= I_{M_3} \quad \text{[from (2)]} \\
-      I_{out} = I_{M_1} &= I_{M_2} \quad \text{[from (3)]} \\
+      I_{IN} = I_{M_0} &= I_{M_3} \quad \text{[from (2)]} \\
+      I_{OUT} = I_{M_1} &= I_{M_2} \quad \text{[from (3)]} \\
       I_{M_0} &= I_{M_1} \quad \text{[from (5) and (6) and assuming } k_{n_0} = k_{n_1} \text{]} \\
-      \therefore, I_{in} &= I_{out}
+      \therefore, I_{IN} &= I_{OUT}
     \end{align*}
     Thus,
     \begin{align*}
-      \frac{I_{out}}{I_{in}} &= \frac{I_{M_1}}{I_{M_0}} = \frac{k_{n_1} (V_{x} - V_{ee} - V_{th})^2}{k_{n_0} (V_{x} - V_{ee} - V_{th})^2} \hspace{1cm} \text{(From (5), (6): same } V_{GS}\text{)} \\
+      \frac{I_{OUT}}{I_{IN}} &= \frac{I_{M_1}}{I_{M_0}} = \frac{k_{n_1} (V_{X} - V_{ee} - V_{th})^2}{k_{n_0} (V_{X} - V_{ee} - V_{th})^2} \hspace{1cm} \text{(From (5), (6): same } V_{GS}\text{)} \\
       &= \frac{k_{n_1}}{k_{n_0}} = \frac{\frac{K_P}{2}\frac{W_1}{L_1}}{\frac{K_P}{2}\frac{W_0}{L_0}} = \frac{\frac{W_1}{L_1}}{\frac{W_0}{L_0}} = \frac{W_1 L_0}{L_1 W_0}
     \end{align*}
     \(M_2\) carries \(I_{M_1}\) and \(M_3\) carries \(I_{M_0}\) (from (2), (3)); choosing
     \(\frac{W_2 L_3}{L_2 W_3} = \frac{W_1 L_0}{L_1 W_0}\) gives \(M_2\) and \(M_3\) the same
-    \(V_{ov}\) (from (7), (8)), so \(V_y = V_z - V_{th} - V_{ov_2} = V_x\): \(M_1\) then sees
+    \(V_{ov}\) (from (7), (8)), so \(V_Y = V_Z - V_{th} - V_{ov_2} = V_X\): \(M_1\) then sees
     \(V_{DS_1} = V_{DS_0}\) and the ratio holds even with \(K_{CLM} \neq 0\).
   \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}:\\
     Applying KCL at $V_{out}$:
@@ -268,12 +268,12 @@ Here's a table of the voltages at each terminal of the transistors:
 \subsubsection{Analysis}
 \begin{enumerate}
   \item \textbf{Output Load (Max)}: \(M_2\) saturated needs
-    \(V_{DS_2} \geq V_{ov_2}\). With \(V_{GS_2} = V_z - V_y = V_{th} + V_{ov_2}\), i.e.
-    \(V_y = V_z - V_{th} - V_{ov_2}\):
+    \(V_{DS_2} \geq V_{ov_2}\). With \(V_{GS_2} = V_Z - V_Y = V_{th} + V_{ov_2}\), i.e.
+    \(V_Y = V_Z - V_{th} - V_{ov_2}\):
     \begin{align*}
-      V_{out,\min} &= V_y + V_{ov_2} = V_z - V_{th} - V_{ov_2} + V_{ov_2} = V_z - V_{th} \\
-      V_{cc} - I_{M_2} R_{L} &\geq V_{out,\min} \\
-      R_{L, \max} &= \frac{V_{cc} - V_{out,\min}}{I_{M_2}}
+      V_{OUT,\min} &= V_Y + V_{ov_2} = V_Z - V_{th} - V_{ov_2} + V_{ov_2} = V_Z - V_{th} \\
+      V_{cc} - I_{M_2} R_{L} &\geq V_{OUT,\min} \\
+      R_{L, \max} &= \frac{V_{cc} - V_{OUT,\min}}{I_{M_2}}
     \end{align*}
   \item \textbf{Impedances}:
     \paragraph{At Input:} a test current \(I_{test}\) into \(V_z\) adds to the
@@ -318,31 +318,31 @@ currents and voltages in this circuit.
     ($W$ and $L$) for transistors $M_0$ and $M_1$
     to achieve the desired current gain.
     \begin{align*}
-      \frac{I_{out}}{I_{in}} &= \frac{W_1 L_0}{L_1 W_0} = \frac{W_2 L_3}{L_2 W_3}
+      \frac{I_{OUT}}{I_{IN}} &= \frac{W_1 L_0}{L_1 W_0} = \frac{W_2 L_3}{L_2 W_3}
     \end{align*}
   \item Choose a suitable overdrive voltage value
     ($V_{ov}$) for computing the bias voltages at
-    nodes $V_{x}$, $V_{y}$, and $V_{z}$.
+    nodes $V_{X}$, $V_{Y}$, and $V_{Z}$.
     \begin{align*}
       V_{ov_0} &= V_{GS_0} - V_{th} \\
-      V_{ov_0} &= V_{x} - V_{ee} - V_{th} \\
-      V_{x} &= V_{ov_0} + V_{ee} + V_{th} \\
+      V_{ov_0} &= V_{X} - V_{ee} - V_{th} \\
+      V_{X} &= V_{ov_0} + V_{ee} + V_{th} \\
       \\
       V_{ov_3} &= V_{GS_3} - V_{th} \\
-      V_{ov_3} &= V_{z} - V_{x} - V_{th} \\
-      V_{z} &= V_{ov_3} + V_{x} + V_{th} \\
+      V_{ov_3} &= V_{Z} - V_{X} - V_{th} \\
+      V_{Z} &= V_{ov_3} + V_{X} + V_{th} \\
       \\
       V_{ov_2} &= V_{GS_2} - V_{th} \\
-      V_{ov_2} &= V_{z} - V_{y} - V_{th} \\
-      V_{y} &= V_{z} - V_{ov_2} - V_{th}
+      V_{ov_2} &= V_{Z} - V_{Y} - V_{th} \\
+      V_{Y} &= V_{Z} - V_{ov_2} - V_{th}
     \end{align*}
   \item Using the chosen $V_{ov}$, compute $W_0$
-    to set the required bias current $I_{in}$.
+    to set the required bias current $I_{IN}$.
     \begin{align*}
-      I_{in} &\approx I_{M_0} = \frac{K_P}{2} \frac{W_0}{L_0} V_{ov_0}^2 \\
+      I_{IN} &\approx I_{M_0} = \frac{K_P}{2} \frac{W_0}{L_0} V_{ov_0}^2 \\
              &\approx I_{M_3} = \frac{K_P}{2} \frac{W_3}{L_3} V_{ov_3}^2 \\
-      \therefore W_0 &= \frac{2 I_{in} L_0}{K_P V_{ov_0}^2} \\
-                 W_3 &= \frac{2 I_{in} L_3}{K_P V_{ov_3}^2}
+      \therefore W_0 &= \frac{2 I_{IN} L_0}{K_P V_{ov_0}^2} \\
+                 W_3 &= \frac{2 I_{IN} L_3}{K_P V_{ov_3}^2}
     \end{align*}
     $W_1$ can then be computed using the current
     gain relation from step (a). Similarly, $W_2$
@@ -350,20 +350,20 @@ currents and voltages in this circuit.
     from step (a).
   \item Compute the required value of $G_4$ (or
     $R_4$) to ensure that the voltage at node
-    $V_{z}$ is as calculated in step (b).
+    $V_{Z}$ is as calculated in step (b).
     \begin{align*}
-      V_{z} &= V_{cc} - \frac{(I_{M_3} + I_{G_2})}{G_4} \\
-      V_{z} &\approx V_{cc} - \frac{I_{M_3}}{G_4} \quad \text{[assuming } I_{G_2} \approx 0 \text{ by MOS physics]} \\
-      V_{z} - V_{cc} &\approx - \frac{I_{M_3}}{G_4} \\
-      \frac{(I_{M_3})}{(V_{cc} - V_{z})} &\approx G_4 \\
-      \frac{(I_{in})}{(V_{cc} - V_{z})} &\approx G_4 \quad \text{[} I_{in} = I_{M_3} = I_{M_0} \text{]} \\
-      \therefore R_4 &\approx \frac{V_{cc} - V_{z}}{I_{in}}
+      V_{Z} &= V_{cc} - \frac{(I_{M_3} + I_{G_2})}{G_4} \\
+      V_{Z} &\approx V_{cc} - \frac{I_{M_3}}{G_4} \quad \text{[assuming } I_{G_2} \approx 0 \text{ by MOS physics]} \\
+      V_{Z} - V_{cc} &\approx - \frac{I_{M_3}}{G_4} \\
+      \frac{(I_{M_3})}{(V_{cc} - V_{Z})} &\approx G_4 \\
+      \frac{(I_{IN})}{(V_{cc} - V_{Z})} &\approx G_4 \quad \text{[} I_{IN} = I_{M_3} = I_{M_0} \text{]} \\
+      \therefore R_4 &\approx \frac{V_{cc} - V_{Z}}{I_{IN}}
     \end{align*}
 \end{enumerate}
 
 \subsubsection{Question}
 Design a cascode current mirror with a current
-gain of 5. The input current is $I_{in} = 10 \mu$A.
+gain of 5. The input current is $I_{IN} = 10 \mu$A.
 Assume the following specifications:
 \begin{enumerate}
   \item $V_{cc} = +5$ V, $V_{ee} = 0$ V
@@ -391,30 +391,30 @@ Find the following:
 \begin{enumerate}
   \item Transistor dimensions:
     \begin{align*}
-      \frac{I_{out}}{I_{in}} &= \frac{W_1 L_0}{L_1 W_0} = \frac{W_2 L_3}{L_2 W_3} = 5 \\
+      \frac{I_{OUT}}{I_{IN}} &= \frac{W_1 L_0}{L_1 W_0} = \frac{W_2 L_3}{L_2 W_3} = 5 \\
       \\
-      V_{x} &= V_{ov_0} + V_{ee} + V_{th} = 0.2 + 0 + 0.7 = 0.9 \text{ V} \\
-      V_{z} &= V_{ov_3} + V_{x} + V_{th} = 0.2 + 0.9 + 0.7 = 1.8 \text{ V} \\
-      V_{y} &= V_{z} - V_{ov_2} - V_{th} = 1.8 - 0.2 - 0.7 = 0.9 \text{ V} \\
+      V_{X} &= V_{ov_0} + V_{ee} + V_{th} = 0.2 + 0 + 0.7 = 0.9 \text{ V} \\
+      V_{Z} &= V_{ov_3} + V_{X} + V_{th} = 0.2 + 0.9 + 0.7 = 1.8 \text{ V} \\
+      V_{Y} &= V_{Z} - V_{ov_2} - V_{th} = 1.8 - 0.2 - 0.7 = 0.9 \text{ V} \\
       \\
-      W_0 &= \frac{2 I_{in} L_0}{K_P V_{ov_0}^2} = \frac{2 \times 10 \times 10^{-6} \times 1 \times 10^{-6}}{100 \times 10^{-6} \times (0.2)^2} = 5 \mu m \\
-      W_3 &= \frac{2 I_{in} L_3}{K_P V_{ov_3}^2} = \frac{2 \times 10 \times 10^{-6} \times 1 \times 10^{-6}}{100 \times 10^{-6} \times (0.2)^2} = 5 \mu m \\
+      W_0 &= \frac{2 I_{IN} L_0}{K_P V_{ov_0}^2} = \frac{2 \times 10 \times 10^{-6} \times 1 \times 10^{-6}}{100 \times 10^{-6} \times (0.2)^2} = 5 \mu m \\
+      W_3 &= \frac{2 I_{IN} L_3}{K_P V_{ov_3}^2} = \frac{2 \times 10 \times 10^{-6} \times 1 \times 10^{-6}}{100 \times 10^{-6} \times (0.2)^2} = 5 \mu m \\
       W_1 &= 5 \times \frac{W_0}{L_0} \times L_1 = 5 \times \frac{5}{1} \times 1 = 25 \mu m \\
       W_2 &= 5 \times \frac{W_3}{L_3} \times L_2 = 5 \times \frac{5}{1} \times 1 = 25 \mu m
     \end{align*}
   \item Value of resistor $R_4$:
     \begin{align*}
-      R_4 &\approx \frac{V_{cc} - V_{z}}
-                      {I_{in}} = \frac{5 - 1.8}{10 \times 10^{-6}} = 320 k\Omega
+      R_4 &\approx \frac{V_{cc} - V_{Z}}
+                      {I_{IN}} = \frac{5 - 1.8}{10 \times 10^{-6}} = 320 k\Omega
     \end{align*}
   \item Output voltage range and maximum output load
-    (\(I_{M_2} = I_{out} = 5 \cdot 10\,\mu A = 50\,\mu A\)):
+    (\(I_{M_2} = I_{OUT} = 5 \cdot 10\,\mu A = 50\,\mu A\)):
     \begin{align*}
-      V_{out, \min} &\approx V_{y} + V_{ov_2} = 0.9 + 0.2 = 1.1 \text{ V} \\
-      V_{out, \max} &\approx V_{cc} = 5 \text{ V} \\
-      R_{L, \max} &= \frac{V_{cc} - V_{out,\min}}{I_{M_2}} = \frac{5 - 1.1}{50 \times 10^{-6}} = 78 k\Omega
+      V_{OUT,\min} &\approx V_{Y} + V_{ov_2} = 0.9 + 0.2 = 1.1 \text{ V} \\
+      V_{OUT,\max} &\approx V_{cc} = 5 \text{ V} \\
+      R_{L, \max} &= \frac{V_{cc} - V_{OUT,\min}}{I_{M_2}} = \frac{5 - 1.1}{50 \times 10^{-6}} = 78 k\Omega
     \end{align*}
-    With \(R_L = 50\,k\Omega\): \(V_{out} = V_{cc} - I_{M_2} R_L = 5 - 50 \times 10^{-6} \times 50 \times 10^{3} = 5 - 2.5 = 2.5\,V \geq 1.1\,V\),
+    With \(R_L = 50\,k\Omega\): \(V_{OUT} = V_{cc} - I_{M_2} R_L = 5 - 50 \times 10^{-6} \times 50 \times 10^{3} = 5 - 2.5 = 2.5\,V \geq 1.1\,V\),
     so the \(50\,k\Omega\) load keeps \(M_2\) saturated.
   \item Small signal output resistance:
     \begin{align*}

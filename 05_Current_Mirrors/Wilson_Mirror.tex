@@ -4,7 +4,7 @@
 Constructed from three transistors, it improves
 upon the Basic Mirror by providing a higher output
 impedance (negative feedback through \(M_0\) holds
-\(V_x\), and so \(I_{M_1} = I_{out}\), constant), which
+\(V_X\), and so \(I_{M_1} = I_{OUT}\), constant), which
 results in better current source/sink performance.
 
 \subsubsection{Schematic}
@@ -106,58 +106,58 @@ Here's a table of the voltages at each terminal of the transistors:
 
 \begin{tabularx}{\linewidth}{|X|X|X|X|X|X|} \hline
   Transistor & Gate (G) & Source (S) & Drain (D) & $V_{GS}$ & $V_{DS}$ \\ \hline
-  $M_0$ & $V_{x}$ & $V_{ee}$ & $V_{y}$ & $V_{x} - V_{ee}$ & $V_{y} - V_{ee}$ \\ \hline
-  $M_1$ & $V_{x}$ & $V_{ee}$ & $V_{x}$ & $V_{x} - V_{ee}$ & $V_{x} - V_{ee}$ \\ \hline
-  $M_2$ & $V_{y}$ & $V_{x}$ & $V_{out}$ & $V_{y} - V_{x}$ & $V_{out} - V_{x}$ \\ \hline
+  $M_0$ & $V_{X}$ & $V_{ee}$ & $V_{Y}$ & $V_{X} - V_{ee}$ & $V_{Y} - V_{ee}$ \\ \hline
+  $M_1$ & $V_{X}$ & $V_{ee}$ & $V_{X}$ & $V_{X} - V_{ee}$ & $V_{X} - V_{ee}$ \\ \hline
+  $M_2$ & $V_{Y}$ & $V_{X}$ & $V_{OUT}$ & $V_{Y} - V_{X}$ & $V_{OUT} - V_{X}$ \\ \hline
 \end{tabularx}
 
 \begin{enumerate}
   \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}:
-    Applying KCL at $V_{out}$:
+    Applying KCL at $V_{OUT}$:
     \begin{align*}
-      (V_{out} - V_{cc})G_4 + I_{M_2} &= 0 \hspace{1cm} \text{[KCL at } V_{out}\text{]} \\
-      V_{out} &= V_{cc} - \frac{I_{M_2}}{G_4} \tag{1} \\
-      (V_{y} - V_{cc})G_3 + I_{M_0} + I_{G_2} &= 0 \hspace{1cm} \text{[KCL at } V_{y}\text{, } I_{G_2} \text{ into the gate of } M_2\text{]} \\
-      (V_{y} - V_{cc})G_3 + I_{M_0} &= 0 \hspace{1cm} \text{[} I_{G_2} \approx 0 \text{ by MOS physics]} \\
-      V_{y} &= V_{cc} - \frac{I_{M_0}}{G_3} \tag{2} \\
-      I_{M_1} + I_{G} - I_{M_2} &= 0 \hspace{1cm} \text{[KCL at } V_{x}\text{]} \\
+      (V_{OUT} - V_{cc})G_4 + I_{M_2} &= 0 \hspace{1cm} \text{[KCL at } V_{OUT}\text{]} \\
+      V_{OUT} &= V_{cc} - \frac{I_{M_2}}{G_4} \tag{1} \\
+      (V_{Y} - V_{cc})G_3 + I_{M_0} + I_{G_2} &= 0 \hspace{1cm} \text{[KCL at } V_{Y}\text{, } I_{G_2} \text{ into the gate of } M_2\text{]} \\
+      (V_{Y} - V_{cc})G_3 + I_{M_0} &= 0 \hspace{1cm} \text{[} I_{G_2} \approx 0 \text{ by MOS physics]} \\
+      V_{Y} &= V_{cc} - \frac{I_{M_0}}{G_3} \tag{2} \\
+      I_{M_1} + I_{G} - I_{M_2} &= 0 \hspace{1cm} \text{[KCL at } V_{X}\text{]} \\
       I_{M_1} + I_{G} &= I_{M_2} \tag{3}
     \end{align*}
     Using transistor equations for $I_{M_0}$, $I_{M_1}$ and $I_{M_2}$
     and applying the voltages:
     \begin{align*}
       I_{M_0} &= k_{n_0}(V_{GS_0} - V_{th})^2 \cdot (1 + K_{CLM} V_{DS_0}) \\
-              &= k_{n_0}((V_{x} - V_{ee}) - V_{th})^2 \cdot (1 + K_{CLM} (V_{y} - V_{ee})) \\
-              &= k_{n_0}\left(V_{x} - V_{ee} - V_{th}\right)^2 \cdot \left(1 + K_{CLM} \left(V_{cc} - \frac{I_{M_0}}{G_3} - V_{ee}\right)\right) \\
-              &= k_{n_0}\left(V_{x} - V_{ee} - V_{th}\right)^2 \quad \text{[assuming } K_{CLM} = 0 \text{]} \tag{4} \\ \\
+              &= k_{n_0}((V_{X} - V_{ee}) - V_{th})^2 \cdot (1 + K_{CLM} (V_{Y} - V_{ee})) \\
+              &= k_{n_0}\left(V_{X} - V_{ee} - V_{th}\right)^2 \cdot \left(1 + K_{CLM} \left(V_{cc} - \frac{I_{M_0}}{G_3} - V_{ee}\right)\right) \\
+              &= k_{n_0}\left(V_{X} - V_{ee} - V_{th}\right)^2 \quad \text{[assuming } K_{CLM} = 0 \text{]} \tag{4} \\ \\
       I_{M_1} &= k_{n_1}(V_{GS_1} - V_{th})^2 \cdot (1 + K_{CLM} V_{DS_1}) \\
-              &= k_{n_1}((V_{x} - V_{ee}) - V_{th})^2 \cdot (1 + K_{CLM} (V_{x} - V_{ee})) \\
-              &= k_{n_1}\left(V_{x} - V_{ee} - V_{th}\right)^2 \cdot \left(1 + K_{CLM} (V_{x} - V_{ee})\right) \\
-              &= k_{n_1}\left(V_{x} - V_{ee} - V_{th}\right)^2 \quad \text{[assuming } K_{CLM} = 0 \text{]} \tag{5} \\ \\
+              &= k_{n_1}((V_{X} - V_{ee}) - V_{th})^2 \cdot (1 + K_{CLM} (V_{X} - V_{ee})) \\
+              &= k_{n_1}\left(V_{X} - V_{ee} - V_{th}\right)^2 \cdot \left(1 + K_{CLM} (V_{X} - V_{ee})\right) \\
+              &= k_{n_1}\left(V_{X} - V_{ee} - V_{th}\right)^2 \quad \text{[assuming } K_{CLM} = 0 \text{]} \tag{5} \\ \\
       I_{M_2} &= k_{n_2}(V_{GS_2} - V_{th})^2 \cdot (1 + K_{CLM} V_{DS_2}) \\
-              &= k_{n_2}((V_{y} - V_{x}) - V_{th})^2 \cdot (1 + K_{CLM} (V_{out} - V_{x})) \\
-              &= k_{n_2}\left(V_{y} - V_{x} - V_{th}\right)^2 \cdot \left(1 + K_{CLM} \left(V_{cc} - \frac{I_{M_2}}{G_4} - V_{x}\right)\right) \\
-              &= k_{n_2}\left(V_{y} - V_{x} - V_{th}\right)^2 \quad \text{[assuming } K_{CLM} = 0 \text{]} \tag{6}
+              &= k_{n_2}((V_{Y} - V_{X}) - V_{th})^2 \cdot (1 + K_{CLM} (V_{OUT} - V_{X})) \\
+              &= k_{n_2}\left(V_{Y} - V_{X} - V_{th}\right)^2 \cdot \left(1 + K_{CLM} \left(V_{cc} - \frac{I_{M_2}}{G_4} - V_{X}\right)\right) \\
+              &= k_{n_2}\left(V_{Y} - V_{X} - V_{th}\right)^2 \quad \text{[assuming } K_{CLM} = 0 \text{]} \tag{6}
     \end{align*}
     The input current is the current through \(G_3\) and the output
     current is the drain current of \(M_2\):
     \begin{align*}
-      I_{in} &= (V_{cc} - V_y)G_3 = I_{M_0} \quad \text{[from (2)]} \\
-      I_{out} &= I_{M_2} = I_{M_1} + I_{G} \approx I_{M_1} \quad \text{[from (3), } I_{G} \approx 0 \text{ by MOS physics]}
+      I_{IN} &= (V_{cc} - V_Y)G_3 = I_{M_0} \quad \text{[from (2)]} \\
+      I_{OUT} &= I_{M_2} = I_{M_1} + I_{G} \approx I_{M_1} \quad \text{[from (3), } I_{G} \approx 0 \text{ by MOS physics]}
     \end{align*}
-    \(M_0\) and \(M_1\) share \(V_{GS} = V_x - V_{ee}\), so dividing the
+    \(M_0\) and \(M_1\) share \(V_{GS} = V_X - V_{ee}\), so dividing the
     second line of (5) by the second line of (4) cancels the square term:
     \begin{align*}
-      \frac{I_{M_1}}{I_{M_0}} &= \frac{k_{n_1}(V_{x} - V_{ee} - V_{th})^2 (1 + K_{CLM} (V_{x} - V_{ee}))}{k_{n_0}(V_{x} - V_{ee} - V_{th})^2 (1 + K_{CLM} (V_{y} - V_{ee}))} \\
-                              &= \frac{k_{n_1}}{k_{n_0}} \cdot \frac{1 + K_{CLM} (V_{x} - V_{ee})}{1 + K_{CLM} (V_{y} - V_{ee})} \\
+      \frac{I_{M_1}}{I_{M_0}} &= \frac{k_{n_1}(V_{X} - V_{ee} - V_{th})^2 (1 + K_{CLM} (V_{X} - V_{ee}))}{k_{n_0}(V_{X} - V_{ee} - V_{th})^2 (1 + K_{CLM} (V_{Y} - V_{ee}))} \\
+                              &= \frac{k_{n_1}}{k_{n_0}} \cdot \frac{1 + K_{CLM} (V_{X} - V_{ee})}{1 + K_{CLM} (V_{Y} - V_{ee})} \\
                               &= \frac{k_{n_1}}{k_{n_0}} \quad \text{[assuming } K_{CLM} = 0 \text{]}
     \end{align*}
     With \(K_{CLM} \neq 0\) the factor stays, since
-    \(V_y - V_x = V_{GS_2} \neq 0\): \(V_{DS_0} \neq V_{DS_1}\). This is the
+    \(V_Y - V_X = V_{GS_2} \neq 0\): \(V_{DS_0} \neq V_{DS_1}\). This is the
     systematic error removed by the Modified Wilson Mirror. Thus, with
     \(k_n = \frac{K_P}{2}\frac{W}{L}\),
     \begin{align*}
-      \frac{I_{out}}{I_{in}} \approx \frac{I_{M_2}}{I_{M_0}} \approx \frac{I_{M_1}}{I_{M_0}} \approx \frac{k_{n_1}}{k_{n_0}} = \frac{\frac{K_P}{2} \frac{W_1}{L_1}}{\frac{K_P}{2} \frac{W_0}{L_0}} = \frac{\frac{W_1}{L_1}}{\frac{W_0}{L_0}} = \frac{W_1 L_0}{L_1 W_0}
+      \frac{I_{OUT}}{I_{IN}} \approx \frac{I_{M_2}}{I_{M_0}} \approx \frac{I_{M_1}}{I_{M_0}} \approx \frac{k_{n_1}}{k_{n_0}} = \frac{\frac{K_P}{2} \frac{W_1}{L_1}}{\frac{K_P}{2} \frac{W_0}{L_0}} = \frac{\frac{W_1}{L_1}}{\frac{W_0}{L_0}} = \frac{W_1 L_0}{L_1 W_0}
     \end{align*}
   \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}:\\
     Applying KCL at $V_{out}$:
@@ -286,20 +286,20 @@ Here's a table of the voltages at each terminal of the transistors:
                        &\approx \frac{g_{m_0} g_{m_2}}{g_{o_0} g_{o_2} g_{m_1}} \quad \text{[} g_{o_0}(g_{m_1} + g_{m_2}) \ll g_{m_0} g_{m_2} \text{]}
       \end{align*}
       With \(g_m = \frac{2I}{V_{ov}}\), \(g_o = K_{CLM} I\), equal \(V_{ov}\) and
-      \(I_{M_1} = I_{M_2} = I_{out}\), \(I_{M_0} = I_{in}\):
+      \(I_{M_1} = I_{M_2} = I_{OUT}\), \(I_{M_0} = I_{IN}\):
       \begin{align*}
-        Z_{out,mirror} &\approx \frac{\frac{2I_{in}}{V_{ov}} \cdot \frac{2I_{out}}{V_{ov}}}{K_{CLM} I_{in} \cdot K_{CLM} I_{out} \cdot \frac{2I_{out}}{V_{ov}}}
-                        = \frac{\frac{4 I_{in} I_{out}}{V_{ov}^2}}{\frac{2 K_{CLM}^2 I_{in} I_{out}^2}{V_{ov}}}
-                        = \frac{4 I_{in} I_{out} V_{ov}}{2 K_{CLM}^2 I_{in} I_{out}^2 V_{ov}^2}
-                        = \frac{2}{K_{CLM}^2 I_{out} V_{ov}}
+        Z_{out,mirror} &\approx \frac{\frac{2I_{IN}}{V_{ov}} \cdot \frac{2I_{OUT}}{V_{ov}}}{K_{CLM} I_{IN} \cdot K_{CLM} I_{OUT} \cdot \frac{2I_{OUT}}{V_{ov}}}
+                        = \frac{\frac{4 I_{IN} I_{OUT}}{V_{ov}^2}}{\frac{2 K_{CLM}^2 I_{IN} I_{OUT}^2}{V_{ov}}}
+                        = \frac{4 I_{IN} I_{OUT} V_{ov}}{2 K_{CLM}^2 I_{IN} I_{OUT}^2 V_{ov}^2}
+                        = \frac{2}{K_{CLM}^2 I_{OUT} V_{ov}}
       \end{align*}
   \item \textbf{Output Load (Max), Large Signal, Time Domain, DC Input (Q5)}:
     \(M_2\) saturated needs \(V_{DS_2} \geq V_{ov_2} = V_{GS_2} - V_{th}\):
     \begin{align*}
-      V_{out} - V_x &\geq V_{y} - V_{x} - V_{th} \\
-      V_{out} &\geq V_y - V_{th} \\
-      V_{out,\min} &= V_y - V_{th} \\
-      R_{L,\max} &= \frac{V_{cc} - V_{out,\min}}{I_{out}}
+      V_{OUT} - V_X &\geq V_{Y} - V_{X} - V_{th} \\
+      V_{OUT} &\geq V_Y - V_{th} \\
+      V_{OUT,\min} &= V_Y - V_{th} \\
+      R_{L,\max} &= \frac{V_{cc} - V_{OUT,\min}}{I_{OUT}}
     \end{align*}
 \end{enumerate}
 
@@ -311,41 +311,41 @@ currents and voltages in this circuit.
     ($W$ and $L$) for transistors $M_0$ and $M_1$
     to achieve the desired current gain.
     \begin{align*}
-      \frac{I_{out}}{I_{in}} &= \frac{W_1 L_0}{L_1 W_0}
+      \frac{I_{OUT}}{I_{IN}} &= \frac{W_1 L_0}{L_1 W_0}
     \end{align*}
   \item Choose a suitable overdrive voltage value
     ($V_{ov}$) for setting the bias voltages at
-    nodes $V_{x}$ and $V_{y}$.
+    nodes $V_{X}$ and $V_{Y}$.
     \begin{align*}
       V_{ov_0} &= V_{GS_0} - V_{th} \\
-      V_{ov_0} &= (V_{x} - V_{ee}) - V_{th} \\
-      V_{x} &= V_{ov_0} + V_{th} + V_{ee} \\
+      V_{ov_0} &= (V_{X} - V_{ee}) - V_{th} \\
+      V_{X} &= V_{ov_0} + V_{th} + V_{ee} \\
       \\
       V_{ov_2} &= V_{GS_2} - V_{th} \\
-      V_{ov_2} &= (V_{y} - V_{x}) - V_{th} \\
-      V_{y} &= V_{ov_2} + V_{th} + V_{x}
+      V_{ov_2} &= (V_{Y} - V_{X}) - V_{th} \\
+      V_{Y} &= V_{ov_2} + V_{th} + V_{X}
     \end{align*}
   \item Using the chosen $V_{ov}$, compute $W_0$
-    to set the required bias current $I_{in}$.
+    to set the required bias current $I_{IN}$.
     \begin{align*}
-      I_{in} = I_{M_0} &= \frac{K_P}{2} \frac{W_0}{L_0} V_{ov_0}^2 \\
-      \therefore W_0 &= \frac{2 I_{in} L_0}{K_P V_{ov_0}^2}
+      I_{IN} = I_{M_0} &= \frac{K_P}{2} \frac{W_0}{L_0} V_{ov_0}^2 \\
+      \therefore W_0 &= \frac{2 I_{IN} L_0}{K_P V_{ov_0}^2}
     \end{align*}
     $W_1$ can then be computed using the current
-    gain relation from step (a). \(M_2\) carries \(I_{M_2} = I_{out}\)
+    gain relation from step (a). \(M_2\) carries \(I_{M_2} = I_{OUT}\)
     at the chosen \(V_{ov_2}\):
     \begin{align*}
-      I_{out} = I_{M_2} &= \frac{K_P}{2} \frac{W_2}{L_2} V_{ov_2}^2 \\
-      \therefore W_2 &= \frac{2 I_{out} L_2}{K_P V_{ov_2}^2}
+      I_{OUT} = I_{M_2} &= \frac{K_P}{2} \frac{W_2}{L_2} V_{ov_2}^2 \\
+      \therefore W_2 &= \frac{2 I_{OUT} L_2}{K_P V_{ov_2}^2}
     \end{align*}
   \item Compute the required value of $G_3$ (or
     $R_3$) to ensure that the voltage at node
-    $V_{y}$ is as calculated in step (b).
+    $V_{Y}$ is as calculated in step (b).
     \begin{align*}
-      (V_{y} - V_{cc})G_3 + I_{M_0} &= 0 \\
-      (V_{cc} - V_{y})G_3 &= I_{M_0} \\
-      \therefore G_3 &= \frac{I_{in}}{V_{cc} - V_{y}} \quad \text{[}I_{M_0} = I_{in} \text{]} \\
-      R_3 &= \frac{1}{G_3} = \frac{V_{cc} - V_{y}}{I_{in}}
+      (V_{Y} - V_{cc})G_3 + I_{M_0} &= 0 \\
+      (V_{cc} - V_{Y})G_3 &= I_{M_0} \\
+      \therefore G_3 &= \frac{I_{IN}}{V_{cc} - V_{Y}} \quad \text{[}I_{M_0} = I_{IN} \text{]} \\
+      R_3 &= \frac{1}{G_3} = \frac{V_{cc} - V_{Y}}{I_{IN}}
     \end{align*}
 \end{enumerate}
 
@@ -353,7 +353,7 @@ currents and voltages in this circuit.
 Design a Wilson Current Mirror (Sink) that meets the
 following requirements. The mirror must provide a current
 gain at the output of 5. The input current must be
-$I_{in} = 100 \mu A$. The mirror must operate with
+$I_{IN} = 100 \mu A$. The mirror must operate with
 $V_{cc} = 5V$ and $V_{ee} = 0V$. Assume the following
 transistor parameters: $V_{th} = 1V$, $K_{CLM} = 0.02 V^{-1}$,
 $K_P = 200 \mu A/V^2$ and
@@ -364,7 +364,7 @@ output, with the load returned to $V_{cc}$.
 \begin{enumerate}
   \item \textbf{Choose appropriate transistor dimensions:}
     \begin{align*}
-      \frac{I_{out}}{I_{in}} &= \frac{W_1 L_0}{L_1 W_0} = 5 \\
+      \frac{I_{OUT}}{I_{IN}} &= \frac{W_1 L_0}{L_1 W_0} = 5 \\
       \text{Assuming } L_0 &= L_1 = 1 \mu m \\
       \frac{W_1 \cdot 1 \mu m}{1 \mu m \cdot W_0} &= 5 \\
       \therefore W_1 &= 5 W_0 \tag{i}
@@ -372,24 +372,24 @@ output, with the load returned to $V_{cc}$.
   \item \textbf{Choose a suitable overdrive voltage and determine
     the resulting bias voltages:} Assuming $V_{ov_0} = V_{ov_2} = 0.2V$,
     \begin{align*}
-      V_{x} &= V_{ov_0} + V_{th} + V_{ee} = 0.2V + 1V + 0V = 1.2V \\
-      V_{y} &= V_{ov_2} + V_{th} + V_{x} = 0.2V + 1V + 1.2V = 2.4V
+      V_{X} &= V_{ov_0} + V_{th} + V_{ee} = 0.2V + 1V + 0V = 1.2V \\
+      V_{Y} &= V_{ov_2} + V_{th} + V_{X} = 0.2V + 1V + 1.2V = 2.4V
     \end{align*}
   \item \textbf{Compute $W_0$ to set the required bias current:}
-    For $I_{in} = 100 \mu A$
+    For $I_{IN} = 100 \mu A$
     \begin{align*}
-      W_0 &= \frac{2 I_{in} L_0}{K_P V_{ov_0}^2} \\
+      W_0 &= \frac{2 I_{IN} L_0}{K_P V_{ov_0}^2} \\
           &= \frac{2 \cdot 100 \mu A \cdot 1 \mu m}{200 \mu A/V^2 \cdot (0.2V)^2} \\
           &= 25 \mu m \\
       W_1 &= 5 W_0 = 5 \cdot 25 \mu m = 125 \mu m \quad \text{[from (i)]}
     \end{align*}
-    \(M_2\) carries \(I_{out} = 5 \cdot 100 \mu A = 500 \mu A\) at \(V_{ov_2} = 0.2V\):
+    \(M_2\) carries \(I_{OUT} = 5 \cdot 100 \mu A = 500 \mu A\) at \(V_{ov_2} = 0.2V\):
     \begin{align*}
-      W_2 &= \frac{2 I_{out} L_2}{K_P V_{ov_2}^2} = \frac{2 \cdot 500 \mu A \cdot 1 \mu m}{200 \mu A/V^2 \cdot (0.2V)^2} = 125 \mu m
+      W_2 &= \frac{2 I_{OUT} L_2}{K_P V_{ov_2}^2} = \frac{2 \cdot 500 \mu A \cdot 1 \mu m}{200 \mu A/V^2 \cdot (0.2V)^2} = 125 \mu m
     \end{align*}
   \item \textbf{Compute the required value of $G_3$ (or $R_3$):}
     \begin{align*}
-      R_3 &= \frac{1}{G_3} = \frac{V_{cc} - V_{y}}{I_{in}} \\
+      R_3 &= \frac{1}{G_3} = \frac{V_{cc} - V_{Y}}{I_{IN}} \\
           &= \frac{5V - 2.4V}{100 \mu A} = \frac{2.6V}{100 \mu A} = 26k \Omega
     \end{align*}
   \item \textbf{Compute the output impedance:} \(M_2\) is sized like \(M_1\)
@@ -405,20 +405,20 @@ output, with the load returned to $V_{cc}$.
     \end{align*}
     Ideal input current source (\(G_3 \to 0\)):
     \begin{align*}
-      Z_{out,mirror} &\approx \frac{2}{K_{CLM}^2 I_{out} V_{ov}} = \frac{2}{0.02^2 \cdot 500 \mu A \cdot 0.2V} = \frac{2}{4 \times 10^{-8} \, A} = 50 M\Omega
+      Z_{out,mirror} &\approx \frac{2}{K_{CLM}^2 I_{OUT} V_{ov}} = \frac{2}{0.02^2 \cdot 500 \mu A \cdot 0.2V} = \frac{2}{4 \times 10^{-8} \, A} = 50 M\Omega
     \end{align*}
     Input current set by \(R_3\) (\(H = G_3 + g_{o_0} = 40.46\,\mu S\)):
     \begin{align*}
       Z_{out,mirror} &= \frac{H S + g_{m_0} g_{m_2}}{g_{o_2} (g_{o_1} + g_{m_1}) H} = \frac{(40.46 \mu)(10.02 m) + (1 m)(5 m)}{(10 \mu)(5.01 m)(40.46 \mu)} \\
                      &= \frac{0.405 \times 10^{-6} + 5 \times 10^{-6}}{2.027 \times 10^{-12}} = \frac{5.405 \times 10^{-6}}{2.027 \times 10^{-12}} \approx 2.67 M\Omega
     \end{align*}
-    \(R_3\) shunts the feedback node \(V_y\), which is why the Wilson mirror
+    \(R_3\) shunts the feedback node \(V_Y\), which is why the Wilson mirror
     is fed from a high impedance current source in practice.
   \item \textbf{Compute the maximum load that can be connected
     at the output:}
     \begin{align*}
-      V_{out,\min} &= V_y - V_{th} = 2.4V - 1V = 1.4V \\
-      R_{L, \max} &= \frac{V_{cc} - V_{out,\min}}{I_{M_2}} = \frac{5V - 1.4V}{500 \mu A} = 7.2 k\Omega
+      V_{OUT,\min} &= V_Y - V_{th} = 2.4V - 1V = 1.4V \\
+      R_{L, \max} &= \frac{V_{cc} - V_{OUT,\min}}{I_{M_2}} = \frac{5V - 1.4V}{500 \mu A} = 7.2 k\Omega
     \end{align*}
 \end{enumerate}
 

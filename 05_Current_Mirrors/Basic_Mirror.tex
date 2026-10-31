@@ -90,52 +90,52 @@ Here's a table of the voltages at each terminal of the transistors:
 
 \begin{tabularx}{\linewidth}{|X|X|X|X|X|X|} \hline
   Transistor & Gate (G) & Source (S) & Drain (D) & $V_{GS}$ & $V_{DS}$ \\ \hline
-  $M_0$ & $V_{x}$ & $V_{ee}$ & $V_{x}$ & $V_{x} - V_{ee}$ & $V_{x} - V_{ee}$ \\ \hline
-  $M_1$ & $V_{x}$ & $V_{ee}$ & $V_{out}$ & $V_{x} - V_{ee}$ & $V_{out} - V_{ee}$ \\ \hline
+  $M_0$ & $V_{X}$ & $V_{ee}$ & $V_{X}$ & $V_{X} - V_{ee}$ & $V_{X} - V_{ee}$ \\ \hline
+  $M_1$ & $V_{X}$ & $V_{ee}$ & $V_{OUT}$ & $V_{X} - V_{ee}$ & $V_{OUT} - V_{ee}$ \\ \hline
 \end{tabularx}
 
 \begin{enumerate}
   \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}:\\
-    Applying KCL at $V_{out}$:
+    Applying KCL at $V_{OUT}$:
     \begin{align*}
-      (V_{out} - V_{cc})G_3 + I_{M_1} &= 0 \\
-      V_{out}G_3 - V_{cc}G_3 + I_{M_1} &= 0 \\
-      V_{out} &= V_{cc} - \frac{I_{M_1}}{G_3} \tag{1}\end{align*}
-    Applying KCL at $V_{x}$:
+      (V_{OUT} - V_{cc})G_3 + I_{M_1} &= 0 \\
+      V_{OUT}G_3 - V_{cc}G_3 + I_{M_1} &= 0 \\
+      V_{OUT} &= V_{cc} - \frac{I_{M_1}}{G_3} \tag{1}\end{align*}
+    Applying KCL at $V_{X}$:
     \begin{align*}
-      (V_{x} - V_{cc})G_2 + I_{M_0} + I_{G} &= 0 \\
-      V_{x}G_2 - V_{cc}G_2 + (I_{M_0} + I_{G}) &= 0 \\
-      V_{x}G_2 &= - (I_{M_0} + I_{G}) + V_{cc}G_2 \\
-      V_{x} &= V_{cc} - \frac{(I_{M_0} + I_{G})}{G_2} \tag{2}
+      (V_{X} - V_{cc})G_2 + I_{M_0} + I_{G} &= 0 \\
+      V_{X}G_2 - V_{cc}G_2 + (I_{M_0} + I_{G}) &= 0 \\
+      V_{X}G_2 &= - (I_{M_0} + I_{G}) + V_{cc}G_2 \\
+      V_{X} &= V_{cc} - \frac{(I_{M_0} + I_{G})}{G_2} \tag{2}
     \end{align*}
     Using the transistor equations for $I_{M_0}$ and
     $I_{M_1}$:
     \begin{align*}
       I_{M_0} &= k_{n_0}(V_{GS_0} - V_{th})^2 \cdot (1 + K_{CLM} V_{DS_0}) \\
-              &= k_{n_0}(V_{x} - V_{ee} - V_{th})^2 \cdot (1 + K_{CLM} (V_{x} - V_{ee})) \\
+              &= k_{n_0}(V_{X} - V_{ee} - V_{th})^2 \cdot (1 + K_{CLM} (V_{X} - V_{ee})) \\
               &= k_{n_0}\left(\left(V_{cc} - \frac{(I_{M_0} + I_{G})}{G_2}\right) - V_{ee} - V_{th}\right)^2 \cdot \left(1 + K_{CLM} \left(\left(V_{cc} - \frac{(I_{M_0} + I_{G})}{G_2}\right) - V_{ee}\right)\right) \\
               &= k_{n_0}\left(\left(V_{cc} - \frac{(I_{M_0} + I_{G})}{G_2}\right) - V_{ee} - V_{th}\right)^2 \quad \text{[assuming } K_{CLM} = 0 \text{]} \tag{3} \\ \\
       I_{M_1} &= k_{n_1}(V_{GS_1} - V_{th})^2 \cdot (1 + K_{CLM} V_{DS_1}) \\
-              &= k_{n_1}(V_{x} - V_{ee} - V_{th})^2 \cdot (1 + K_{CLM} (V_{out} - V_{ee})) \\
+              &= k_{n_1}(V_{X} - V_{ee} - V_{th})^2 \cdot (1 + K_{CLM} (V_{OUT} - V_{ee})) \\
               &= k_{n_1}\left(\left(V_{cc} - \frac{(I_{M_0} + I_{G})}{G_2}\right) - V_{ee} - V_{th}\right)^2 \cdot \left(1 + K_{CLM} \left(V_{cc} - \frac{I_{M_1}}{G_3} - V_{ee}\right)\right) \\
               &= k_{n_1}\left(\left(V_{cc} - \frac{(I_{M_0} + I_{G})}{G_2}\right) - V_{ee} - V_{th}\right)^2 \quad \text{[assuming } K_{CLM} = 0 \text{]} \tag{4}
     \end{align*}
     The input current is the current through \(G_2\) and the output
     current is the drain current of \(M_1\):
     \begin{align*}
-      I_{in} &= (V_{cc} - V_{x})G_2 = I_{M_0} + I_{G} \approx I_{M_0} \quad \text{[from (2), } I_G \approx 0 \text{ by MOS physics]} \\
-      I_{out} &= (V_{cc} - V_{out})G_3 = I_{M_1} \quad \text{[from (1)]}
+      I_{IN} &= (V_{cc} - V_{X})G_2 = I_{M_0} + I_{G} \approx I_{M_0} \quad \text{[from (2), } I_G \approx 0 \text{ by MOS physics]} \\
+      I_{OUT} &= (V_{cc} - V_{OUT})G_3 = I_{M_1} \quad \text{[from (1)]}
     \end{align*}
-    Both transistors share \(V_{GS} = V_x - V_{ee}\), so dividing the
+    Both transistors share \(V_{GS} = V_X - V_{ee}\), so dividing the
     second line of (4) by the second line of (3) cancels the square term:
     \begin{align*}
-      \frac{I_{M_1}}{I_{M_0}} &= \frac{k_{n_1}(V_{x} - V_{ee} - V_{th})^2 (1 + K_{CLM} (V_{out} - V_{ee}))}{k_{n_0}(V_{x} - V_{ee} - V_{th})^2 (1 + K_{CLM} (V_{x} - V_{ee}))} \\
-                              &= \frac{k_{n_1}}{k_{n_0}} \cdot \frac{1 + K_{CLM} (V_{out} - V_{ee})}{1 + K_{CLM} (V_{x} - V_{ee})} \\
-                              &= \frac{k_{n_1}}{k_{n_0}} \quad \text{[assuming } K_{CLM} = 0 \text{, or } V_{out} = V_x \text{]}
+      \frac{I_{M_1}}{I_{M_0}} &= \frac{k_{n_1}(V_{X} - V_{ee} - V_{th})^2 (1 + K_{CLM} (V_{OUT} - V_{ee}))}{k_{n_0}(V_{X} - V_{ee} - V_{th})^2 (1 + K_{CLM} (V_{X} - V_{ee}))} \\
+                              &= \frac{k_{n_1}}{k_{n_0}} \cdot \frac{1 + K_{CLM} (V_{OUT} - V_{ee})}{1 + K_{CLM} (V_{X} - V_{ee})} \\
+                              &= \frac{k_{n_1}}{k_{n_0}} \quad \text{[assuming } K_{CLM} = 0 \text{, or } V_{OUT} = V_X \text{]}
     \end{align*}
     Thus, with \(k_n = \frac{K_P}{2}\frac{W}{L}\),
     \begin{align*}
-      \frac{I_{out}}{I_{in}} \approx \frac{I_{M_1}}{I_{M_0}} \approx \frac{k_{n_1}}{k_{n_0}} = \frac{\frac{K_P}{2} \frac{W_1}{L_1}}{\frac{K_P}{2} \frac{W_0}{L_0}} = \frac{\frac{W_1}{L_1}}{\frac{W_0}{L_0}} = \frac{W_1 L_0}{L_1 W_0}
+      \frac{I_{OUT}}{I_{IN}} \approx \frac{I_{M_1}}{I_{M_0}} \approx \frac{k_{n_1}}{k_{n_0}} = \frac{\frac{K_P}{2} \frac{W_1}{L_1}}{\frac{K_P}{2} \frac{W_0}{L_0}} = \frac{\frac{W_1}{L_1}}{\frac{W_0}{L_0}} = \frac{W_1 L_0}{L_1 W_0}
     \end{align*}
   \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}:\\
     Applying KCL at $V_{out}$:
@@ -170,13 +170,13 @@ Here's a table of the voltages at each terminal of the transistors:
     transistors share \(V_{GS}\) and \(V_{th}\), so
     \(V_{ov_1} = V_{GS_1} - V_{th} = V_{GS_0} - V_{th} = V_{ov_0}\).
     With the load \(R_L = \frac{1}{G_3}\) to \(V_{cc}\), (1) gives
-    \(V_{out} = V_{cc} - I_{M_1} R_L\):
+    \(V_{OUT} = V_{cc} - I_{M_1} R_L\):
     \begin{align*}
-      V_{DS_1} = V_{out} - V_{ee} &\geq V_{ov_1} \\
-      V_{out,\min} &= V_{ee} + V_{ov_1} \\
-      V_{cc} - I_{M_1} R_L &\geq V_{out,\min} \\
-      I_{M_1} R_L &\leq V_{cc} - V_{out,\min} \\
-      R_{L, \max} &= \frac{V_{cc} - V_{out,\min}}{I_{M_1}} = \frac{V_{L,\max}}{I_{M_1}} \quad \text{[} V_{L,\max} = V_{cc} - V_{out,\min} \text{]}
+      V_{DS_1} = V_{OUT} - V_{ee} &\geq V_{ov_1} \\
+      V_{OUT,\min} &= V_{ee} + V_{ov_1} \\
+      V_{cc} - I_{M_1} R_L &\geq V_{OUT,\min} \\
+      I_{M_1} R_L &\leq V_{cc} - V_{OUT,\min} \\
+      R_{L, \max} &= \frac{V_{cc} - V_{OUT,\min}}{I_{M_1}} = \frac{V_{L,\max}}{I_{M_1}} \quad \text{[} V_{L,\max} = V_{cc} - V_{OUT,\min} \text{]}
     \end{align*}
   \item \textbf{Current Gain, Small Signal, Frequency Domain, AC Input (Q4)}:
     Inject \(I_{in}\) into \(V_x\) and short the output to AC ground
@@ -230,34 +230,34 @@ currents and voltages in this circuit.
     ($W$ and $L$) for transistors $M_0$ and $M_1$
     to achieve the desired current gain.
     \begin{align*}
-      \frac{I_{out}}{I_{in}} &= \frac{W_1 L_0}{L_1 W_0}
+      \frac{I_{OUT}}{I_{IN}} &= \frac{W_1 L_0}{L_1 W_0}
     \end{align*}
   \item Choose a suitable overdrive voltage value
     ($V_{ov}$) for computing the bias voltage at
-    node $V_{x}$.
+    node $V_{X}$.
     \begin{align*}
       V_{ov_0} &= V_{GS_0} - V_{th} \\
-      V_{ov_0} &= (V_{x} - V_{ee}) - V_{th} \\
-      V_{x} &= V_{ov_0} + V_{th} + V_{ee}
+      V_{ov_0} &= (V_{X} - V_{ee}) - V_{th} \\
+      V_{X} &= V_{ov_0} + V_{th} + V_{ee}
     \end{align*}
   \item Using the chosen $V_{ov}$, compute $W_0$
-    to set the required bias current $I_{in}$.
+    to set the required bias current $I_{IN}$.
     \begin{align*}
-      I_{in} = I_{M_0} &= \frac{K_P}{2} \frac{W_0}{L_0} V_{ov_0}^2 \\
-      \therefore W_0 &= \frac{2 I_{in} L_0}{K_P V_{ov_0}^2}
+      I_{IN} = I_{M_0} &= \frac{K_P}{2} \frac{W_0}{L_0} V_{ov_0}^2 \\
+      \therefore W_0 &= \frac{2 I_{IN} L_0}{K_P V_{ov_0}^2}
     \end{align*}
     $W_1$ can then be computed using the current
     gain relation from step (a).
   \item Compute the required value of $G_2$ (or
     $R_2$) to ensure that the voltage at node
-    $V_{x}$ is as calculated in step (b).
+    $V_{X}$ is as calculated in step (b).
     \begin{align*}
-      (V_{x} - V_{cc})G_2 + I_{M_0} + I_{G} &= 0 \\
-      (V_{x} - V_{cc})G_2 + I_{M_0} &\approx 0 \quad \text{[assuming } I_G \approx 0 \text{ by MOS physics ]} \\
-      (V_{x} - V_{cc})G_2 &\approx - I_{M_0} \\
-      G_2 &\approx - \frac{I_{M_0}}{(V_{x} - V_{cc})} \\
-      \therefore G_2 &= \frac{I_{M_0}}{V_{cc} - V_{x}} \\
-      R_2 &= \frac{1}{G_2} = \frac{V_{cc} - V_{x}}{I_{M_0}}
+      (V_{X} - V_{cc})G_2 + I_{M_0} + I_{G} &= 0 \\
+      (V_{X} - V_{cc})G_2 + I_{M_0} &\approx 0 \quad \text{[assuming } I_G \approx 0 \text{ by MOS physics ]} \\
+      (V_{X} - V_{cc})G_2 &\approx - I_{M_0} \\
+      G_2 &\approx - \frac{I_{M_0}}{(V_{X} - V_{cc})} \\
+      \therefore G_2 &= \frac{I_{M_0}}{V_{cc} - V_{X}} \\
+      R_2 &= \frac{1}{G_2} = \frac{V_{cc} - V_{X}}{I_{M_0}}
     \end{align*}
 \end{enumerate}
 
@@ -265,7 +265,7 @@ currents and voltages in this circuit.
 Design a Basic Current Mirror (Sink) that meets
 the following requirements. The mirror must provide
 a current gain at the output of 5. The input current
-must be $I_{in} = 100 \mu A$. The mirror must operate
+must be $I_{IN} = 100 \mu A$. The mirror must operate
 with $V_{cc} = 5V$ and $V_{ee} = 0V$. Assume the
 following transistor parameters: $V_{th} = 1V$,
 $K_{CLM} = 0.02 V^{-1}$, $K_P = 200 \mu A/V^2$ and
@@ -276,18 +276,18 @@ that can be connected at the output.
 \begin{enumerate}
   \item \textbf{Choose appropriate transistor dimensions:}
     \begin{align*}
-      \frac{I_{out}}{I_{in}} &= \frac{W_1 L_0}{L_1 W_0} = 5 \\
+      \frac{I_{OUT}}{I_{IN}} &= \frac{W_1 L_0}{L_1 W_0} = 5 \\
       \therefore W_1 &= 5 W_0 \quad \text{[assuming } L_0 = L_1 \text{]}
     \end{align*}
   \item \textbf{Choose a suitable overdrive voltage and determine
     the resulting bias voltages:}
     Choosing \(V_{ov_0} = 0.2V\):
     \begin{align*}
-      V_{x} &= V_{ov_0} + V_{th} + V_{ee} = 0.2V + 1V + 0V = 1.2V
+      V_{X} &= V_{ov_0} + V_{th} + V_{ee} = 0.2V + 1V + 0V = 1.2V
     \end{align*}
-  \item \textbf{Compute $W_0$ to set the required bias current:} For $I_{in} = 100 \mu A$
+  \item \textbf{Compute $W_0$ to set the required bias current:} For $I_{IN} = 100 \mu A$
     \begin{align*}
-      W_0 &= \frac{2 I_{in} L_0}{K_P V_{ov_0}^2} \\
+      W_0 &= \frac{2 I_{IN} L_0}{K_P V_{ov_0}^2} \\
           &= \frac{2 \cdot 100 \mu A \cdot 1 \mu m}{200 \mu A/V^2 \cdot (0.2V)^2} \\
           &= \frac{200 \times 10^{-12} \, A \cdot m}{8 \times 10^{-6} \, A} \\
           &= 25 \mu m \\
@@ -295,7 +295,7 @@ that can be connected at the output.
     \end{align*}
   \item \textbf{Compute the required value of $G_2$ (or $R_2$):}
     \begin{align*}
-      R_2 &= \frac{1}{G_2} = \frac{V_{cc} - V_{x}}{I_{M_0}} \\
+      R_2 &= \frac{1}{G_2} = \frac{V_{cc} - V_{X}}{I_{M_0}} \\
           &= \frac{5V - 1.2V}{100 \mu A} \\
           &= 38 k\Omega
     \end{align*}
@@ -310,7 +310,7 @@ that can be connected at the output.
       Z_{in} &= \frac{1}{G_2 + g_{o_0} + g_{m_0}} = \frac{1}{26.3 \mu S + 2 \mu S + 1000 \mu S} = \frac{1}{1028.3 \mu S} = 972 \Omega
     \end{align*}
   \item \textbf{Compute the output impedance:} The output current is
-    \(I_{M_1} = 5 I_{in} = 5 \cdot 100 \mu A = 500 \mu A\).
+    \(I_{M_1} = 5 I_{IN} = 5 \cdot 100 \mu A = 500 \mu A\).
     \begin{align*}
       Z_{out} &\approx \frac{1}{g_{o_1}} \approx \frac{1}{K_{CLM} I_{M_1}} \\
               &= \frac{1}{0.02 V^{-1} \cdot 500 \mu A} \\
@@ -319,8 +319,8 @@ that can be connected at the output.
   \item \textbf{Compute the maximum load that can be connected
     at the output:}
     \begin{align*}
-      V_{out,\min} &= V_{ee} + V_{ov_1} = V_{ee} + V_{ov_0} = 0 + 0.2V = 0.2V \\
-      R_{L, \max} &= \frac{V_{cc} - V_{out,\min}}{I_{M_1}} \\
+      V_{OUT,\min} &= V_{ee} + V_{ov_1} = V_{ee} + V_{ov_0} = 0 + 0.2V = 0.2V \\
+      R_{L, \max} &= \frac{V_{cc} - V_{OUT,\min}}{I_{M_1}} \\
                    &= \frac{5V - 0.2V}{500 \mu A} \\
                    &= 9.6 k\Omega
     \end{align*}
