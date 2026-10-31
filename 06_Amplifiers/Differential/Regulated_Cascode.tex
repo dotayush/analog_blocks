@@ -14,39 +14,67 @@ multiplied by \(1 + A_b\) without stacking more devices (no swing cost).
   \draw (M1.S) node[ground]{};
   \draw (M1.D) -- (M2.S);
   \draw (0,1.1) node[circ]{} node[right]{$V_x$};
-  \draw (-2.2,1.6) node[op amp, scale=0.6](B){};
-  \draw (0,1.1) -| (-3.2,1.4) -- (B.-);
-  \draw (B.+) -- ++(-0.4,0) node[left]{$V_{ref}$};
+  \draw (-2.2,2.0) node[op amp, scale=0.6, yscale=-1](B){};
+  \draw (0,1.1) -- (-3.6,1.1) |- (B.-);
+  \draw (B.+) -- ++(-0.8,0) node[left]{$V_{ref}$};
   \draw (B.out) -- ++(0.3,0) |- (M2.G);
-  \node at (-2.2,2.4) {$A_b$};
+  \node at (-2.2,2.8) {$A_b$};
   \draw (M2.D) -- (0,3.6) node[circ]{} node[right]{$V_{out}$};
 \end{circuitfig}
 
 \subsubsection{Transfer Function}
 \begin{enumerate}
   \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}:
-    the loop sets \(V_x = V_{ref}\) (\(\geq V_{ov1}\)); \(V_{G2} = V_x + V_{GS2}\);
-    \(V_{OUT,\min} = V_{ref} + V_{ov2}\), the same headroom as a plain cascode.
+    the loop sets \(V_X = V_{ref}\) (\(\geq V_{ov1}\) for \(M_1\) saturated);
+    \(V_{G2} = V_X + V_{GS2}\); \(M_2\) saturated needs \(V_{OUT} - V_X \geq V_{ov2}\), so
+    \(V_{OUT,\min} = V_{ref} + V_{ov2}\), the same headroom as a plain cascode
+    when \(V_{ref} = V_{ov1}\).
   \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}:
-    \(V_{g2} = -A_b V_x\). Output impedance (\(V_{in} = 0\), \(I_{test}\) into the
-    drain of \(M_2\), which flows through \(r_{o1}\)): \(V_x = \frac{I_{test}}{g_{o1}}\).
+    \(V_{ref}\) is fixed, so \(V_{g2} = A_b(0 - V_x) = -A_b V_x\); body effect
+    neglected (\(g_{mb2} = 0\)). Output impedance (\(V_{in} = 0\), \(I_{test}\) into the
+    drain of \(M_2\), which flows on through \(r_{o1}\)): \(V_x = \frac{I_{test}}{g_{o1}}\).
     \begin{align*}
       I_{test} &= g_{m2}(V_{g2} - V_x) + g_{o2}(V_{out} - V_x) \\
-      I_{test} &= -g_{m2}(1 + A_b) V_x - g_{o2} V_x + g_{o2} V_{out} \\
+      I_{test} &= g_{m2}(-A_b V_x - V_x) + g_{o2} V_{out} - g_{o2} V_x = -g_{m2}(1 + A_b) V_x - g_{o2} V_x + g_{o2} V_{out} \\
       g_{o2} V_{out} &= I_{test} + \left(g_{m2}(1 + A_b) + g_{o2}\right)\frac{I_{test}}{g_{o1}} \\
+      \frac{V_{out}}{I_{test}} &= \frac{1}{g_{o2}} + \frac{g_{m2}(1 + A_b)}{g_{o1} g_{o2}} + \frac{g_{o2}}{g_{o1} g_{o2}} \\
       Z_{out} &= \frac{V_{out}}{I_{test}} = r_{o2} + r_{o1} + g_{m2}(1 + A_b) r_{o1} r_{o2}
     \end{align*}
-    and the gain into a load \(R_L\) is \(A_V \approx -g_{m1}(Z_{out} \parallel R_L)\).
+    which is the plain cascode \(Z_{dn}\) (Section~\ref{sec:amp_cascode}) with
+    \(g_{m2}\) replaced by \(g_{m2}(1 + A_b)\). The gain into a load \(R_L\) is
+    \(A_V \approx -g_{m1}(Z_{out} \parallel R_L)\).
 \end{enumerate}
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item With \(A_b\) a common source stage (\(A_b = g_{mb} r_{ob}\)):
-    \(Z_{out} \approx g_{m2} r_{o2} r_{o1} \cdot g_{mb} r_{ob} \approx (g_m r_o)^2 r_o\)
-    and \(A_{V0} \approx -(g_m r_o)^3\) with an equally boosted load.
-  \item \textbf{Doublet}: \(A_b(s) = \frac{A_{b0}}{1 + s/p_b}\) makes \(Z_{out}\)
-    fall back to the plain cascode value above \(p_b\); a pole-zero pair
-    (doublet) near \(p_b\) appears in the main amplifier and slows settling
-    unless \(p_b\) lies above the main amplifier's \(GB\) and below its
-    non-dominant pole.
+  \item With \(A_b\) a common source stage (device \(M_A\),
+    \(A_b = g_{mA} r_{oA} \approx g_m r_o\)):
+    \(Z_{out} \approx g_{m2} r_{o2} r_{o1} \cdot g_{mA} r_{oA} \approx (g_m r_o)^2 r_o\).
+    With an equally boosted load \(Z_{up} \approx Z_{out}\),
+    \(A_{V0} \approx -g_m \frac{(g_m r_o)^2 r_o}{2} = -\frac{(g_m r_o)^3}{2}\).
+  \item \textbf{Doublet}: let \(A_b(s) = \frac{A_{b0}}{1 + s/p_b}\) and
+    \(R_c = g_{m2} r_{o2} r_{o1}\) (plain cascode value). Then
+    \begin{align*}
+      Z_{out}(s) &\approx R_c (1 + A_b(s)) = R_c \frac{1 + A_{b0} + s/p_b}{1 + s/p_b}
+    \end{align*}
+    \(Z_{out}\) starts to fall at \(p_b\) and reaches \(R_c\) above the
+    auxiliary unity gain frequency \(\omega_b = A_{b0} p_b\) (where \(|A_b| = 1\)), not
+    above \(p_b\). With an ideal load and \(C_L\) at the output:
+    \begin{align*}
+      A(s) &= -\frac{g_{m1}}{\frac{1}{Z_{out}(s)} + sC_L} = -\frac{g_{m1} R_c (1 + A_{b0} + s/p_b)}{1 + s/p_b + sC_L R_c(1 + A_{b0} + s/p_b)} \\
+      A(s) &= -\frac{g_{m1}}{C_L} \cdot \frac{s + (1 + A_{b0}) p_b}{s^2 + s\left((1 + A_{b0}) p_b + \frac{1}{R_c C_L}\right) + \frac{p_b}{R_c C_L}} \hspace{0.5cm} \left[\times \tfrac{p_b}{R_c C_L} \text{ above and below}\right]
+    \end{align*}
+    The zero is at \(s = -(1 + A_{b0}) p_b\). The poles have sum
+    \((1 + A_{b0}) p_b + \frac{1}{R_c C_L}\) and product \(\frac{p_b}{R_c C_L}\); widely
+    spaced, the slow one is product over sum and the fast one is the sum:
+    \begin{align*}
+      p_1 &\approx \frac{p_b / (R_c C_L)}{(1 + A_{b0}) p_b} = \frac{1}{(1 + A_{b0}) R_c C_L} \hspace{1cm} \text{(dominant, boosted)} \\
+      p_d &\approx (1 + A_{b0}) p_b + \frac{1}{R_c C_L} \hspace{1cm} z_d = (1 + A_{b0}) p_b
+    \end{align*}
+    The pole-zero pair (doublet) sits at \(\approx \omega_b\), split by the
+    plain cascode output pole \(\frac{1}{R_c C_L}\). It leaves a slow settling
+    tail of time constant \(\approx \frac{1}{\omega_b}\) unless \(\omega_b\) lies
+    above the main amplifier's closed loop bandwidth (\(2\pi GB\) in unity
+    feedback), and \(\omega_b\) must stay below the main amplifier's non-dominant
+    pole to keep the auxiliary loop stable.
 \end{enumerate}
