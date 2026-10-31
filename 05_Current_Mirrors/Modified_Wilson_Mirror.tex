@@ -2,9 +2,11 @@
 
 \subsubsection{Overview}
 Constructed from four transistors, It improves
-upon the Wilson Current Mirror by providing a
-higher input impedance which in turn improves
-the accuracy of current mirroring.
+upon the Wilson Current Mirror by adding the diode
+connected \(M_3\) so that \(V_{ds_0} = V_{ds_1}\)
+(\(V_y = V_x\)). Both mirroring transistors then see the
+same channel length modulation and the systematic
+current error of the Wilson mirror disappears.
 
 \subsubsection{Schematic}
 \begin{circuitfig}
@@ -126,7 +128,7 @@ transistors:\\
 \end{tabularx}\\
 
 \begin{enumerate}
-  \item \textbf{Large Signal Analysis}:\\
+  \item \textbf{Large Signal Analysis (Q5)}:\\
     Applying KCL at $V_{out}$:
     \begin{align*}
       (V_{out} - V_{cc})G_5 + I_{M_2} &= 0 \\
@@ -180,7 +182,7 @@ transistors:\\
     \begin{align*}
       \frac{I_{out}}{I_{in}} \approx \frac{I_{M_2}}{I_{M_3}} \approx \frac{I_{M_1}}{I_{M_0}} \approx \frac{k_{n_1}}{k_{n_0}} = \frac{\frac{K_P W_1}{L_1}}{\frac{K_P W_0}{L_0}} = \frac{\frac{W_1}{L_1}}{\frac{W_0}{L_0}} = \frac{W_1 L_0}{L_1 W_0} = \frac{W_2 L_3}{L_2 W_3}
     \end{align*}
-  \item \textbf{Small Signal Analysis}:\\
+  \item \textbf{Small Signal Analysis (Q4)}:\\
     Applying KCL at $V_{out}$:
     \begin{align*}
       V_{out}G_5 + (V_{out} - V_{x})g_{o_2} + g_{m_2}(V_{z} - V_{x}) &= 0 \\
@@ -214,7 +216,7 @@ transistors:\\
     \begin{align*}
       V_{z} &= V_{s} \tag{14}
     \end{align*}
-    Equations (9), (10), (1), (13) and (14) can now be
+    Equations (9), (10), (11), (13) and (14) can now be
     solved analytically, but its cumbersome, so I'll give the
     solution directly from Octave:
     \begin{align*}
@@ -224,58 +226,66 @@ transistors:\\
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \textbf{Output Load (Max)}: Maximum possible
-    load that can be connected at the output before
-    the transistor $M_2$ goes out of saturation can
-    be calculated as follows:
+  \item \textbf{Impedances}: Let \(S = g_{o_1} + g_{m_1} + g_{o_2} + g_{m_2}\),
+    \(P = g_{m_3} + g_{o_3}\) and \(M = G_4(P + g_{o_0}) + g_{o_0} P\).
+    From (12), \(V_{y} = \frac{G_4 + P}{P} V_{z}\) whenever no test source
+    sits at \(V_z\). Substituting into (11):
     \begin{align*}
-      R_{out, \max} &= \frac{V_{L, \max}}{I_{M_2}} \quad \text{[where, } V_{ee} \leq V_{L, \max} \leq V_{cc} \text{]}
+      V_{z}\frac{(G_4 + P)(P + g_{o_0})}{P} - V_{z} P + g_{m_0} V_{x} &= 0 \\
+      V_{z}\frac{(G_4 + P)(P + g_{o_0}) - P^2}{P} &= -g_{m_0} V_{x} \\
+      V_{z}\frac{G_4 (P + g_{o_0}) + g_{o_0} P}{P} &= -g_{m_0} V_{x} \\
+      V_{z} &= -\frac{g_{m_0} P}{M} V_{x} \tag{16}
     \end{align*}
-  \item \textbf{Impedances}:
-    \paragraph{At Input:}Applying a test current $I_{test}$
-      at $V_{z}$, from equation (12),
+    \paragraph{At Output:} Apply \(I_{test}\) at \(V_{out}\) (\(G_5\) removed),
+      so (9) becomes
       \begin{align*}
-        V_{z}(G_4 + g_{o_3} + g_{m_3}) - V_{y}(g_{o_3} + g_{m_3}) - I_{test} &= 0 \tag{16}
+        V_{out} g_{o_2} - V_{x}(g_{o_2} + g_{m_2}) + g_{m_2}V_{z} &= I_{test} \tag{17}
       \end{align*}
-      From equation (11),
+      Adding (17) and (10):
       \begin{align*}
-        V_{y}(g_{o_3} + g_{m_3} + g_{o_0}) - V_{z}(g_{o_3} + g_{m_3}) + g_{m_0}V_{x} &= 0 \\
-        V_{y} &= \frac{V_{z}(g_{o_3} + g_{m_3}) - g_{m_0}V_{x}}{(g_{o_3} + g_{m_3} + g_{o_0})} \tag{17}
+        V_{x} S - V_{x}(g_{o_2} + g_{m_2}) &= I_{test} \\
+        V_{x} (g_{o_1} + g_{m_1}) &= I_{test} \tag{18}
       \end{align*}
-      From equation (10),
+      Substituting (16) into (10):
       \begin{align*}
-        V_{x}(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) - V_{out}g_{o_2} - g_{m_2}V_{z} &= 0 \\
-        V_{x} &= \frac{V_{out}g_{o_2} + g_{m_2}V_{z}}{(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2})} \tag{18}
+        V_{x} S + \frac{g_{m_0} g_{m_2} P}{M} V_{x} &= V_{out} g_{o_2} \\
+        V_{x} \frac{S M + g_{m_0} g_{m_2} P}{M} &= V_{out} g_{o_2} \tag{19}
       \end{align*}
-      From equation (15),
+      Substituting (18) into (19):
       \begin{align*}
-        V_{out} &= \frac{-g_{m_2}(g_{m_1} + g_{o_1})}{G_5(g_{m_1} + g_{m_2} + g_{o_1} + g_{o_2}) + g_{o_2}(g_{m_1} + g_{o_1})} V_{z} \tag{19}
+        \frac{I_{test}}{g_{o_1} + g_{m_1}} \cdot \frac{S M + g_{m_0} g_{m_2} P}{M} &= V_{out} g_{o_2} \\
+        \therefore Z_{out} = \frac{V_{out}}{I_{test}} &= \frac{S M + g_{m_0} g_{m_2} P}{g_{o_2} (g_{o_1} + g_{m_1}) M}
       \end{align*}
-      Substitute (19) into (18), result into (17), result into (16)
-      to eliminate $V_{y}$ and finally rearranging the result
-      for $\frac{V_{z}}{I_{test}}$ would give the input impedance.
-      However, the result is incredibly large, so run Input Impedance
-      Code from Code section to get the result.
-    \paragraph{At Output:} Applying a test current $I_{test}$
-      at $V_{out}$, from equation (9),
+      With an ideal input current source (\(G_4 \to 0\), \(M = g_{o_0} P\))
+      and \(g_m \gg g_o\):
       \begin{align*}
-        V_{out}(G_5 + g_{o_2}) - V_{x}(g_{o_2} + g_{m_2}) + g_{m_2}V_{z} - I_{test} &= 0 \tag{20}
+        Z_{out} &= \frac{S g_{o_0} P + g_{m_0} g_{m_2} P}{g_{o_2}(g_{o_1} + g_{m_1}) g_{o_0} P}
+                \approx \frac{g_{m_0} g_{m_2}}{g_{o_0} g_{o_2} g_{m_1}} = \frac{2}{K_{CLM}^2 I_{out} V_{ov}}
       \end{align*}
-      From equation (10),
+      With a load \(G_5\), the total is \(\frac{1}{G_5 + 1/Z_{out}}\).
+    \paragraph{At Input:} Apply \(I_{test}\) at \(V_{z}\) with the output at AC
+      ground (\(V_{out} = 0\)). (10) gives \(V_{x} = \frac{g_{m_2}}{S} V_{z}\);
+      (11) gives
       \begin{align*}
-        V_{x}(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) - V_{out}g_{o_2} - g_{m_2}V_{z} &= 0 \\
-        V_{x} &= \frac{V_{out}g_{o_2} + g_{m_2}V_{z}}{(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2})} \tag{21}
+        V_{y}(P + g_{o_0}) &= V_{z} P - g_{m_0} \frac{g_{m_2}}{S} V_{z} \\
+        V_{y} &= \frac{P S - g_{m_0} g_{m_2}}{S (P + g_{o_0})} V_{z}
       \end{align*}
-      From equation (15),
+      and (12) with the test current:
       \begin{align*}
-        V_{z} &= \frac{-G_5(g_{m_1} + g_{m_2} + g_{o_1} + g_{o_2}) + g_{o_2}(g_{m_1} + g_{o_1})}{g_{m_2}(g_{m_1} + g_{o_1})} V_{out} \tag{22}
+        V_{z}(G_4 + P) - V_{y} P &= I_{test} \\
+        V_{z}\left( (G_4 + P) - \frac{P(P S - g_{m_0} g_{m_2})}{S (P + g_{o_0})} \right) &= I_{test} \\
+        V_{z}\left( \frac{S\left[(G_4 + P)(P + g_{o_0}) - P^2\right] + g_{m_0} g_{m_2} P}{S (P + g_{o_0})} \right) &= I_{test} \\
+        \therefore Z_{in} = \frac{V_{z}}{I_{test}} &= \frac{S (P + g_{o_0})}{S M + g_{m_0} g_{m_2} P}
       \end{align*}
-      Substitute (22) into (21), result into (20) to eliminate
-      $V_{x}$, Substituting (22) into (20) to eliminate $V_{z}$
-      and finally rearranging the result for $\frac{V_{out}}{I_{test}}$
-      would give the output impedance. However, the result
-      is incredibly large, so run Output Impedance Code from
-      Code section to get the result.
+      With \(G_4 \to 0\) and \(g_m \gg g_o\):
+      \(Z_{in} \approx \frac{S P}{g_{m_0} g_{m_2} P} = \frac{g_{m_1} + g_{m_2}}{g_{m_0} g_{m_2}}\),
+      which is \(\frac{2}{g_{m_0}}\) for \(g_{m_1} = g_{m_2}\): a low input impedance,
+      as a current input should have.
+  \item \textbf{Output Load (Max)}: \(M_2\) saturated needs
+    \(V_{out} \geq V_z - V_{th}\):
+    \begin{align*}
+      R_{L,\max} &= \frac{V_{cc} - (V_z - V_{th})}{I_{out}}
+    \end{align*}
 \end{enumerate}
 
 \subsubsection{Design}
@@ -380,20 +390,23 @@ assuming $V_{L,\max} = V_{cc}$
     \end{align*}
   \item \textbf{Output Load Limit:}
     \begin{align*}
-      R_{out, \max} &= \frac{V_{L, \max}}{I_{M_2}} = \frac{5 V}{10 \mu A} = 500 k\Omega
+      R_{L, \max} &= \frac{V_{cc} - (V_z - V_{th})}{I_{M_2}} = \frac{5 V - (1.8 V - 0.7 V)}{20 \mu A} = 195 k\Omega
     \end{align*}
-  \item \textbf{Impedances:}
+  \item \textbf{Impedances:} \(I_{M_0} = I_{M_3} = 10\,\mu A\),
+    \(I_{M_1} = I_{M_2} = 20\,\mu A\), all \(V_{ov} = 0.2\,V\):
+    \begin{align*}
+      g_{m_0} &= g_{m_3} = 100 \mu S \hspace{1cm} g_{m_1} = g_{m_2} = 200 \mu S \\
+      g_{o_0} &= g_{o_3} = 0.2 \mu S \hspace{1cm} g_{o_1} = g_{o_2} = 0.4 \mu S \hspace{1cm} G_4 = \frac{1}{320 k\Omega} = 3.125 \mu S \\
+      S &= 400.8 \mu S \hspace{1cm} P = 100.2 \mu S \hspace{1cm} M = G_4 (P + g_{o_0}) + g_{o_0} P = 333.8 \times 10^{-12}
+    \end{align*}
     \paragraph{At Input:}
     \begin{align*}
-      Z_{in} &\approx \frac{2}{K_{CLM} K_{CLM} I_{M_0} (V_{gs_3} - V_{th})} \\
-             &= \frac{2}{0.02 \times 0.02 \times 10 \mu A \times (1.8 - 0.9)} \\
-             &= 5.56 G\Omega
+      Z_{in} &= \frac{S (P + g_{o_0})}{S M + g_{m_0} g_{m_2} P} = \frac{(400.8 \mu)(100.4 \mu)}{(400.8 \mu)(333.8 p) + (100 \mu)(200 \mu)(100.2 \mu)} \approx 18.8 k\Omega
     \end{align*}
     \paragraph{At Output:}
     \begin{align*}
-      Z_{out} &\approx \frac{2}{K_{CLM} K_{CLM} I_{M_1} (V_{gs_2} - V_{th})} \\
-              &= \frac{2}{0.02 \times 0.02 \times 20 \mu A \times (1.8 - 0.9)} \\
-              &= 2.78 G\Omega
+      Z_{out} &= \frac{S M + g_{m_0} g_{m_2} P}{g_{o_2} (g_{o_1} + g_{m_1}) M} \approx 79.9 M\Omega \hspace{1cm} [\text{with } R_4] \\
+      Z_{out} &\approx \frac{2}{K_{CLM}^2 I_{out} V_{ov}} = \frac{2}{0.02^2 \cdot 20 \mu A \cdot 0.2 V} = 1.25 G\Omega \hspace{1cm} [\text{ideal input source}]
     \end{align*}
 \end{enumerate}
 
