@@ -6,25 +6,85 @@ The folded cascode of Section~\ref{sec:amp_folded} with both cascodes
 by auxiliary amplifiers \(A_{bn}\), \(A_{bp}\). Folding keeps the input
 range, regulation recovers (and exceeds) the telescopic gain.
 
+\subsubsection{Schematic (half circuit)}
+\begin{circuitfig}
+  \draw (0,0) node[nmos](MB){}; \node[right] at (0.3,0) {$M_B$};
+  \draw (0,2.2) node[nmos](M3){}; \node[right] at (0.3,2.2) {$M_3$};
+  \draw (0,4.5) node[pmos](M5){}; \node[right] at (0.3,4.5) {$M_5$};
+  \draw (0,6.7) node[pmos](M7){}; \node[right] at (0.3,6.7) {$M_7$};
+  \draw (MB.G) -- ++(-0.5,0) node[left]{$V_{BB}$};
+  \draw (M7.G) -- ++(-0.5,0) node[left]{$V_{B7}$};
+  \draw (MB.S) node[ground]{};
+  \draw (MB.D) -- (M3.S);
+  \draw (M3.D) -- (M5.D);
+  \draw (M5.S) -- (M7.D);
+  \draw (M7.S) node[vcc]{$V_{dd}$};
+  \draw (0,1.1) node[circ]{} node[below right]{$V_f$};
+  \draw (-2.2,2.0) node[op amp, scale=0.6, yscale=-1](BN){};
+  \draw (0,1.1) -- (-3.6,1.1) |- (BN.-);
+  \draw (BN.+) -- ++(-0.6,0) node[left]{$V_{refn}$};
+  \draw (BN.out) -- ++(0.3,0) |- (M3.G);
+  \node at (-2.2,2.8) {$A_{bn}$};
+  \draw (0,5.6) node[circ]{} node[right]{$V_u$};
+  \draw (-2.2,4.7) node[op amp, scale=0.6](BP){};
+  \draw (0,5.6) -- (-3.6,5.6) |- (BP.-);
+  \draw (BP.+) -- ++(-0.6,0) node[left]{$V_{refp}$};
+  \draw (BP.out) -- ++(0.3,0) |- (M5.G);
+  \node at (-2.2,3.9) {$A_{bp}$};
+  \draw (0,3.35) node[circ]{} -- (1.4,3.35) node[circ]{} node[above]{$V_{o1}$};
+  \draw (3,6.0) node[vcc]{$V_{dd}$} to[american current source, l={$\frac{I_T}{2} + \frac{g_{m1} V_{id}}{2}$}] (3,1.1) -- (0,1.1);
+\end{circuitfig}
+
 \subsubsection{Transfer Function}
 \begin{enumerate}
-  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}: as for the
-    folded cascode; the auxiliary loops fix the fold node and the PMOS
-    cascode node at their references, so the swing is unchanged.
-  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}:
-    each common gate impedance gains the factor \((1 + A_b)\):
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}: the
+    currents are those of the folded cascode. The loops set \(V_F = V_{refn}\)
+    and \(V_U = V_{refp}\); with \(V_{refn} = V_{ov,B}\) and
+    \(V_{dd} - V_{refp} = |V_{ov7}|\) the swing is the folded cascode's,
+    \(V_{O,\min} = V_{ov,B} + V_{ov3}\), \(V_{O,\max} = V_{dd} - |V_{ov7}| - |V_{ov5}|\).
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}: the
+    references are fixed, so \(V_{g3} = A_{bn}(0 - V_f) = -A_{bn} V_f\) (the fold node
+    sits at the inverting input of \(A_{bn}\)) and \(V_{g5} = -A_{bp} V_u\). Body
+    effect is neglected (\(g_{mb} = 0\)), as in Section~\ref{sec:amp_regulated}.\\
+    \textbf{Output Impedance Down} (\(I_{in} = 0\), test current \(I_t\) down through
+    \(M_3\) and \(R_f = r_{o1} \parallel r_{oB}\), so \(V_f = I_t R_f\)):
     \begin{align*}
-      Z_{dn} &= r_{o3} + R_f + g_{m3}'(1 + A_{bn}) r_{o3} R_f \hspace{1cm} [R_f = r_{o1} \parallel r_{oB}] \\
-      Z_{up} &= r_{o5} + r_{o7} + g_{m5}'(1 + A_{bp}) r_{o5} r_{o7} \\
-      A_d &\approx g_{m1}(Z_{dn} \parallel Z_{up}) \approx g_{m1}\left[g_{m3} A_{bn} r_{o3} R_f \parallel g_{m5} A_{bp} r_{o5} r_{o7}\right]
+      I_t &= g_{m3}(V_{g3} - V_f) + g_{o3}(V_t - V_f) = g_{m3}(-A_{bn} V_f - V_f) + g_{o3} V_t - g_{o3} V_f \\
+      I_t &= -\left(g_{m3}(1 + A_{bn}) + g_{o3}\right) I_t R_f + g_{o3} V_t \\
+      I_t\left(1 + g_{m3}(1 + A_{bn}) R_f + g_{o3} R_f\right) &= g_{o3} V_t \\
+      Z_{dn} &= \frac{V_t}{I_t} = r_{o3} + g_{m3}(1 + A_{bn}) r_{o3} R_f + R_f
     \end{align*}
+    the folded cascode \(Z_{dn}\) with \(g_{m3} \to g_{m3}(1 + A_{bn})\).
+    \textbf{Output Impedance Up}: the same steps for \(M_5\) over \(r_{o7}\):
+    \(Z_{up} = r_{o5} + g_{m5}(1 + A_{bp}) r_{o5} r_{o7} + r_{o7}\).\\
+    \textbf{Short Circuit Current} (\(V_{o1} = 0\)): \(I_{d3} = g_{m3}(-A_{bn} V_f - V_f) + g_{o3}(0 - V_f) = -\left(g_{m3}(1 + A_{bn}) + g_{o3}\right) V_f\);
+    KCL at \(V_f\) as in Section~\ref{sec:amp_folded}:
+    \begin{align*}
+      |I_{sc}| &= \frac{g_{m3}(1 + A_{bn}) + g_{o3}}{g_{m3}(1 + A_{bn}) + g_{o3} + g_{o1} + g_{oB}} I_{in} \approx I_{in}
+    \end{align*}
+    \textbf{Gain}: with \(I_{in} = \frac{g_{m1} V_{id}}{2}\) and \(V_{o2} = -V_{o1}\) as before,
+    \begin{align*}
+      |A_d| &= \frac{2 |I_{sc}| (Z_{dn} \parallel Z_{up})}{V_{id}} \approx g_{m1}(Z_{dn} \parallel Z_{up})
+             \approx g_{m1}\left[g_{m3} A_{bn} r_{o3} R_f \parallel g_{m5} A_{bp} r_{o5} r_{o7}\right]
+    \end{align*}
+    keeping the dominant term of each impedance (\(1 + A_b \approx A_b\)).
 \end{enumerate}
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item With \(A_{bn} \approx A_{bp} \approx g_m r_o\): \(A_d \approx (g_m r_o)^3\),
-    e.g. \(g_m r_o = 50\) gives \(\approx 10^5\) (100\,dB) in a single stage.
-  \item \(GB = \frac{g_{m1}}{2\pi C_L}\) is unchanged; the auxiliary amplifiers
-    must have \(GB_b\) between \(GB\) and the main non-dominant pole to avoid
-    slow doublets (Section~\ref{sec:amp_regulated}).
+  \item \textbf{Gain Estimate}: take every \(g_m r_o\) equal, \(R_f \approx r_o\) and
+    \(A_{bn} = A_{bp} = A_b\). Then
+    \begin{align*}
+      Z_{dn} \approx Z_{up} &\approx g_m r_o \cdot A_b \cdot r_o \hspace{1cm}
+      Z_{dn} \parallel Z_{up} \approx \frac{g_m r_o A_b r_o}{2} \\
+      |A_d| &\approx g_m \cdot \frac{g_m r_o A_b r_o}{2} = \frac{(g_m r_o)^2 A_b}{2}
+    \end{align*}
+    With single stage auxiliary amplifiers \(A_b \approx g_m r_o\):
+    \(|A_d| \approx \frac{(g_m r_o)^3}{2}\); e.g. \(g_m r_o = 50\):
+    \(\frac{50^3}{2} = \frac{125000}{2} = 62500\) (\(20\log_{10} 62500 = 96\,dB\)) in a single stage.
+  \item \textbf{Gain-Bandwidth}: \(GB = \frac{|A_d|\, p_1}{2\pi}\) with
+    \(p_1 = \frac{1}{(Z_{dn} \parallel Z_{up}) C_L}\) gives \(GB = \frac{g_{m1}}{2\pi C_L}\), unchanged.
+    The auxiliary amplifiers must have their unity gain frequency between the
+    main loop bandwidth and the main non-dominant pole to avoid slow doublets
+    (Section~\ref{sec:amp_regulated}).
 \end{enumerate}
