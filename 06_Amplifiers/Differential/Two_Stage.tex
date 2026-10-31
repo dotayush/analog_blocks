@@ -113,9 +113,10 @@ CS stage of Section~\ref{sec:amp_cs} with \(C_c\) in the place of \(C_{gd}\).
     series admittance \(\frac{1}{R_z + \frac{1}{sC_c}} = \frac{sC_c}{1 + sR_z C_c}\). The numerator of \(A\)
     becomes \(g_{m6} - \frac{sC_c}{1 + sR_z C_c}\); its root:
     \begin{align*}
-      g_{m6}(1 + sR_z C_c) - sC_c &= 0 \\
-      s(C_c - g_{m6} R_z C_c) &= -g_{m6} \hspace{1cm} \Rightarrow \hspace{1cm}
-      s = -\frac{g_{m6}}{C_c(1 - g_{m6} R_z)} = -\frac{1}{C_c\left(\frac{1}{g_{m6}} - R_z\right)}
+      g_{m6}(1 + sR_z C_c) - sC_c &= 0 \hspace{1cm} [\times (1 + sR_z C_c)] \\
+      g_{m6} + s g_{m6} R_z C_c - s C_c &= 0 \\
+      s(C_c - g_{m6} R_z C_c) &= g_{m6} \\
+      s &= \frac{g_{m6}}{C_c(1 - g_{m6} R_z)} = \frac{1}{C_c\left(\frac{1}{g_{m6}} - R_z\right)} \hspace{1cm} [\div g_{m6} \text{ top and bottom}]
     \end{align*}
     For \(R_z < \frac{1}{g_{m6}}\) the root is positive (RHP zero), \(R_z = \frac{1}{g_{m6}}\) sends
     it to infinity, and \(R_z > \frac{1}{g_{m6}}\) puts it in the left half plane where
