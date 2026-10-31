@@ -31,17 +31,24 @@ Fastest architecture, cost exponential in \(n\) (rarely above 6--8 bits).
 \(\frac{R}{2}\) at the bottom and \(\frac{3R}{2}\) at the top, so the string
 has
 \[
-  R_{tot} = \frac{R}{2} + (2^n - 2) R + \frac{3R}{2} = 2^n R
+  R_{tot} = \frac{R}{2} + (2^n - 2) R + \frac{3R}{2} = \left(\frac{1}{2} + 2^n - 2 + \frac{3}{2}\right) R = 2^n R
 \]
 total (with \(\frac{R}{2}\) at both ends it would be \((2^n - 1) R\) and the
 LSB would be \(\frac{V_{REF}}{2^n - 1}\)). Tap \(k\) sits
 \(\frac{R}{2} + (k - 1) R\) above ground; the string current is
 \(\frac{V_{REF}}{2^n R}\):
-\[
-  V_{T,k} = \frac{\frac{R}{2} + (k - 1) R}{2^n R} V_{REF} = \left(k - \frac{1}{2}\right) \frac{V_{REF}}{2^n} = \left(k - \frac{1}{2}\right) X_{LSB}, \hspace{1cm} k = 1 \ldots 2^n - 1
-\]
+\begin{align*}
+  V_{T,k} &= I_{string}\left(\frac{R}{2} + (k - 1) R\right) = \frac{V_{REF}}{2^n R}\left(\frac{R}{2} + (k - 1) R\right) = \frac{\left(k - 1 + \frac{1}{2}\right) R}{2^n R} V_{REF} \\
+  V_{T,k} &= \left(k - \frac{1}{2}\right) \frac{V_{REF}}{2^n} = \left(k - \frac{1}{2}\right) X_{LSB}, \hspace{1cm} k = 1 \ldots 2^n - 1
+\end{align*}
 exactly the ideal transitions of Section~\ref{sec:dc_char}. Comparator \(k\)
-outputs \(T_k = 1\) if \(V_{IN} > V_{T,k}\); \(D = \sum_k T_k\).
+outputs \(T_k = 1\) if \(V_{IN} > V_{T,k}\). The thresholds increase with \(k\), so
+\(V_{IN}\) between \(V_{T,D}\) and \(V_{T,D+1}\) sets \(T_1 \ldots T_D = 1\) and the rest 0
+(a thermometer), and
+\begin{align*}
+  D &= \sum_{k=1}^{2^n - 1} T_k \hspace{1cm} \text{for } \left(D - \tfrac{1}{2}\right) X_{LSB} < V_{IN} < \left(D + \tfrac{1}{2}\right) X_{LSB}
+\end{align*}
+i.e.\ \(D\) is \(\frac{V_{IN}}{X_{LSB}}\) rounded to the nearest integer.
 
 \subsubsection{Analysis}
 \begin{enumerate}
@@ -50,10 +57,17 @@ outputs \(T_k = 1\) if \(V_{IN} > V_{T,k}\); \(D = \sum_k T_k\).
     \begin{align*}
       DNL_k &= \frac{(V_{T,k+1} + V_{os,k+1}) - (V_{T,k} + V_{os,k})}{X_{LSB}} - 1
       = \frac{X_{LSB} + V_{os,k+1} - V_{os,k}}{X_{LSB}} - 1 = \frac{V_{os,k+1} - V_{os,k}}{X_{LSB}} \\
-      SD(DNL) &= \frac{\sqrt{SD(V_{os})^2 + SD(V_{os})^2}}{X_{LSB}} = \frac{\sqrt{2}\, SD(V_{os})}{X_{LSB}}
     \end{align*}
-    No missing codes (\(DNL > -1\)) with \(\approx 3\)SD margin needs
-    \(3\frac{\sqrt{2}\, SD(V_{os})}{X_{LSB}} < 1 \Rightarrow SD(V_{os}) < \frac{X_{LSB}}{3\sqrt{2}}\).
+    The offsets are independent with equal \(SD(V_{os})\), so their variances add
+    (Section~\ref{sec:theory_general_probability}):
+    \begin{align*}
+      Var(V_{os,k+1} - V_{os,k}) &= Var(V_{os,k+1}) + Var(V_{os,k}) = 2\, SD(V_{os})^2 \\
+      SD(DNL) &= \frac{\sqrt{2\, SD(V_{os})^2}}{X_{LSB}} = \frac{\sqrt{2}\, SD(V_{os})}{X_{LSB}}
+    \end{align*}
+    No missing codes (\(DNL > -1\)) with a \(3\,SD\) margin needs
+    \begin{align*}
+      3\frac{\sqrt{2}\, SD(V_{os})}{X_{LSB}} < 1 \hspace{1cm} \Rightarrow \hspace{1cm} SD(V_{os}) < \frac{X_{LSB}}{3\sqrt{2}}
+    \end{align*}
   \item \textbf{Bubbles}: metastability or offset can give \(\ldots 1101 \ldots\)
     (a 0 inside the 1s); a 3-input majority gate per position removes single
     bubbles before encoding.
@@ -66,6 +80,6 @@ A 6-bit flash with \(V_{REF} = 1\,\)V. Find \(X_{LSB}\), the comparator count an
 the offset SD for no missing codes.
 \paragraph{Solution:}
 \begin{align*}
-  X_{LSB} &= \frac{V_{REF}}{2^6} = \frac{1\,V}{64} = 15.6\,mV, \hspace{1cm} 2^6 - 1 = 63 \text{ comparators} \\
-  SD(V_{os}) &< \frac{15.6\,mV}{3\sqrt{2}} = \frac{15.6\,mV}{4.24} = 3.7\,mV
+  X_{LSB} &= \frac{V_{REF}}{2^6} = \frac{1\,V}{64} = 15.625\,mV, \hspace{1cm} 2^6 - 1 = 64 - 1 = 63 \text{ comparators} \\
+  SD(V_{os}) &< \frac{15.625\,mV}{3\sqrt{2}} = \frac{15.625\,mV}{3 \cdot 1.4142} = \frac{15.625\,mV}{4.243} = 3.68\,mV
 \end{align*}
