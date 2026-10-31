@@ -331,49 +331,27 @@ that can be connected at the output.
   clear; clc;
   pkg load symbolic;
 
-  syms Vx Vout Vs Is Itest
+  syms Vx Vout Iin Itest
   syms G3 G2 go0 gm0 go1 gm1
 
-  % system kcl
-  eq1 = Vout*(G3 + go1) + Vx*gm1 == 0; % KCL @ Vout
-  eq2 = Vx*(G2 + go0 + gm0) == 0; % KCL @ Vx
+  % small signal kcl, equations (5) and (6)
+  eq5 = Vout*(G3 + go1) + gm1*Vx == 0;   % KCL at Vout
+  eq6 = Vx*(G2 + go0 + gm0) == 0;        % KCL at Vx
 
-  % voltage transfer function: Vs forced at Vx & Is injected into Vx
-  eq2_vt = Vx*(G2 + go0 + gm0) - Is == 0;
-  eq3_vt = Vx == Vs; % equation introduced.
-  sol_vt = solve([eq1, eq2_vt, eq3_vt], [Vout, Vx, Vs]);
-  volt_transfer = simplify(sol_vt.Vout/sol_vt.Vs);
-  % volt_transfer = subs(volt_transfer, 'G2', 0);
-  % volt_transfer = subs(volt_transfer, 'G3', 0);
-  printf('=== Voltage Transfer Results ===\n');
-  pretty(volt_transfer)
-  printf('\n');
+  % voltage transfer: Vx forced by a source, so (6) drops out
+  sol = solve(eq5, Vout);
+  printf('=== Vout/Vx ===\n'); pretty(simplify(sol/Vx))
 
-  % current transfer function: Is injected into Vx
-  sol_ct = solve([eq1, eq2_vt], [Vout, Vx]);
-  Iout = -sol_ct.Vout * G3; % current from AC ground through G3 into the drain
-  curr_transfer = simplify(Iout/Is);
-  printf('=== Current Transfer Results ===\n');
-  pretty(curr_transfer)
-  printf('\n');
+  % current gain: Iin into Vx, output shorted (Vout = 0)
+  vx = solve(Vx*(G2 + go0 + gm0) == Iin, Vx);
+  Iout = gm1*vx + go1*0;                 % M1 drain current
+  printf('=== Iout/Iin ===\n'); pretty(simplify(Iout/Iin))
 
-  % input impedance: Itest injected into Vx
-  eq2_zin = Vx*(G2 + go0 + gm0) - Itest == 0;
-  sol_zin = solve([eq1, eq2_zin], [Vout, Vx]);
-  zin = simplify(sol_zin.Vx/Itest);
-  % zin = subs(zin, 'G2', 0);
-  % zin = subs(zin, 'G3', 0);
-  printf('=== Input Impedance Results ===\n');
-  pretty(zin)
-  printf('\n');
+  % input impedance: Itest into Vx
+  vx = solve(Vx*(G2 + go0 + gm0) == Itest, Vx);
+  printf('=== Zin ===\n'); pretty(simplify(vx/Itest))
 
-  % output impedance: Itest injected into Vout
-  eq1_zout = Vout*(G3 + go1) + Vx*gm1 - Itest == 0;
-  sol_zout = solve([eq1_zout, eq2], [Vout, Vx]);
-  zout = simplify(sol_zout.Vout/Itest);
-  % zout = subs(zout, 'G2', 0);
-  % zout = subs(zout, 'G3', 0);
-  printf('=== Output Impedance Results ===\n');
-  pretty(zout)
-  printf('\n');
+  % output impedance: Itest into Vout, (6) keeps Vx = 0
+  sol = solve([Vout*(G3 + go1) + gm1*Vx == Itest, eq6], [Vout, Vx]);
+  printf('=== Zout ===\n'); pretty(simplify(sol.Vout/Itest))
 \end{lstlisting}
