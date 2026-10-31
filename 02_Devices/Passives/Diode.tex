@@ -1,19 +1,22 @@
 \section{Diode}
 
-A diode is a two-terminal, active, non-linear and time-variant
-device that allows current to flow in one direction while blocking
+A diode is a two-terminal, passive (it can not amplify), non-linear
+and time-invariant device that allows current to flow in one direction while blocking
 it in the opposite direction.
 
-It is constructed from a semiconductor material where one side is doped
-with a material that has an excess of electrons and the other side
-is doped with a material that has a slightly less electrons that
-the first side. The region where the two side meet is called the
-PN junction \& due to recombinations there are no free charge
-carriers. For a voltage to cross the depletion region, it must be
-of greater than a known magnitude called the threshold voltage
-(determined by the material, doping and the depletion width) and
-is typically around 0.7V for silicon diodes and 0.3V for germanium
-diodes.
+It is constructed from a semiconductor where one side (N) is doped
+with donors that give free electrons and the other side (P) is doped
+with acceptors that give free holes. Where the two sides meet, carriers
+diffuse across and recombine, leaving a depletion region with no free
+carriers and a built-in potential,
+\[
+  V_{bi} = V_T \ln\left(\frac{N_A N_D}{n_i^2}\right)
+\]
+where \(N_A\), \(N_D\) are the acceptor and donor concentrations and
+\(n_i\) is the intrinsic carrier concentration. A forward voltage lowers
+this barrier and current grows exponentially; appreciable current flows
+once \(V_D\) approaches the knee (threshold) voltage, typically around
+0.6--0.7\,V for silicon and 0.2--0.3\,V for germanium diodes.
 
 \begin{enumerate}
   \item \textbf{Types of Diodes}:
@@ -34,9 +37,11 @@ diodes.
         and high-power types such as the Cree XLamp XP-G3 and Lumileds
         Luxeon Rebel.
       \item \textbf{Schottky Diode}: Used for fast switching
-        applications. The Schottky diode has a lower forward voltage
-        drop than a regular diode, which allows it to switch on and
-        off faster. Examples include the 1N5817, 1N5819, and the
+        applications. It is a metal-semiconductor junction that conducts
+        with majority carriers only, so there is no stored minority
+        charge to remove (no reverse recovery), which lets it switch
+        faster. It also has a lower forward voltage drop (0.15--0.45\,V)
+        but a higher reverse leakage than a PN diode. Examples include the 1N5817, 1N5819, and the
         SS14 (surface-mount).
       \item \textbf{Photodiode}: Used to convert light into
         electrical current. Examples include the BPW34, BPW21, and
@@ -47,7 +52,7 @@ diodes.
         Examples include the BB135 and the 1SV149, commonly used in
         RF tuning circuits and voltage-controlled oscillators (VCOs).
       \item \textbf{TVS Diode}: Used to protect circuits from voltage
-        spikes. The TVS diode is a bidirectional diode that can clamp
+        spikes. A TVS diode (unidirectional or bidirectional) can clamp
         voltage spikes to a safe level. These are often used to protect
         sensitive electronics from electrostatic discharge (ESD) and
         other transient voltage events. Examples include the P6KE
@@ -61,12 +66,14 @@ diodes.
         across the diode when it is forward biased.
       \item \textbf{Reverse Breakdown Voltage (\(V_{BR}\))}: The voltage
         at which the diode will conduct in reverse bias.
-      \item \textbf{Reverse Saturation Current (\(I_S\))}: The current
-        that flows through the diode when it is reverse biased.
+      \item \textbf{Reverse Saturation Current (\(I_S\))}: The scale
+        current of the Shockley equation; the reverse current tends to
+        \(-I_S\) for \(V_D \ll -nV_T\) (before breakdown).
       \item \textbf{Maximum Forward Current (\(I_F\))}: The maximum
         current that can flow through the diode when it is forward biased.
-      \item \textbf{Maximum Reverse Current (\(I_R\))}: The maximum
-        current that can flow through the diode when it is reverse biased.
+      \item \textbf{Reverse Leakage Current (\(I_R\))}: The current
+        that flows at the rated reverse voltage (in practice much larger
+        than \(I_S\) due to leakage and generation in the depletion region).
     \end{itemize}
   \item \textbf{Mathematical Models}:
     There are several mathematical models that can be used to describe
@@ -74,18 +81,19 @@ diodes.
     \begin{itemize}
       \item \textbf{Ideal Model}: The ideal diode model assumes
         that the diode has zero forward voltage drop and infinite reverse
-        resistance. It is a good approximation for low current applications.
-        It is given by the following equation:
+        resistance. It is a good approximation when \(V_F\) is negligible
+        against the other voltages of the circuit. It is given by:
         \[
-          I = \begin{cases}
-            0 & \text{if } V_D < 0 \\
-            \infty & \text{if } V_D > 0
+          \begin{cases}
+            I = 0 & \text{if } V_D < 0 \hspace{1cm} \text{(open)} \\
+            V_D = 0 & \text{if } I > 0 \hspace{1cm} \text{(short)}
           \end{cases}
         \]
       \item \textbf{Non-linear Model}: The Shockley diode model
         is a more accurate model that takes into account the forward voltage
         drop and the reverse saturation current. It is a good approximation
-        for high current applications.
+        at low and moderate currents; at high currents the series
+        resistance \(R_S\) and high level injection take over.
         \[
           I = I_S \left( e^{\frac{V_D}{n V_T}} - 1 \right)
         \]
@@ -143,13 +151,13 @@ diodes.
             \]
           \item \textbf{Cutoff Regime:}
             For \(-V_{BR} \leq V_D < V_{TH}\), the current is small enough that
-            \(I R_S\) is negligible, so \(V_j \approx V_D\), and \(V_D\) is not
-            large enough for the exponential term to matter. The Shockley model
-            then reduces directly to
-            \[
-              I = I_S \left( e^{V_D / (nV_T)} - 1 \right) \approx -I_S \approx 0
-            \]
-            since \(I_S\) is typically \(10^{-9}\) to \(10^{-15}\,\text{A}\).
+            \(I R_S\) is negligible, so \(V_j \approx V_D\). Two cases:
+            \begin{align*}
+              V_D \ll -nV_T &: \hspace{0.5cm} I = I_S \left( e^{V_D / (nV_T)} - 1 \right) \approx -I_S \approx 0 \\
+              -nV_T \lesssim V_D < V_{TH} &: \hspace{0.5cm} I = I_S \left( e^{V_D / (nV_T)} - 1 \right) \ll I_S e^{V_{TH}/(nV_T)} \approx I_0 \Rightarrow I \approx 0
+            \end{align*}
+            since \(I_S\) is typically \(10^{-9}\) to \(10^{-15}\,\text{A}\) and
+            every \(60\,\text{mV}\) below \(V_{TH}\) divides the current by 10.
           \item \textbf{Breakdown Regime:}
             Reverse breakdown arises from avalanche multiplication or Zener
             tunneling, mechanisms entirely absent from the minority-carrier
@@ -162,9 +170,26 @@ diodes.
               I \approx \frac{V_D + V_{BR}}{R_{ZK}} \hspace{1cm} \text{if } V_D < -V_{BR}
             \]
         \end{enumerate}
+          \item \textbf{Small Signal Model}: Linearizing the Shockley model
+        about \((V_{DQ}, I_{DQ})\) (Section~\ref{sec:analysis_linearization}):
+        \begin{align*}
+          g_d &= \left.\frac{dI}{dV_D}\right|_{Q} \\
+          g_d &= \frac{d}{dV_D}\left[I_S\left(e^{\frac{V_D}{nV_T}} - 1\right)\right]_{Q} \\
+          g_d &= \frac{I_S e^{\frac{V_{DQ}}{nV_T}}}{nV_T} \\
+          g_d &= \frac{I_{DQ} + I_S}{nV_T} \approx \frac{I_{DQ}}{nV_T}
+        \end{align*}
+        In parallel with \(g_d\) sit the junction (depletion) capacitance
+        and the diffusion capacitance,
+        \begin{align*}
+          C_j &= \frac{C_{j0}}{\left(1 - \frac{V_{DQ}}{V_{bi}}\right)^{m}} \hspace{1cm} [m = 0.5 \text{ abrupt},\ m = 0.33 \text{ graded}] \\
+          C_d &= T_F\, g_d \hspace{1cm} [T_F = \text{forward transit time}]
+        \end{align*}
+        giving the Q4 admittance \(Y_d(s) = g_d + s(C_j + C_d)\). A reverse
+        biased diode has \(g_d \approx 0\) and \(C_d \approx 0\), leaving
+        \(Y_d = sC_j\), which is the varactor.
     \end{itemize}
   \item \textbf{Circuit Analysis:}
-    Depending upon Axes of Linearity requirements, You can either use the
-    Non-Linear or Linear model as described above to analyse the behaviour
-    of a diode while performing your circuit analysis.
+    In Q5 use the Non-Linear (Shockley) or the piecewise Linear model to
+    find the bias point. In Q4 replace the diode by \(Y_d(s)\) evaluated
+    at that bias point.
 \end{enumerate}
