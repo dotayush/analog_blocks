@@ -116,7 +116,7 @@ at $V_{out}$ on Full Schematic, we get:
     denominator \(1 - \omega^2 L_1C_1\) is zero and the ideal (lossless)
     filter has an infinite resonant peak. In practice the source resistance
     and the inductor's series resistance set a finite \(D_R\) (see the RLC
-    Band Filter).
+    Band Filter, Section~\ref{sec:filt_rlc_band}).
   \item \textbf{Zeroes (\(N(s) = 0\)):} \\
     For low pass \(H_1(s)\):
     \begin{align*}
@@ -128,10 +128,11 @@ at $V_{out}$ on Full Schematic, we get:
     \begin{align*}
         N_2(s) &= 0 \\
         s^2C_1L_1 &= 0 \\
-        s_z &= 0 \hspace{1cm} \text{[let \(s = s_z\)]} \\
+        s^2 &= 0 \hspace{1cm} [\div C_1 L_1] \\
+        s_z &= 0 \hspace{1cm} \text{[let \(s = s_z\); a double zero, } s^2\text{]} \\
         f_z &= \frac{|s_z|}{2\pi} = 0 Hz
     \end{align*}
-    Zero at the origin for \(H_2(s)\).
+    Double zero at the origin for \(H_2(s)\) (\(+40\,dB\)/decade below \(f_p\)).
   \item \textbf{DC Gain \(A_{DC}\):} \\
     For low pass \(H_1(s)\):
     \begin{align*}
