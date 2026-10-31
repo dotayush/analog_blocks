@@ -67,7 +67,8 @@ reads bottom up:
  Appendix ......... Theory: General, Controls, Electromagnetics
 \end{verbatim}
 Each block follows the same layout: \textbf{Overview}, \textbf{Schematic},
-\textbf{Transfer Function} (Large Signal, Q5, and Small Signal, Q4),
+\textbf{Transfer Function} (Large Signal, Time Domain, DC Input Analysis
+(Q5), and Small Signal, Frequency Domain, AC Input Analysis (Q4)),
 \textbf{Analysis} (poles, zeros, gains, impedances), \textbf{Design},
 \textbf{Question} and, where the algebra is heavy, \textbf{Code}.
 
@@ -99,8 +100,9 @@ chooses or a device exhibits is written with english letters.
     Large signal quantities carry upper case subscripts (\(V_{GS}\),
     \(I_D\)); small signal quantities carry lower case subscripts
     (\(V_{gs}\), \(I_d\)). Where a node voltage keeps the same name in both
-    (\(V_x\), \(V_{out}\)), the analysis heading (Q5 or Q4) decides which is
-    meant.
+    (\(V_x\), \(V_{out}\)), the analysis heading (Large Signal, Time Domain,
+    DC Input Analysis (Q5) or Small Signal, Frequency Domain, AC Input
+    Analysis (Q4)) decides which is meant.
   \item Conductances \(G = 1/R\), \(g_m\), \(g_o = 1/r_o\) are preferred
     over resistances since KCL is written in conductances.
   \item \(A \parallel B = \dfrac{AB}{A + B}\).
