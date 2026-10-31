@@ -18,8 +18,13 @@ multiplied by \(B_F + 1\), output impedance divided by \(B_F + 1\).
 \subsubsection{Transfer Function}
 \begin{enumerate}
   \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}:
-    \(V_{OUT} = V_{IN} - I_B R_S - V_T \ln\frac{I_C}{I_S}\) with
-    \(I_C = A_F \frac{V_{OUT}}{R_E}\), \(I_B = \frac{I_C}{B_F}\): the output
+    KVL from the source through \(R_S\) and the base-emitter junction,
+    \(V_{OUT} = V_{IN} - I_B R_S - V_{BE} = V_{IN} - I_B R_S - V_T \ln\frac{I_C}{I_S}\) with
+    \(I_C = A_F I_E = A_F \frac{V_{OUT}}{R_E}\), \(I_B = \frac{I_C}{B_F}\). Substituting:
+    \[
+      V_{OUT}\left(1 + \frac{A_F R_S}{B_F R_E}\right) = V_{IN} - V_T \ln\frac{A_F V_{OUT}}{I_S R_E}
+    \]
+    solved by iteration from \(V_{BE} = 0.7\,\)V: the output
     sits one \(V_{BE} \approx 0.7\,\)V below the base.
   \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}:
     \(g_o\) neglected.\\
@@ -31,10 +36,16 @@ multiplied by \(B_F + 1\), output impedance divided by \(B_F + 1\).
     \begin{align*}
       V_{out} G_E &= (g_{be} + g_m)(V_b - V_{out}) \tag{2}
     \end{align*}
-    From (2): \(V_b = V_{out}\frac{G_E + g_m + g_{be}}{g_m + g_{be}}\), so
-    \(V_b - V_{out} = \frac{G_E}{g_m + g_{be}} V_{out}\). Substituting into (1):
+    From (2):
+    \begin{align*}
+      (g_m + g_{be}) V_b &= V_{out} G_E + (g_m + g_{be}) V_{out} \\
+      V_b &= V_{out}\frac{G_E + g_m + g_{be}}{g_m + g_{be}} \\
+      V_b - V_{out} &= V_{out}\left(\frac{G_E + g_m + g_{be}}{g_m + g_{be}} - 1\right) = \frac{G_E}{g_m + g_{be}} V_{out}
+    \end{align*}
+    Substituting into (1):
     \begin{align*}
       \left(V_{out}\frac{G_E + g_m + g_{be}}{g_m + g_{be}} - V_{in}\right) G_S + \frac{g_{be} G_E}{g_m + g_{be}} V_{out} &= 0 \\
+      V_{out} G_S (G_E + g_m + g_{be}) - V_{in} G_S (g_m + g_{be}) + g_{be} G_E V_{out} &= 0 \hspace{1cm} [\times (g_m + g_{be})] \\
       V_{out}\left(G_S (G_E + g_m + g_{be}) + g_{be} G_E\right) &= G_S (g_m + g_{be}) V_{in} \\
       H = \frac{V_{out}}{V_{in}} &= \frac{G_S (g_m + g_{be})}{G_S (G_E + g_m + g_{be}) + g_{be} G_E}
     \end{align*}
@@ -42,30 +53,37 @@ multiplied by \(B_F + 1\), output impedance divided by \(B_F + 1\).
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \textbf{Gain}: \(G_S \to \infty\):
-    \(A_{V0} = \frac{g_m + g_{be}}{g_m + g_{be} + G_E} = \frac{(B_F + 1) R_E}{r_{be} + (B_F + 1) R_E}\).
+  \item \textbf{Gain}: \(G_S \to \infty\), divide numerator and denominator by \(G_S\):
+    \begin{align*}
+      A_{V0} &= \lim_{G_S \to \infty} \frac{g_m + g_{be}}{G_E + g_m + g_{be} + \frac{g_{be} G_E}{G_S}} = \frac{g_m + g_{be}}{g_m + g_{be} + G_E} \\
+      A_{V0} &= \frac{(g_m + g_{be}) r_{be} R_E}{(g_m + g_{be}) r_{be} R_E + G_E r_{be} R_E} = \frac{(B_F + 1) R_E}{(B_F + 1) R_E + r_{be}} \hspace{1cm} [g_m r_{be} = B_F,\ g_{be} r_{be} = 1]
+    \end{align*}
   \item \textbf{Impedances}:
-    \paragraph{At Input:} \(I_b = g_{be}(V_b - V_{out}) = \frac{g_{be} G_E}{G_E + g_m + g_{be}} V_b\),
+    \paragraph{At Input:} with \(V_b - V_{out} = \frac{G_E}{g_m + g_{be}} V_{out}\) and
+      \(V_{out} = \frac{g_m + g_{be}}{G_E + g_m + g_{be}} V_b\) from (2),
+      \(I_b = g_{be}(V_b - V_{out}) = \frac{g_{be} G_E}{g_m + g_{be}} \cdot \frac{g_m + g_{be}}{G_E + g_m + g_{be}} V_b = \frac{g_{be} G_E}{G_E + g_m + g_{be}} V_b\),
       \[
-        Z_{in} = \frac{G_E + g_m + g_{be}}{g_{be} G_E} = r_{be} + (B_F + 1) R_E
+        Z_{in} = \frac{V_b}{I_b} = \frac{G_E + g_m + g_{be}}{g_{be} G_E} = \frac{1}{g_{be}} + \left(\frac{g_m}{g_{be}} + 1\right) R_E = r_{be} + (B_F + 1) R_E
       \]
     \paragraph{At Output:} \(V_{in} = 0\), \(G_E\) removed, \(I_{test}\) into the
       emitter. (1) gives \(V_b = \frac{g_{be}}{G_S + g_{be}} V_{out}\), and the
       device current into the node is \((g_m + g_{be})(V_b - V_{out})\):
       \begin{align*}
         I_{test} + (g_m + g_{be})\left(\frac{g_{be}}{G_S + g_{be}} - 1\right) V_{out} &= 0 \\
+        I_{test} - (g_m + g_{be})\frac{G_S + g_{be} - g_{be}}{G_S + g_{be}} V_{out} &= 0 \\
         I_{test} &= \frac{(g_m + g_{be}) G_S}{G_S + g_{be}} V_{out} \\
-        Z_{out} &= \frac{G_S + g_{be}}{(g_m + g_{be}) G_S} = \frac{R_S + r_{be}}{B_F + 1}
+        Z_{out} &= \frac{V_{out}}{I_{test}} = \frac{G_S + g_{be}}{(g_m + g_{be}) G_S} = \frac{(G_S + g_{be}) R_S r_{be}}{(g_m + g_{be}) G_S R_S r_{be}} \\
+        Z_{out} &= \frac{r_{be} + R_S}{(g_m + g_{be}) r_{be}} = \frac{R_S + r_{be}}{B_F + 1}
       \end{align*}
 \end{enumerate}
 
 \subsubsection{Question}
-\(I_C = 1\,\)mA, \(B_F = 100\), \(R_E = 1\,k\Omega\), \(R_S = 10\,k\Omega\).
-Find \(A_{V0}\) (ideal source), \(Z_{in}\) and \(Z_{out}\).
+\(I_C = 1\,\)mA, \(B_F = 100\), \(R_E = 1\,k\Omega\), \(R_S = 10\,k\Omega\),
+\(V_T = 26\,\)mV. Find \(A_{V0}\) (ideal source), \(Z_{in}\) and \(Z_{out}\).
 \paragraph{Solution:}
 \begin{align*}
-  r_{be} &= 2.6\,k\Omega \hspace{1cm} (B_F + 1) R_E = 101\,k\Omega \\
-  A_{V0} &= \frac{101\,k}{2.6\,k + 101\,k} = 0.975 \hspace{1cm}
-  Z_{in} = 103.6\,k\Omega \hspace{1cm}
-  Z_{out} = \frac{10\,k + 2.6\,k}{101} = 125\,\Omega
+  r_{be} &= \frac{B_F}{g_m} = \frac{B_F V_T}{I_C} = \frac{100 \cdot 26\,mV}{1\,mA} = 2.6\,k\Omega \hspace{1cm} (B_F + 1) R_E = 101 \cdot 1\,k\Omega = 101\,k\Omega \\
+  A_{V0} &= \frac{101\,k}{2.6\,k + 101\,k} = \frac{101}{103.6} = 0.975 \hspace{1cm}
+  Z_{in} = 2.6\,k + 101\,k = 103.6\,k\Omega \\
+  Z_{out} &= \frac{10\,k + 2.6\,k}{101} = \frac{12.6\,k}{101} = 125\,\Omega
 \end{align*}
