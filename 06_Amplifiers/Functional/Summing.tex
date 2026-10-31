@@ -16,20 +16,46 @@ virtual ground; the output is a weighted sum.
 \end{circuitfig}
 
 \subsubsection{Transfer Function}
-Applying KCL at \(V_-\) with \(V_- = -\frac{V_{out}}{A}\):
+\textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}, \(A = A(s)\)
+(\(A = A_0\) gives the Large Signal, Time Domain, DC Input Analysis (Q5)):
+\(V_+ = 0\), so \(V_{out} = -A V_- \Rightarrow V_- = -\frac{V_{out}}{A}\). Applying KCL
+at \(V_-\) (no current into the op-amp):
 \begin{align*}
   \sum_{k=1}^{N} (V_- - V_k) G_k + (V_- - V_{out}) G_F &= 0 \\
+  V_- \sum_{k} G_k - \sum_{k} G_k V_k + V_- G_F - V_{out} G_F &= 0 \\
   V_- \left(\sum_{k} G_k + G_F\right) - V_{out} G_F &= \sum_{k} G_k V_k \\
-  -V_{out}\left(\frac{\sum_{k} G_k + G_F}{A} + G_F\right) &= \sum_{k} G_k V_k \\
-  V_{out} &= -\frac{\sum_{k} G_k V_k}{G_F + \frac{\sum_k G_k + G_F}{A}} \xrightarrow{A \to \infty} -\sum_{k=1}^{N} \frac{R_F}{R_k} V_k
+  -\frac{V_{out}}{A} \left(\sum_{k} G_k + G_F\right) - V_{out} G_F &= \sum_{k} G_k V_k \hspace{1cm} \text{(Substituting \(V_- = -\frac{V_{out}}{A}\))} \\
+  -V_{out}\left(G_F + \frac{\sum_{k} G_k + G_F}{A}\right) &= \sum_{k} G_k V_k \\
+  V_{out} &= -\frac{\sum_{k} G_k V_k}{G_F + \frac{\sum_k G_k + G_F}{A}}
+\end{align*}
+With \(F = \frac{G_F}{G_F + \sum_k G_k}\) (below), \(\frac{\sum_k G_k + G_F}{A} = \frac{G_F}{AF}\):
+\begin{align*}
+  V_{out} &= -\frac{\sum_{k} G_k V_k}{G_F\left(1 + \frac{1}{AF}\right)} = -\sum_{k} \frac{G_k}{G_F} V_k \cdot \frac{AF}{1 + AF} \hspace{1cm} [\times \tfrac{AF}{AF}] \\
+  V_{out} &\xrightarrow{A \to \infty} -\sum_{k=1}^{N} \frac{G_k}{G_F} V_k = -\sum_{k=1}^{N} \frac{R_F}{R_k} V_k
 \end{align*}
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \textbf{Feedback Factor}: \(F = \frac{G_F}{G_F + \sum_k G_k}\); every
-    added input lowers \(F\) and therefore the bandwidth \(F \cdot GB\).
-  \item \textbf{Impedances}: input \(k\) sees \(Z_{in,k} = R_k\); inputs do
-    not interact (virtual ground).
-  \item Binary weights \(R_k = 2^{k-1} R\) make this a binary weighted DAC
-    (Chapter~\ref{ch:data_converters}).
+  \item \textbf{Feedback Factor}: with every \(V_k = 0\), KCL at \(V_-\) is
+    \begin{align*}
+      V_- \sum_k G_k + (V_- - V_{out}) G_F &= 0 \\
+      V_- &= \frac{G_F}{G_F + \sum_k G_k} V_{out} = F V_{out}
+    \end{align*}
+    Every added input increases \(\sum_k G_k\), lowering \(F\) and therefore the
+    bandwidth \(F \cdot GB\) (same steps as Section~\ref{sec:amp_inverting}).
+  \item \textbf{Impedances}: \(V_- \to 0\), so input \(k\) sees
+    \(Z_{in,k} = \frac{V_k}{(V_k - 0) G_k} = R_k\); the current \((V_k - 0) G_k\) does
+    not depend on any other input (virtual ground), so inputs do not interact.
+  \item Binary weights \(R_k = 2^{k-1} R\) give \(\frac{R_F}{R_k} = \frac{R_F}{R}2^{-(k-1)}\),
+    halving weights: a binary weighted DAC (Chapter~\ref{ch:data_converters}).
 \end{enumerate}
+
+\subsubsection{Question}
+\(R_1 = R_2 = R_F = 10\,k\Omega\), \(V_1 = 0.5\,V\), \(V_2 = -0.2\,V\),
+\(GB = 1\,\)MHz. Find \(V_{out}\) (ideal) and the bandwidth.
+\paragraph{Solution:}
+\begin{align*}
+  V_{out} &= -\left(\frac{10\,k}{10\,k} \cdot 0.5\,V + \frac{10\,k}{10\,k} \cdot (-0.2\,V)\right) = -(0.5 - 0.2)\,V = -0.3\,V \\
+  F &= \frac{G_F}{G_F + G_1 + G_2} = \frac{\frac{1}{10\,k}}{\frac{3}{10\,k}} = \frac{1}{3} \hspace{1cm}
+  f_{-3dB} = F \cdot GB = \frac{1\,MHz}{3} = 333\,kHz
+\end{align*}
