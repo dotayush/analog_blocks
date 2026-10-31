@@ -63,7 +63,7 @@ members, and three rules cover the rest without repeating entries:
 \(F\) & feedback factor; number of folds (folding ADC); \(F(x)\) cumulative distribution (Probability); \(F(s)\) passive PLL filter & - \\ \hline
 \(G\) & conductance in general; gate terminal (MOSFET); R-2R leg conductance & S \\ \hline
 \(H\) & transfer function \(H(s)\); Wilson mirror group \(G_3 + g_{o_0}\) & -, S \\ \hline
-\(I_F,\ I_R\) & diode maximum forward current and reverse leakage; Ebers-Moll forward and reverse diode currents (BJT) & A \\ \hline
+\(I_F\), \(I_R\) & diode maximum forward current and reverse leakage; Ebers-Moll forward and reverse diode currents (BJT) & A \\ \hline
 \(K\) & PLL loop constant \(\frac{I_{cp} K_v}{2\pi N C_1}\); flicker coefficient (Noise); kelvin (unit) & s\(^{-2}\), V\(^2\), - \\ \hline
 \(L\) & inductance; MOSFET channel length; modulator order (Delta-Sigma); \(L(f_m)\) phase noise & H, m, -, dBc/Hz \\ \hline
 \(M\) & transistor \(M_k\); mean (Probability); interpolation factor (ADC); modified Wilson group \(G_4(P + g_{o_0}) + g_{o_0}P\); \(\mathbf{M}\) magnetisation & - \\ \hline
@@ -73,219 +73,219 @@ members, and three rules cover the rest without repeating entries:
 \(S\) & elastance (capacitor); siemens (unit); source terminal; mirror group (Wilson \(g_{o_1} + g_{m_1} + g_{o_2} + g_{m_2}\), cascode \(g_{m_0} + g_{o_0} + g_{m_3} + g_{o_3}\)); closed surface (EM) & - \\ \hline
 \(T\) & absolute temperature; sample period (z domain); oscillation period; \(T = AF\) loop gain; \(T_k\) comparator output & K, s, - \\ \hline
 \(V_F\) & diode forward voltage; MOSFET Fermi potential; large signal fold node & V \\ \hline
-\(V_x,\ V_y,\ V_z\) & internal node voltages named on each schematic; \(V_X, V_Y, V_Z\) their bias values & V \\ \hline
-\(X,\ Y\) & axes of the classification space; the quantity a converter handles; string resistances below and above a tap; random variables; reactance \(X_i, X_o\) & - \\ \hline
-\(a, b, c\) & quadratic coefficients; partial fraction constants; difference amplifier weights \(a, b\); cascode mirror \(a = \frac{g_{m_3} + g_{o_3}}{S}\); DAC \(a = g_u R_L\) & - \\ \hline
+\(V_x\), \(V_y\), \(V_z\) & internal node voltages named on each schematic; \(V_X, V_Y, V_Z\) their bias values & V \\ \hline
+\(X\), \(Y\) & axes of the classification space; the quantity a converter handles; string resistances below and above a tap; random variables; reactance \(X_i, X_o\) & - \\ \hline
+\(a\), \(b\), \(c\) & quadratic coefficients; partial fraction constants; difference amplifier weights \(a, b\); cascode mirror \(a = \frac{g_{m_3} + g_{o_3}}{S}\); DAC \(a = g_u R_L\) & - \\ \hline
 \(e\) & Euler's number; a fractional mismatch or gain error & - \\ \hline
 \(k\) & an index; Boltzmann constant; resistor ratio (difference amplifier); pole separation (Second Order) & -, J/K \\ \hline
 \(m\) & diode grading coefficient; number of pipeline stages or summed elements; metre & - \\ \hline
 \(n\) & diode or subthreshold ideality factor; converter resolution in bits & - \\ \hline
-\(x, y, z\) & coordinates (EM, MOSFET channel position \(y\)); substitution variables defined where used; z transform variable & - \\ \hline
+\(x\), \(y\), \(z\) & coordinates (EM, MOSFET channel position \(y\)); substitution variables defined where used; z transform variable & - \\ \hline
 \multicolumn{3}{|l|}{\textbf{General Circuit Quantities}} \\ \hline
-\(V,\ I\) & voltage and current (always capitals) & V, A \\ \hline
-\(V_{in}, V_{out},\ V_{IN}, V_{OUT}\) & input and output voltage, small and large signal & V \\ \hline
+\(V\), \(I\) & voltage and current (always capitals) & V, A \\ \hline
+\(V_{in}\), \(V_{out}\), \(V_{IN}\), \(V_{OUT}\) & input and output voltage, small and large signal & V \\ \hline
 \(V_{out_k}\) & output due to source \(k\) alone (superposition) & V \\ \hline
-\(I_{in}, I_{out},\ I_{IN}, I_{OUT}\) & input and output current, small and large signal & A \\ \hline
-\(V_{cc}, V_{ee}, V_{dd}\) & supply rails (also the two divider sources \(V_{cc}\), \(V_{ee}\)) & V \\ \hline
-\(V_1, V_2\) & two driving sources or inputs as drawn & V \\ \hline
-\(R, G = \frac{1}{R}\) & resistance, conductance; \(R_k, G_k\) element \(k\) & \(\Omega\), S \\ \hline
-\(R_L, G_L, Z_L\) & load resistance, conductance, impedance & \(\Omega\), S, \(\Omega\) \\ \hline
-\(R_S, G_S\) & source resistance and conductance; Widlar degeneration; diode series resistance & \(\Omega\), S \\ \hline
-\(R_D, G_D,\ R_C, G_C,\ R_E, G_E\) & drain, collector, emitter resistor & \(\Omega\), S \\ \hline
+\(I_{in}\), \(I_{out}\), \(I_{IN}\), \(I_{OUT}\) & input and output current, small and large signal & A \\ \hline
+\(V_{cc}\), \(V_{ee}\), \(V_{dd}\) & supply rails (also the two divider sources \(V_{cc}\), \(V_{ee}\)) & V \\ \hline
+\(V_1\), \(V_2\) & two driving sources or inputs as drawn & V \\ \hline
+\(R\), \(G = \frac{1}{R}\) & resistance, conductance; \(R_k, G_k\) element \(k\) & \(\Omega\), S \\ \hline
+\(R_L\), \(G_L\), \(Z_L\) & load resistance, conductance, impedance & \(\Omega\), S, \(\Omega\) \\ \hline
+\(R_S\), \(G_S\) & source resistance and conductance; Widlar degeneration; diode series resistance & \(\Omega\), S \\ \hline
+\(R_D\), \(G_D\), \(R_C\), \(G_C\), \(R_E\), \(G_E\) & drain, collector, emitter resistor & \(\Omega\), S \\ \hline
 \(C_L\) & load capacitance & F \\ \hline
-\(Z, Y\) & impedance and admittance \(\frac{1}{Z}\) & \(\Omega\), S \\ \hline
-\(Z_C, Z_L, Z_{LC}\) & capacitor, inductor and L-C combination impedance & \(\Omega\) \\ \hline
-\(Z_{in}, Z_{out}\) & input and output impedance (with a qualifier: \(Z_{in,k}\) of input \(k\), \(Z_{in_k}\) of stage \(k\)) & \(\Omega\) \\ \hline
-\(I_{test}, V_{test}, I_t, V_t\) & test current or voltage used to find an impedance & A, V \\ \hline
-\(H(s), N(s), D(s)\) & transfer function, numerator (zeros are its roots), denominator (poles) & - \\ \hline
-\(N_k, D_k, H_k\) & numerator, denominator, transfer function number \(k\) & - \\ \hline
-\(s, j, \omega, f, t\) & Laplace variable (\(s = j\omega\)), \(\sqrt{-1}\), angular frequency \(2\pi f\), frequency, time & rad/s, -, rad/s, Hz, s \\ \hline
-\(p_k, s_p\) & pole \(k\) (as a positive rate); a pole as a value of \(s\) & rad/s \\ \hline
-\(z, s_z, f_z\) & zero; zero as a value of \(s\); in Hz & rad/s, Hz \\ \hline
-\(f_p, f_{pk}\) & pole frequency & Hz \\ \hline
-\(\omega_0, f_0\) & centre or oscillation angular frequency and frequency & rad/s, Hz \\ \hline
-\(\omega_n, f_n, D_R, Q\) & natural angular frequency and frequency, damping ratio, quality factor \(\frac{1}{2D_R}\) & rad/s, Hz, -, - \\ \hline
-\(f_{-3dB}, BW, f_{-3dB,CL}\) & \(-3\,dB\) bandwidth; closed loop bandwidth (\(BW_{parallel}\), \(BW_{series}\) for the two RLC forms) & Hz \\ \hline
-\(A_{DC}, A_V, A_{V0}\) & DC gain, voltage gain, voltage gain at DC & - \\ \hline
-\(GB, GBW\) & gain-bandwidth product & Hz \\ \hline
+\(Z\), \(Y\) & impedance and admittance \(\frac{1}{Z}\) & \(\Omega\), S \\ \hline
+\(Z_C\), \(Z_L\), \(Z_{LC}\) & capacitor, inductor and L-C combination impedance & \(\Omega\) \\ \hline
+\(Z_{in}\), \(Z_{out}\) & input and output impedance (with a qualifier: \(Z_{in,k}\) of input \(k\), \(Z_{in_k}\) of stage \(k\)) & \(\Omega\) \\ \hline
+\(I_{test}\), \(V_{test}\), \(I_t\), \(V_t\) & test current or voltage used to find an impedance & A, V \\ \hline
+\(H(s)\), \(N(s)\), \(D(s)\) & transfer function, numerator (zeros are its roots), denominator (poles) & - \\ \hline
+\(N_k\), \(D_k\), \(H_k\) & numerator, denominator, transfer function number \(k\) & - \\ \hline
+\(s\), \(j\), \(\omega\), \(f\), \(t\) & Laplace variable (\(s = j\omega\)), \(\sqrt{-1}\), angular frequency \(2\pi f\), frequency, time & rad/s, -, rad/s, Hz, s \\ \hline
+\(p_k\), \(s_p\) & pole \(k\) (as a positive rate); a pole as a value of \(s\) & rad/s \\ \hline
+\(z\), \(s_z\), \(f_z\) & zero; zero as a value of \(s\); in Hz & rad/s, Hz \\ \hline
+\(f_p\), \(f_{pk}\) & pole frequency & Hz \\ \hline
+\(\omega_0\), \(f_0\) & centre or oscillation angular frequency and frequency & rad/s, Hz \\ \hline
+\(\omega_n\), \(f_n\), \(D_R\), \(Q\) & natural angular frequency and frequency, damping ratio, quality factor \(\frac{1}{2D_R}\) & rad/s, Hz, -, - \\ \hline
+\(f_{-3dB}\), \(BW\), \(f_{-3dB,CL}\) & \(-3\,dB\) bandwidth; closed loop bandwidth (\(BW_{parallel}\), \(BW_{series}\) for the two RLC forms) & Hz \\ \hline
+\(A_{DC}\), \(A_V\), \(A_{V0}\) & DC gain, voltage gain, voltage gain at DC & - \\ \hline
+\(GB\), \(GBW\) & gain-bandwidth product & Hz \\ \hline
 \(T_c\) & time constant (usually \(\tau\)) & s \\ \hline
-\(d, dV, dI, \ldots\) & derivative operator; small change of the named quantity & - \\ \hline
-\(sC, sL, AF, \ldots\) & juxtaposed letters are products (\(s \cdot C\), \(A \cdot F\)) & - \\ \hline
+\(d\), \(dV\), \(dI\), \(\ldots\) & derivative operator; small change of the named quantity & - \\ \hline
+\(sC\), \(sL\), \(AF\), \(\ldots\) & juxtaposed letters are products (\(s \cdot C\), \(A \cdot F\)) & - \\ \hline
 \multicolumn{3}{|l|}{\textbf{Analysis}} \\ \hline
 \(Q1 \ldots Q8\) & octants (quadrants) of the classification space, \(k - 1 = 4Z + 2Y + X\) & - \\ \hline
-\(V_Q, I_Q,\ V_q, I_q\) & bias point and small signal part about it & V, A \\ \hline
-\(V_{1q}, V_{2q}\) & small signal parts of two controlling voltages & V \\ \hline
-\(f(V), f^{\prime}, f^{\prime\prime}\) & device law and its derivatives & - \\ \hline
+\(V_Q\), \(I_Q\), \(V_q\), \(I_q\) & bias point and small signal part about it & V, A \\ \hline
+\(V_{1q}\), \(V_{2q}\) & small signal parts of two controlling voltages & V \\ \hline
+\(f(V)\), \(f^{\prime}\), \(f^{\prime\prime}\) & device law and its derivatives & - \\ \hline
 \(g\) & small signal conductance \(f^{\prime}(V_Q)\) & S \\ \hline
-\(A_k, HD_k, THD\) & harmonic amplitude, \(k\)-th harmonic distortion \(\frac{A_k}{A_1}\), total harmonic distortion & - \\ \hline
+\(A_k\), \(HD_k\), \(THD\) & harmonic amplitude, \(k\)-th harmonic distortion \(\frac{A_k}{A_1}\), total harmonic distortion & - \\ \hline
 \(V_p\) & peak amplitude of a drive & V \\ \hline
 \multicolumn{3}{|l|}{\textbf{Passives and Diode}} \\ \hline
-\(C, L, \psi\) & capacitance, inductance, flux linkage & F, H, Wb \\ \hline
+\(C\), \(L\), \(\psi\) & capacitance, inductance, flux linkage & F, H, Wb \\ \hline
 \(R_m\) & core reluctance & H\(^{-1}\) \\ \hline
-\(V_D, I_D\text{ (diode)}, V_{DQ}, I_{DQ}\) & diode voltage and current, bias values & V, A \\ \hline
+\(V_D\), \(I_D\text{ (diode)}\), \(V_{DQ}\), \(I_{DQ}\) & diode voltage and current, bias values & V, A \\ \hline
 \(I_S\) & saturation (scale) current of a diode or BJT & A \\ \hline
-\(V_T, nV_T\) & thermal voltage \(\frac{kT}{q}\); times \(n\) & V \\ \hline
+\(V_T\), \(nV_T\) & thermal voltage \(\frac{kT}{q}\); times \(n\) & V \\ \hline
 \(q\) & electron charge & C \\ \hline
-\(V_{bi}, N_A, N_D, n_i\) & built-in potential, acceptor and donor doping, intrinsic concentration & V, m\(^{-3}\) \\ \hline
-\(V_{BR}, R_{ZK}\) & breakdown voltage and resistance & V, \(\Omega\) \\ \hline
-\(V_{TH}, V_j, I_0\) & piecewise model threshold, junction voltage, nominal current & V, V, A \\ \hline
-\(g_d, r_d, V_d, I_d\) & diode small signal conductance, resistance, voltage, current (\(V_d\) is the drain voltage for a MOSFET) & S, \(\Omega\), V, A \\ \hline
-\(C_j, C_{j0}, C_d, T_F\) & junction capacitance, at zero bias, diffusion capacitance, transit time & F, F, F, s \\ \hline
+\(V_{bi}\), \(N_A\), \(N_D\), \(n_i\) & built-in potential, acceptor and donor doping, intrinsic concentration & V, m\(^{-3}\) \\ \hline
+\(V_{BR}\), \(R_{ZK}\) & breakdown voltage and resistance & V, \(\Omega\) \\ \hline
+\(V_{TH}\), \(V_j\), \(I_0\) & piecewise model threshold, junction voltage, nominal current & V, V, A \\ \hline
+\(g_d\), \(r_d\), \(V_d\), \(I_d\) & diode small signal conductance, resistance, voltage, current (\(V_d\) is the drain voltage for a MOSFET) & S, \(\Omega\), V, A \\ \hline
+\(C_j\), \(C_{j0}\), \(C_d\), \(T_F\) & junction capacitance, at zero bias, diffusion capacitance, transit time & F, F, F, s \\ \hline
 \(Y_d\) & diode small signal admittance & S \\ \hline
 \multicolumn{3}{|l|}{\textbf{BJT}} \\ \hline
-\(B, C, E\) & base, collector, emitter & - \\ \hline
-\(I_B, I_C, I_E,\ I_b, I_c, I_e\) & terminal currents, large and small signal & A \\ \hline
-\(V_{BE}, V_{BC}, V_{CE},\ V_{be}, V_{ce}\) & junction voltages, large and small signal & V \\ \hline
-\(V_B, V_C, V_E,\ V_b, V_c, V_e\) & terminal voltages, large and small signal & V \\ \hline
-\(I_{FS}, I_{RS}\) & Ebers-Moll saturation currents & A \\ \hline
-\(A_F, A_R,\ B_F, B_R\) & common base and common emitter current gains, forward and reverse & - \\ \hline
+\(B\), \(C\), \(E\) & base, collector, emitter & - \\ \hline
+\(I_B\), \(I_C\), \(I_E\), \(I_b\), \(I_c\), \(I_e\) & terminal currents, large and small signal & A \\ \hline
+\(V_{BE}\), \(V_{BC}\), \(V_{CE}\), \(V_{be}\), \(V_{ce}\) & junction voltages, large and small signal & V \\ \hline
+\(V_B\), \(V_C\), \(V_E\), \(V_b\), \(V_c\), \(V_e\) & terminal voltages, large and small signal & V \\ \hline
+\(I_{FS}\), \(I_{RS}\) & Ebers-Moll saturation currents & A \\ \hline
+\(A_F\), \(A_R\), \(B_F\), \(B_R\) & common base and common emitter current gains, forward and reverse & - \\ \hline
 \(B_{forced}\) & current gain forced to guarantee saturation & - \\ \hline
-\(V_{CC}, R_B\) & BJT switch supply and base resistor & V, \(\Omega\) \\ \hline
+\(V_{CC}\), \(R_B\) & BJT switch supply and base resistor & V, \(\Omega\) \\ \hline
 \(V_A\) & Early voltage & V \\ \hline
-\(V_{th}, V_{Fth}, V_{Rth}\) & junction turn on threshold; base-emitter; base-collector & V \\ \hline
+\(V_{th}\), \(V_{Fth}\), \(V_{Rth}\) & junction turn on threshold; base-emitter; base-collector & V \\ \hline
 \(V_{CE(sat)}\) & saturation collector-emitter voltage & V \\ \hline
-\(g_{be}, r_{be}\) & base-emitter conductance and resistance (usually \(g_\pi, r_\pi\)) & S, \(\Omega\) \\ \hline
-\(C_{be}, C_{bc}\) & base-emitter and base-collector capacitance & F \\ \hline
+\(g_{be}\), \(r_{be}\) & base-emitter conductance and resistance (usually \(g_\pi, r_\pi\)) & S, \(\Omega\) \\ \hline
+\(C_{be}\), \(C_{bc}\) & base-emitter and base-collector capacitance & F \\ \hline
 \(_{(Q)}\) subscript & value at the bias point, e.g. \(I_{C(Q)}\) & - \\ \hline
 \multicolumn{3}{|l|}{\textbf{MOSFET}} \\ \hline
-\(I_D, I_d, I_G, I_g\) & drain and gate current, large and small signal & A \\ \hline
-\(V_{GS}, V_{DS}, V_{SB}, V_{BS}, V_{SG}, V_{SD}\) & large signal device voltages (\(V_{SG}, V_{SD}\) for PMOS) & V \\ \hline
-\(V_{gs}, V_{ds}, V_{bs},\ V_g, V_s, V_b\) & small signal device and node voltages & V \\ \hline
-\(V_{th}, V_{th0}, V_{ov}, V_{DS,\min}\) & threshold, at zero \(V_{SB}\), overdrive \(V_{GS} - V_{th}\), smallest saturated \(V_{DS}\) & V \\ \hline
-\(K_P, \mu_n, C_{ox}\) & process transconductance \(\mu_n C_{ox}\), electron mobility, oxide capacitance per area & A/V\(^2\), m\(^2\)/Vs, F/m\(^2\) \\ \hline
-\(K_{P,n}, K_{P,p}, K_{CLM,n}, K_{CLM,p}\) & NMOS and PMOS values & - \\ \hline
-\(W, L, L_{\min}, k_n\) & width, length, smallest allowed length, device factor \(\frac{K_P}{2}\frac{W}{L}\) & m, m, A/V\(^2\) \\ \hline
+\(I_D\), \(I_d\), \(I_G\), \(I_g\) & drain and gate current, large and small signal & A \\ \hline
+\(V_{GS}\), \(V_{DS}\), \(V_{SB}\), \(V_{BS}\), \(V_{SG}\), \(V_{SD}\) & large signal device voltages (\(V_{SG}, V_{SD}\) for PMOS) & V \\ \hline
+\(V_{gs}\), \(V_{ds}\), \(V_{bs}\), \(V_g\), \(V_s\), \(V_b\) & small signal device and node voltages & V \\ \hline
+\(V_{th}\), \(V_{th0}\), \(V_{ov}\), \(V_{DS,\min}\) & threshold, at zero \(V_{SB}\), overdrive \(V_{GS} - V_{th}\), smallest saturated \(V_{DS}\) & V \\ \hline
+\(K_P\), \(\mu_n\), \(C_{ox}\) & process transconductance \(\mu_n C_{ox}\), electron mobility, oxide capacitance per area & A/V\(^2\), m\(^2\)/Vs, F/m\(^2\) \\ \hline
+\(K_{P,n}\), \(K_{P,p}\), \(K_{CLM,n}\), \(K_{CLM,p}\) & NMOS and PMOS values & - \\ \hline
+\(W\), \(L\), \(L_{\min}\), \(k_n\) & width, length, smallest allowed length, device factor \(\frac{K_P}{2}\frac{W}{L}\) & m, m, A/V\(^2\) \\ \hline
 \(K_{CLM}\) & channel length modulation coefficient & V\(^{-1}\) \\ \hline
-\(K_B, I_{D0}\) & body effect coefficient, subthreshold scale current & V\(^{1/2}\), A \\ \hline
-\(g_m, g_{mb}, g_o, r_o\) & transconductance, body transconductance, output conductance, output resistance & S, \(\Omega\) \\ \hline
+\(K_B\), \(I_{D0}\) & body effect coefficient, subthreshold scale current & V\(^{1/2}\), A \\ \hline
+\(g_m\), \(g_{mb}\), \(g_o\), \(r_o\) & transconductance, body transconductance, output conductance, output resistance & S, \(\Omega\) \\ \hline
 \(g_m^{\prime}\) & \(g_m + g_{mb}\) & S \\ \hline
-\(R_{on}, f_T\) & triode resistance, transit frequency & \(\Omega\), Hz \\ \hline
-\(C_{gs}, C_{gd}, C_{sb}, C_{db}, C_{ov}\) & device capacitances and overlap capacitance & F \\ \hline
+\(R_{on}\), \(f_T\) & triode resistance, transit frequency & \(\Omega\), Hz \\ \hline
+\(C_{gs}\), \(C_{gd}\), \(C_{sb}\), \(C_{db}\), \(C_{ov}\) & device capacitances and overlap capacitance & F \\ \hline
 \multicolumn{3}{|l|}{\textbf{Indexed Device Quantities}} \\ \hline
-\(M_k, Q_1\) & transistor \(k\); a BJT & - \\ \hline
-\(g_{m_k}, g_{mk}, g_{o_k}, g_{ok}, r_{ok}, g_{mbk}\) & parameter of transistor \(M_k\) (mirrors write \(g_{m_k}\), amplifiers \(g_{mk}\)) & S, \(\Omega\) \\ \hline
-\(I_{M_k}, I_{Dk}, I_{dk}\) & drain current of \(M_k\) & A \\ \hline
-\(V_{GS_k}, V_{GSk}, V_{DSk}, V_{SGk}, V_{ovk}, V_{thk}\) & voltages of \(M_k\) & V \\ \hline
-\(W_k, L_k, k_{n_k}, C_{gsk}\) & sizes, device factor and capacitance of \(M_k\) & m, A/V\(^2\), F \\ \hline
+\(M_k\), \(Q_1\) & transistor \(k\); a BJT & - \\ \hline
+\(g_{m_k}\), \(g_{mk}\), \(g_{o_k}\), \(g_{ok}\), \(r_{ok}\), \(g_{mbk}\) & parameter of transistor \(M_k\) (mirrors write \(g_{m_k}\), amplifiers \(g_{mk}\)) & S, \(\Omega\) \\ \hline
+\(I_{M_k}\), \(I_{Dk}\), \(I_{dk}\) & drain current of \(M_k\) & A \\ \hline
+\(V_{GS_k}\), \(V_{GSk}\), \(V_{DSk}\), \(V_{SGk}\), \(V_{ovk}\), \(V_{thk}\) & voltages of \(M_k\) & V \\ \hline
+\(W_k\), \(L_k\), \(k_{n_k}\), \(C_{gsk}\) & sizes, device factor and capacitance of \(M_k\) & m, A/V\(^2\), F \\ \hline
 \(V_{DSk,\min}\) & smallest saturated \(V_{DS}\) of \(M_k\) & V \\ \hline
 \multicolumn{3}{|l|}{\textbf{Op-Amp, Feedback, Functional Blocks}} \\ \hline
-\(V_+, V_-\) & non-inverting and inverting input & V \\ \hline
-\(V_{id}, V_{ic},\ V_{ID}, V_{IC}\) & differential and common mode input, small and large signal & V \\ \hline
-\(A_d, A_c, CMRR\) & differential gain, common mode gain, ratio & - \\ \hline
-\(R_{id}, R_o\) & differential input and output resistance & \(\Omega\) \\ \hline
-\(\omega_u, p_1\) & unity gain angular frequency, dominant pole & rad/s \\ \hline
+\(V_+\), \(V_-\) & non-inverting and inverting input & V \\ \hline
+\(V_{id}\), \(V_{ic}\), \(V_{ID}\), \(V_{IC}\) & differential and common mode input, small and large signal & V \\ \hline
+\(A_d\), \(A_c\), \(CMRR\) & differential gain, common mode gain, ratio & - \\ \hline
+\(R_{id}\), \(R_o\) & differential input and output resistance & \(\Omega\) \\ \hline
+\(\omega_u\), \(p_1\) & unity gain angular frequency, dominant pole & rad/s \\ \hline
 \(A_{CL}\) & closed loop gain & - \\ \hline
-\(V_{OL}, V_{OH}\) & output limits & V \\ \hline
-\(SR, f_{FP}\) & slew rate, full power bandwidth & V/s, Hz \\ \hline
-\(V_{OS}, I_{B+}, I_{B-}, I_{OS}\) & offset voltage, input bias currents, offset current & V, A \\ \hline
-\(PSRR, PM\) & supply rejection ratio, phase margin & -, \(^\circ\) \\ \hline
-\(R_F, G_F\) & feedback resistor and conductance & \(\Omega\), S \\ \hline
-\(R_s, G_s\) & differentiator series resistor & \(\Omega\), S \\ \hline
-\(V_s, V_{s,\max}\) & buffer step height and largest step that does not slew & V \\ \hline
+\(V_{OL}\), \(V_{OH}\) & output limits & V \\ \hline
+\(SR\), \(f_{FP}\) & slew rate, full power bandwidth & V/s, Hz \\ \hline
+\(V_{OS}\), \(I_{B+}\), \(I_{B-}\), \(I_{OS}\) & offset voltage, input bias currents, offset current & V, A \\ \hline
+\(PSRR\), \(PM\) & supply rejection ratio, phase margin & -, \(^\circ\) \\ \hline
+\(R_F\), \(G_F\) & feedback resistor and conductance & \(\Omega\), S \\ \hline
+\(R_s\), \(G_s\) & differentiator series resistor & \(\Omega\), S \\ \hline
+\(V_s\), \(V_{s,\max}\) & buffer step height and largest step that does not slew & V \\ \hline
 \multicolumn{3}{|l|}{\textbf{Filters and Dividers}} \\ \hline
-\(H_{LP}, H_{HP}, H_0\) & low pass and high pass transfer function; band pass centre gain & - \\ \hline
-\(\omega_1, \omega_2, \omega_{1,2}, f_1, f_2\) & lower and upper \(-3\,dB\) frequencies & rad/s, Hz \\ \hline
+\(H_{LP}\), \(H_{HP}\), \(H_0\) & low pass and high pass transfer function; band pass centre gain & - \\ \hline
+\(\omega_1\), \(\omega_2\), \(\omega_{1,2}\), \(f_1\), \(f_2\) & lower and upper \(-3\,dB\) frequencies & rad/s, Hz \\ \hline
 \(f_c\) & cutoff frequency & Hz \\ \hline
 \(C_{eq}\) & equivalent capacitance & F \\ \hline
-\(I_{G_k}, I_{C_k}, I_{L_k}\) & branch current through \(G_k, C_k, L_k\) & A \\ \hline
+\(I_{G_k}\), \(I_{C_k}\), \(I_{L_k}\) & branch current through \(G_k, C_k, L_k\) & A \\ \hline
 \multicolumn{3}{|l|}{\textbf{Current Mirrors}} \\ \hline
-\(G_2 \ldots G_5, R_2 \ldots R_4\) & input resistor and analysis load of each mirror (stated per mirror) & S, \(\Omega\) \\ \hline
+\(G_2 \ldots G_5\), \(R_2 \ldots R_4\) & input resistor and analysis load of each mirror (stated per mirror) & S, \(\Omega\) \\ \hline
 \(I_{G_k}\) & gate current into node \(k\) (zero for MOS) & A \\ \hline
-\(R_{L,\max}, V_{L,\max}\) & largest load and its largest voltage drop & \(\Omega\), V \\ \hline
-\(V_{OUT,\min}, V_{OUT,\max}\) & output saturation limits & V \\ \hline
-\(Z_{out,mirror}, Z_{out,basic}\) & output impedance of the mirror alone; of a basic mirror & \(\Omega\) \\ \hline
-\(I_s, V_s\) & (basic mirror) test source at \(V_x\) and its current & A, V \\ \hline
+\(R_{L,\max}\), \(V_{L,\max}\) & largest load and its largest voltage drop & \(\Omega\), V \\ \hline
+\(V_{OUT,\min}\), \(V_{OUT,\max}\) & output saturation limits & V \\ \hline
+\(Z_{out,mirror}\), \(Z_{out,basic}\) & output impedance of the mirror alone; of a basic mirror & \(\Omega\) \\ \hline
+\(I_s\), \(V_s\) & (basic mirror) test source at \(V_x\) and its current & A, V \\ \hline
 \(u\) & \(\sqrt{I_{OUT}}\) in the Widlar solution & A\(^{1/2}\) \\ \hline
 \multicolumn{3}{|l|}{\textbf{Amplifiers}} \\ \hline
-\(V_{i1}, V_{i2},\ V_{o1}, V_{o2}\) & pair inputs and outputs (upper case subscripts when large signal) & V \\ \hline
-\(V_{O,\min}, V_{O,\max}, V_{IC,\min}, V_{IC,\max}\) & output swing and input common mode range & V \\ \hline
-\(I_T, I_{dd}\) & tail current, supply current & A \\ \hline
-\(g_{o,tail}, g_{oB}, g_{oL}, g_{o,sink}\) & output conductance of the tail, folding sink, load (\(r_{oL}\)), current sink & S \\ \hline
-\(V_{B}, V_{B2}, V_{B3}, V_{B5}, V_{B7}, V_{BB}\) & gate biases & V \\ \hline
-\(V_{ov,T}, V_{ov,B}, V_{ov,edge}\) & tail and sink overdrive; overdrive at the edge of saturation & V \\ \hline
-\(C_x, C_f, C_s, C_c, C_1\) & cascode or mirror node, fold node, source node capacitance; Miller capacitor; first stage node & F \\ \hline
-\(Z_{dn}, Z_{up}\) & impedance looking down into the NMOS and up into the PMOS stack (\(Z_{dn,telescopic}\), \(Z_{out,plain}\): for the telescopic and the unboosted cascode) & \(\Omega\) \\ \hline
-\(G_m, R_c\) & short circuit transconductance of a cascode; plain cascode output resistance & S, \(\Omega\) \\ \hline
-\(A_b, A_{b0}, A_{bn}, A_{bp}\) & boost amplifier gain, DC value, NMOS and PMOS boosters & - \\ \hline
-\(M_A, M_B, M_9\) & booster device (\(g_{mA}\), \(r_{oA}\)), folding sink, telescopic tail & - \\ \hline
-\(p_b, \omega_b, p_d, z_d, p_a, p_c, p_{in}, p_{out}\) & booster pole and unity gain frequency, doublet pole and zero, mirror poles, input and output node poles & rad/s \\ \hline
-\(V_{ref}, V_{refn}, V_{refp}\) & booster references & V \\ \hline
-\(V_f, V_u, V_a, V_b, V_c\) & fold node, node above the PMOS cascode, current mirror op-amp mirror nodes & V \\ \hline
-\(R_f, G_f, I_{sc}\) & fold node resistance \(r_{o1} \parallel r_{oB}\) and conductance; short circuit current & \(\Omega\), S, A \\ \hline
+\(V_{i1}\), \(V_{i2}\), \(V_{o1}\), \(V_{o2}\) & pair inputs and outputs (upper case subscripts when large signal) & V \\ \hline
+\(V_{O,\min}\), \(V_{O,\max}\), \(V_{IC,\min}\), \(V_{IC,\max}\) & output swing and input common mode range & V \\ \hline
+\(I_T\), \(I_{dd}\) & tail current, supply current & A \\ \hline
+\(g_{o,tail}\), \(g_{oB}\), \(g_{oL}\), \(g_{o,sink}\) & output conductance of the tail, folding sink, load (\(r_{oL}\)), current sink & S \\ \hline
+\(V_{B}\), \(V_{B2}\), \(V_{B3}\), \(V_{B5}\), \(V_{B7}\), \(V_{BB}\) & gate biases & V \\ \hline
+\(V_{ov,T}\), \(V_{ov,B}\), \(V_{ov,edge}\) & tail and sink overdrive; overdrive at the edge of saturation & V \\ \hline
+\(C_x\), \(C_f\), \(C_s\), \(C_c\), \(C_1\) & cascode or mirror node, fold node, source node capacitance; Miller capacitor; first stage node & F \\ \hline
+\(Z_{dn}\), \(Z_{up}\) & impedance looking down into the NMOS and up into the PMOS stack (\(Z_{dn,telescopic}\), \(Z_{out,plain}\): for the telescopic and the unboosted cascode) & \(\Omega\) \\ \hline
+\(G_m\), \(R_c\) & short circuit transconductance of a cascode; plain cascode output resistance & S, \(\Omega\) \\ \hline
+\(A_b\), \(A_{b0}\), \(A_{bn}\), \(A_{bp}\) & boost amplifier gain, DC value, NMOS and PMOS boosters & - \\ \hline
+\(M_A\), \(M_B\), \(M_9\) & booster device (\(g_{mA}\), \(r_{oA}\)), folding sink, telescopic tail & - \\ \hline
+\(p_b\), \(\omega_b\), \(p_d\), \(z_d\), \(p_a\), \(p_c\), \(p_{in}\), \(p_{out}\) & booster pole and unity gain frequency, doublet pole and zero, mirror poles, input and output node poles & rad/s \\ \hline
+\(V_{ref}\), \(V_{refn}\), \(V_{refp}\) & booster references & V \\ \hline
+\(V_f\), \(V_u\), \(V_a\), \(V_b\), \(V_c\) & fold node, node above the PMOS cascode, current mirror op-amp mirror nodes & V \\ \hline
+\(R_f\), \(G_f\), \(I_{sc}\) & fold node resistance \(r_{o1} \parallel r_{oB}\) and conductance; short circuit current & \(\Omega\), S, A \\ \hline
 \(I_B\text{ (folded)}\) & folding sink current & A \\ \hline
 \(B\text{ (op-amp)}\) & current mirror op-amp mirror gain & - \\ \hline
-\(G_1, G_2\text{ (two stage)}, R_z, I_5, I_7\) & stage output conductances, nulling resistor, tail and sink currents & S, \(\Omega\), A \\ \hline
+\(G_1\), \(G_2\text{ (two stage)}\), \(R_z\), \(I_5\), \(I_7\) & stage output conductances, nulling resistor, tail and sink currents & S, \(\Omega\), A \\ \hline
 \(t_{-10V}\) & time to reach \(-10\,V\) & s \\ \hline
 \multicolumn{3}{|l|}{\textbf{Data Converters}} \\ \hline
-\(b_k, b_{n-1}, b\) & bit \(k\), the MSB, a pipeline decision & - \\ \hline
-\(X_{REF}, X_{LSB}, X_{IN}, X_{OUT}, X_k\) & reference, LSB step, input, output, level or transition \(k\) & V or A \\ \hline
-\(V_{REF}, V_{DAC}, V_{DAC}^{(k)}\) & reference, DAC output, SAR trial level & V \\ \hline
-\(e, \overline{e^2}, x(t)\) & quantisation error, its mean square, input signal & V \\ \hline
-\(SQNR, SINAD, ENOB, SFDR\) & signal to quantisation noise, to noise and distortion, effective bits, spurious free range & dB, dB, bits, dB \\ \hline
-\(f_s, f_B, OSR, f_{in}, f_{clk}, T_{clk}\) & sampling, signal band, oversampling ratio, input frequency, clock & Hz, -, Hz, s \\ \hline
-\(t_j, SNR_{jitter}\) & rms sampling jitter, jitter limited SNR & s, - \\ \hline
-\(DNL_k, INL_k, INL_{\max}\) & differential and integral non-linearity, largest INL & LSB \\ \hline
-\(S_X, S_R, S_I, S_C\) & relative standard deviation of a unit element & - \\ \hline
-\(I_{STR}, I_{string}, S_D, S_k, R_{sw}, R_{tot}, R_j\) & string current, tap switches, switch resistance, total and \(j\)-th string resistor & A, -, \(\Omega\) \\ \hline
-\(DR, NR\) & \(D \cdot R\), \(N \cdot R\) & \(\Omega\) \\ \hline
-\(R_{out}, R_{out,\max}\) & DAC output resistance and its largest value & \(\Omega\) \\ \hline
-\(f_{in,\max}, V_{RES,ideal}\) & highest input frequency; residue with an ideal amplifier & Hz, V \\ \hline
-\(V_k, V_{th,k}, R_{th,k}, I_k\) & R-2R node voltage, Thevenin voltage and resistance, leg current & V, V, \(\Omega\), A \\ \hline
-\(G_M, G_r, e_M, e_r, w\) & MSB leg and rest of ladder, their errors, MSB weight & S, - \\ \hline
-\(I_u, g_u, r_u, dI_k, I_{OUT+}, I_{OUT-}\) & unit current, its output conductance and resistance, its error, the differential outputs & A, S, \(\Omega\) \\ \hline
-\(C_u, C_k, C_p, C_b, C_{tot}, C_{tot,split}, C_{in}\) & unit, bit \(k\), parasitic, bridge, total capacitor (of a split array); op-amp input capacitance & F \\ \hline
+\(b_k\), \(b_{n-1}\), \(b\) & bit \(k\), the MSB, a pipeline decision & - \\ \hline
+\(X_{REF}\), \(X_{LSB}\), \(X_{IN}\), \(X_{OUT}\), \(X_k\) & reference, LSB step, input, output, level or transition \(k\) & V or A \\ \hline
+\(V_{REF}\), \(V_{DAC}\), \(V_{DAC}^{(k)}\) & reference, DAC output, SAR trial level & V \\ \hline
+\(e\), \(\overline{e^2}\), \(x(t)\) & quantisation error, its mean square, input signal & V \\ \hline
+\(SQNR\), \(SINAD\), \(ENOB\), \(SFDR\) & signal to quantisation noise, to noise and distortion, effective bits, spurious free range & dB, dB, bits, dB \\ \hline
+\(f_s\), \(f_B\), \(OSR\), \(f_{in}\), \(f_{clk}\), \(T_{clk}\) & sampling, signal band, oversampling ratio, input frequency, clock & Hz, -, Hz, s \\ \hline
+\(t_j\), \(SNR_{jitter}\) & rms sampling jitter, jitter limited SNR & s, - \\ \hline
+\(DNL_k\), \(INL_k\), \(INL_{\max}\) & differential and integral non-linearity, largest INL & LSB \\ \hline
+\(S_X\), \(S_R\), \(S_I\), \(S_C\) & relative standard deviation of a unit element & - \\ \hline
+\(I_{STR}\), \(I_{string}\), \(S_D\), \(S_k\), \(R_{sw}\), \(R_{tot}\), \(R_j\) & string current, tap switches, switch resistance, total and \(j\)-th string resistor & A, -, \(\Omega\) \\ \hline
+\(DR\), \(NR\) & \(D \cdot R\), \(N \cdot R\) & \(\Omega\) \\ \hline
+\(R_{out}\), \(R_{out,\max}\) & DAC output resistance and its largest value & \(\Omega\) \\ \hline
+\(f_{in,\max}\), \(V_{RES,ideal}\) & highest input frequency; residue with an ideal amplifier & Hz, V \\ \hline
+\(V_k\), \(V_{th,k}\), \(R_{th,k}\), \(I_k\) & R-2R node voltage, Thevenin voltage and resistance, leg current & V, V, \(\Omega\), A \\ \hline
+\(G_M\), \(G_r\), \(e_M\), \(e_r\), \(w\) & MSB leg and rest of ladder, their errors, MSB weight & S, - \\ \hline
+\(I_u\), \(g_u\), \(r_u\), \(dI_k\), \(I_{OUT+}\), \(I_{OUT-}\) & unit current, its output conductance and resistance, its error, the differential outputs & A, S, \(\Omega\) \\ \hline
+\(C_u\), \(C_k\), \(C_p\), \(C_b\), \(C_{tot}\), \(C_{tot,split}\), \(C_{in}\) & unit, bit \(k\), parasitic, bridge, total capacitor (of a split array); op-amp input capacitance & F \\ \hline
 \(V^{(k)}\) & serial or pipeline DAC output after step \(k\); cyclic ADC residue & V \\ \hline
-\(V_{T,k}, V_{os,k}, C_{in,comp}\) & flash threshold and comparator offset \(k\), comparator input capacitance & V, V, F \\ \hline
-\(n_1, n_2, n_s, n_q, D_1, D_2\) & coarse, fine, sub-ADC and quantiser bits; coarse and fine codes & - \\ \hline
-\(V_{RES}, V_{RES,k}\) & residue, after stage \(k\) & V \\ \hline
-\(A_p, V_{fold}, N_{\min}\) & preamp gain, folded signal, minimum comparator count & -, V, - \\ \hline
-\(N_1, N_2, T_1, T_2, \overline{V_{IN}}\) & dual slope counts, durations, average input & -, s, V \\ \hline
-\(\phi_1, \phi_2\) & clock phases & - \\ \hline
-\(U, V, Y, STF, NTF\) & modulator input, output, filter output, signal and noise transfer & - \\ \hline
-\(z^{-1}, \mathcal{Z}^{-1}\) & one sample delay, inverse z transform & - \\ \hline
-\(P_n, P_s\) & noise power, signal power & V\(^2\), W \\ \hline
-\(SD(\cdot), Var(\cdot)\) & standard deviation, variance & - \\ \hline
+\(V_{T,k}\), \(V_{os,k}\), \(C_{in,comp}\) & flash threshold and comparator offset \(k\), comparator input capacitance & V, V, F \\ \hline
+\(n_1\), \(n_2\), \(n_s\), \(n_q\), \(D_1\), \(D_2\) & coarse, fine, sub-ADC and quantiser bits; coarse and fine codes & - \\ \hline
+\(V_{RES}\), \(V_{RES,k}\) & residue, after stage \(k\) & V \\ \hline
+\(A_p\), \(V_{fold}\), \(N_{\min}\) & preamp gain, folded signal, minimum comparator count & -, V, - \\ \hline
+\(N_1\), \(N_2\), \(T_1\), \(T_2\), \(\overline{V_{IN}}\) & dual slope counts, durations, average input & -, s, V \\ \hline
+\(\phi_1\), \(\phi_2\) & clock phases & - \\ \hline
+\(U\), \(V\), \(Y\), \(STF\), \(NTF\) & modulator input, output, filter output, signal and noise transfer & - \\ \hline
+\(z^{-1}\), \(\mathcal{Z}^{-1}\) & one sample delay, inverse z transform & - \\ \hline
+\(P_n\), \(P_s\) & noise power, signal power & V\(^2\), W \\ \hline
+\(SD(\cdot)\), \(Var(\cdot)\) & standard deviation, variance & - \\ \hline
 \(\Sigma\) & summing node in block diagrams & - \\ \hline
 \multicolumn{3}{|l|}{\textbf{PLL and VCO}} \\ \hline
-\(\theta, \theta_{ref}, \theta_{div}, \theta_{out}, \theta_{vco}, \theta_e\) & excess phase of each signal; phase error & rad \\ \hline
-\(K_{vco}, K_v, V_c\) & VCO gain in Hz/V and rad/s/V, control voltage & Hz/V, rad/s/V, V \\ \hline
-\(K_{pd}, V_{pd}, I_{cp}, I_f\) & phase detector gain (\(K_{pd,XOR}\), \(K_{pd,PFD}\)), XOR output, pump current, averaged filter current & V/rad or A/rad, V, A, A \\ \hline
-\(T_{ref}, f_{ref}, t_e, t_{on}\) & reference period and frequency, edge shift, reset pulse width & s, Hz, s, s \\ \hline
-\(Z(s), G(s), \omega_c\) & loop filter impedance, open loop gain, crossover & \(\Omega\), -, rad/s \\ \hline
-\(\omega_{out}, f_{out}, d\omega\) & output frequency, frequency step & rad/s, Hz, rad/s \\ \hline
-\(\omega_p, t_d, g_c\) & ring stage pole, stage delay, relaxation charging transconductance & rad/s, s, S \\ \hline
-\(R_p, Q_L, R_{neg}, V_{amp,diff}, I_a\) & tank loss resistance, inductor Q, negative resistance, amplitude, square wave current & \(\Omega\), -, \(\Omega\), V, A \\ \hline
-\(C_{fix}, C_{var}, F_n, f_m, f_c, V_H, V_L\) & fixed and varactor capacitance, noise factor, offset, flicker corner, Schmitt thresholds & F, -, Hz, Hz, V \\ \hline
+\(\theta\), \(\theta_{ref}\), \(\theta_{div}\), \(\theta_{out}\), \(\theta_{vco}\), \(\theta_e\) & excess phase of each signal; phase error & rad \\ \hline
+\(K_{vco}\), \(K_v\), \(V_c\) & VCO gain in Hz/V and rad/s/V, control voltage & Hz/V, rad/s/V, V \\ \hline
+\(K_{pd}\), \(V_{pd}\), \(I_{cp}\), \(I_f\) & phase detector gain (\(K_{pd,XOR}\), \(K_{pd,PFD}\)), XOR output, pump current, averaged filter current & V/rad or A/rad, V, A, A \\ \hline
+\(T_{ref}\), \(f_{ref}\), \(t_e\), \(t_{on}\) & reference period and frequency, edge shift, reset pulse width & s, Hz, s, s \\ \hline
+\(Z(s)\), \(G(s)\), \(\omega_c\) & loop filter impedance, open loop gain, crossover & \(\Omega\), -, rad/s \\ \hline
+\(\omega_{out}\), \(f_{out}\), \(d\omega\) & output frequency, frequency step & rad/s, Hz, rad/s \\ \hline
+\(\omega_p\), \(t_d\), \(g_c\) & ring stage pole, stage delay, relaxation charging transconductance & rad/s, s, S \\ \hline
+\(R_p\), \(Q_L\), \(R_{neg}\), \(V_{amp,diff}\), \(I_a\) & tank loss resistance, inductor Q, negative resistance, amplitude, square wave current & \(\Omega\), -, \(\Omega\), V, A \\ \hline
+\(C_{fix}\), \(C_{var}\), \(F_n\), \(f_m\), \(f_c\), \(V_H\), \(V_L\) & fixed and varactor capacitance, noise factor, offset, flicker corner, Schmitt thresholds & F, -, Hz, Hz, V \\ \hline
 \multicolumn{3}{|l|}{\textbf{Theory: Loading, Parasitics, Probability, Noise, Second Order}} \\ \hline
 \(Box_k\) & circuit stage \(k\) & - \\ \hline
-\(R_o + jX_o, R_i + jX_i, Z_0, Z^*\) & source and load impedance, line impedance, complex conjugate & \(\Omega\) \\ \hline
+\(R_o + jX_o\), \(R_i + jX_i\), \(Z_0\), \(Z^*\) & source and load impedance, line impedance, complex conjugate & \(\Omega\) \\ \hline
 \(P_{in}\) & power into the load & W \\ \hline
-\(R_s, L_s, C_{13}\) & total series resistance and inductance, end to end capacitance (resistor model) & \(\Omega\), H, F \\ \hline
-\(x_i, M_X, M_Y, M[\cdot]\) & measurement \(i\), mean of \(X\) and \(Y\), mean of an expression & - \\ \hline
-\(f(x), P(\cdot)\) & probability density, probability & - \\ \hline
-\(dP, K_{dP}, WL\) & mismatch of a parameter, its Pelgrom coefficient, device area & -, -, m\(^2\) \\ \hline
+\(R_s\), \(L_s\), \(C_{13}\) & total series resistance and inductance, end to end capacitance (resistor model) & \(\Omega\), H, F \\ \hline
+\(x_i\), \(M_X\), \(M_Y\), \(M[\cdot]\) & measurement \(i\), mean of \(X\) and \(Y\), mean of an expression & - \\ \hline
+\(f(x)\), \(P(\cdot)\) & probability density, probability & - \\ \hline
+\(dP\), \(K_{dP}\), \(WL\) & mismatch of a parameter, its Pelgrom coefficient, device area & -, -, m\(^2\) \\ \hline
 \(V_{n,total}\) & total of uncorrelated noise sources & V \\ \hline
-\(S_v, S_i, V_n, I_n, f_L, f_H\) & noise spectral densities, rms noise, band edges & V\(^2\)/Hz, A\(^2\)/Hz, V, A, Hz \\ \hline
-\(a_k, b_k\text{ (polynomials)}\) & denominator and numerator coefficients & - \\ \hline
-\(p_r, p_i, p_{1,2}\) & real and imaginary part of complex poles \(p_{1,2} = p_r \pm jp_i\) & rad/s \\ \hline
+\(S_v\), \(S_i\), \(V_n\), \(I_n\), \(f_L\), \(f_H\) & noise spectral densities, rms noise, band edges & V\(^2\)/Hz, A\(^2\)/Hz, V, A, Hz \\ \hline
+\(a_k\), \(b_k\text{ (polynomials)}\) & denominator and numerator coefficients & - \\ \hline
+\(p_r\), \(p_i\), \(p_{1,2}\) & real and imaginary part of complex poles \(p_{1,2} = p_r \pm jp_i\) & rad/s \\ \hline
 \multicolumn{3}{|l|}{\textbf{Theory: Electromagnetics}} \\ \hline
-\(\mathbf{r}, \nabla, \nabla^2, \hat{\mathbf{x}}\) & position, del operator, Laplacian, unit vectors & - \\ \hline
-\(\mathbf{F}, \mathbf{G}, \mathbf{C}, F_x, f_k\) & vector functions, curl of \(\mathbf{F}\), components & - \\ \hline
-\(\mathbf{E}, \mathbf{D}, \mathbf{H}, \mathbf{B}\) & electric field, electric flux density, magnetic field, magnetic flux density & V/m, C/m\(^2\), A/m, Wb/m\(^2\) \\ \hline
-\(\mathbf{J_e}, \mathbf{J_m}, Q_V, \mathbf{v}\) & electric and magnetic current density, charge density, charge velocity & A/m\(^2\), V/m\(^2\), C/m\(^3\), m/s \\ \hline
-\(\epsilon_0, \mu_0\) & permittivity and permeability of free space & F/m, H/m \\ \hline
-\(\mathbf{K}_E, \mathbf{K}_M, \mathbf{K}_{ER}, \mathbf{K}_{MR}, K_{E,ij}\) & permittivity, permeability, their relative forms, element \(i, j\) & F/m, H/m, - \\ \hline
-\(\mathbf{X}_E, \mathbf{X}_M, \mathbb{I}, I_{ij}\) & susceptibilities (plain \(K_E, X_E, \ldots\): one element or the isotropic scalar), identity matrix, its elements & - \\ \hline
-\(V\text{ (volume)}, d\mathbf{S}, d\mathbf{l}, l, c\) & volume, surface and line element, region size, speed of light & m\(^3\), m\(^2\), m, m, m/s \\ \hline
-\(V(\mathbf{r},t), \phi\) & scalar potential, a scalar function & V \\ \hline
+\(\mathbf{r}\), \(\nabla\), \(\nabla^2\), \(\hat{\mathbf{x}}\) & position, del operator, Laplacian, unit vectors & - \\ \hline
+\(\mathbf{F}\), \(\mathbf{G}\), \(\mathbf{C}\), \(F_x\), \(f_k\) & vector functions, curl of \(\mathbf{F}\), components & - \\ \hline
+\(\mathbf{E}\), \(\mathbf{D}\), \(\mathbf{H}\), \(\mathbf{B}\) & electric field, electric flux density, magnetic field, magnetic flux density & V/m, C/m\(^2\), A/m, Wb/m\(^2\) \\ \hline
+\(\mathbf{J_e}\), \(\mathbf{J_m}\), \(Q_V\), \(\mathbf{v}\) & electric and magnetic current density, charge density, charge velocity & A/m\(^2\), V/m\(^2\), C/m\(^3\), m/s \\ \hline
+\(\epsilon_0\), \(\mu_0\) & permittivity and permeability of free space & F/m, H/m \\ \hline
+\(\mathbf{K}_E\), \(\mathbf{K}_M\), \(\mathbf{K}_{ER}\), \(\mathbf{K}_{MR}\), \(K_{E,ij}\) & permittivity, permeability, their relative forms, element \(i, j\) & F/m, H/m, - \\ \hline
+\(\mathbf{X}_E\), \(\mathbf{X}_M\), \(\mathbb{I}\), \(I_{ij}\) & susceptibilities (plain \(K_E, X_E, \ldots\): one element or the isotropic scalar), identity matrix, its elements & - \\ \hline
+\(V\text{ (volume)}\), \(d\mathbf{S}\), \(d\mathbf{l}\), \(l\), \(c\) & volume, surface and line element, region size, speed of light & m\(^3\), m\(^2\), m, m, m/s \\ \hline
+\(V(\mathbf{r},t)\), \(\phi\) & scalar potential, a scalar function & V \\ \hline
 \multicolumn{3}{|l|}{\textbf{Labels and Abbreviations}} \\ \hline
-\(KCL, KVL\) & Kirchhoff's current and voltage laws & - \\ \hline
-\(OP, DC, AC, TRAN, FOUR\) & SPICE analyses & - \\ \hline
-\(NMOS, PMOS, BJT, NPN, PNP\) & device types & - \\ \hline
-\(CS, CG, CD, CE, CB, CC, OTA, 5T\) & amplifier stages and types & - \\ \hline
-\(DAC, ADC, MDAC, SAR, MSB, LSB\) & converter labels & - \\ \hline
-\(PLL, VCO, PD, PFD, CP, XOR, UP, DN\) & PLL blocks and signals & - \\ \hline
-\(FDTD, RF\) & finite difference time domain; radio frequency & - \\ \hline
+\(KCL\), \(KVL\) & Kirchhoff's current and voltage laws & - \\ \hline
+\(OP\), \(DC\), \(AC\), \(TRAN\), \(FOUR\) & SPICE analyses & - \\ \hline
+\(NMOS\), \(PMOS\), \(BJT\), \(NPN\), \(PNP\) & device types & - \\ \hline
+\(CS\), \(CG\), \(CD\), \(CE\), \(CB\), \(CC\), \(OTA\), \(5T\) & amplifier stages and types & - \\ \hline
+\(DAC\), \(ADC\), \(MDAC\), \(SAR\), \(MSB\), \(LSB\) & converter labels & - \\ \hline
+\(PLL\), \(VCO\), \(PD\), \(PFD\), \(CP\), \(XOR\), \(UP\), \(DN\) & PLL blocks and signals & - \\ \hline
+\(FDTD\), \(RF\) & finite difference time domain; radio frequency & - \\ \hline
 \multicolumn{3}{|l|}{\textbf{Unit Prefixes}} \\ \hline
-\(G, M, k, m, \mu, n, p, f\) & giga \(10^9\), mega \(10^6\), kilo \(10^3\), milli \(10^{-3}\), micro \(10^{-6}\), nano \(10^{-9}\), pico \(10^{-12}\), femto \(10^{-15}\) & - \\ \hline
+\(G\), \(M\), \(k\), \(m\), \(\mu\), \(n\), \(p\), \(f\) & giga \(10^9\), mega \(10^6\), kilo \(10^3\), milli \(10^{-3}\), micro \(10^{-6}\), nano \(10^{-9}\), pico \(10^{-12}\), femto \(10^{-15}\) & - \\ \hline
 \end{symtable}
