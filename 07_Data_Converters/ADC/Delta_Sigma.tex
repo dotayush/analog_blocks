@@ -29,8 +29,8 @@ where a digital decimation filter removes it.
   Y &= \frac{z^{-1}}{1 - z^{-1}}(U - V) \\
   V &= \frac{z^{-1}}{1 - z^{-1}}(U - V) + E \\
   V\left(1 + \frac{z^{-1}}{1 - z^{-1}}\right) &= \frac{z^{-1}}{1 - z^{-1}} U + E \\
-  V \cdot \frac{1}{1 - z^{-1}} &= \frac{z^{-1}}{1 - z^{-1}} U + E \\
-  V &= \underbrace{z^{-1}}_{STF} U + \underbrace{(1 - z^{-1})}_{NTF} E
+  V \cdot \frac{1 - z^{-1} + z^{-1}}{1 - z^{-1}} = V \cdot \frac{1}{1 - z^{-1}} &= \frac{z^{-1}}{1 - z^{-1}} U + E \\
+  V &= \underbrace{z^{-1}}_{STF} U + \underbrace{(1 - z^{-1})}_{NTF} E \hspace{1cm} [\times (1 - z^{-1})]
 \end{align*}
 The signal is only delayed; the noise is differentiated (first order high
 pass). An \(L\)-th order loop gives \(NTF = (1 - z^{-1})^L\).
@@ -39,21 +39,31 @@ pass). An \(L\)-th order loop gives \(NTF = (1 - z^{-1})^L\).
 \begin{enumerate}
   \item \textbf{Noise Shaping}: on \(z = e^{j2\pi f/f_s}\),
     \begin{align*}
-      |1 - e^{-j2\pi f/f_s}| &= |e^{-j\pi f/f_s}|\,|e^{j\pi f/f_s} - e^{-j\pi f/f_s}| = 2\sin\left(\frac{\pi f}{f_s}\right) \approx \frac{2\pi f}{f_s}
+      1 - e^{-j2\pi f/f_s} &= e^{-j\pi f/f_s}\left(e^{j\pi f/f_s} - e^{-j\pi f/f_s}\right) = e^{-j\pi f/f_s} \cdot 2j\sin\left(\frac{\pi f}{f_s}\right) \\
+      |1 - e^{-j2\pi f/f_s}| &= |e^{-j\pi f/f_s}| \cdot |2j| \cdot \left|\sin\left(\frac{\pi f}{f_s}\right)\right| = 1 \cdot 2 \cdot \sin\left(\frac{\pi f}{f_s}\right) \approx \frac{2\pi f}{f_s} \hspace{0.5cm} [f \ll f_s,\ \sin x \approx x]
     \end{align*}
+    and \(|NTF|^2 = \left|(1 - z^{-1})^L\right|^2 \approx \left(\frac{2\pi f}{f_s}\right)^{2L}\).
   \item \textbf{In-band Noise}: \(E\) is white with power \(\frac{X_{LSB}^2}{12}\) spread
     over \(\pm\frac{f_s}{2}\), i.e. density \(\frac{X_{LSB}^2}{12 f_s}\):
     \begin{align*}
       P_n &= \int_{-f_B}^{f_B} \frac{X_{LSB}^2}{12 f_s}\left(\frac{2\pi f}{f_s}\right)^{2L} df
+           = \frac{X_{LSB}^2}{12 f_s}\left(\frac{2\pi}{f_s}\right)^{2L} \left[\frac{f^{2L+1}}{2L + 1}\right]_{-f_B}^{f_B}
            = \frac{X_{LSB}^2}{12 f_s}\left(\frac{2\pi}{f_s}\right)^{2L} \frac{2 f_B^{2L+1}}{2L + 1} \\
-      P_n &= \frac{X_{LSB}^2}{12} \cdot \frac{\pi^{2L}}{2L + 1} \cdot \left(\frac{2 f_B}{f_s}\right)^{2L+1}
-           = \frac{X_{LSB}^2}{12} \cdot \frac{\pi^{2L}}{(2L + 1)\, OSR^{2L+1}}
+      P_n &= \frac{X_{LSB}^2}{12} \cdot \frac{2^{2L}\pi^{2L} \cdot 2 f_B^{2L+1}}{(2L + 1) f_s^{2L+1}}
+           = \frac{X_{LSB}^2}{12} \cdot \frac{\pi^{2L}}{2L + 1} \cdot \frac{(2 f_B)^{2L+1}}{f_s^{2L+1}}
+           = \frac{X_{LSB}^2}{12} \cdot \frac{\pi^{2L}}{(2L + 1)\, OSR^{2L+1}} \hspace{0.5cm} \left[OSR = \tfrac{f_s}{2 f_B}\right]
     \end{align*}
+  \item \textbf{SQNR}: a full scale sine on an \(n_q\)-bit quantiser has amplitude
+    \(\frac{2^{n_q} X_{LSB}}{2}\) and power \(P_s = \frac{1}{2}\left(\frac{2^{n_q} X_{LSB}}{2}\right)^2 = \frac{2^{2n_q} X_{LSB}^2}{8}\):
     \begin{align*}
-      SQNR_{dB} = 6.02\, n_q + 1.76 - 10\log_{10}\frac{\pi^{2L}}{2L + 1} + (2L + 1)\, 10\log_{10}(OSR)
+      \frac{P_s}{P_n} &= \frac{2^{2n_q} X_{LSB}^2}{8}\cdot\frac{12}{X_{LSB}^2}\cdot\frac{(2L + 1)\, OSR^{2L+1}}{\pi^{2L}} = \frac{3}{2}\, 2^{2n_q}\cdot\frac{2L + 1}{\pi^{2L}}\cdot OSR^{2L+1} \\
+      SQNR_{dB} &= 10\log_{10}\frac{P_s}{P_n} = 20 n_q \log_{10} 2 + 10\log_{10}\frac{3}{2} - 10\log_{10}\frac{\pi^{2L}}{2L + 1} + (2L + 1)\, 10\log_{10}(OSR) \\
+      SQNR_{dB} &= 6.02\, n_q + 1.76 - 10\log_{10}\frac{\pi^{2L}}{2L + 1} + (2L + 1)\, 10\log_{10}(OSR)
     \end{align*}
-    First order (\(L = 1\)): \(-5.17\,\)dB \(+ 30\log_{10}(OSR)\) (1.5 bits per
-    doubling of \(OSR\)); second order: \(-12.9\,\)dB \(+ 50\log_{10}(OSR)\).
+    First order (\(L = 1\)): \(10\log_{10}\frac{\pi^2}{3} = 10\log_{10} 3.290 = 5.17\,\)dB, so
+    \(-5.17\,\)dB \(+ 30\log_{10}(OSR)\); doubling \(OSR\) adds \(30\log_{10} 2 = 9.03\,\)dB \(= 1.5\)
+    bits. Second order: \(10\log_{10}\frac{\pi^4}{5} = 10\log_{10} 19.48 = 12.9\,\)dB, so
+    \(-12.9\,\)dB \(+ 50\log_{10}(OSR)\) (2.5 bits per doubling).
   \item \textbf{Single-Bit vs Multi-Bit}: a 1-bit quantiser and DAC are
     inherently linear but limit stable loop orders and input range (higher
     order 1-bit loops are only conditionally stable, typically \(|U| < 0.7\)
@@ -75,6 +85,9 @@ Audio, \(f_B = 20\,\)kHz, 16 bit (\(SQNR \geq 98\,\)dB), 1-bit quantiser. Find t
 \(OSR\) for \(L = 1\) and \(L = 2\).
 \paragraph{Solution:}
 \begin{align*}
-  L = 1&: \ 98 = 7.78 - 5.17 + 30\log_{10}OSR \Rightarrow OSR = 10^{95.39/30} = 1512 \ (f_s = 60.5\,MHz) \\
-  L = 2&: \ 98 = 7.78 - 12.9 + 50\log_{10}OSR \Rightarrow OSR = 10^{103.1/50} = 115 \ (f_s = 4.6\,MHz)
+  n_q = 1&: \ 6.02 \cdot 1 + 1.76 = 7.78\,dB \\
+  L = 1&: \ 98 = 7.78 - 5.17 + 30\log_{10}OSR \Rightarrow 30\log_{10}OSR = 98 - 2.61 = 95.39 \\
+  &\phantom{:}\ OSR = 10^{95.39/30} = 10^{3.180} = 1512 \hspace{1cm} f_s = 2\, OSR\, f_B = 2 \cdot 1512 \cdot 20\,kHz = 60.5\,MHz \\
+  L = 2&: \ 98 = 7.78 - 12.9 + 50\log_{10}OSR \Rightarrow 50\log_{10}OSR = 98 + 5.12 = 103.12 \\
+  &\phantom{:}\ OSR = 10^{103.12/50} = 10^{2.062} = 115 \hspace{1cm} f_s = 2 \cdot 115 \cdot 20\,kHz = 4.6\,MHz
 \end{align*}
