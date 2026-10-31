@@ -50,7 +50,9 @@ down into two types: Low Pass Filter and High Pass.
 \end{circuitfig}
 
 \subsubsection{Transfer Function}
-Applying KCL (Q4) at $V_{out}$ on Full Schematic, we get:
+\textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)} (only
+linear devices are present, so no linearization is needed). Applying KCL
+at $V_{out}$ on Full Schematic, we get:
 \[
   \frac{V_{out} - V_{1}}{sL_1} + (V_{out} - V_{2}){G_1} = 0
 \]
@@ -64,6 +66,8 @@ Applying KCL (Q4) at $V_{out}$ on Full Schematic, we get:
       V_{out}(G_1 + \frac{1}{sL_1}) - \frac{V_{1}}{sL_1} &= 0 \\
       V_{out}(G_1 + \frac{1}{sL_1}) &= \frac{V_{1}}{sL_1} \\
       V_{out} &= \frac{\frac{V_{1}}{sL_1}}{(G_1 + \frac{1}{sL_1})} \\
+      V_{out} &= \frac{\frac{V_{1}}{sL_1} \cdot sL_1}{(G_1 + \frac{1}{sL_1}) \cdot sL_1} \hspace{1cm} \text{(Multiplying by \(\frac{sL_1}{sL_1}\))} \\
+      V_{out} &= \frac{V_{1}}{sL_1 G_1 + 1} \\
       V_{out} &= \frac{1}{L_1 s G_1 + 1}V_{1} \\
       H_1(s) = \frac{N_1(s)}{D_1(s)} = \frac{V_{out_1}}{V_{1}} &= \frac{1}{L_1 s G_1 + 1}
     \end{align*}
@@ -75,6 +79,7 @@ Applying KCL (Q4) at $V_{out}$ on Full Schematic, we get:
       V_{out}(G_1 + \frac{1}{sL_1}) - V_{2}G_1 &= 0 \\
       V_{out}(G_1 + \frac{1}{sL_1}) &= V_{2}G_1 \\
       V_{out} &= \frac{V_{2}G_1}{(G_1 + \frac{1}{sL_1})} \\
+      V_{out} &= \frac{V_{2}G_1 \cdot sL_1}{(G_1 + \frac{1}{sL_1}) \cdot sL_1} \hspace{1cm} \text{(Multiplying by \(\frac{sL_1}{sL_1}\))} \\
       V_{out} &= \frac{sL_1 G_1}{G_1 s L_1 + 1}V_{2} \\
       H_2(s) = \frac{N_2(s)}{D_2(s)} = \frac{V_{out_2}}{V_{2}} &= \frac{sL_1 G_1}{G_1 s L_1 + 1}
     \end{align*}
@@ -83,7 +88,7 @@ Applying KCL (Q4) at $V_{out}$ on Full Schematic, we get:
 \begin{align*}
   V_{out} &= V_{out_1} + V_{out_2} \\
   V_{out} &= H_1(s) V_{1} + H_2(s) V_{2} \\
-  V_{out} = \underbrace{\frac{1}{L_1 s G_1 + 1}V_{1}}_{\text{Low Pass Character}} + \underbrace{\frac{sL_1 G_1}{G_1 s L_1 + 1}V_{2}}_{\text{High Pass Character}}
+  V_{out} &= \underbrace{\frac{1}{L_1 s G_1 + 1}V_{1}}_{\text{Low Pass Character}} + \underbrace{\frac{sL_1 G_1}{G_1 s L_1 + 1}V_{2}}_{\text{High Pass Character}}
 \end{align*}
 
 \subsubsection{Analysis}
@@ -93,26 +98,29 @@ Applying KCL (Q4) at $V_{out}$ on Full Schematic, we get:
       \begin{align*}
         L_1 s G_1 + 1 &= 0 \\
         L_1 s G_1 &= -1 \\
-        s &= -\frac{1}{L_1 G_1}
+        s_p &= -\frac{1}{L_1 G_1} = -\frac{R_1}{L_1} \hspace{1cm} \text{[let \(s = s_p\)]}
       \end{align*}
       Negative real pole indicates a stable system. Frequency
       corresponding to this pole:
       \begin{align*}
-        s &= -2 \pi f_p \\
-        -2 \pi f_p &= -\frac{1}{L_1 G_1} \\
+        f_p &= \frac{|s_p|}{2\pi} \\
+        f_p &= \frac{1}{2\pi}\cdot\frac{1}{L_1 G_1} \\
         f_p &= \frac{1}{2 \pi L_1 G_1} = \frac{R_1}{2 \pi L_1} \quad\text{where } R_1 = \frac{1}{G_1}
       \end{align*}
+      At \(f_p\), \(sL_1 G_1 = j 2\pi f_p \frac{L_1}{R_1} = j\), so
+      \(|H_1| = \frac{1}{|1 + j|} = \frac{1}{\sqrt{2}}\) and
+      \(|H_2| = \frac{|j|}{|1 + j|} = \frac{1}{\sqrt{2}}\) (\(-3\,dB\)).
     \item \textbf{Zeros (\(N(s) = 0\)):}
       For low pass \(H_1(s)\):
       \begin{align*}
-        N_1(s) &= 0 \\
-        1 \neq 0
+        N_1(s) &= 1 \\
+        1 &\neq 0
       \end{align*}
       No zeros for \(H_1(s)\). \\
       For high pass \(H_2(s)\):
       \begin{align*}
         N_2(s) &= 0 \\
-        s L_1 G_1 = 0 \\
+        s L_1 G_1 &= 0 \\
         s_z &= 0 \quad \text{[let \(s = s_z\)]} \\
         f_z &= \frac{|s_z|}{2\pi} = 0 Hz
       \end{align*}
@@ -121,13 +129,13 @@ Applying KCL (Q4) at $V_{out}$ on Full Schematic, we get:
       For low pass \(H_1(s)\):
       \begin{align*}
         H_1(0) &= \frac{1}{L_1 (0) G_1 + 1} = 1 \\
-        A_{DC_1} = 1 = 0 dB
+        A_{DC_1} &= 1 = 20\log_{10}(1) = 0 dB
       \end{align*}
       Unity DC gain for \(H_1(s)\). \\
       For high pass \(H_2(s)\):
       \begin{align*}
         H_2(0) &= \frac{(0) L_1 G_1}{G_1 (0) L_1 + 1} = 0 \\
-        A_{DC_2} = 0 = -\infty dB
+        A_{DC_2} &= 0 = 20\log_{10}(0) \to -\infty dB
       \end{align*}
       Zero DC gain for \(H_2(s)\).
     \item \textbf{Gain-Bandwidth Product (\(GBW\)):}
@@ -139,7 +147,7 @@ Applying KCL (Q4) at $V_{out}$ on Full Schematic, we get:
       \end{align*}
       For high pass \(H_2(s)\):
       \begin{align*}
-        GBW &= A_{DC} \times f_p \\
+        GBW &= |A_{DC} \times f_p| \\
         GBW &= 0 \times \frac{R_1}{2 \pi L_1} \\
             &= 0
       \end{align*}
@@ -150,20 +158,21 @@ Applying KCL (Q4) at $V_{out}$ on Full Schematic, we get:
       Both low pass and high pass filters have the same input
       and output impedance.
       Substituting \(G_1 = \frac{1}{R_1}\) and \(s = j \omega\):
-      \paragraph{At Input:}
+      \paragraph{At Input:} (looking in from the driving source with the other
+      source shorted, \(R_1\) and \(L_1\) are in series)
         \begin{align*}
           Z_{in} &= \frac{1}{G_1} + s L_1 \\
-          Z_{in} &= R_1 + j \omega L_1 \\
-          Z_{in} = R_1 + j \omega L_1
+          Z_{in} &= R_1 + j \omega L_1
         \end{align*}
-      \paragraph{At Output:}
+      \paragraph{At Output:} (looking in from \(V_{out}\) with both sources
+      shorted, \(R_1\) and \(L_1\) are in parallel)
         \begin{align*}
-          Z_{out} &= R_1 || s L_1 \\
+          Z_{out} &= R_1 \parallel s L_1 \\
           Z_{out} &= \frac{R_1 \cdot j \omega L_1}{R_1 + j \omega L_1} \\
-          Z_{out} &= \frac{R_1 j \omega L_1}{R_1 + j \omega L_1} \\
-          Z_{out} &= \frac{R_1 j \omega L_1 (R_1 - j \omega L_1)}{(R_1 + j \omega L_1)(R_1 - j \omega L_1)} \\
-          Z_{out} &= \frac{j \omega R_1^2 L_1 + \omega^2 R_1 L_1^2}{R_1^2 + (\omega L_1)^2} \\
-          Z_{out} = \frac{\omega^2 R_1 L_1^2}{R_1^2 + (\omega L_1)^2} + j \frac{\omega R_1^2 L_1}{R_1^2 + (\omega L_1)^2}
+          Z_{out} &= \frac{R_1 j \omega L_1 (R_1 - j \omega L_1)}{(R_1 + j \omega L_1)(R_1 - j \omega L_1)} \hspace{1cm} \text{(Multiplying by the conjugate)} \\
+          Z_{out} &= \frac{j \omega R_1^2 L_1 - j^2 \omega^2 R_1 L_1^2}{R_1^2 - (j \omega L_1)^2} \\
+          Z_{out} &= \frac{j \omega R_1^2 L_1 + \omega^2 R_1 L_1^2}{R_1^2 + (\omega L_1)^2} \hspace{1cm} \text{(\(j^2 = -1\))} \\
+          Z_{out} &= \frac{\omega^2 R_1 L_1^2}{R_1^2 + (\omega L_1)^2} + j \frac{\omega R_1^2 L_1}{R_1^2 + (\omega L_1)^2}
         \end{align*}
 \end{enumerate}
 
@@ -177,6 +186,7 @@ Design a RL Low Pass Filter with a pole frequency of
       f_p &= \frac{R_1}{2 \pi L_1} \\
       L_1 &= \frac{R_1}{2 \pi f_p} \\
       L_1 &= \frac{1 k\Omega}{2 \pi (1 kHz)} \\
+      L_1 &= \frac{1000}{6283.19} H \\
       L_1 &\approx 0.159 H
     \end{align*}
 \end{enumerate}
@@ -190,23 +200,25 @@ Also compute the input and output impedance at \(f = 10kHz\).
       f_p &= \frac{R_1}{2 \pi L_1} \\
       L_1 &= \frac{R_1}{2 \pi f_p} \\
       L_1 &= \frac{330}{2 \pi \cdot 45000} \\
-      L_1 = 1.167 mH
+      L_1 &= \frac{330}{282743} H \\
+      L_1 &\approx 1.167 mH
     \end{align*}
   \item Calculate the input and output impedance at
     \(f = 10kHz\):
     \paragraph{At Input:}
       \begin{align*}
         Z_{in} &= R_1 + j \omega L_1 \\
-        Z_{in} &= 330 + j 2 \pi (10000) (1.167 \times 10^{-3}) \\
-        Z_{in} &= 330 + j 73.3 \\
-        Z_{in} = 330 + j 73.3 \Omega
+        Z_{in} &= 330 + j 2 \pi (10000) \left(\frac{330}{2 \pi \cdot 45000}\right) \\
+        Z_{in} &= 330 + j \frac{330 \cdot 10000}{45000} \hspace{1cm} \text{(the \(2\pi\) cancels: \(\omega L_1 = R_1 \frac{f}{f_p}\))} \\
+        Z_{in} &= 330 + j \frac{220}{3} \approx 330 + j 73.33 \, \Omega
       \end{align*}
     \paragraph{At Output:}
       \begin{align*}
         Z_{out} &= \frac{\omega^2 R_1 L_1^2}{R_1^2 + (\omega L_1)^2} + j \frac{\omega R_1^2 L_1}{R_1^2 + (\omega L_1)^2} \\
         Z_{out} &= \frac{(2 \pi (10000))^2 (330) (1.167 \times 10^{-3})^2}{(330)^2 + (2 \pi (10000) (1.167 \times 10^{-3}))^2} + j \frac{(2 \pi (10000)) (330)^2 (1.167 \times 10^{-3})}{(330)^2 + (2 \pi (10000) (1.167 \times 10^{-3}))^2} \\
         Z_{out} &= \frac{(73.33)^2 (330)}{(330)^2 + (73.33)^2} + j \frac{(73.33)(330)^2}{(330)^2 + (73.33)^2} \\
-        Z_{out} &= \frac{1774578}{114278} + j \frac{7985837}{114278} \\
+        Z_{out} &= \frac{(5377.8)(330)}{108900 + 5377.8} + j \frac{(73.33)(108900)}{108900 + 5377.8} \\
+        Z_{out} &= \frac{1774667}{114278} + j \frac{7986000}{114278} \hspace{1cm} \text{(with \(\omega L_1 = \frac{220}{3}\) exactly)} \\
         Z_{out} &\approx 15.53 + j 69.88 \Omega
       \end{align*}
 \end{enumerate}
