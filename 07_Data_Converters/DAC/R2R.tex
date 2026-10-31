@@ -83,3 +83,14 @@ Thevenin reduction from the LSB end:
     so \(S_R \lesssim \frac{1}{2^n}\) for \(|DNL| < 1\)
     (switch resistance must be scaled or included in each \(2R\)).
 \end{enumerate}
+
+\subsubsection{Question}
+\(n = 8\), \(V_{REF} = 1\,V\), \(R = 10\,k\Omega\). Find \(V_{OUT}\) and \(R_{out}\) for
+\(D = 10110011_2\), and the resistor matching needed for \(|DNL| < 1\) at mid scale.
+\paragraph{Solution:}
+\begin{align*}
+  D &= 128 + 32 + 16 + 2 + 1 = 179 \\
+  V_{OUT} &= \frac{D}{2^n} V_{REF} = \frac{179}{256} \cdot 1\,V = 0.699\,V \hspace{1cm} R_{out} = R = 10\,k\Omega \\
+  S_R &< \frac{\sqrt{2}}{2^n} = \frac{1.414}{256} = 0.0055 = 0.55\%
+\end{align*}
+
