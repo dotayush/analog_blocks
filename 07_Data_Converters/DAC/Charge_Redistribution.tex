@@ -17,29 +17,59 @@ the core of SAR and pipeline ADCs.
     \begin{align*}
       \sum_{k=0}^{n-1} C_k (V_x - b_k V_{REF}) + C_u (V_x - 0) + C_p V_x &= 0 \\
       V_x \left(\sum_k C_k + C_u + C_p\right) &= V_{REF} \sum_k b_k 2^k C_u \\
+      \sum_{k=0}^{n-1} C_k + C_u &= (2^0 + 2^1 + \cdots + 2^{n-1}) C_u + C_u = (2^n - 1) C_u + C_u = 2^n C_u \\
+      V_x \left(2^n C_u + C_p\right) &= V_{REF} C_u D \\
       V_x &= \frac{D\, C_u}{2^n C_u + C_p} V_{REF} = \frac{D}{2^n} V_{REF} \cdot \frac{1}{1 + \frac{C_p}{2^n C_u}}
     \end{align*}
     \(C_p\) is a gain error only (linearity is untouched).
-  \item \textbf{Pipeline MDAC stage}: \(C_1\), \(C_2\) around an op-amp. Phase 1:
+  \item \textbf{Pipeline MDAC stage} (\textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}):
+    \(C_1\), \(C_2\) around an op-amp. Phase 1:
     both sample \(V_{IN}\) against the virtual ground (top plate charge
     \(-(C_1 + C_2)V_{IN}\)). Phase 2: \(C_2\) is the feedback capacitor, \(C_1\)
     switches to \(b V_{REF}\), \(b \in \{-1, 0, 1\}\):
     \begin{align*}
-      -(C_1 + C_2) V_{IN} &= -C_1 b V_{REF} - C_2 V_{OUT} \\
+      -(C_1 + C_2) V_{IN} &= C_1 (0 - b V_{REF}) + C_2 (0 - V_{OUT}) = -C_1 b V_{REF} - C_2 V_{OUT} \\
+      C_2 V_{OUT} &= (C_1 + C_2) V_{IN} - C_1 b V_{REF} \\
       V_{OUT} &= \left(1 + \frac{C_1}{C_2}\right) V_{IN} - \frac{C_1}{C_2} b V_{REF} \xrightarrow{C_1 = C_2} 2 V_{IN} - b V_{REF}
     \end{align*}
-    With finite op-amp gain \(A\) and feedback factor \(F = \frac{C_2}{C_1 + C_2 + C_{in}}\),
-    the residue is scaled by \(\frac{AF}{1 + AF}\) (Section~\ref{sec:devices_opamp}).
+    With finite op-amp gain \(A\) the top plate sits at \(V_x = -\frac{V_{OUT}}{A}\)
+    instead of 0, and the op-amp input capacitance \(C_{in}\) (no charge in
+    phase 1) also takes charge:
+    \begin{align*}
+      -(C_1 + C_2) V_{IN} &= C_1 (V_x - b V_{REF}) + C_2 (V_x - V_{OUT}) + C_{in} V_x \\
+      -(C_1 + C_2) V_{IN} + C_1 b V_{REF} &= (C_1 + C_2 + C_{in}) V_x - C_2 V_{OUT}
+      = -V_{OUT}\left(C_2 + \frac{C_1 + C_2 + C_{in}}{A}\right) \\
+      V_{OUT} &= \frac{(C_1 + C_2) V_{IN} - C_1 b V_{REF}}{C_2\left(1 + \frac{C_1 + C_2 + C_{in}}{A C_2}\right)}
+      = \left[\left(1 + \frac{C_1}{C_2}\right) V_{IN} - \frac{C_1}{C_2} b V_{REF}\right] \frac{1}{1 + \frac{1}{AF}}
+    \end{align*}
+    with feedback factor \(F = \frac{C_2}{C_1 + C_2 + C_{in}}\): the residue is
+    scaled by \(\frac{1}{1 + \frac{1}{AF}} = \frac{AF}{1 + AF}\) (Section~\ref{sec:devices_opamp}).
 \end{enumerate}
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \textbf{Mismatch}: as the binary current DAC,
+  \item \textbf{Mismatch}: as the binary current DAC (Section~\ref{sec:dac_current}), at mid scale
+    the MSB (\(2^{n-1}\) units) replaces the other \(2^{n-1} - 1\) switched units
+    (the terminating \(C_u\) never switches):
+    \(\text{var}(DNL_{N/2}) = (2^{n-1} + 2^{n-1} - 1) S_C^2\),
     \(SD(DNL_{N/2}) = \sqrt{2^n - 1}\, S_C\).
   \item \textbf{Area}: \(2^n C_u\) grows fast; a bridge (split) capacitor
-    \(C_b = \frac{2^{m}}{2^{m} - 1} C_u\) between an \(m\)-bit LSB array and the MSB
-    array cuts the total to \(\approx (2^{n-m} + 2^m) C_u\).
+    \(C_b\) between an \(m\)-bit LSB array (total \(2^m C_u\) with its
+    terminating \(C_u\)) and the MSB array must make the whole LSB array look
+    like one unit \(C_u\) from the MSB side (series combination):
+    \begin{align*}
+      \frac{C_b \cdot 2^m C_u}{C_b + 2^m C_u} &= C_u \hspace{0.5cm} \Rightarrow \hspace{0.5cm}
+      2^m C_b = C_b + 2^m C_u \hspace{0.5cm} \Rightarrow \hspace{0.5cm}
+      C_b = \frac{2^{m}}{2^{m} - 1} C_u
+    \end{align*}
+    The MSB array (\(2^{n-m} - 1\) units plus the bridged unit) and the LSB
+    array then total \(\approx 2^{n-m} C_u + 2^m C_u + C_b \approx (2^{n-m} + 2^m) C_u\).
   \item \textbf{kT/C}: sampling on \(C_{tot}\) adds noise
     \(\frac{kT}{C_{tot}}\) (Section~\ref{sec:theory_general_noise}); it must stay
-    below \(\frac{X_{LSB}^2}{12}\), i.e. \(C_{tot} > \frac{12 kT 2^{2n}}{V_{REF}^2}\).
+    below \(\frac{X_{LSB}^2}{12}\) with \(X_{LSB} = \frac{V_{REF}}{2^n}\):
+    \[
+      \frac{kT}{C_{tot}} < \frac{V_{REF}^2}{12 \cdot 2^{2n}}
+      \hspace{0.5cm} \Rightarrow \hspace{0.5cm}
+      C_{tot} > \frac{12 kT 2^{2n}}{V_{REF}^2}
+    \]
 \end{enumerate}
