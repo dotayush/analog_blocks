@@ -1,0 +1,86 @@
+\subsection{Common Drain (CD, Source Follower)}\label{sec:amp_cd}
+
+\subsubsection{Overview}
+The input drives the gate, the output is taken at the source and the
+drain is tied to the supply (AC ground). The output follows the input
+shifted down by \(V_{GS}\) with a gain slightly below one. It has an
+infinite input impedance and a low output impedance (\(\approx \frac{1}{g_m}\)):
+a voltage buffer.
+
+\subsubsection{Schematic}
+\begin{circuitfig}
+  \draw (5,0) node[nmos](M){};
+  \node[right] at (5.4,0) {$M_1$};
+  \draw (2.5,-2) node[ground]{} to[sinusoidal voltage source, l={$V_{in}$}] (2.5,0) -- (M.G);
+  \draw (M.D) -- (5,2) node[vcc]{$V_{dd}$};
+  \draw (M.S) -- (5,-1.4) node[circ]{} to[european resistor, l_={$G_L$}] (5,-3.4) node[ground]{};
+  \draw (5,-1.4) -- (7.5,-1.4) node[circ]{} node[above]{$V_{out}$} to[capacitor, l={$C_L$}] (7.5,-3.4) node[ground]{};
+\end{circuitfig}
+\(G_L\) may be a resistor or the output conductance of a current source
+(\(G_L = g_{o,sink}\)).
+
+\subsubsection{Transfer Function}
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}: (\(K_{CLM} = 0\))
+    \begin{align*}
+      V_{out} G_L &= I_D = k_n (V_{in} - V_{out} - V_{th})^2 \\
+      V_{in} - V_{out} - V_{th} &= \sqrt{\frac{V_{out} G_L}{k_n}} \\
+      V_{out} &= V_{in} - V_{th} - \sqrt{\frac{V_{out} G_L}{k_n}} = V_{in} - V_{th} - V_{ov}
+    \end{align*}
+    With \(u = \sqrt{V_{out}}\): \(u^2 + \sqrt{\frac{G_L}{k_n}} u - (V_{in} - V_{th}) = 0\),
+    \[
+      V_{out} = \left(\frac{-\sqrt{\frac{G_L}{k_n}} + \sqrt{\frac{G_L}{k_n} + 4(V_{in} - V_{th})}}{2}\right)^2
+    \]
+    \(V_{th}\) itself rises with \(V_{out}\) through the body effect
+    (\(V_{SB} = V_{out}\)). Saturation needs \(V_{dd} - V_{out} \geq V_{ov}\),
+    i.e. \(V_{in} \leq V_{dd} + V_{th}\).
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}: \(v_d = 0\), \(v_b = 0\).\\
+    Applying KCL at \(V_{out}\) (the drain current arrives at the source node):
+    \begin{align*}
+      v_{out}(G_L + sC_L) &= g_m (v_{in} - v_{out}) + g_{mb}(0 - v_{out}) + g_o (0 - v_{out}) \\
+      v_{out}(G_L + g_m + g_{mb} + g_o + sC_L) &= g_m v_{in} \\
+      H(s) = \frac{v_{out}}{v_{in}} &= \frac{g_m}{g_m + g_{mb} + g_o + G_L + sC_L}
+    \end{align*}
+\end{enumerate}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{DC Gain}:
+    \[
+      A_{V0} = \frac{g_m}{g_m + g_{mb} + g_o + G_L} \xrightarrow{G_L \to 0} \frac{g_m}{g_m + g_{mb} + g_o} \approx \frac{1}{1 + \frac{g_{mb}}{g_m}}
+    \]
+    The body effect limits the gain to about \(0.8\text{--}0.9\) unless the
+    body is tied to the source (separate well).
+  \item \textbf{Pole}: \(N(s)\) has no root, \(D(s) = 0\) at
+    \[
+      p_1 = \frac{g_m + g_{mb} + g_o + G_L}{C_L} \hspace{1cm} f_{p1} \approx \frac{g_m}{2\pi C_L}
+    \]
+    which is a very wide bandwidth (the GB of a CS stage driving the same
+    \(C_L\)).
+  \item \textbf{Impedances}:
+    \paragraph{At Input:} \(I_G = 0\) so \(Z_{in} \to \infty\) at DC.
+      \(C_{gs}\) is bootstrapped (both its ends move together), so it
+      appears as \(C_{gs}(1 - A_{V0})\).
+    \paragraph{At Output:} \(v_{in} = 0\), \(I_{test}\) into the source node
+      (\(G_L\) removed):
+      \begin{align*}
+        I_{test} &= v_{out}(g_m + g_{mb} + g_o) \\
+        Z_{out} &= \frac{1}{g_m + g_{mb} + g_o} \approx \frac{1}{g_m}
+      \end{align*}
+  \item \textbf{Level Shift}: \(V_{OUT} = V_{IN} - V_{th} - V_{ov}\); the stage
+    costs \(V_{GS}\) of headroom.
+\end{enumerate}
+
+\subsubsection{Question}
+A follower biased by a \(100\,\mu\)A sink (\(G_L = 2\,\mu\)S) has
+\(V_{ov} = 0.2\,\)V, \(V_{th} = 0.5\,\)V, \(K_{CLM} = 0.1\,\)V\(^{-1}\),
+\(g_{mb} = 0.2 g_m\), \(C_L = 5\,\)pF. Find \(A_{V0}\), \(Z_{out}\),
+\(f_{p1}\) and \(V_{OUT}\) for \(V_{IN} = 1.2\,\)V.
+\paragraph{Solution:}
+\begin{align*}
+  g_m &= 1\,mS \hspace{1cm} g_{mb} = 0.2\,mS \hspace{1cm} g_o = 10\,\mu S \\
+  A_{V0} &= \frac{1\,m}{1\,m + 0.2\,m + 10\,\mu + 2\,\mu} = \frac{1}{1.212} = 0.825 \\
+  Z_{out} &= \frac{1}{1.21\,mS} = 826\,\Omega \\
+  f_{p1} &= \frac{1.212\,mS}{2\pi \cdot 5\,pF} = 38.6\,MHz \\
+  V_{OUT} &= 1.2 - 0.5 - 0.2 = 0.5\,V \hspace{1cm} [\text{ignoring the body effect shift of } V_{th}]
+\end{align*}

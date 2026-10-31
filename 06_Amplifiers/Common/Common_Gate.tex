@@ -1,0 +1,118 @@
+\subsection{Common Gate (CG)}\label{sec:amp_cg}
+
+\subsubsection{Overview}
+The input drives the source, the output is taken at the drain and the
+gate is held at a DC bias (AC ground). It is non-inverting, has a low
+input impedance (\(\approx \frac{1}{g_m}\)) and a high output impedance.
+It is used as a current buffer and is the upper device of every cascode.
+
+\subsubsection{Schematic}
+\begin{circuitfig}
+  \draw (5,0) node[nmos](M){};
+  \node[right] at (5.4,0) {$M_1$};
+  \draw (M.G) -- (3.6,0) node[left]{$V_B$};
+  \draw (M.D) -- (5,2) node[circ]{} to[european resistor, l_={$G_D$}] (5,4) node[vcc]{$V_{dd}$};
+  \draw (5,2) -- (7,2) node[circ]{} node[above]{$V_{out}$};
+  \draw (M.S) -- (5,-1.6) node[circ]{} node[right]{$V_s$} to[european resistor, l_={$G_S$}] (5,-3.6) to[sinusoidal voltage source, l_={$V_{in}$}] (5,-5.6) node[ground]{};
+\end{circuitfig}
+The DC path for the drain current goes through \(G_S\) and the source
+\(V_{in}\) (which therefore carries a DC value \(V_{IN}\)).
+
+\subsubsection{Transfer Function}
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}: (\(K_{CLM} = 0\))
+    \begin{align*}
+      I_D &= (V_s - V_{IN}) G_S \tag{1} \\
+      I_D &= k_n (V_B - V_s - V_{th})^2 \tag{2} \\
+      V_{out} &= V_{dd} - \frac{I_D}{G_D} \tag{3}
+    \end{align*}
+    Let \(V_{ov} = V_B - V_s - V_{th}\), so \(V_s = V_B - V_{th} - V_{ov}\). Equating
+    (1) and (2):
+    \begin{align*}
+      k_n V_{ov}^2 &= (V_B - V_{th} - V_{ov} - V_{IN}) G_S \\
+      k_n V_{ov}^2 + G_S V_{ov} - G_S (V_B - V_{th} - V_{IN}) &= 0 \\
+      V_{ov} &= \frac{-G_S + \sqrt{G_S^2 + 4 k_n G_S (V_B - V_{th} - V_{IN})}}{2 k_n}
+    \end{align*}
+    Saturation requires \(V_{out} - V_s \geq V_{ov}\), i.e. \(V_{out} \geq V_B - V_{th}\).
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}: \(v_g = 0\). The drain current
+    (drain to source) is
+    \[
+      i_d = g_m(0 - v_s) + g_{mb}(0 - v_s) + g_o(v_{out} - v_s) = -(g_m + g_{mb} + g_o) v_s + g_o v_{out} \tag{4}
+    \]
+    Applying KCL at \(V_{out}\) (\(i_d\) leaves the node into the drain):
+    \begin{align*}
+      v_{out} G_D + i_d &= 0 \tag{5}
+    \end{align*}
+    Applying KCL at \(V_s\) (\(i_d\) arrives, leaves through \(G_S\)):
+    \begin{align*}
+      (v_s - v_{in}) G_S &= i_d \tag{6}
+    \end{align*}
+    From (5) and (6): \((v_s - v_{in}) G_S = -v_{out} G_D\), so
+    \[
+      v_s = v_{in} - \frac{G_D}{G_S} v_{out} \tag{7}
+    \]
+    Substituting (4) into (5):
+    \begin{align*}
+      v_{out} G_D - (g_m + g_{mb} + g_o) v_s + g_o v_{out} &= 0 \\
+      v_{out}(G_D + g_o) &= (g_m + g_{mb} + g_o) v_s \tag{8}
+    \end{align*}
+    Substituting (7) into (8):
+    \begin{align*}
+      v_{out}(G_D + g_o) &= (g_m + g_{mb} + g_o)\left(v_{in} - \frac{G_D}{G_S} v_{out}\right) \\
+      v_{out}\left(G_D + g_o + \frac{G_D (g_m + g_{mb} + g_o)}{G_S}\right) &= (g_m + g_{mb} + g_o) v_{in} \\
+      H = \frac{v_{out}}{v_{in}} &= \frac{G_S (g_m + g_{mb} + g_o)}{G_S (G_D + g_o) + G_D (g_m + g_{mb} + g_o)} \tag{9}
+    \end{align*}
+\end{enumerate}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Gain}: With an ideal source (\(G_S \to \infty\)),
+    \[
+      A_{V0} = \frac{g_m + g_{mb} + g_o}{G_D + g_o} \approx (g_m + g_{mb}) R_D
+    \]
+    positive and equal in size to the CS gain (plus body effect).
+  \item \textbf{Current Gain}: With a current input \(i_{in}\) into the
+    source, \(i_d = -i_{in}\) leaves through the drain unchanged:
+    \(\frac{i_{out}}{i_{in}} = 1\) (current buffer).
+  \item \textbf{Impedances}:
+    \paragraph{At Input:} \(G_S\) removed, test current \(I_{test}\) into the
+      source: \(I_{test} + i_d = 0\). With (5), \(I_{test} = v_{out} G_D\), and
+      with (8):
+      \begin{align*}
+        I_{test} &= \frac{G_D (g_m + g_{mb} + g_o)}{G_D + g_o} v_s \\
+        Z_{in} &= \frac{v_s}{I_{test}} = \frac{G_D + g_o}{G_D (g_m + g_{mb} + g_o)} = \frac{r_o + R_D}{1 + (g_m + g_{mb}) r_o}
+      \end{align*}
+      \(Z_{in} \approx \frac{1}{g_m + g_{mb}}\) for \(R_D \ll r_o\), but rises to
+      \(\approx R_D/(g_m r_o)\) and beyond when the load is large.
+    \paragraph{At Output:} \(v_{in} = 0\), \(G_D\) removed, \(I_{test}\) into
+      the drain: \(i_d = I_{test}\), and (6) gives \(v_s = \frac{I_{test}}{G_S}\).
+      From (4):
+      \begin{align*}
+        I_{test} &= -(g_m + g_{mb} + g_o)\frac{I_{test}}{G_S} + g_o v_{out} \\
+        g_o v_{out} &= I_{test}\left(1 + \frac{g_m + g_{mb} + g_o}{G_S}\right) \\
+        Z'_{out} &= r_o + R_S + (g_m + g_{mb}) r_o R_S \\
+        Z_{out} &= R_D \parallel Z'_{out}
+      \end{align*}
+      This is the cascode impedance boost: a resistance \(R_S\) below a
+      common gate device is multiplied by \(\approx g_m r_o\).
+  \item \textbf{Poles}: with \(C_L\) at the output and \(C_s = C_{gs} + C_{sb}\)
+    at the source, both nodes see low impedance couplings only through
+    \(g_o\); neglecting \(g_o\) the stage has two real poles
+    \[
+      p_{out} = \frac{G_D}{C_L} \hspace{1cm} p_{in} = \frac{G_S + g_m + g_{mb}}{C_s}
+    \]
+    and no Miller multiplication (no capacitance from input to output).
+\end{enumerate}
+
+\subsubsection{Question}
+\(I_D = 100\,\mu\)A, \(V_{ov} = 0.2\,\)V, \(K_{CLM} = 0.1\,\)V\(^{-1}\),
+\(g_{mb} = 0.2 g_m\), \(R_D = 8\,k\Omega\), \(R_S = 1\,k\Omega\). Find
+\(A_{V}\), \(Z_{in}\) and \(Z_{out}\).
+\paragraph{Solution:}
+\begin{align*}
+  g_m &= 1\,mS \hspace{0.5cm} g_{mb} = 0.2\,mS \hspace{0.5cm} g_o = 10\,\mu S \hspace{0.5cm} G_D = 125\,\mu S \hspace{0.5cm} G_S = 1\,mS \\
+  A_V &= \frac{(1\,m)(1.21\,m)}{(1\,m)(135\,\mu) + (125\,\mu)(1.21\,m)} = \frac{1.21 \times 10^{-6}}{2.86 \times 10^{-7}} = 4.23 \\
+  Z_{in} &= \frac{135\,\mu}{(125\,\mu)(1.21\,m)} = 893\,\Omega \\
+  Z'_{out} &= 100\,k + 1\,k + (1.2\,m)(100\,k)(1\,k) = 221\,k\Omega \hspace{1cm}
+  Z_{out} = 8\,k \parallel 221\,k = 7.72\,k\Omega
+\end{align*}

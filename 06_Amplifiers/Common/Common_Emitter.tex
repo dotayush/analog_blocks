@@ -1,0 +1,75 @@
+\subsection{Common Emitter (CE)}\label{sec:amp_ce}
+
+\subsubsection{Overview}
+The BJT counterpart of the common source stage: input at the base, output
+at the collector, emitter shared. An emitter resistor \(G_E\)
+(degeneration) trades gain for linearity and a gain set by resistors.
+\(G_E \to \infty\) gives the plain CE stage.
+
+\subsubsection{Schematic}
+\begin{circuitfig}
+  \draw (5,0) node[npn](Q){};
+  \node[right] at (5.4,0) {$Q_1$};
+  \draw (2.5,-2.6) node[ground]{} to[sinusoidal voltage source, l={$V_{in}$}] (2.5,0) -- (Q.B);
+  \draw (Q.C) -- (5,1.4) node[circ]{} to[european resistor, l_={$G_C$}] (5,3.4) node[vcc]{$V_{cc}$};
+  \draw (5,1.4) -- (7,1.4) node[circ]{} node[above]{$V_{out}$};
+  \draw (Q.E) -- (5,-1) node[circ]{} node[right]{$V_e$} to[european resistor, l_={$G_E$}] (5,-2.6) node[ground]{};
+\end{circuitfig}
+
+\subsubsection{Transfer Function}
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}: forward active,
+    \(I_C = I_S e^{V_{BE}/V_T}\), \(I_E = \frac{I_C}{A_F}\):
+    \begin{align*}
+      V_{IN} &= V_{BE} + I_E R_E = V_T \ln\left(\frac{I_C}{I_S}\right) + \frac{I_C R_E}{A_F} \tag{1} \\
+      V_{OUT} &= V_{cc} - I_C R_C \tag{2}
+    \end{align*}
+    (1) is transcendental; iterate \(I_C^{(k+1)} = \frac{A_F}{R_E}\left(V_{IN} - V_T \ln\frac{I_C^{(k)}}{I_S}\right)\)
+    starting from \(V_{BE} = 0.7\,\)V. Forward active needs
+    \(V_{OUT} \gtrsim V_e + 0.3\,\)V.
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}: \(v_b = v_{in}\), \(g_o\) neglected.\\
+    Applying KCL at \(V_e\) (\(i_e = i_b + i_c\) arrives from the device):
+    \begin{align*}
+      v_e G_E &= g_{be}(v_{in} - v_e) + g_m (v_{in} - v_e) \\
+      v_e (G_E + g_m + g_{be}) &= (g_m + g_{be}) v_{in} \\
+      v_e &= \frac{g_m + g_{be}}{G_E + g_m + g_{be}} v_{in} \tag{3}
+    \end{align*}
+    Applying KCL at \(V_{out}\):
+    \begin{align*}
+      v_{out} G_C + g_m (v_{in} - v_e) &= 0 \tag{4}
+    \end{align*}
+    Substituting (3) into (4):
+    \begin{align*}
+      v_{in} - v_e &= \frac{G_E}{G_E + g_m + g_{be}} v_{in} \\
+      v_{out} &= -\frac{g_m}{G_C} \cdot \frac{G_E}{G_E + g_m + g_{be}} v_{in} \\
+      H = \frac{v_{out}}{v_{in}} &= -\frac{g_m R_C}{1 + (g_m + g_{be}) R_E}
+    \end{align*}
+\end{enumerate}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Gain}: \(R_E = 0\): \(A_{V0} = -g_m R_C = -\frac{I_C R_C}{V_T}\)
+    (with \(g_o\): \(-g_m (R_C \parallel r_o)\)). Large \(g_m R_E\):
+    \(A_{V0} \approx -\frac{g_m}{g_m + g_{be}}\cdot\frac{R_C}{R_E} = -A_F \frac{R_C}{R_E}\).
+  \item \textbf{Impedances}:
+    \paragraph{At Input:} \(i_b = g_{be}(v_{in} - v_e) = \frac{g_{be} G_E}{G_E + g_m + g_{be}} v_{in}\):
+      \[
+        Z_{in} = \frac{G_E + g_m + g_{be}}{g_{be} G_E} = \frac{1}{g_{be}} + \frac{g_m + g_{be}}{g_{be}} R_E = r_{be} + (B_F + 1) R_E
+      \]
+    \paragraph{At Output:} \(Z_{out} = R_C \parallel r_o(1 + g_m (R_E \parallel r_{be}))\approx R_C\).
+  \item \textbf{Linearity}: the plain CE obeys the bound
+    \(|v_{be}| \ll 2V_T\) of Section~\ref{sec:analysis_linearization};
+    degeneration divides the input between \(v_{be}\) and \(R_E\), so
+    \(v_{be} = \frac{v_{in}}{1 + (g_m + g_{be})R_E}\) and the input range grows
+    by the same factor the gain falls.
+\end{enumerate}
+
+\subsubsection{Question}
+\(I_C = 1\,\)mA, \(B_F = 100\), \(R_C = 5\,k\Omega\), \(V_T = 26\,\)mV.
+Find \(A_{V0}\) and \(Z_{in}\) for \(R_E = 0\) and \(R_E = 500\,\Omega\).
+\paragraph{Solution:}
+\begin{align*}
+  g_m &= \frac{1\,mA}{26\,mV} = 38.5\,mS \hspace{1cm} g_{be} = \frac{g_m}{B_F} = 385\,\mu S \hspace{1cm} r_{be} = 2.6\,k\Omega \\
+  R_E = 0 &: \hspace{0.5cm} A_{V0} = -38.5\,m \cdot 5\,k = -192 \hspace{1cm} Z_{in} = 2.6\,k\Omega \\
+  R_E = 500 &: \hspace{0.5cm} A_{V0} = -\frac{192}{1 + 38.9\,m \cdot 500} = -\frac{192}{20.4} = -9.42 \hspace{1cm} Z_{in} = 2.6\,k + 101 \cdot 500 = 53.1\,k\Omega
+\end{align*}

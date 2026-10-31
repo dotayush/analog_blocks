@@ -1,0 +1,71 @@
+\subsection{Common Collector (CC, Emitter Follower)}\label{sec:amp_cc}
+
+\subsubsection{Overview}
+The BJT counterpart of the source follower: input at the base, output at
+the emitter, collector at AC ground. Gain just below one, input impedance
+multiplied by \(B_F + 1\), output impedance divided by \(B_F + 1\).
+
+\subsubsection{Schematic}
+\begin{circuitfig}
+  \draw (5,0) node[npn](Q){};
+  \node[right] at (5.4,0) {$Q_1$};
+  \draw (0,-2.6) node[ground]{} to[sinusoidal voltage source, l={$V_{in}$}] (0,0) to[european resistor, l={$G_S$}] (2.8,0) node[circ]{} node[above]{$V_b$} -- (Q.B);
+  \draw (Q.C) -- (5,1.6) node[vcc]{$V_{cc}$};
+  \draw (Q.E) -- (5,-1) node[circ]{} to[european resistor, l_={$G_E$}] (5,-2.6) node[ground]{};
+  \draw (5,-1) -- (7,-1) node[circ]{} node[above]{$V_{out}$};
+\end{circuitfig}
+
+\subsubsection{Transfer Function}
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}:
+    \(V_{OUT} = V_{IN} - I_B R_S - V_T \ln\frac{I_C}{I_S}\) with
+    \(I_C = A_F \frac{V_{OUT}}{R_E}\), \(I_B = \frac{I_C}{B_F}\): the output
+    sits one \(V_{BE} \approx 0.7\,\)V below the base.
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}:
+    \(g_o\) neglected.\\
+    Applying KCL at \(V_b\):
+    \begin{align*}
+      (v_b - v_{in}) G_S + g_{be}(v_b - v_{out}) &= 0 \tag{1}
+    \end{align*}
+    Applying KCL at \(V_{out}\) (\(i_b + i_c\) arrives from the device):
+    \begin{align*}
+      v_{out} G_E &= (g_{be} + g_m)(v_b - v_{out}) \tag{2}
+    \end{align*}
+    From (2): \(v_b = v_{out}\frac{G_E + g_m + g_{be}}{g_m + g_{be}}\), so
+    \(v_b - v_{out} = \frac{G_E}{g_m + g_{be}} v_{out}\). Substituting into (1):
+    \begin{align*}
+      \left(v_{out}\frac{G_E + g_m + g_{be}}{g_m + g_{be}} - v_{in}\right) G_S + \frac{g_{be} G_E}{g_m + g_{be}} v_{out} &= 0 \\
+      v_{out}\left(G_S (G_E + g_m + g_{be}) + g_{be} G_E\right) &= G_S (g_m + g_{be}) v_{in} \\
+      H = \frac{v_{out}}{v_{in}} &= \frac{G_S (g_m + g_{be})}{G_S (G_E + g_m + g_{be}) + g_{be} G_E}
+    \end{align*}
+\end{enumerate}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Gain}: \(G_S \to \infty\):
+    \(A_{V0} = \frac{g_m + g_{be}}{g_m + g_{be} + G_E} = \frac{(B_F + 1) R_E}{r_{be} + (B_F + 1) R_E}\).
+  \item \textbf{Impedances}:
+    \paragraph{At Input:} \(i_b = g_{be}(v_b - v_{out}) = \frac{g_{be} G_E}{G_E + g_m + g_{be}} v_b\),
+      \[
+        Z_{in} = \frac{G_E + g_m + g_{be}}{g_{be} G_E} = r_{be} + (B_F + 1) R_E
+      \]
+    \paragraph{At Output:} \(v_{in} = 0\), \(G_E\) removed, \(I_{test}\) into the
+      emitter. (1) gives \(v_b = \frac{g_{be}}{G_S + g_{be}} v_{out}\), and the
+      device current into the node is \((g_m + g_{be})(v_b - v_{out})\):
+      \begin{align*}
+        I_{test} + (g_m + g_{be})\left(\frac{g_{be}}{G_S + g_{be}} - 1\right) v_{out} &= 0 \\
+        I_{test} &= \frac{(g_m + g_{be}) G_S}{G_S + g_{be}} v_{out} \\
+        Z_{out} &= \frac{G_S + g_{be}}{(g_m + g_{be}) G_S} = \frac{R_S + r_{be}}{B_F + 1}
+      \end{align*}
+\end{enumerate}
+
+\subsubsection{Question}
+\(I_C = 1\,\)mA, \(B_F = 100\), \(R_E = 1\,k\Omega\), \(R_S = 10\,k\Omega\).
+Find \(A_{V0}\) (ideal source), \(Z_{in}\) and \(Z_{out}\).
+\paragraph{Solution:}
+\begin{align*}
+  r_{be} &= 2.6\,k\Omega \hspace{1cm} (B_F + 1) R_E = 101\,k\Omega \\
+  A_{V0} &= \frac{101\,k}{2.6\,k + 101\,k} = 0.975 \hspace{1cm}
+  Z_{in} = 103.6\,k\Omega \hspace{1cm}
+  Z_{out} = \frac{10\,k + 2.6\,k}{101} = 125\,\Omega
+\end{align*}

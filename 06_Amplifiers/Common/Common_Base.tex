@@ -1,0 +1,57 @@
+\subsection{Common Base (CB)}\label{sec:amp_cb}
+
+\subsubsection{Overview}
+The BJT counterpart of the common gate stage: input at the emitter,
+output at the collector, base at AC ground. Low input impedance
+(\(\approx \frac{1}{g_m}\)), current gain \(A_F \approx 1\), non-inverting
+voltage gain.
+
+\subsubsection{Schematic}
+\begin{circuitfig}
+  \draw (5,0) node[npn](Q){};
+  \node[right] at (5.4,0) {$Q_1$};
+  \draw (Q.B) -- (3.6,0) node[left]{$V_B$};
+  \draw (Q.C) -- (5,1.4) node[circ]{} to[european resistor, l_={$G_C$}] (5,3.4) node[vcc]{$V_{cc}$};
+  \draw (5,1.4) -- (7,1.4) node[circ]{} node[above]{$V_{out}$};
+  \draw (Q.E) -- (5,-1.2) node[circ]{} node[right]{$V_e$} to[european resistor, l_={$G_S$}] (5,-3.2) to[sinusoidal voltage source, l_={$V_{in}$}] (5,-5.2) node[ground]{};
+\end{circuitfig}
+
+\subsubsection{Transfer Function}
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}: \(I_E = \frac{V_e - V_{IN}}{R_S}\),
+    \(V_e = V_B - V_T \ln\frac{I_C}{I_S}\), \(I_C = A_F I_E\),
+    \(V_{OUT} = V_{cc} - I_C R_C\).
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}: \(v_b = 0\), \(g_o\) neglected,
+    \(i_c = -g_m v_e\), \(i_b = -g_{be} v_e\).\\
+    Applying KCL at \(V_e\) (\(i_e = i_b + i_c\) leaves the device into the node):
+    \begin{align*}
+      (v_e - v_{in}) G_S &= -(g_m + g_{be}) v_e \\
+      v_e &= \frac{G_S}{G_S + g_m + g_{be}} v_{in}
+    \end{align*}
+    Applying KCL at \(V_{out}\):
+    \begin{align*}
+      v_{out} G_C + i_c &= 0 \hspace{0.5cm} \Rightarrow \hspace{0.5cm} v_{out} = \frac{g_m}{G_C} v_e \\
+      H = \frac{v_{out}}{v_{in}} &= \frac{g_m R_C\, G_S}{G_S + g_m + g_{be}}
+    \end{align*}
+\end{enumerate}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Gain}: \(G_S \to \infty\): \(A_{V0} = g_m R_C\). Current gain
+    \(\frac{i_c}{-i_e} = \frac{g_m}{g_m + g_{be}} = A_F\).
+  \item \textbf{Impedances}:
+    \(Z_{in} = \frac{1}{g_m + g_{be}} = \frac{A_F}{g_m}\) (looking into the emitter),
+    \(Z_{out} = R_C \parallel r_o\left(1 + g_m (R_S \parallel r_{be})\right)\).
+  \item \textbf{Bandwidth}: as for the CG stage, no capacitance couples
+    input to output (\(C_{bc}\) goes to AC ground), so there is no Miller
+    effect.
+\end{enumerate}
+
+\subsubsection{Question}
+\(I_C = 1\,\)mA, \(B_F = 100\), \(R_C = 5\,k\Omega\), \(R_S = 50\,\Omega\).
+Find \(Z_{in}\) and \(A_V\).
+\paragraph{Solution:}
+\begin{align*}
+  g_m + g_{be} &= 38.5\,mS + 0.385\,mS = 38.9\,mS \hspace{1cm} Z_{in} = 25.7\,\Omega \\
+  A_V &= \frac{(38.5\,mS)(5\,k\Omega)(20\,mS)}{20\,mS + 38.9\,mS} = 192.5 \cdot \frac{20}{58.9} = 65.4
+\end{align*}
