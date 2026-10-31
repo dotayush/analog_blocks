@@ -20,30 +20,60 @@ clocks.
 
 \subsubsection{Transfer Function}
 \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}, 1.5 bit stage
-(\(b \in \{-1, 0, 1\}\), input range \(\pm V_{REF}\)):
+(\(b \in \{-1, 0, 1\}\), input range \(\pm V_{REF}\)), the MDAC with \(C_1 = C_2\)
+(Section~\ref{sec:dac_mdac}):
 \begin{align*}
-  b &= \begin{cases} -1 & V_{IN} < -\frac{V_{REF}}{4} \\ 0 & -\frac{V_{REF}}{4} \leq V_{IN} \leq \frac{V_{REF}}{4} \\ +1 & V_{IN} > \frac{V_{REF}}{4} \end{cases} \\
-  V_{RES} &= 2 V_{IN} - b V_{REF} \in \left[-V_{REF}, V_{REF}\right]
+  b &= \begin{cases} -1 & V_{IN} < -\frac{V_{REF}}{4} \\ 0 & -\frac{V_{REF}}{4} \leq V_{IN} \leq \frac{V_{REF}}{4} \\ +1 & V_{IN} > \frac{V_{REF}}{4} \end{cases} \hspace{1cm}
+  V_{RES} = 2 V_{IN} - b V_{REF}
 \end{align*}
-Unrolling \(m\) stages (\(V_{RES,k} = 2V_{RES,k-1} - b_k V_{REF}\)):
+Range of \(V_{RES}\) in each region:
 \begin{align*}
-  V_{RES,m} &= 2^m V_{IN} - V_{REF}\sum_{k=1}^{m} b_k 2^{m-k} \\
-  V_{IN} &= V_{REF}\sum_{k=1}^{m} b_k 2^{-k} + \frac{V_{RES,m}}{2^m}
+  b = -1:&\ V_{IN} \in [-V_{REF}, -\tfrac{V_{REF}}{4}) \Rightarrow V_{RES} = 2V_{IN} + V_{REF} \in [-V_{REF}, \tfrac{V_{REF}}{2}) \\
+  b = 0:&\ V_{IN} \in [-\tfrac{V_{REF}}{4}, \tfrac{V_{REF}}{4}] \Rightarrow V_{RES} = 2V_{IN} \in [-\tfrac{V_{REF}}{2}, \tfrac{V_{REF}}{2}] \\
+  b = +1:&\ V_{IN} \in (\tfrac{V_{REF}}{4}, V_{REF}] \Rightarrow V_{RES} = 2V_{IN} - V_{REF} \in (-\tfrac{V_{REF}}{2}, V_{REF}]
 \end{align*}
-so \(D = \sum_k b_k 2^{m-k}\) (an overlapping add) resolves \(V_{IN}\) to
-\(\frac{V_{REF}}{2^m}\) plus a final flash on \(V_{RES,m}\).
+so \(V_{RES} \in [-V_{REF}, V_{REF}]\), the next stage's input range. Unrolling
+\(m\) stages (\(V_{RES,0} = V_{IN}\), \(V_{RES,k} = 2V_{RES,k-1} - b_k V_{REF}\)):
+\begin{align*}
+  V_{RES,1} &= 2V_{IN} - b_1 V_{REF} \\
+  V_{RES,2} &= 2(2V_{IN} - b_1 V_{REF}) - b_2 V_{REF} = 2^2 V_{IN} - V_{REF}(b_1 2^1 + b_2 2^0) \\
+  V_{RES,m} &= 2^m V_{IN} - V_{REF}\sum_{k=1}^{m} b_k 2^{m-k} \hspace{1cm} \text{(Each step doubles the previous sum and appends } b_k 2^0\text{)} \\
+  V_{IN} &= V_{REF}\sum_{k=1}^{m} b_k 2^{-k} + \frac{V_{RES,m}}{2^m} \hspace{1cm} [\div 2^m,\ \text{rearranged}]
+\end{align*}
+so \(D = \sum_k b_k 2^{m-k}\) (an overlapping add, digits \(b_k\) may be \(-1\))
+resolves \(V_{IN}\) to \(\frac{V_{REF}}{2^m}\), plus a final flash on \(V_{RES,m}\).
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \textbf{Redundancy}: the thresholds \(\pm\frac{V_{REF}}{4}\) can move by up
-    to \(\pm\frac{V_{REF}}{4}\) and \(V_{RES}\) still stays inside \(\pm V_{REF}\); later
-    stages correct the decision, so cheap comparators with large offsets
-    suffice.
-  \item \textbf{Gain Error}: an inter-stage gain \(2(1 + e)\) (finite op-amp
-    gain, capacitor mismatch) gives an error at stage 1 transitions of
-    \(e V_{REF}\) referred to the output, i.e. \(e\, 2^{n-1}\) LSB. Needs
-    \(\frac{1}{AF} < \frac{1}{2^{n}}\): \(A > \frac{2^{n}}{F} = 2^{n+1}\) for \(F = \frac{1}{2}\).
-  \item \textbf{Noise}: stage \(k\) noise is divided by \(2^{k-1}\) referred to
-    the input, so the first stage dominates and later stages are scaled down
-    in capacitance and power.
+  \item \textbf{Redundancy}: move the upper threshold to \(\frac{V_{REF}}{4} + d\). An input
+    just below it still gets \(b = 0\), \(V_{RES} = 2\left(\frac{V_{REF}}{4} + d\right) = \frac{V_{REF}}{2} + 2d\), which stays
+    \(\leq V_{REF}\) for \(d \leq \frac{V_{REF}}{4}\) (and symmetrically for \(d < 0\) and the
+    lower threshold). The residue stays in range and later stages absorb the
+    decision error, so cheap comparators with offsets up to
+    \(\pm\frac{V_{REF}}{4}\) suffice.
+  \item \textbf{Gain Error}: finite op-amp gain scales the residue by
+    \(\frac{AF}{1 + AF}\) (Section~\ref{sec:dac_mdac}):
+    \begin{align*}
+      V_{RES} &= (2 V_{IN} - b V_{REF})\frac{AF}{1 + AF} = (2 V_{IN} - b V_{REF})\left(1 - \frac{1}{1 + AF}\right) \\
+      |V_{RES} - V_{RES,ideal}| &= \frac{|2 V_{IN} - b V_{REF}|}{1 + AF} \leq \frac{V_{REF}}{1 + AF} \approx \frac{V_{REF}}{AF} \hspace{1cm} [|V_{RES,ideal}| \leq V_{REF}]
+    \end{align*}
+    The back end resolves the remaining \(n - 1\) bits over \(2V_{REF}\), an LSB of
+    \(\frac{2V_{REF}}{2^{n-1}} = \frac{V_{REF}}{2^{n-2}}\). Keeping the error below half of it:
+    \begin{align*}
+      \frac{V_{REF}}{AF} &< \frac{1}{2}\cdot\frac{V_{REF}}{2^{n-2}} = \frac{V_{REF}}{2^{n-1}} \hspace{1cm} \Rightarrow \hspace{1cm}
+      AF > 2^{n-1} \hspace{1cm} \Rightarrow \hspace{1cm} A > 2^{n} \ \ [F = \tfrac{1}{2}]
+    \end{align*}
+    (\(F = \frac{C_2}{C_1 + C_2} = \frac{1}{2}\) for \(C_1 = C_2\), \(C_{in}\) neglected).
+  \item \textbf{Noise}: stage \(k\) sits behind a gain of \(2^{k-1}\) (stages
+    \(1 \ldots k-1\)), so its noise referred to the input is divided by
+    \(2^{k-1}\) (power by \(4^{k-1}\)). The first stage dominates and later stages
+    are scaled down in capacitance and power.
 \end{enumerate}
+
+\subsubsection{Question}
+12 bit pipeline of 1.5 bit stages, \(C_1 = C_2\). Find the minimum op-amp DC
+gain of the first stage.
+\paragraph{Solution:}
+\begin{align*}
+  A &> 2^{n} = 2^{12} = 4096 \hspace{1cm} (20\log_{10} 4096 = 72.2\,dB)
+\end{align*}
