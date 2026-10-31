@@ -22,7 +22,10 @@ to attenuate a current signal.
 \end{circuitfig}
 
 \subsubsection{Transfer Function}
-Applying KCL (Q4) at the node between \(C_1\) and \(C_2\) we get:
+\textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)} (in the
+\textbf{Large Signal, Time Domain, DC Input Analysis (Q5)} both capacitors
+are open and a DC \(I_{in}\) has no path). Let \(V_{in}\) be the voltage of
+the node between \(C_1\) and \(C_2\). Applying KCL at this node we get:
 \begin{align*}
   I_{in} &= I_{C_1} + I_{C_2} \\
   I_{in} &= (V_{in} - 0)sC_1 + (V_{in} - 0)sC_2 \\
@@ -34,7 +37,7 @@ For \(I_{C_1}\):
 \begin{align*}
   I_{C_1} &= (V_{in} - 0)sC_1 \\
   I_{C_1} &= V_{in}sC_1 \\
-  I_{C_1} &= \frac{I_{in}}{s(C_1 + C_2)}sC_1 \\
+  I_{C_1} &= \frac{I_{in}}{s(C_1 + C_2)}sC_1 \hspace{1cm} \text{(Substituting \(V_{in}\))} \\
   \frac{I_{C_1}}{I_{in}} &= \frac{sC_1}{s(C_1 + C_2)} \\
   H_1(s) = \frac{N_1(s)}{D_1(s)} = \frac{I_{C_1}}{I_{in}} &= \frac{C_1}{C_1 + C_2}
 \end{align*}
@@ -42,15 +45,18 @@ For \(I_{C_2}\):
 \begin{align*}
   I_{C_2} &= (V_{in} - 0)sC_2 \\
   I_{C_2} &= V_{in}sC_2 \\
-  I_{C_2} &= \frac{I_{in}}{s(C_1 + C_2)}sC_2 \\
+  I_{C_2} &= \frac{I_{in}}{s(C_1 + C_2)}sC_2 \hspace{1cm} \text{(Substituting \(V_{in}\))} \\
   \frac{I_{C_2}}{I_{in}} &= \frac{sC_2}{s(C_1 + C_2)} \\
-  H_2(s) = \frac{N_2(s)}{D_2(s)} = \frac{I_{C_2}}{I_{in}} = \frac{C_2}{C_1 + C_2}
+  H_2(s) = \frac{N_2(s)}{D_2(s)} = \frac{I_{C_2}}{I_{in}} &= \frac{C_2}{C_1 + C_2}
 \end{align*}
 \paragraph{Total Output:}
 \begin{align*}
   I_{in} &= I_{C_1} + I_{C_2} \\
-  I_{in} &= I_{in} \frac{C_1}{C_1 + C_2} + I_{in} \frac{C_2}{C_1 + C_2}
+  I_{in} &= I_{in} \frac{C_1}{C_1 + C_2} + I_{in} \frac{C_2}{C_1 + C_2} \\
+  I_{in} &= I_{in} \frac{C_1 + C_2}{C_1 + C_2} = I_{in} \hspace{1cm} \text{(KCL is satisfied)}
 \end{align*}
+Unlike the resistive divider, the larger capacitor takes the larger
+current, because its admittance \(sC\) is larger.
 
 \subsubsection{Analysis}
 \begin{enumerate}
@@ -62,8 +68,8 @@ For \(I_{C_2}\):
     \end{align*}
     Dividing the two equations we get:
     \begin{align*}
-      \frac{I_{C_1}}{I_{C_2}} = \frac{C_1}{C_2} \\
-      \frac{C_1}{C_2} = \frac{I_{C_1}}{I_{C_2}}
+      \frac{I_{C_1}}{I_{C_2}} &= \frac{V_{in}sC_1}{V_{in}sC_2} = \frac{C_1}{C_2} \\
+      \frac{C_1}{C_2} &= \frac{I_{C_1}}{I_{C_2}}
     \end{align*}
     Assume \(I_{C_1} = I_{out}\), then our KCL
     equation becomes:
@@ -76,8 +82,9 @@ For \(I_{C_2}\):
     \[
       \frac{C_1}{C_2} = \frac{I_{out}}{I_{in} - I_{out}}
     \]
-  \item \textbf{Impedance's:}
-    \paragraph{At Input:}
+  \item \textbf{Impedances:}
+    \paragraph{At Input:} (both capacitors go from the node to ground, so
+    they are in parallel)
       \begin{align*}
         Z_{in} &= \frac{1}{sC_1 + sC_2} \\
         Z_{in} &= \frac{1}{s(C_1 + C_2)} = \frac{1}{sC_{eq}} \hspace{1cm} \text{(where \(C_{eq} = C_1 + C_2\))}
@@ -122,8 +129,10 @@ a factor of 10. Assume \(C_1 = 1\mu F\).
       \frac{C_1}{C_2} = \frac{\frac{1}{10}}{1 - \frac{1}{10}} = \frac{\frac{1}{10}}{\frac{9}{10}} = \frac{1}{9}
     \]
     Therefore, we have
-    \[
-      C_2 = 9C_1 = 9 \mu F
-    \]
+    \begin{align*}
+      C_2 &= \frac{C_1}{\frac{1}{9}} = 9C_1 \\
+      C_2 &= 9 \cdot 1 \mu F = 9 \mu F
+    \end{align*}
+    Check: \(\frac{I_{out}}{I_{in}} = \frac{C_1}{C_1 + C_2} = \frac{1 \mu F}{1 \mu F + 9 \mu F} = \frac{1}{10}\).
 \end{enumerate}
 
