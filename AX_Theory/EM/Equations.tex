@@ -20,7 +20,7 @@ where
   \item \( \mathbf{B(x,y,z,t)} \): magnetic flux density function.
     \( \frac{Wb}{m^2} \)
   \item \( \mathbf{J_m(x,y,z,t)} \): magnetic current density function.
-    \( \frac{A}{m^2} \). In nature, \( \mathbf{J_m(x,y,z,t)} = 0 \) since
+    \( \frac{V}{m^2} \) (the same unit as \(\frac{\partial \mathbf{B}}{\partial t}\), \(\frac{Wb}{m^2 s}\)). In nature, \( \mathbf{J_m(x,y,z,t)} = 0 \) since
     magnetic monopoles that is, charges haven't been observed.
 \end{itemize}
 Let's have some fun with this equation.
@@ -44,11 +44,10 @@ Let's have some fun with this equation.
   \nabla \cdot \mathbf{B(x,y,z,t_1)} &= \nabla \cdot \mathbf{B(x,y,z,t_0)}
 \end{align*}
 \textbf{This proves that the divergence of the magnetic flux density function
-is constant over time}. Magnetic Charge has never been observed in nature.
-Thus magnetic charge density and magnetic current density are both zero. This
-means that there are no sources and sinks of magnetic flux density and thus
-\( \nabla \cdot \mathbf{B(x,y,z,t)} = 0 \) for all time \(t\). This is
-the origin of \textbf{Gauss's Law for Magnetism}:
+is constant over time}; it does not fix its value. Gauss's Law for Magnetism
+is a separate law (no magnetic charge has ever been observed), and Faraday's
+law only guarantees that once it holds at some \(t_0\) it holds for all
+time. With \(\nabla \cdot \mathbf{B} = 0\) at \(t_0\), the result above keeps it zero:
 \begin{align*}
   \nabla \cdot \mathbf{B(x,y,z,t)} = 0 \tag{2}
 \end{align*}
@@ -115,15 +114,14 @@ Substituting (4) into the time integrated result above, we get
   \nabla \cdot \mathbf{D(x,y,z,t_1)} &= \nabla \cdot \mathbf{D(x,y,z,t_0)} + [Q_V(x,y,z,t_1) - Q_V(x,y,z,t_0)] \\
   \nabla \cdot \mathbf{D(x,y,z,t_1)} &= \nabla \cdot \mathbf{D(x,y,z,t_0)} + Q_V(x,y,z,t_1) - Q_V(x,y,z,t_0)
 \end{align*}
-If you assume that at \(t_0\), the divergence of the electric flux density
-function and the charge density function are both zero, then we can simplify
-the above equation to:
+Rearranged, \(\nabla \cdot \mathbf{D}(t_1) - Q_V(t_1) = \nabla \cdot \mathbf{D}(t_0) - Q_V(t_0)\): the
+difference \(\nabla \cdot \mathbf{D} - Q_V\) never changes. Ampere's law with charge
+continuity therefore does not produce Gauss's Law of Electricity, it only
+preserves it. Gauss's law is the separate statement that this difference is
+zero; once it holds at any \(t_0\) it holds for all time:
 \begin{align*}
-  \nabla \cdot \mathbf{D(x,y,z,t_1)} &= Q_V(x,y,z,t_1)
+  \nabla \cdot \mathbf{D(x,y,z,t)} &= Q_V(x,y,z,t) \tag{3a}
 \end{align*}
-We find that the divergence of the electric flux density function changes as
-the charge density function changes over time \( \nabla \cdot \mathbf{D(x,y,z,t)} =
-Q_V(x,y,z,t) \). This is \textbf{the origin of Gauss's Law of Electricity}.
 
 \subsubsection{Statics \& Quasi-Statics Approximation}
 
@@ -138,8 +136,8 @@ possible to simplify and dumb down?}
 come into play. We need to make some assumptions.
 \begin{enumerate}
   \item \textbf{Statics}: We assume that all functions are frozen in time. This is the
-    strongest assumption we can make and it reduces our PDEs to \textbf{ordinary
-    differential equations (ODEs)} in space only. This is the DC regime where all functions
+    strongest assumption we can make and it removes \(t\), leaving \textbf{PDEs in
+    space only} (\(x, y, z\); e.g.\ \(\nabla \times \mathbf{E} = 0\) with \(\nabla \cdot \mathbf{D} = Q_V\)). This is the DC regime where all functions
     are time-independent. To achieve this, the rate of change of all functions must
     be zero:
     \begin{align*}
@@ -150,25 +148,32 @@ come into play. We need to make some assumptions.
       \frac{\partial \mathbf{J_e(x,y,z,t)}}{\partial t} = 0 \\
       \frac{\partial \mathbf{J_m(x,y,z,t)}}{\partial t} = 0
     \end{align*}
-  \item \textbf{Quasi-Statics}: We assume that the flux functions [\(\mathbf{B}\) \&
-    \(\mathbf{D}\)] do not change with time but we allow other functions [\(\mathbf{E}\),
-    \(\mathbf{H}\), \(\mathbf{J}_e\), and \(\mathbf{J}_m\)] to change with time. This is
-    a weaker assumption and it reduces our PDEs to ODEs in space only for the flux
-    functions. This is the quasi-static regime. To achieve this, we can set the time
-    derivatives of the flux functions to zero:
+  \item \textbf{Quasi-Statics}: We assume that the rates of change of the flux
+    functions [\(\mathbf{B}\) \& \(\mathbf{D}\)] are negligible next to the other terms of
+    Faraday's and Ampere's laws, while we allow the other functions
+    [\(\mathbf{E}\), \(\mathbf{H}\), \(\mathbf{J}_e\), and \(\mathbf{J}_m\)] to change with time. The
+    flux functions cannot be exactly constant (with \(\mathbf{D} = \mathbf{K}_E \mathbf{E}\) a frozen
+    \(\mathbf{D}\) would freeze \(\mathbf{E}\) too), so this is an approximation: it holds when the
+    region is much smaller than the wavelength, \(2\pi\frac{l}{\text{wavelength}} \ll 1\) for a
+    region of size \(l\) (e.g.\ \(100\,MHz\): wavelength \(= \frac{3 \times 10^{8}\,m/s}{10^{8}\,Hz} = 3\,m\), so a
+    \(3\,cm\) board gives \(2\pi \cdot \frac{0.03}{3} = 0.063 \ll 1\)). This is a weaker assumption and,
+    at each instant, it leaves PDEs in space only. This is the quasi-static
+    regime. In a circuit it is applied \emph{between} the elements: all of the
+    \(\frac{\partial \mathbf{B}}{\partial t}\) is kept inside inductors (\(V = L\frac{dI}{dt}\)) and all of the
+    \(\frac{\partial \mathbf{D}}{\partial t}\) inside capacitors (\(I = C\frac{dV}{dt}\)). Everywhere else:
     \begin{align*}
-      \frac{\partial \mathbf{B(x,y,z,t)}}{\partial t} = 0 \\
-      \frac{\partial \mathbf{D(x,y,z,t)}}{\partial t} = 0
+      \frac{\partial \mathbf{B(x,y,z,t)}}{\partial t} \approx 0 \\
+      \frac{\partial \mathbf{D(x,y,z,t)}}{\partial t} \approx 0
     \end{align*}
 \end{enumerate}
 In either case, we can simplify Faraday's and Ampere's Law to:
 \begin{align*}
     -\nabla \times \mathbf{E(x,y,z,t)} &= \frac{\partial \mathbf{B(x,y,z,t)}}{\partial t} + \mathbf{J_m(x,y,z,t)} \hspace{1cm} \text{[Faraday's Law]} \\
-                                       &= 0 + \mathbf{J_m(x,y,z,t)} \hspace{1cm} \left[\frac{\partial \mathbf{B(x,y,z,t)}}{\partial t} = 0\right] \\
+                                       &\approx 0 + \mathbf{J_m(x,y,z,t)} \hspace{1cm} \left[\frac{\partial \mathbf{B(x,y,z,t)}}{\partial t} \approx 0\right] \\
                                        &= \mathbf{J_m(x,y,z,t)} \\
      &= 0  \hspace{1cm} \text{[since \( \mathbf{J_m(x,y,z,t)} = 0 \)]} \tag{5} \\\\
     \nabla \times \mathbf{H(x,y,z,t)} &= \frac{\partial \mathbf{D(x,y,z,t)}}{\partial t} + \mathbf{J_e(x,y,z,t)} \hspace{1cm} \text{[Ampere's Law]} \\
-                                      &= 0 + \mathbf{J_e(x,y,z,t)} \hspace{1cm} \left[\frac{\partial \mathbf{D(x,y,z,t)}}{\partial t} = 0\right] \\
+                                      &\approx 0 + \mathbf{J_e(x,y,z,t)} \hspace{1cm} \left[\frac{\partial \mathbf{D(x,y,z,t)}}{\partial t} \approx 0\right] \\
                                       &= \mathbf{J_e(x,y,z,t)} \tag{6}
 \end{align*}
 
@@ -199,7 +204,8 @@ or \(\mathbf{J}_e\) (\& \(\mathbf{J}_m\)).
                                                 &= 0
     \end{align*}
     This is the origin of Kirchhoff's Voltage Law (KVL): the total potential difference
-    around any closed loop is zero. Notice this did not require \(\mathbf{E}\) or \(V\)
+    around any closed loop is zero, with each inductor's \(L\frac{dI}{dt}\) counted as
+    the voltage across its terminals (the loop runs outside its flux). Notice this did not require \(\mathbf{E}\) or \(V\)
     to be time-independent, only that \(\nabla\times\mathbf{E}=0\) holds instant by
     instant. This is precisely why KVL remains valid in the quasi-static (slowly
     time-varying, circuit size much smaller than the wavelength) regime, not just in true DC.
@@ -211,7 +217,7 @@ or \(\mathbf{J}_e\) (\& \(\mathbf{J}_m\)).
     \end{align*}
 
     \begin{itemize}
-      \item \textbf{Charge Density Is Genuinely Time-Independent}:
+      \item \textbf{Charge Density Is Time-Independent (between capacitors)}:
         Substituting (4) into (7):
         \begin{align*}
           0 &= -\frac{\partial Q_V(x,y,z,t)}{\partial t} \tag{8}
@@ -221,8 +227,10 @@ or \(\mathbf{J}_e\) (\& \(\mathbf{J}_m\)).
         \(\mathbf{E}\), \(\mathbf{H}\), and \(\mathbf{J}_e\) above,
         this is a genuine, non-instantaneous result: it says
         \(Q_V\)'s rate of change is zero \emph{for all} \(t\), not
-        just at a single instant. This is the one function we can
-        honestly write without \(t\):
+        just at a single instant, everywhere \(\frac{\partial \mathbf{D}}{\partial t}\) was neglected
+        (wires and nodes). On capacitor plates, where \(\frac{\partial \mathbf{D}}{\partial t}\) was kept,
+        charge does change, which is the \(C\frac{dV}{dt}\) current. Between capacitors
+        this is the one function we can honestly write without \(t\):
         \begin{align*}
           Q_V(x,y,z,t) = Q_V(x,y,z) \tag{8a}
         \end{align*}
@@ -242,5 +250,6 @@ or \(\mathbf{J}_e\) (\& \(\mathbf{J}_m\)).
     enclosed by that surface does not change with time (8a), then the total
     current flowing into that surface must equal the total current flowing
     out of that surface, at every instant (as current density is allowed to
-    change with time). This is the origin of Kirchhoff's Current Law (KCL).
+    change with time). This is the origin of Kirchhoff's Current Law (KCL),
+    with each capacitor's \(C\frac{dV}{dt}\) counted as the current in its leads.
 \end{enumerate}

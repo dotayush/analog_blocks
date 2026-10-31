@@ -1,0 +1,48 @@
+\section*{Symbols and Labels}
+\addcontentsline{toc}{section}{Symbols and Labels}
+Every symbol and label that appears in this chapter, in order of first use.
+\begin{symtable}
+\multicolumn{3}{|l|}{\textbf{Octants and Axes}} \\ \hline
+\(X, Y, Z\) & axes of the classification space: input excitation (DC Input \(-X\), AC Input \(+X\)), mathematical representation (time \(-Y\), frequency \(+Y\)), linearity (small signal \(-Z\), large signal \(+Z\)); in the octant index formula they take the values 0 or 1 & - \\ \hline
+\(Q1 \ldots Q8,\ Q_k\) & octant (I call them quadrants) number \(k\), with \(k - 1 = 4Z + 2Y + X\) & - \\ \hline
+\(ZYX\) & the three axis bits of an octant written as a binary number & - \\ \hline
+\(DC, AC\) & constant (DC) or time varying (AC) input signal injected to compute a transfer function & - \\ \hline
+\(OP, DC, AC, TRAN, FOUR\) & SPICE analyses: operating point, DC sweep, small signal AC, transient, Fourier & - \\ \hline
+\(KCL\) & Kirchhoff's Current Law: currents leaving a node sum to zero & - \\ \hline
+\multicolumn{3}{|l|}{\textbf{Linearization}} \\ \hline
+\(f(V),\ f^{\prime},\ f^{\prime\prime},\ f^{\prime\prime\prime}\) & non-linear device law \(I = f(V)\) and its first, second and third derivatives & A, A/V, \ldots \\ \hline
+\(V,\ I\) & total voltage across and current through the device & V, A \\ \hline
+\(V_Q,\ I_Q,\ Q\) & bias (operating) point found in Q5; \(Q\) names the point & V, A \\ \hline
+\(V_q,\ I_q\) & small signal part of \(V\) and \(I\) about the bias point & V, A \\ \hline
+\(V_1, V_2,\ V_{1q}, V_{2q}\) & two controlling voltages of a device and their small signal parts & V \\ \hline
+\(g\) & small signal conductance \(f'(V_Q)\) & S \\ \hline
+\(g_m,\ g_o\) & transconductance \(\partial I_D / \partial V_{GS}\) and output conductance \(\partial I_D / \partial V_{DS}\) & S \\ \hline
+\(I_D,\ V_{GS},\ V_{DS}\) & drain current, gate-source and drain-source voltage of a MOSFET & A, V \\ \hline
+\(I_S\) & diode saturation current & A \\ \hline
+\(n\) & diode ideality factor & - \\ \hline
+\(V_T\) & thermal voltage \(\frac{kT}{q} \approx 26\,mV\) at room temperature & V \\ \hline
+\(nV_T\) & product \(n \cdot V_T\) & V \\ \hline
+\multicolumn{3}{|l|}{\textbf{Workflow and Examples}} \\ \hline
+\(G,\ sC,\ \frac{1}{sL}\) & admittance of a resistor, capacitor, inductor & S \\ \hline
+\(H(s),\ N(s),\ D(s)\) & transfer function, its numerator (zeros are its roots) and denominator (poles are its roots) & - \\ \hline
+\(Z_{in},\ Z_{out}\) & input and output impedance & \(\Omega\) \\ \hline
+\(V_{in},\ V_{out}\) & input and output voltage (small signal in Q4/Q2) & V \\ \hline
+\(V_{in}(s),\ V_{out}(s),\ V_{out}(t)\) & Laplace transform and time function of the input or output & V\(\cdot\)s, V \\ \hline
+\(s\) & Laplace (complex frequency) variable, \(s = j\omega\) on the frequency axis & rad/s \\ \hline
+\(t\) & time & s \\ \hline
+\(\mathcal{L}^{-1}\) & inverse Laplace transform & - \\ \hline
+\(a,\ b\) & partial fraction coefficients & - \\ \hline
+\(R, C, L\) & resistance, capacitance, inductance & \(\Omega\), F, H \\ \hline
+\(RC,\ T_c\) & time constant \(T_c = RC\) & s \\ \hline
+\(e\) & Euler's number, \(2.718\ldots\) & - \\ \hline
+\(THD\) & total harmonic distortion \(\frac{\sqrt{\sum_{k \geq 2} A_k^2}}{A_1}\) & - \\ \hline
+\(A_0,\ A_1, A_2, A_3,\ A_k\) & DC term and amplitudes of the 1st, 2nd, 3rd and \(k\)-th harmonics of a periodic output & A or V \\ \hline
+\(HD_2,\ HD_3\) & second and third harmonic distortion \(\frac{A_2}{A_1}\), \(\frac{A_3}{A_1}\) & - \\ \hline
+\(V_p\) & peak amplitude of a large sinusoidal drive & V \\ \hline
+\(\omega\) & angular frequency \(2\pi f\) & rad/s \\ \hline
+\(\theta\) & angle used in trigonometric identities & rad \\ \hline
+\(x\) & normalised drive \(\frac{V_p}{nV_T}\) & - \\ \hline
+\(u,\ k\) & dummy variable and index of the exponential series \(e^u = \sum_k \frac{u^k}{k!}\) & - \\ \hline
+\(d,\ dV\) & derivative operator (\(\frac{d}{dV}\)) and a small change of \(V\) & -, V \\ \hline
+\(sC,\ sL,\ sRC\) & products of \(s\) with \(C\), \(L\), \(RC\) & S, \(\Omega\), - \\ \hline
+\end{symtable}

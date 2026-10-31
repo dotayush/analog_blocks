@@ -165,6 +165,24 @@ Here's a table of the voltages at each terminal of the transistors:
 
 \subsubsection{Analysis}
 \begin{enumerate}
+  \item \textbf{Channel Length Modulation, Large Signal, Time Domain, DC Input (Q5)}:
+    the ratio \(\frac{W_1 L_0}{L_1 W_0}\) above used \(K_{CLM} = 0\), but \(Z_{out}\) below
+    is \(\frac{1}{g_{o_1}}\) with \(g_{o_1} = \frac{K_{CLM} I_{M_1}}{1 + K_{CLM} V_{DS_1}} \neq 0\). Both come from the same
+    \(K_{CLM}\), so it is kept here to first order. From the exact ratio:
+    \begin{align*}
+      \frac{I_{M_1}}{I_{M_0}} &= \frac{k_{n_1}}{k_{n_0}} \cdot \frac{1 + K_{CLM} (V_{OUT} - V_{ee})}{1 + K_{CLM} (V_{X} - V_{ee})} \\
+      &= \frac{k_{n_1}}{k_{n_0}} \cdot \frac{1 + K_{CLM} (V_{X} - V_{ee}) + K_{CLM} (V_{OUT} - V_{X})}{1 + K_{CLM} (V_{X} - V_{ee})} \hspace{1cm} [\pm K_{CLM} V_X] \\
+      &= \frac{k_{n_1}}{k_{n_0}} \left(1 + \frac{K_{CLM} (V_{OUT} - V_{X})}{1 + K_{CLM} (V_{X} - V_{ee})}\right)
+    \end{align*}
+    The ratio is exact only at \(V_{OUT} = V_X\) (\(V_{DS_1} = V_{DS_0}\)). Differentiating
+    \(I_{M_1}\) with respect to \(V_{OUT}\) at fixed \(I_{M_0}\):
+    \begin{align*}
+      \frac{dI_{M_1}}{dV_{OUT}} &= \frac{k_{n_1}}{k_{n_0}} I_{M_0} \cdot \frac{K_{CLM}}{1 + K_{CLM} (V_{X} - V_{ee})}
+      = \frac{K_{CLM} I_{M_1}|_{V_{OUT} = V_X}}{1 + K_{CLM} (V_{X} - V_{ee})} = g_{o_1}|_{V_{OUT} = V_X}
+    \end{align*}
+    so the Q5 error and the Q4 output conductance are the same effect:
+    \(I_{OUT} \approx \frac{W_1 L_0}{L_1 W_0} I_{IN} + g_{o_1}(V_{OUT} - V_X)\). Setting \(K_{CLM} = 0\) is the
+    leading order of the ratio; \(g_{o_1}\) is the leading order of its slope.
   \item \textbf{Output Load (Max), Large Signal, Time Domain, DC Input (Q5)}:
     \(M_1\) stays saturated while \(V_{DS_1} \geq V_{ov_1}\). Both
     transistors share \(V_{GS}\) and \(V_{th}\), so
@@ -316,6 +334,19 @@ that can be connected at the output.
               &= \frac{1}{0.02 V^{-1} \cdot 500 \mu A} \\
               &= 100 k\Omega
     \end{align*}
+  \item \textbf{Actual current gain} (\(K_{CLM} = 0.02\,V^{-1}\) kept,
+    \(V_{DS_0} = V_X - V_{ee} = 1.2V\)):
+    \begin{align*}
+      \frac{I_{M_1}}{I_{M_0}} &= 5 \cdot \frac{1 + 0.02\,(V_{OUT} - 0)}{1 + 0.02 \cdot 1.2} = 5 \cdot \frac{1 + 0.02\,V_{OUT}}{1.024} \\
+      V_{OUT} = 1.2V &: \hspace{0.5cm} 5 \cdot \frac{1.024}{1.024} = 5.00 \\
+      V_{OUT} = 0.2V &: \hspace{0.5cm} 5 \cdot \frac{1.004}{1.024} = 4.90 \\
+      V_{OUT} = 5V &: \hspace{0.5cm} 5 \cdot \frac{1.1}{1.024} = 5.37
+    \end{align*}
+    The slope is \(\frac{5 \cdot 100\,\mu A \cdot 0.02}{1.024} = 9.77\,\mu S\), i.e. \(\frac{1}{9.77\,\mu S} = 102\,k\Omega\),
+    which is the \(Z_{out} \approx 100\,k\Omega\) above (the \(2\%\) difference is the
+    \(1 + K_{CLM} V_{DS}\) factor dropped in \(g_{o} \approx K_{CLM} I_D\)). Sizing \(W_0\) with
+    \(K_{CLM} = 0\) also leaves \(I_{M_0}\) high by the factor \(1.024\) at \(V_{ov_0} = 0.2V\);
+    for exactly \(100\,\mu A\), divide \(W_0\) and \(W_1\) by \(1.024\).
   \item \textbf{Compute the maximum load that can be connected
     at the output:}
     \begin{align*}

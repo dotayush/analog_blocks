@@ -6,8 +6,11 @@ transforms into polynomial with degree 2 in Frequency
 domain. The general form of a second order transfer
 function is given by:
 \begin{align*}
-  H(s) = \frac{V_{out}}{V_{in}} = \frac{\text{Zeros}}{\text{Poles}} = \frac{N(s)}{D(s)} = \frac{b_2 s^2 + b_1 s + b_0}{a_2 s^2 + a_1 s + a_0} = \underbrace{\frac{b_2 s^2}{a_2 s^2+a_1 s+a_0}}_{\text{Highpass}} + \underbrace{\frac{b_1 s}{a_2 s^2+a_1 s+a_0}}_{\text{Bandpass}} + \underbrace{\frac{b_0}{a_2 s^2+a_1 s+a_0}}_{\text{Lowpass}}
+  H(s) = \frac{V_{out}}{V_{in}} = \frac{N(s)}{D(s)} = \frac{b_2 s^2 + b_1 s + b_0}{a_2 s^2 + a_1 s + a_0} = \underbrace{\frac{b_2 s^2}{a_2 s^2+a_1 s+a_0}}_{\text{Highpass}} + \underbrace{\frac{b_1 s}{a_2 s^2+a_1 s+a_0}}_{\text{Bandpass}} + \underbrace{\frac{b_0}{a_2 s^2+a_1 s+a_0}}_{\text{Lowpass}}
 \end{align*}
+The zeros are the roots of \(N(s)\), the poles the roots of \(D(s)\). The
+three parts share \(D(s)\), so the split into high, band and low pass is
+exact.
 
 \paragraph{Mathematical Overview of Poles:}
 There are multiple ways to represent a second order
@@ -16,10 +19,10 @@ polynomial. I have listed four common forms below:
   \item The Mathematical form: This is the general representation
     of a second order polynomial.
     \begin{equation*}
-      a x^2 + b x + c
+      a x^2 + b x + c \hspace{1cm} [x = s,\ a = a_2,\ b = a_1,\ c = a_0]
     \end{equation*}
   \item The Normalized form: We divide the entire polynomial
-    by the coefficient of \( s^2 \) (= \( x^2 \)) to make
+    by \(a_2\), the coefficient of \( s^2 \), to make
     the leading coefficient 1.
     \begin{equation*}
       s^2 + \frac{a_1}{a_2}s + \frac{a_0}{a_2}
@@ -31,7 +34,8 @@ polynomial. I have listed four common forms below:
       s^2 + (p_1 + p_2)s + p_1 p_2
     \end{align*}
     where the roots (poles) of the polynomial are \( -p_1 \) and \( -p_2 \)
-    (\(p_1, p_2 > 0\) for a stable system).
+    (stable when both have a positive real part, so the poles lie in the
+    left half plane).
   \item The Natural form: We express the polynomial
     in terms of its natural frequency and damping ratio.
     \begin{align*}
@@ -39,7 +43,22 @@ polynomial. I have listed four common forms below:
       s^2 + \frac{\omega_n}{Q} s + \omega_n^2
     \end{align*}
     where \( \omega_n \) is the natural frequency and \( D_R \) is the
-    damping ratio and \( Q\) is the quality factor.
+    damping ratio and \( Q\) is the quality factor. Matching the \(s\) terms,
+    \(2D_R\omega_n = \frac{\omega_n}{Q}\), so \(Q = \frac{1}{2D_R}\). The roots of the natural form
+    follow from the quadratic formula with \(a = 1\), \(b = 2D_R\omega_n\), \(c = \omega_n^2\):
+    \begin{align*}
+      s &= \frac{-2D_R\omega_n \pm \sqrt{4D_R^2\omega_n^2 - 4\omega_n^2}}{2}
+         = \frac{-2D_R\omega_n \pm 2\omega_n\sqrt{D_R^2 - 1}}{2}
+         = -D_R\omega_n \pm \omega_n\sqrt{D_R^2 - 1}
+    \end{align*}
+    \begin{tabular}{|c|c|c|}\hline
+      \(D_R\) & \(Q\) & poles \\ \hline
+      \(D_R > 1\) & \(Q < \frac{1}{2}\) & two distinct negative real (overdamped) \\ \hline
+      \(D_R = 1\) & \(Q = \frac{1}{2}\) & one repeated, \(s = -\omega_n\) (critically damped) \\ \hline
+      \(0 < D_R < 1\) & \(Q > \frac{1}{2}\) & \(s = -D_R\omega_n \pm j\omega_n\sqrt{1 - D_R^2}\) (underdamped) \\ \hline
+      \(D_R = 0\) & \(Q \to \infty\) & \(s = \pm j\omega_n\) (undamped, oscillates) \\ \hline
+      \(D_R < 0\) & \(Q < 0\) & right half plane (unstable) \\ \hline
+    \end{tabular}
 \end{enumerate}
 
 Here is a summary table of the coefficients across different forms:
@@ -49,11 +68,11 @@ Here is a summary table of the coefficients across different forms:
     \hline
     \textbf{Coefficient} & \textbf{Mathematical} & \textbf{Normalized} & \textbf{Factored} & \textbf{Natural} \\
     \hline
-    \(s^2\) & \(a\) & 1 & 1 & 1 \\
+    \(s^2\) & \(a = a_2\) & 1 & 1 & 1 \\
     \hline
-    \(s\) & \(b\) & \(\displaystyle\frac{a_1}{a_2}\) & \(p_1 + p_2\) & \(2D_R\omega_n\) \\
+    \(s\) & \(b = a_1\) & \(\displaystyle\frac{a_1}{a_2}\) & \(p_1 + p_2\) & \(2D_R\omega_n\) \\
     \hline
-    Constant & \(c\) & \(\displaystyle\frac{a_0}{a_2}\) & \(p_1 p_2\) & \(\omega_n^2\) \\
+    Constant & \(c = a_0\) & \(\displaystyle\frac{a_0}{a_2}\) & \(p_1 p_2\) & \(\omega_n^2\) \\
     \hline
   \end{tabularx}
 \end{center}
@@ -65,10 +84,10 @@ natural frequency, and damping ratio through three key comparisons.
     \noindent From the table, we have:
     \[ \frac{a_1}{a_2} = p_1 + p_2 \quad \text{and} \quad \frac{a_0}{a_2} = p_1 p_2 \]
     The discriminant
-    \(\displaystyle B^2 - 4AC = \left( \frac{a_1}{a_2} \right)^2 - 4 \left( \frac{a_0}{a_2} \right) \)
+    \(\displaystyle b^2 - 4ac\) of the normalised form, \(\left( \frac{a_1}{a_2} \right)^2 - 4 \left( \frac{a_0}{a_2} \right) \)
     (positive, zero or negative) determines three pole configurations:
     \begin{enumerate}
-      \item \textbf{Two distinct real poles (overdamped):} Assume \( p_2 = k p_1 \) with \( k \in \mathbb{R} \), \( k \neq 1 \).
+      \item \textbf{Two distinct real poles (overdamped):} Assume \( p_2 = k p_1 \) with real \( k > 0 \) (both poles stable), \( k \neq 1 \).
         \begin{align*}
           \frac{a_1}{a_2} &= p_1(1 + k) \quad \Rightarrow \quad p_1 = \frac{a_1}{a_2(1 + k)} \tag{i} \\
           \frac{a_0}{a_2} &= k p_1^2 \quad \Rightarrow \quad k p_1^2 = \frac{a_0}{a_2} \tag{ii}
@@ -92,7 +111,8 @@ natural frequency, and damping ratio through three key comparisons.
           \frac{a_1^2}{4 a_2^2} &= \frac{a_0}{a_2} \\
           a_1^2 &= 4 a_0 a_2 \hspace{1cm} [\times 4 a_2^2]
         \end{align*}
-      \item \textbf{Two complex conjugate poles (underdamped):} Let \( p_{1,2} = p_r \pm j p_i \), with \( p_r, p_i \in \mathbb{R} \).
+      \item \textbf{Two complex conjugate poles (underdamped):} Let \( p_{1,2} = p_r \pm j p_i \), with real \( p_r > 0 \), \( p_i \neq 0 \) (poles at \(-p_r \mp j p_i\)).
+        Then \(p_1 + p_2 = 2p_r\) and \(p_1 p_2 = (p_r + jp_i)(p_r - jp_i) = p_r^2 - j^2 p_i^2 = p_r^2 + p_i^2\).
         \begin{align*}
           \frac{a_1}{a_2} &= 2p_r \quad \Rightarrow \quad p_r = \frac{a_1}{2a_2} \tag{i} \\
           \frac{a_0}{a_2} &= p_r^2 + p_i^2 \quad \Rightarrow \quad p_r^2 + p_i^2 = \frac{a_0}{a_2} \tag{ii}

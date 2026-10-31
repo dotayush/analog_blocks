@@ -1,0 +1,52 @@
+\section*{Symbols and Labels}
+\addcontentsline{toc}{section}{Symbols and Labels}
+Every symbol and label that appears in this chapter.
+\begin{symtable}
+\multicolumn{3}{|l|}{\textbf{Labels}} \\ \hline
+\(VCO,\ PLL\) & voltage controlled oscillator, phase locked loop & - \\ \hline
+\(PD,\ PFD,\ CP,\ XOR\) & phase detector, phase frequency detector, charge pump, exclusive OR gate & - \\ \hline
+\(UP,\ DN\) & PFD outputs that turn the pump source and sink on & - \\ \hline
+\multicolumn{3}{|l|}{\textbf{Oscillators}} \\ \hline
+\(A(s),\ F(s)\) & forward gain and feedback of the oscillator loop & - \\ \hline
+\(\omega_0,\ f_0\) & oscillation angular frequency and frequency & rad/s, Hz \\ \hline
+\(V_c,\ K_{vco},\ K_v\) & control voltage; VCO gain in Hz/V and \(K_v = 2\pi K_{vco}\) in rad/s/V & V, Hz/V, rad/s/V \\ \hline
+\(N\) & number of ring stages (odd); in the PLL the divider ratio & - \\ \hline
+\(A_0,\ \omega_p,\ g_o,\ C\) & ring stage DC gain, pole \(\frac{g_o}{C}\), output conductance, load capacitance & -, rad/s, S, F \\ \hline
+\(t_d\) & delay of one stage transition & s \\ \hline
+\(I,\ I(V_c),\ g_m\) & charging current, its dependence on \(V_c\), its transconductance \(\frac{dI}{dV_c}\) & A, A, S \\ \hline
+\(V_{dd}\) & supply & V \\ \hline
+\(L,\ C,\ R_p,\ Q_L\) & tank inductance, capacitance, parallel loss resistance, inductor quality factor & H, F, \(\Omega\), - \\ \hline
+\(M_1, M_2,\ I_T\) & cross coupled pair and its tail current & -, A \\ \hline
+\(V_{o1},\ V_{o2}\) & the two tank nodes & V \\ \hline
+\(V_x,\ I_x,\ R_{neg}\) & test voltage between the drains, its current, negative resistance & V, A, \(\Omega\) \\ \hline
+\(I_{d1},\ I_{D1},\ I_{D2}\) & small and large signal drain currents & A \\ \hline
+\(Y(s)\) & admittance of the tank with the negative resistance & S \\ \hline
+\(I_a,\ V_{amp,diff}\) & square wave current amplitude; differential output amplitude & A, V \\ \hline
+\(C_{fix},\ C_{var},\ C_j\) & fixed and varactor capacitance (junction capacitance) & F \\ \hline
+\(L(f_m),\ f_m,\ f_c,\ F_n,\ P_s\) & phase noise at offset \(f_m\), flicker corner, noise factor, output power & dBc/Hz, Hz, Hz, -, W \\ \hline
+\(k,\ T,\ kT\) & Boltzmann constant, temperature, thermal energy & J/K, K, J \\ \hline
+\(g_c,\ V_H,\ V_L,\ dV\) & relaxation VCO: charging transconductance, Schmitt thresholds, \(V_H - V_L\) & S, V, V, V \\ \hline
+\(t,\ T\) & duration of one ramp; oscillation period & s \\ \hline
+\multicolumn{3}{|l|}{\textbf{Phase Detectors and PLL}} \\ \hline
+\(\theta,\ \theta_{ref},\ \theta_{div},\ \theta_{out},\ \theta_{vco}\) & excess phase; of the reference, divider, output, of VCO noise & rad \\ \hline
+\(\theta_e\) & phase error \(\theta_{ref} - \theta_{div}\) & rad \\ \hline
+\(\omega,\ \omega_{out},\ f_{out}\) & angular frequency; of the output & rad/s, Hz \\ \hline
+\(T_{ref},\ f_{ref},\ t_e\) & reference period, frequency, edge shift \(\frac{\theta_e}{2\pi} T_{ref}\) & s, Hz, s \\ \hline
+\(V_{pd},\ \overline{V_{pd}}\) & XOR output and its average & V \\ \hline
+\(K_{pd},\ K_{pd,XOR},\ K_{pd,PFD}\) & phase detector gain; of the XOR (V/rad) and of the PFD with pump (A/rad) & V/rad or A/rad \\ \hline
+\(I_{cp},\ \overline{I_{cp}},\ I_f\) & pump current, its average, the averaged current into the filter & A \\ \hline
+\(e,\ t_{on}\) & pump sink mismatch fraction and minimum reset pulse width & -, s \\ \hline
+\(Z(s),\ R,\ C_1,\ C_2\) & loop filter impedance and its elements & \(\Omega\), \(\Omega\), F \\ \hline
+\(F(s)\) & passive RC loop filter of a type I loop (\(F(0) = 1\)) & - \\ \hline
+\(G(s)\) & open loop gain \(\frac{\theta_{div}}{\theta_e}\) & - \\ \hline
+\(K\) & loop constant \(\frac{I_{cp} K_v}{2\pi N C_1}\) & s\(^{-2}\) \\ \hline
+\(\omega_n,\ D_R\) & natural frequency and damping ratio of the loop & rad/s, - \\ \hline
+\(\omega_c,\ x\) & loop crossover \(|G(j\omega_c)| = 1\) and \(x = \frac{\omega_c}{\omega_n}\) & rad/s, - \\ \hline
+\(d\omega\) & size of a reference frequency step & rad/s \\ \hline
+\(s,\ j\) & Laplace variable and \(\sqrt{-1}\) & rad/s, - \\ \hline
+\multicolumn{3}{|l|}{\textbf{Other}} \\ \hline
+\(V_{out}\) & oscillator output & V \\ \hline
+\(dC,\ dC_{var},\ df_0\) & small changes of \(C\), \(C_{var}\), \(f_0\) & F, F, Hz \\ \hline
+\(sC_1, sC_2, sL, sR, sRC_1, sN, KRC_1, NK, RC_1, LC, AF\) & products of the named quantities & - \\ \hline
+\(p,\ n, \mu, mS\) & pole symbol in \(p_1\); nano, micro prefixes; millisiemens & - \\ \hline
+\end{symtable}
