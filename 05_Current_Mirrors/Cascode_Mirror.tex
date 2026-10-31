@@ -27,8 +27,8 @@ effects of channel length modulation.
   \draw (3.5, 7.54) |- (3.23, 8.04);
   \draw (3.5, 8.04) -| (6, 7.5);
   \draw (10.25, 10.75) -- (10.25, -0);
-  \node[shape=rectangle, minimum width=5.59cm, minimum height=1.09cm] at (5.438, 9.937){} node[anchor=north, align=center, text width=5.202cm, inner sep=6pt] at (5.438, 10.5){Large Signal Schematic\\(Sink)};
-  \node[shape=rectangle, minimum width=3.09cm, minimum height=2.465cm] at (8.687, 7){} node[anchor=north west, align=left, text width=2.702cm, inner sep=6pt] at (7.125, 8.25){\textcolor{rgb,255:red,255;green,0;blue,0}{\footnotesize Exists Only For Analysis. In  Implementation take output directly from V\_\{out\}}};
+  \node[shape=rectangle, minimum width=5.59cm, minimum height=1.09cm] at (5.438, 9.937){} node[anchor=north, align=center, inner sep=6pt] at (5.438, 10.5){Large Signal Schematic\\(Sink)};
+  \node[shape=rectangle, minimum width=3.09cm, minimum height=2.465cm] at (8.687, 7){} node[anchor=north west, align=left, inner sep=6pt] at (7.125, 8.25){\textcolor{rgb,255:red,255;green,0;blue,0}{\footnotesize Exists Only For Analysis. In  Implementation take output directly from V\_\{out\}}};
   \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N4) at (7, 3.71){} node[anchor=center] at (N4.text){$V_{y}$};
   \draw[dash pattern={on 0.4pt off 0.8pt}, -stealth] (6, 3.71) |- (6.5, 3.71);
   \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N5) at (4.75, 4.25){} node[anchor=center] at (N5.text){$I_{G_1}$};
@@ -38,9 +38,9 @@ effects of channel length modulation.
   \draw (19.125, 2.75) -- (17.625, 2.75);
   \draw (17.625, 1.25) -- (16.375, 1.25);
   \draw (16.375, 2.75) -- (15.625, 2.75);
-  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (16.375, 2.5){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (16.375, 2.5){\footnotesize G};
-  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (16.375, 1.5){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (16.375, 1.5){\footnotesize S};
-  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (19.625, 2.5){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (19.625, 2.5){\footnotesize D};
+  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (16.375, 2.5){} node[anchor=center, align=center, inner sep=6pt] at (16.375, 2.5){\footnotesize G};
+  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (16.375, 1.5){} node[anchor=center, align=center, inner sep=6pt] at (16.375, 1.5){\footnotesize S};
+  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (19.625, 2.5){} node[anchor=center, align=center, inner sep=6pt] at (19.625, 2.5){\footnotesize D};
   \draw (15.625, 2.75) -- (14.875, 2.75);
   \draw (13.375, 2.75) to[american current source, l={$g_{m_0}V_{gs}$}] (13.375, 1.25);
   \draw (11.875, 2.75) to[european resistor, l={$g_{o_0}$}] (11.875, 1.25);
@@ -48,9 +48,9 @@ effects of channel length modulation.
   \draw (13.375, 1.25) -- (11.875, 1.25);
   \draw (11.875, 2.75) -| (11.875, 4.25);
   \draw (14.875, 1.25) -- (13.375, 1.25);
-  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (14.875, 2.5){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (14.875, 2.5){\footnotesize G};
-  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (14.875, 1.5){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (14.875, 1.5){\footnotesize S};
-  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (11.375, 2.5){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (11.375, 2.5){\footnotesize D};
+  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (14.875, 2.5){} node[anchor=center, align=center, inner sep=6pt] at (14.875, 2.5){\footnotesize G};
+  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (14.875, 1.5){} node[anchor=center, align=center, inner sep=6pt] at (14.875, 1.5){\footnotesize S};
+  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (11.375, 2.5){} node[anchor=center, align=center, inner sep=6pt] at (11.375, 2.5){\footnotesize D};
   \draw (11.875, 8.562) to[european resistor, l={$G_4$}] (11.875, 7.062);
   \draw (11.875, 7.062) -| (11.875, 6.562);
   \draw (11.875, 8.562) -| (11.875, 9.062) -- (12.625, 9.062) -| (12.625, 8.812);
@@ -64,7 +64,7 @@ effects of channel length modulation.
   \node[ground] at (12.625, 8.812){};
   \node[ground] at (18.375, 8){};
   \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N8) at (16.625, 3.563){} node[anchor=center] at (N8.text){$I_{G_1}$};
-  \node[shape=rectangle, minimum width=4.84cm, minimum height=1.09cm] at (15.25, 9.937){} node[anchor=north, align=center, text width=4.452cm, inner sep=6pt] at (15.25, 10.5){Small Signal Schematic\\(Sink)};
+  \node[shape=rectangle, minimum width=4.84cm, minimum height=1.09cm] at (15.25, 9.937){} node[anchor=north, align=center, inner sep=6pt] at (15.25, 10.5){Small Signal Schematic\\(Sink)};
   \draw (6, 3.52) -| (6, 3.71);
   \node[nmos, arrowmos] (N9) at (6, 4.48){} node[anchor=west] at (N9.text){$M_2$};
   \node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N10) at (2.5, 3.71){} node[anchor=center] at (N10.text){$V_{x}$};
@@ -75,8 +75,8 @@ effects of channel length modulation.
   \draw (19.125, 5.75) -- (17.625, 5.75);
   \draw (17.625, 4.25) -- (16.375, 4.25);
   \draw (16.375, 5.75) -- (15.625, 5.75);
-  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (16.375, 5.5){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (16.375, 5.5){\footnotesize G};
-  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (16.375, 4.5){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (16.375, 4.5){\footnotesize S};
+  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (16.375, 5.5){} node[anchor=center, align=center, inner sep=6pt] at (16.375, 5.5){\footnotesize G};
+  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (16.375, 4.5){} node[anchor=center, align=center, inner sep=6pt] at (16.375, 4.5){\footnotesize S};
   \draw (19.125, 4.25) -- (19.125, 2.75);
   \draw[dash pattern={on 0.4pt off 0.8pt}, -stealth] (19.125, 3.5) -- (19.625, 3.5);
   \node[shape=rectangle, minimum width=0.715cm, minimum height=0.465cm] (N11) at (11, 3.563){} node[anchor=center] at (N11.text){$V_{x}$};
@@ -96,9 +96,9 @@ effects of channel length modulation.
   \draw (13.375, 5.75) -- (11.875, 5.75);
   \draw (13.375, 4.25) -- (11.875, 4.25);
   \draw (14.875, 4.25) -- (13.375, 4.25);
-  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (14.875, 5.5){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (14.875, 5.5){\footnotesize G};
-  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (14.875, 4.5){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (14.875, 4.5){\footnotesize S};
-  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (11.375, 5.5){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (11.375, 5.5){\footnotesize D};
+  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (14.875, 5.5){} node[anchor=center, align=center, inner sep=6pt] at (14.875, 5.5){\footnotesize G};
+  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (14.875, 4.5){} node[anchor=center, align=center, inner sep=6pt] at (14.875, 4.5){\footnotesize S};
+  \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (11.375, 5.5){} node[anchor=center, align=center, inner sep=6pt] at (11.375, 5.5){\footnotesize D};
   \draw (15.625, 5.75) |- (11.875, 6.562) |- (11.875, 5.75);
   \node[shape=rectangle, minimum width=0.715cm, minimum height=0.465cm] (N15) at (11, 6.562){} node[anchor=center] at (N15.text){$V_{z}$};
   \draw[dash pattern={on 0.4pt off 0.8pt}, -stealth] (11.875, 6.562) -- (11.375, 6.562);
@@ -116,7 +116,7 @@ effects of channel length modulation.
 \subsubsection{Transfer Function}
 Here's a table of the voltages at each terminal of the transistors:
 
-\begin{tabularx}{\linewidth}{|X|X|X|X|X|X|} \hline
+\noindent\begin{tabularx}{\linewidth}{|X|X|X|X|X|X|} \hline
   Transistor & Gate (G) & Source (S) & Drain (D) & $V_{GS}$ & $V_{DS}$ \\ \hline
   $M_0$ & $V_{X}$ & $V_{ee}$ & $V_{X}$ & $V_{X} - V_{ee}$ & $V_{X} - V_{ee}$ \\ \hline
   $M_1$ & $V_{X}$ & $V_{ee}$ & $V_{Y}$ & $V_{X} - V_{ee}$ & $V_{Y} - V_{ee}$ \\ \hline
@@ -226,8 +226,10 @@ Here's a table of the voltages at each terminal of the transistors:
     \end{align*}
     Substituting (14) into (9) and multiplying by \(P\):
     \begin{align*}
-      V_{out}(G_5 + g_{o_2}) P - (g_{o_2} + g_{m_2})\left(V_{out} g_{o_2} + V_z (g_{m_2} - a g_{m_1})\right) + V_z g_{m_2} P &= 0 \\
-      V_{out}\left[(G_5 + g_{o_2}) P - g_{o_2}(g_{o_2} + g_{m_2})\right] &= V_z\left[(g_{o_2} + g_{m_2})(g_{m_2} - a g_{m_1}) - g_{m_2} P\right]
+      V_{out}(G_5 + g_{o_2}) P - (g_{o_2} + g_{m_2})\left(V_{out} g_{o_2} + V_z (g_{m_2} - a g_{m_1})\right) \\
+      + V_z g_{m_2} P &= 0 \\
+      V_{out}\left[(G_5 + g_{o_2}) P - g_{o_2}(g_{o_2} + g_{m_2})\right] \\
+      &= V_z\left[(g_{o_2} + g_{m_2})(g_{m_2} - a g_{m_1}) - g_{m_2} P\right]
     \end{align*}
     The left bracket, with \(P - (g_{o_2} + g_{m_2}) = g_{o_1}\):
     \begin{align*}

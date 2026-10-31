@@ -28,9 +28,9 @@ resistor, see Section~\ref{sec:mirror_widlar}.)
 	\draw (5.75, 5.655) -- (5.75, 5.885);
 	\draw (3.25, 7.405) |- (2.98, 7.905);
 	\draw (3.25, 7.905) -| (5.75, 7.365);
-	\node[shape=rectangle, minimum width=4.965cm, minimum height=1.09cm] at (4.375, 9.928){} node[anchor=north, align=center, text width=4.577cm, inner sep=6pt] at (4.375, 10.49){Large Signal Schematic\\(Sink)};
+	\node[shape=rectangle, minimum width=4.965cm, minimum height=1.09cm] at (4.375, 9.928){} node[anchor=north, align=center, inner sep=6pt] at (4.375, 10.49){Large Signal Schematic\\(Sink)};
 	\node[shape=rectangle, draw={rgb,255:red,255;green,0;blue,0}, line width=1pt, dash pattern={on 4pt off 2pt on 1pt off 2pt on 1pt off 2pt}, minimum width=1.465cm, minimum height=2.195cm] at (6, 7){};
-	\node[shape=rectangle, minimum width=3.09cm, minimum height=2.465cm] at (8.438, 6.865){} node[anchor=north west, align=left, text width=2.702cm, inner sep=6pt] at (6.875, 8.115){\textcolor{rgb,255:red,255;green,0;blue,0}{\footnotesize Exists Only For Analysis. In  Implementation take output directly from V\_\{out\}}};
+	\node[shape=rectangle, minimum width=3.09cm, minimum height=2.465cm] at (8.438, 6.865){} node[anchor=north west, align=left, inner sep=6pt] at (6.875, 8.115){\textcolor{rgb,255:red,255;green,0;blue,0}{\footnotesize Exists Only For Analysis. In  Implementation take output directly from V\_\{out\}}};
 	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N4) at (2.25, 5.405){} node[anchor=center] at (N4.text){$V_{x}$};
 	\draw[dash pattern={on 1.6pt off 0.8pt}, -stealth] (3.25, 5.405) |- (2.75, 5.405);
 	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N5) at (4.5, 6.115){} node[anchor=center] at (N5.text){$I_{G}$};
@@ -43,18 +43,18 @@ resistor, see Section~\ref{sec:mirror_widlar}.)
 	\draw (18.75, 5.563) -- (17.25, 5.563);
 	\draw (17.25, 4.063) -- (16, 4.063);
 	\draw (16, 5.563) -- (15.25, 5.563);
-	\node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (16, 5.313){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (16, 5.313){\footnotesize G};
-	\node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (16, 4.313){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (16, 4.313){\footnotesize S};
-	\node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (19.25, 5.313){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (19.25, 5.313){\footnotesize D};
+	\node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (16, 5.313){} node[anchor=center, align=center, inner sep=6pt] at (16, 5.313){\footnotesize G};
+	\node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (16, 4.313){} node[anchor=center, align=center, inner sep=6pt] at (16, 4.313){\footnotesize S};
+	\node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (19.25, 5.313){} node[anchor=center, align=center, inner sep=6pt] at (19.25, 5.313){\footnotesize D};
 	\draw (15.25, 5.563) -- (14.5, 5.563);
 	\draw (13, 5.563) to[american current source, l={$g_{m_0}V_{gs}$}] (13, 4.063);
 	\draw (11.5, 5.563) to[european resistor, l={$g_{o_0}$}] (11.5, 4.063);
 	\draw (13, 5.563) -- (11.5, 5.563);
 	\draw (13, 4.063) -- (11.5, 4.063);
 	\draw (14.5, 4.063) -- (13, 4.063);
-	\node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (14.5, 5.313){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (14.5, 5.313){\footnotesize G};
-	\node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (14.5, 4.313){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (14.5, 4.313){\footnotesize S};
-	\node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (11, 5.313){} node[anchor=center, align=center, text width=0.077cm, inner sep=6pt] at (11, 5.313){\footnotesize D};
+	\node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (14.5, 5.313){} node[anchor=center, align=center, inner sep=6pt] at (14.5, 5.313){\footnotesize G};
+	\node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (14.5, 4.313){} node[anchor=center, align=center, inner sep=6pt] at (14.5, 4.313){\footnotesize S};
+	\node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm] at (11, 5.313){} node[anchor=center, align=center, inner sep=6pt] at (11, 5.313){\footnotesize D};
 	\draw (11.5, 7.563) to[european resistor, l={$G_2$}] (11.5, 6.063);
 	\draw (11.5, 6.063) -| (11.5, 5.562);
 	\draw (11.5, 7.563) -| (11.5, 8.062) -- (12.25, 8.062) -| (12.25, 7.812);
@@ -70,7 +70,7 @@ resistor, see Section~\ref{sec:mirror_widlar}.)
 	\node[ground] at (18, 7.812){};
 	\node[shape=rectangle, minimum width=0.965cm, minimum height=0.465cm] (N8) at (15.25, 6.813){} node[anchor=center] at (N8.text){$I_{G}$};
 	\draw[dash pattern={on 1.6pt off 0.8pt}, -stealth] (11.5, 5.563) -- (11, 5.563);
-	\node[shape=rectangle, minimum width=4.215cm, minimum height=1.09cm] at (15.375, 9.937){} node[anchor=north, align=center, text width=3.827cm, inner sep=6pt] at (15.375, 10.5){Small Signal Schematic\\(Sink)};
+	\node[shape=rectangle, minimum width=4.215cm, minimum height=1.09cm] at (15.375, 9.937){} node[anchor=north, align=center, inner sep=6pt] at (15.375, 10.5){Small Signal Schematic\\(Sink)};
 	\node[circ] at (3.25, 5.405){};
 	\node[circ] at (4.5, 4.405){};
 	\node[circ] at (4.5, 3.405){};
@@ -88,7 +88,7 @@ resistor, see Section~\ref{sec:mirror_widlar}.)
 \subsubsection{Transfer Function}
 Here's a table of the voltages at each terminal of the transistors:
 
-\begin{tabularx}{\linewidth}{|X|X|X|X|X|X|} \hline
+\noindent\begin{tabularx}{\linewidth}{|X|X|X|X|X|X|} \hline
   Transistor & Gate (G) & Source (S) & Drain (D) & $V_{GS}$ & $V_{DS}$ \\ \hline
   $M_0$ & $V_{X}$ & $V_{ee}$ & $V_{X}$ & $V_{X} - V_{ee}$ & $V_{X} - V_{ee}$ \\ \hline
   $M_1$ & $V_{X}$ & $V_{ee}$ & $V_{OUT}$ & $V_{X} - V_{ee}$ & $V_{OUT} - V_{ee}$ \\ \hline
