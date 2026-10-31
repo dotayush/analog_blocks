@@ -30,7 +30,7 @@ As in Section~\ref{sec:mirror_basic}, \(G_3\) exists only for analysis
   $M_1$ & $V_{x}$ & $V_{s}$ & $V_{out}$ & $V_{x} - V_{s}$ & $V_{out} - V_{s}$ \\ \hline
 \end{tabularx}
 \begin{enumerate}
-  \item \textbf{Large Signal Analysis (Q5)}: (\(K_{CLM} = 0\))
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}: (\(K_{CLM} = 0\))
     \begin{align*}
       I_{in} = I_{M_0} &= k_{n_0}(V_x - V_{ee} - V_{th})^2
         \hspace{0.5cm} \Rightarrow \hspace{0.5cm} V_x - V_{ee} = V_{th} + \sqrt{\frac{I_{in}}{k_{n_0}}} \tag{1} \\
@@ -56,7 +56,7 @@ As in Section~\ref{sec:mirror_basic}, \(G_3\) exists only for analysis
     \end{align*}
     \(G_S \to \infty\) gives back the basic mirror,
     \(\sqrt{I_{out}/k_{n_1}} = \sqrt{I_{in}/k_{n_0}}\).
-  \item \textbf{Small Signal Analysis (Q4)}: (\(g_{mb}\) neglected)\\
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}: (\(g_{mb}\) neglected)\\
     Applying KCL at $V_{x}$:
     \begin{align*}
       v_x(G_2 + g_{o_0} + g_{m_0}) &= i_{in} \tag{5}

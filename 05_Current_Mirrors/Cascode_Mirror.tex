@@ -125,7 +125,7 @@ Here's a table of the voltages at each terminal of the transistors:
 \end{tabularx}
 
 \begin{enumerate}
-  \item \textbf{Large Signal Analysis (Q5)}:\\
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}:\\
     Applying KCL at $V_{out}$:
     \begin{align*}
       (V_{out} - V_{cc})G_5 + I_{M_2} &= 0 \\
@@ -178,7 +178,7 @@ Here's a table of the voltages at each terminal of the transistors:
                                                                     \approx \frac{k_{n_1}}{k_{n_0}} = \frac{\frac{K_P W_1}{L_1}}{\frac{K_P W_0}{L_0}} = \frac{\frac{W_1}{L_1}}{\frac{W_0}{L_0}} = \frac{W_1 L_0}{L_1 W_0}
                                                                   = \frac{W_2 L_3}{L_2 W_3} \\
     \end{align*}
-  \item \textbf{Small Signal Analysis (Q4)}:\\
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}:\\
     Applying KCL at $V_{out}$:
     \begin{align*}
       V_{out}G_5 + (V_{out} - V_{y})g_{o_2} + (V_{z} - V_{y})g_{m_2} &= 0 \\
@@ -263,7 +263,7 @@ Here's a table of the voltages at each terminal of the transistors:
 
 
 \subsubsection{Design}
-Large Signal Analysis can be used to set the bias
+Large Signal, Time Domain, DC Input Analysis (Q5) can be used to set the bias
 currents and voltages in this circuit.
 \begin{enumerate}
   \item Choose appropriate transistor dimensions
