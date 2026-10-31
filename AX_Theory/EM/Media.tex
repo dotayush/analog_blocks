@@ -26,22 +26,22 @@ There are two ways to express the total flux density functions \( \mathbf{D} \) 
   \item \textbf{Tensor Form}: Polarization and Magnetization are absorbed into the
     permittivity and permeability tensors:
     \begin{align*}
-      \mathbf{D(x,y,z,t)} &= \boldsymbol{\epsilon}(x,y,z,t) \cdot \mathbf{E(x,y,z,t)} \tag{11a} \\
-      \mathbf{B(x,y,z,t)} &= \boldsymbol{\mu}(x,y,z,t) \cdot \mathbf{H(x,y,z,t)} \tag{11b}
+      \mathbf{D(x,y,z,t)} &= \mathbf{K}_E(x,y,z,t) \cdot \mathbf{E(x,y,z,t)} \tag{11a} \\
+      \mathbf{B(x,y,z,t)} &= \mathbf{K}_M(x,y,z,t) \cdot \mathbf{H(x,y,z,t)} \tag{11b}
     \end{align*}
-    \( \boldsymbol{\epsilon} \) (permittivity) and \( \boldsymbol{\mu} \)
+    \( \mathbf{K}_E \) (permittivity) and \( \mathbf{K}_M \)
     (permeability) are, in general, \textbf{rank-2 tensors} i.e. \( 3 \times 3 \)
     matrices with 9 elements each:
     \begin{align*}
-      \boldsymbol{\epsilon}(x,y,z,t) = \begin{bmatrix}
-        \epsilon_{xx} & \epsilon_{xy} & \epsilon_{xz} \\
-        \epsilon_{yx} & \epsilon_{yy} & \epsilon_{yz} \\
-        \epsilon_{zx} & \epsilon_{zy} & \epsilon_{zz}
+      \mathbf{K}_E(x,y,z,t) = \begin{bmatrix}
+        K_{E,xx} & K_{E,xy} & K_{E,xz} \\
+        K_{E,yx} & K_{E,yy} & K_{E,yz} \\
+        K_{E,zx} & K_{E,zy} & K_{E,zz}
       \end{bmatrix}, \qquad
-      \boldsymbol{\mu}(x,y,z,t) = \begin{bmatrix}
-        \mu_{xx} & \mu_{xy} & \mu_{xz} \\
-        \mu_{yx} & \mu_{yy} & \mu_{yz} \\
-        \mu_{zx} & \mu_{zy} & \mu_{zz}
+      \mathbf{K}_M(x,y,z,t) = \begin{bmatrix}
+        K_{M,xx} & K_{M,xy} & K_{M,xz} \\
+        K_{M,yx} & K_{M,yy} & K_{M,yz} \\
+        K_{M,zx} & K_{M,zy} & K_{M,zz}
       \end{bmatrix}
     \end{align*}
     so that, written out fully with no shorthand,
@@ -53,9 +53,9 @@ There are two ways to express the total flux density functions \( \mathbf{D} \) 
       \end{bmatrix}
       &=
       \begin{bmatrix}
-        \epsilon_{xx} & \epsilon_{xy} & \epsilon_{xz} \\
-        \epsilon_{yx} & \epsilon_{yy} & \epsilon_{yz} \\
-        \epsilon_{zx} & \epsilon_{zy} & \epsilon_{zz}
+        K_{E,xx} & K_{E,xy} & K_{E,xz} \\
+        K_{E,yx} & K_{E,yy} & K_{E,yz} \\
+        K_{E,zx} & K_{E,zy} & K_{E,zz}
       \end{bmatrix}
       \begin{bmatrix}
         E_x(t) \\
@@ -69,9 +69,9 @@ There are two ways to express the total flux density functions \( \mathbf{D} \) 
       \end{bmatrix}
       &=
       \begin{bmatrix}
-        \epsilon_{xx} E_x(t) + \epsilon_{xy} E_y(t) + \epsilon_{xz} E_z(t) \\
-        \epsilon_{yx} E_x(t) + \epsilon_{yy} E_y(t) + \epsilon_{yz} E_z(t) \\
-        \epsilon_{zx} E_x(t) + \epsilon_{zy} E_y(t) + \epsilon_{zz} E_z(t)
+        K_{E,xx} E_x(t) + K_{E,xy} E_y(t) + K_{E,xz} E_z(t) \\
+        K_{E,yx} E_x(t) + K_{E,yy} E_y(t) + K_{E,yz} E_z(t) \\
+        K_{E,zx} E_x(t) + K_{E,zy} E_y(t) + K_{E,zz} E_z(t)
       \end{bmatrix} \\
       \begin{bmatrix}
         B_x(t) \\
@@ -80,9 +80,9 @@ There are two ways to express the total flux density functions \( \mathbf{D} \) 
       \end{bmatrix}
       &=
       \begin{bmatrix}
-        \mu_{xx} & \mu_{xy} & \mu_{xz} \\
-        \mu_{yx} & \mu_{yy} & \mu_{yz} \\
-        \mu_{zx} & \mu_{zy} & \mu_{zz}
+        K_{M,xx} & K_{M,xy} & K_{M,xz} \\
+        K_{M,yx} & K_{M,yy} & K_{M,yz} \\
+        K_{M,zx} & K_{M,zy} & K_{M,zz}
       \end{bmatrix}
       \begin{bmatrix}
         H_x(t) \\
@@ -96,9 +96,9 @@ There are two ways to express the total flux density functions \( \mathbf{D} \) 
       \end{bmatrix}
       &=
       \begin{bmatrix}
-        \mu_{xx} H_x(t) + \mu_{xy} H_y(t) + \mu_{xz} H_z(t) \\
-        \mu_{yx} H_x(t) + \mu_{yy} H_y(t) + \mu_{yz} H_z(t) \\
-        \mu_{zx} H_x(t) + \mu_{zy} H_y(t) + \mu_{zz} H_z(t)
+        K_{M,xx} H_x(t) + K_{M,xy} H_y(t) + K_{M,xz} H_z(t) \\
+        K_{M,yx} H_x(t) + K_{M,yy} H_y(t) + K_{M,yz} H_z(t) \\
+        K_{M,zx} H_x(t) + K_{M,zy} H_y(t) + K_{M,zz} H_z(t)
       \end{bmatrix}
     \end{align*}
     Notice that in general, \( D_x \) can depend on \emph{all three} components of
@@ -110,47 +110,47 @@ There are two ways to express the total flux density functions \( \mathbf{D} \) 
 
 \subsubsection{Classifying a Medium}
 
-Every medium's \( \boldsymbol{\epsilon} \) and \( \boldsymbol{\mu} \) can be
+Every medium's \( \mathbf{K}_E \) and \( \mathbf{K}_M \) can be
 classified along (at least) five independent axes, each describing what the
 9 tensor elements are allowed to depend on:
 \begin{itemize}
   \item \textbf{Homogeneity} [dependence on position]: A medium is
-    \textbf{homogeneous} if no element of \( \boldsymbol{\epsilon} \) or
-    \( \boldsymbol{\mu} \) depends on \( (x,y,z) \). It is
+    \textbf{homogeneous} if no element of \( \mathbf{K}_E \) or
+    \( \mathbf{K}_M \) depends on \( (x,y,z) \). It is
     \textbf{inhomogeneous} if the elements are functions of position,
-    \( \epsilon_{ij}(x,y,z) \). A single crystal of pure quartz, block
+    \( K_{E,ij}(x,y,z) \). A single crystal of pure quartz, block
     of solid copper or air inside a room are examples of homogeneous media.
-    Metamaterails like Graded Index (GRIN) lenses, Earth's Atmosphere
+    Metamaterials like Graded Index (GRIN) lenses, Earth's Atmosphere
     (Ionosphere), Biological tissue are examples of inhomogeneous media.
   \item \textbf{Isotropy} [dependence on direction]: A medium is
     \textbf{isotropic} if its tensor is diagonal with all three diagonal
-    elements equal \( \epsilon_{ij} = \epsilon \, \delta_{ij} \) (where
-    \( \delta_{ij} \) is the Kronecker delta: 1 if \( i=j \), 0 otherwise or
+    elements equal \( K_{E,ij} = K_E \, I_{ij} \) (where
+    \( I_{ij} \) is the Kronecker delta: 1 if \( i=j \), 0 otherwise or
     identity in matrix terms). This collapses the tensor to a single scalar
-    \( \epsilon \), and \( \mathbf{D} \) and \( \mathbf{E} \) become
+    \( K_E \), and \( \mathbf{D} \) and \( \mathbf{E} \) become
     collinear. A medium is \textbf{anisotropic} if the diagonal elements
     are unequal and/or any off-diagonal element is nonzero. Glass, Water
     and Air are Isotropic media. Calcite and Quartz Crystal are examples
     of Anisotropic media.
   \item \textbf{Linearity} [dependence on field magnitude]: A medium is
-    \textbf{linear} if \( \boldsymbol{\epsilon} \) and \( \boldsymbol{\mu} \)
+    \textbf{linear} if \( \mathbf{K}_E \) and \( \mathbf{K}_M \)
     do not depend on the magnitude of \( \mathbf{E} \) or \( \mathbf{H} \)
-    themselves. It is \textbf{nonlinear} if they do, \( \epsilon_{ij}(\mathbf{E}) \).
+    themselves. It is \textbf{nonlinear} if they do, \( K_{E,ij}(\mathbf{E}) \).
     All ordinary dielectrics are mostly linear. Kerr Media, Second-Harmonic Generation
     Crystals and Ferromagnetic cores are examples of Nonlinear media.
   \item \textbf{Dispersion} [dependence on frequency]: A medium is
-    \textbf{non-dispersive} if \( \boldsymbol{\epsilon} \) and
-    \( \boldsymbol{\mu} \) do not depend on frequency \( \omega \). It is
-    \textbf{dispersive} if they do, \( \epsilon_{ij}(\omega) \). Equivalently in
+    \textbf{non-dispersive} if \( \mathbf{K}_E \) and
+    \( \mathbf{K}_M \) do not depend on frequency \( \omega \). It is
+    \textbf{dispersive} if they do, \( K_{E,ij}(\omega) \). Equivalently in
     the time domain, the medium's response depends on the field's past
     values (memory), not just its instantaneous value. Vacuum, Air
     are examples of Non-Dispersive media. Glass, Water (in Microwave and
     Optical frequencies) and Metals are examples of Dispersive media.
   \item \textbf{Time-Variance} [dependence on time]: A medium is
-    \textbf{time-invariant} if \( \boldsymbol{\epsilon} \) and
-    \( \boldsymbol{\mu} \) do not explicitly depend on \( t \). It is
+    \textbf{time-invariant} if \( \mathbf{K}_E \) and
+    \( \mathbf{K}_M \) do not explicitly depend on \( t \). It is
     \textbf{time-varying} if the medium's own properties are being actively
-    modulated in time \( \epsilon_{ij}(t) \), distinct from dispersion,
+    modulated in time \( K_{E,ij}(t) \), distinct from dispersion,
     which is memory of the field's past, not modulation of the medium
     itself. All passive materials are time-invariant. Varactor Diode,
     Plasma with time varying electron density and Space-Time Metamaterials
@@ -169,10 +169,10 @@ Vacuum is chosen as the reference medium. It is homogeneous, isotropic,
 linear, non-dispersive, and time-invariant, so its tensor collapses
 to the constant, diagonal, equal-entry case:
 \begin{align*}
-  \boldsymbol{\epsilon}_{\text{vacuum}} = \epsilon_0 \, \mathbb{I} = \begin{bmatrix}
+  \mathbf{K}_{E,\text{vacuum}} = \epsilon_0 \, \mathbb{I} = \begin{bmatrix}
     \epsilon_0 & 0 & 0 \\ 0 & \epsilon_0 & 0 \\ 0 & 0 & \epsilon_0
   \end{bmatrix}, \qquad
-  \boldsymbol{\mu}_{\text{vacuum}} = \mu_0 \, \mathbb{I} = \begin{bmatrix}
+  \mathbf{K}_{M,\text{vacuum}} = \mu_0 \, \mathbb{I} = \begin{bmatrix}
     \mu_0 & 0 & 0 \\ 0 & \mu_0 & 0 \\ 0 & 0 & \mu_0
   \end{bmatrix}
 \end{align*}
@@ -181,13 +181,13 @@ writing it as the bare scalar \( \epsilon_0 \) (or \( \mu_0 \)) loses no
 information. Any other medium's tensor is compared to this reference by
 factoring it out:
 \begin{align*}
-  \boldsymbol{\epsilon}(x,y,z,t) &= \epsilon_0 \, \boldsymbol{\epsilon}_r(x,y,z,t) \\
-  \boldsymbol{\mu}(x,y,z,t) &= \mu_0 \, \boldsymbol{\mu}_r(x,y,z,t)
+  \mathbf{K}_E(x,y,z,t) &= \epsilon_0 \, \mathbf{K}_{ER}(x,y,z,t) \\
+  \mathbf{K}_M(x,y,z,t) &= \mu_0 \, \mathbf{K}_{MR}(x,y,z,t)
 \end{align*}
-where \( \boldsymbol{\epsilon}_r \) and \( \boldsymbol{\mu}_r \) are the
+where \( \mathbf{K}_{ER} \) and \( \mathbf{K}_{MR} \) are the
 dimensionless \textbf{relative permittivity} and \textbf{relative
 permeability} tensors, subject to the same classification above. Vacuum is
-recovered exactly when \( \boldsymbol{\epsilon}_r = \boldsymbol{\mu}_r =
+recovered exactly when \( \mathbf{K}_{ER} = \mathbf{K}_{MR} =
 \mathbb{I} \).
 
 \subsubsection{Recovering P and M}
@@ -209,9 +209,9 @@ Both forms must be equal.
       \end{bmatrix}
       &= \epsilon_0
       \begin{bmatrix}
-        (\epsilon_r)_{xx} & (\epsilon_r)_{xy} & (\epsilon_r)_{xz} \\
-        (\epsilon_r)_{yx} & (\epsilon_r)_{yy} & (\epsilon_r)_{yz} \\
-        (\epsilon_r)_{zx} & (\epsilon_r)_{zy} & (\epsilon_r)_{zz}
+        (K_{ER})_{xx} & (K_{ER})_{xy} & (K_{ER})_{xz} \\
+        (K_{ER})_{yx} & (K_{ER})_{yy} & (K_{ER})_{yz} \\
+        (K_{ER})_{zx} & (K_{ER})_{zy} & (K_{ER})_{zz}
       \end{bmatrix}
       \begin{bmatrix}
         E_x(t) \\
@@ -219,67 +219,83 @@ Both forms must be equal.
         E_z(t)
       \end{bmatrix} \\
       \begin{bmatrix}
-        E_x(t) + P_x(t) \\
-        E_y(t) + P_y(t) \\
-        E_z(t) + P_z(t)
+        E_x(t) + \frac{P_x(t)}{\epsilon_0} \\
+        E_y(t) + \frac{P_y(t)}{\epsilon_0} \\
+        E_z(t) + \frac{P_z(t)}{\epsilon_0}
       \end{bmatrix}
       &=
       \begin{bmatrix}
-        (\epsilon_r)_{xx} E_x(t) + (\epsilon_r)_{xy} E_y(t) + (\epsilon_r)_{xz} E_z(t) \\
-        (\epsilon_r)_{yx} E_x(t) + (\epsilon_r)_{yy} E_y(t) + (\epsilon_r)_{yz} E_z(t) \\
-        (\epsilon_r)_{zx} E_x(t) + (\epsilon_r)_{zy} E_y(t) + (\epsilon_r)_{zz} E_z(t)
-      \end{bmatrix} \hspace{1cm} \text{\{Note! \(\epsilon_0\) cancels\}} \\
-      \begin{bmatrix}
+        (K_{ER})_{xx} E_x(t) + (K_{ER})_{xy} E_y(t) + (K_{ER})_{xz} E_z(t) \\
+        (K_{ER})_{yx} E_x(t) + (K_{ER})_{yy} E_y(t) + (K_{ER})_{yz} E_z(t) \\
+        (K_{ER})_{zx} E_x(t) + (K_{ER})_{zy} E_y(t) + (K_{ER})_{zz} E_z(t)
+      \end{bmatrix} \hspace{1cm} \left[\div \epsilon_0\right] \\
+      \frac{1}{\epsilon_0}\begin{bmatrix}
         P_x(t) \\
         P_y(t) \\
         P_z(t)
       \end{bmatrix}
       &=
       \begin{bmatrix}
-        \left((\epsilon_r)_{xx})E_x(t) + (\epsilon_r)_{xy}E_y(t) + (\epsilon_r)_{xz}E_z(t)\right) - E_x(t) \\
-        \left((\epsilon_r)_{yx})E_x(t) + (\epsilon_r)_{yy}E_y(t) + (\epsilon_r)_{yz}E_z(t)\right) - E_y(t) \\
-        \left((\epsilon_r)_{zx})E_x(t) + (\epsilon_r)_{zy}E_y(t) + (\epsilon_r)_{zz}E_z(t)\right) - E_z(t)
+        \left((K_{ER})_{xx}E_x(t) + (K_{ER})_{xy}E_y(t) + (K_{ER})_{xz}E_z(t)\right) - E_x(t) \\
+        \left((K_{ER})_{yx}E_x(t) + (K_{ER})_{yy}E_y(t) + (K_{ER})_{yz}E_z(t)\right) - E_y(t) \\
+        \left((K_{ER})_{zx}E_x(t) + (K_{ER})_{zy}E_y(t) + (K_{ER})_{zz}E_z(t)\right) - E_z(t)
       \end{bmatrix} \\
-      \begin{bmatrix}
+      \frac{1}{\epsilon_0}\begin{bmatrix}
         P_x(t) \\
         P_y(t) \\
         P_z(t)
       \end{bmatrix}
       &=
       \begin{bmatrix}
-        \left((\epsilon_r)_{xx})E_x(t) - E_x(t)\right) + (\epsilon_r)_{xy}E_y(t) + (\epsilon_r)_{xz}E_z(t) \\
-        (\epsilon_r)_{yx})E_x(t) + \left((\epsilon_r)_{yy}E_y(t) - E_y(t)\right) + (\epsilon_r)_{yz}E_z(t) \\
-        (\epsilon_r)_{zx})E_x(t) + (\epsilon_r)_{zy}E_y(t) + \left((\epsilon_r)_{zz}E_z(t) - E_z(t)\right)
+        \left((K_{ER})_{xx}E_x(t) - E_x(t)\right) + (K_{ER})_{xy}E_y(t) + (K_{ER})_{xz}E_z(t) \\
+        (K_{ER})_{yx}E_x(t) + \left((K_{ER})_{yy}E_y(t) - E_y(t)\right) + (K_{ER})_{yz}E_z(t) \\
+        (K_{ER})_{zx}E_x(t) + (K_{ER})_{zy}E_y(t) + \left((K_{ER})_{zz}E_z(t) - E_z(t)\right)
       \end{bmatrix} \\
-      \begin{bmatrix}
+      \frac{1}{\epsilon_0}\begin{bmatrix}
         P_x(t) \\
         P_y(t) \\
         P_z(t)
       \end{bmatrix}
       &=
       \begin{bmatrix}
-        \left((\epsilon_r)_{xx}) - 1\right)E_x(t) + (\epsilon_r)_{xy}E_y(t) + (\epsilon_r)_{xz}E_z(t) \\
-        (\epsilon_r)_{yx})E_x(t) + \left((\epsilon_r)_{yy} - 1 \right)E_y(t) + (\epsilon_r)_{yz}E_z(t) \\
-        (\epsilon_r)_{zx})E_x(t) + (\epsilon_r)_{zy}E_y(t) + \left((\epsilon_r)_{zz} - 1\right)E_z(t)
+        \left((K_{ER})_{xx} - 1\right)E_x(t) + (K_{ER})_{xy}E_y(t) + (K_{ER})_{xz}E_z(t) \\
+        (K_{ER})_{yx}E_x(t) + \left((K_{ER})_{yy} - 1 \right)E_y(t) + (K_{ER})_{yz}E_z(t) \\
+        (K_{ER})_{zx}E_x(t) + (K_{ER})_{zy}E_y(t) + \left((K_{ER})_{zz} - 1\right)E_z(t)
       \end{bmatrix} \\
-      \begin{bmatrix}
+      \frac{1}{\epsilon_0}\begin{bmatrix}
         P_x(t) \\
         P_y(t) \\
         P_z(t)
       \end{bmatrix}
       &=
       \begin{bmatrix}
-        (\epsilon_r)_{xx} - 1 & (\epsilon_r)_{xy} & (\epsilon_r)_{xz} \\
-        (\epsilon_r)_{yx} & (\epsilon_r)_{yy} - 1 & (\epsilon_r)_{yz} \\
-        (\epsilon_r)_{zx} & (\epsilon_r)_{zy} & (\epsilon_r)_{zz} - 1
+        (K_{ER})_{xx} - 1 & (K_{ER})_{xy} & (K_{ER})_{xz} \\
+        (K_{ER})_{yx} & (K_{ER})_{yy} - 1 & (K_{ER})_{yz} \\
+        (K_{ER})_{zx} & (K_{ER})_{zy} & (K_{ER})_{zz} - 1
       \end{bmatrix}
       \begin{bmatrix}
         E_x(t) \\
         E_y(t) \\
         E_z(t)
+      \end{bmatrix} \\
+      \begin{bmatrix}
+        P_x(t) \\
+        P_y(t) \\
+        P_z(t)
       \end{bmatrix}
+      &= \epsilon_0
+      \begin{bmatrix}
+        (K_{ER})_{xx} - 1 & (K_{ER})_{xy} & (K_{ER})_{xz} \\
+        (K_{ER})_{yx} & (K_{ER})_{yy} - 1 & (K_{ER})_{yz} \\
+        (K_{ER})_{zx} & (K_{ER})_{zy} & (K_{ER})_{zz} - 1
+      \end{bmatrix}
+      \begin{bmatrix}
+        E_x(t) \\
+        E_y(t) \\
+        E_z(t)
+      \end{bmatrix} \hspace{1cm} \left[\times \epsilon_0\right]
     \end{align*}
-    If you define \( \boldsymbol{\chi}_e \equiv \boldsymbol{\epsilon}_r - \mathbb{I} \) as the
+    If you define \( \mathbf{X}_E \equiv \mathbf{K}_{ER} - \mathbb{I} \) as the
   \textbf{electric susceptibility tensor}, then the above can be written more compactly as
     \begin{align*}
       \begin{bmatrix}
@@ -287,11 +303,11 @@ Both forms must be equal.
         P_y(t) \\
         P_z(t)
       \end{bmatrix}
-      &=
+      &= \epsilon_0
       \begin{bmatrix}
-        (\chi_e)_{xx} & (\chi_e)_{xy} & (\chi_e)_{xz} \\
-        (\chi_e)_{yx} & (\chi_e)_{yy} & (\chi_e)_{yz} \\
-        (\chi_e)_{zx} & (\chi_e)_{zy} & (\chi_e)_{zz}
+        (X_E)_{xx} & (X_E)_{xy} & (X_E)_{xz} \\
+        (X_E)_{yx} & (X_E)_{yy} & (X_E)_{yz} \\
+        (X_E)_{zx} & (X_E)_{zy} & (X_E)_{zz}
       \end{bmatrix}
       \begin{bmatrix}
         E_x(t) \\
@@ -299,13 +315,13 @@ Both forms must be equal.
         E_z(t)
       \end{bmatrix}
     \end{align*}
-    where \( \boldsymbol{\chi}_e \) is also a rank-2 tensor with 9 elements and
+    where \( \mathbf{X}_E \) is also a rank-2 tensor with 9 elements and
     equals,
     \begin{align*}
-      \boldsymbol{\chi}_e(x,y,z,t) = \begin{bmatrix}
-        (\epsilon_r)_{xx} - 1 & (\epsilon_r)_{xy} & (\epsilon_r)_{xz} \\
-        (\epsilon_r)_{yx} & (\epsilon_r)_{yy} - 1 & (\epsilon_r)_{yz} \\
-        (\epsilon_r)_{zx} & (\epsilon_r)_{zy} & (\epsilon_r)_{zz} - 1
+      \mathbf{X}_E(x,y,z,t) = \begin{bmatrix}
+        (K_{ER})_{xx} - 1 & (K_{ER})_{xy} & (K_{ER})_{xz} \\
+        (K_{ER})_{yx} & (K_{ER})_{yy} - 1 & (K_{ER})_{yz} \\
+        (K_{ER})_{zx} & (K_{ER})_{zy} & (K_{ER})_{zz} - 1
       \end{bmatrix}
     \end{align*}
   \item Solving for \( \mathbf{M} \):
@@ -323,9 +339,9 @@ Both forms must be equal.
       \end{bmatrix} \right)
       &= \mu_0
       \begin{bmatrix}
-        (\mu_r)_{xx} & (\mu_r)_{xy} & (\mu_r)_{xz} \\
-        (\mu_r)_{yx} & (\mu_r)_{yy} & (\mu_r)_{yz} \\
-        (\mu_r)_{zx} & (\mu_r)_{zy} & (\mu_r)_{zz}
+        (K_{MR})_{xx} & (K_{MR})_{xy} & (K_{MR})_{xz} \\
+        (K_{MR})_{yx} & (K_{MR})_{yy} & (K_{MR})_{yz} \\
+        (K_{MR})_{zx} & (K_{MR})_{zy} & (K_{MR})_{zz}
       \end{bmatrix}
       \begin{bmatrix}
         H_x(t) \\
@@ -339,10 +355,10 @@ Both forms must be equal.
       \end{bmatrix}
       &=
       \begin{bmatrix}
-        (\mu_r)_{xx} H_x(t) + (\mu_r)_{xy} H_y(t) + (\mu_r)_{xz} H_z(t) \\
-        (\mu_r)_{yx} H_x(t) + (\mu_r)_{yy} H_y(t) + (\mu_r)_{yz} H_z(t) \\
-        (\mu_r)_{zx} H_x(t) + (\mu_r)_{zy} H_y(t) + (\mu_r)_{zz} H_z(t)
-      \end{bmatrix} \hspace{1cm} \text{\{Note! \(\mu_0\) cancels\}} \\
+        (K_{MR})_{xx} H_x(t) + (K_{MR})_{xy} H_y(t) + (K_{MR})_{xz} H_z(t) \\
+        (K_{MR})_{yx} H_x(t) + (K_{MR})_{yy} H_y(t) + (K_{MR})_{yz} H_z(t) \\
+        (K_{MR})_{zx} H_x(t) + (K_{MR})_{zy} H_y(t) + (K_{MR})_{zz} H_z(t)
+      \end{bmatrix} \hspace{1cm} \left[\div \mu_0\right] \\
       \begin{bmatrix}
         M_x(t) \\
         M_y(t) \\
@@ -350,9 +366,9 @@ Both forms must be equal.
       \end{bmatrix}
       &=
       \begin{bmatrix}
-          \left((\mu_r)_{xx})H_x(t) + (\mu_r)_{xy}H_y(t) + (\mu_r)_{xz}H_z(t)\right) - H_x(t) \\
-          \left((\mu_r)_{yx})H_x(t) + (\mu_r)_{yy}H_y(t) + (\mu_r)_{yz}H_z(t)\right) - H_y(t) \\
-          \left((\mu_r)_{zx})H_x(t) + (\mu_r)_{zy}H_y(t) + (\mu_r)_{zz}H_z(t)\right) - H_z(t)
+          \left((K_{MR})_{xx}H_x(t) + (K_{MR})_{xy}H_y(t) + (K_{MR})_{xz}H_z(t)\right) - H_x(t) \\
+          \left((K_{MR})_{yx}H_x(t) + (K_{MR})_{yy}H_y(t) + (K_{MR})_{yz}H_z(t)\right) - H_y(t) \\
+          \left((K_{MR})_{zx}H_x(t) + (K_{MR})_{zy}H_y(t) + (K_{MR})_{zz}H_z(t)\right) - H_z(t)
       \end{bmatrix} \\
       \begin{bmatrix}
         M_x(t) \\
@@ -361,9 +377,9 @@ Both forms must be equal.
       \end{bmatrix}
       &=
       \begin{bmatrix}
-          \left((\mu_r)_{xx})H_x(t) - H_x(t) \right) + (\mu_r)_{xy}H_y(t) + (\mu_r)_{xz}H_z(t) \\
-          (\mu_r)_{yx})H_x(t) + \left((\mu_r)_{yy}H_y(t) - H_y(t)\right) + (\mu_r)_{yz}H_z(t) \\
-          (\mu_r)_{zx})H_x(t) + (\mu_r)_{zy}H_y(t) + \left((\mu_r)_{zz}H_z(t) - H_z(t)\right)
+          \left((K_{MR})_{xx}H_x(t) - H_x(t) \right) + (K_{MR})_{xy}H_y(t) + (K_{MR})_{xz}H_z(t) \\
+          (K_{MR})_{yx}H_x(t) + \left((K_{MR})_{yy}H_y(t) - H_y(t)\right) + (K_{MR})_{yz}H_z(t) \\
+          (K_{MR})_{zx}H_x(t) + (K_{MR})_{zy}H_y(t) + \left((K_{MR})_{zz}H_z(t) - H_z(t)\right)
       \end{bmatrix} \\
       \begin{bmatrix}
         M_x(t) \\
@@ -372,9 +388,9 @@ Both forms must be equal.
       \end{bmatrix}
       &=
       \begin{bmatrix}
-          \left((\mu_r)_{xx}) - 1\right)H_x(t) + (\mu_r)_{xy}H_y(t) + (\mu_r)_{xz}H_z(t) \\
-          (\mu_r)_{yx})H_x(t) + \left((\mu_r)_{yy} - 1\right)H_y(t) + (\mu_r)_{yz}H_z(t) \\
-          (\mu_r)_{zx})H_x(t) + (\mu_r)_{zy}H_y(t) + \left((\mu_r)_{zz} - 1\right)H_z(t)
+          \left((K_{MR})_{xx} - 1\right)H_x(t) + (K_{MR})_{xy}H_y(t) + (K_{MR})_{xz}H_z(t) \\
+          (K_{MR})_{yx}H_x(t) + \left((K_{MR})_{yy} - 1\right)H_y(t) + (K_{MR})_{yz}H_z(t) \\
+          (K_{MR})_{zx}H_x(t) + (K_{MR})_{zy}H_y(t) + \left((K_{MR})_{zz} - 1\right)H_z(t)
       \end{bmatrix} \\
       \begin{bmatrix}
         M_x(t) \\
@@ -383,10 +399,10 @@ Both forms must be equal.
       \end{bmatrix}
       &=
       \begin{bmatrix}
-        (\mu_r)_{xx} - 1 & (\mu_r)_{xy}
-        & (\mu_r)_{xz} \\
-        (\mu_r)_{yx} & (\mu_r)_{yy} - 1 & (\mu_r)_{yz} \\
-        (\mu_r)_{zx} & (\mu_r)_{zy} & (\mu_r)_{zz} - 1
+        (K_{MR})_{xx} - 1 & (K_{MR})_{xy}
+        & (K_{MR})_{xz} \\
+        (K_{MR})_{yx} & (K_{MR})_{yy} - 1 & (K_{MR})_{yz} \\
+        (K_{MR})_{zx} & (K_{MR})_{zy} & (K_{MR})_{zz} - 1
       \end{bmatrix}
       \begin{bmatrix}
         H_x(t) \\
@@ -394,7 +410,7 @@ Both forms must be equal.
         H_z(t)
       \end{bmatrix}
     \end{align*}
-    If you define \( \boldsymbol{\chi}_m \equiv \boldsymbol{\mu}_r - \mathbb{I} \) as the
+    If you define \( \mathbf{X}_M \equiv \mathbf{K}_{MR} - \mathbb{I} \) as the
     \textbf{magnetic susceptibility tensor}, then the above can be written more compactly
     as,
     \begin{align*}
@@ -405,9 +421,9 @@ Both forms must be equal.
       \end{bmatrix}
       &=
       \begin{bmatrix}
-        (\chi_m)_{xx} & (\chi_m)_{xy} & (\chi_m)_{xz} \\
-        (\chi_m)_{yx} & (\chi_m)_{yy} & (\chi_m)_{yz} \\
-        (\chi_m)_{zx} & (\chi_m)_{zy} & (\chi_m)_{zz}
+        (X_M)_{xx} & (X_M)_{xy} & (X_M)_{xz} \\
+        (X_M)_{yx} & (X_M)_{yy} & (X_M)_{yz} \\
+        (X_M)_{zx} & (X_M)_{zy} & (X_M)_{zz}
       \end{bmatrix}
       \begin{bmatrix}
         H_x(t) \\
@@ -415,12 +431,12 @@ Both forms must be equal.
         H_z(t)
       \end{bmatrix}
     \end{align*}
-    where \( \boldsymbol{\chi}_m \) is also a rank-2 tensor with 9 elements and equals,
+    where \( \mathbf{X}_M \) is also a rank-2 tensor with 9 elements and equals,
     \begin{align*}
-      \boldsymbol{\chi}_m(x,y,z,t) = \begin{bmatrix}
-        (\mu_r)_{xx} - 1 & (\mu_r)_{xy} & (\mu_r)_{xz} \\
-        (\mu_r)_{yx} & (\mu_r)_{yy} - 1 & (\mu_r)_{yz} \\
-        (\mu_r)_{zx} & (\mu_r)_{zy} & (\mu_r)_{zz} - 1
+      \mathbf{X}_M(x,y,z,t) = \begin{bmatrix}
+        (K_{MR})_{xx} - 1 & (K_{MR})_{xy} & (K_{MR})_{xz} \\
+        (K_{MR})_{yx} & (K_{MR})_{yy} - 1 & (K_{MR})_{yz} \\
+        (K_{MR})_{zx} & (K_{MR})_{zy} & (K_{MR})_{zz} - 1
       \end{bmatrix}
     \end{align*}
 \end{itemize}
@@ -430,12 +446,12 @@ In practice no region of interest is a single, uniform medium. A block of
 space spanning open air may contain a concrete building, a glass window,
 and a person standing in a doorway. Thus the medium  is \textbf{piecewise-homogeneous}
 that is uniform within each material but genuinely a function of position,
-\( \boldsymbol{\epsilon}(x,y,z) \), \( \boldsymbol{\mu}(x,y,z) \), over the
+\( \mathbf{K}_E(x,y,z) \), \( \mathbf{K}_M(x,y,z) \), over the
 region as a whole typically discontinuous at material boundaries. This is
 the normal case for real propagation problems (indoor RF coverage, urban
 propagation, biomedical imaging) and it is why numerical solvers that time-march
 the fields on a spatial grid (say via the central-difference update
-equations of the FDTD method) assign \( \boldsymbol{\epsilon} \) and
-\( \boldsymbol{\mu} \) \emph{per grid cell} based on which physical material
+equations of the FDTD method) assign \( \mathbf{K}_E \) and
+\( \mathbf{K}_M \) \emph{per grid cell} based on which physical material
 occupies that cell rather than treating them as global constants pulled outside the
 update equation.
