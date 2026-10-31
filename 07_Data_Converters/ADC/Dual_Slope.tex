@@ -1,0 +1,32 @@
+\subsection{Dual Slope ADC}\label{sec:adc_dual_slope}
+
+\subsubsection{Overview}
+An integrator (Section~\ref{sec:amp_integrator}) integrates \(V_{IN}\) for a
+fixed \(N_1\) clock periods, then integrates \(-V_{REF}\) until its output returns
+to zero, counting \(N_2\) periods. The ratio \(\frac{N_2}{N_1}\) is the result.
+Slow, but extremely accurate and immune to \(R\), \(C\) and clock values.
+
+\subsubsection{Transfer Function}
+\textbf{Large Signal, Time Domain, AC Input Analysis (Q6)}: integrator output
+\(v_x(t) = -\frac{1}{RC}\int v\,dt\), start at 0.
+\begin{align*}
+  \text{Phase 1 } (T_1 = N_1 T_{clk}):& \hspace{0.5cm} v_x(T_1) = -\frac{1}{RC}\int_0^{T_1} V_{IN}\, dt = -\frac{\overline{V_{IN}} T_1}{RC} \\
+  \text{Phase 2 } (T_2 = N_2 T_{clk}):& \hspace{0.5cm} 0 = v_x(T_1) + \frac{V_{REF} T_2}{RC} \\
+  T_2 &= \frac{\overline{V_{IN}}}{V_{REF}} T_1 \hspace{0.5cm} \Rightarrow \hspace{0.5cm}
+  N_2 = N_1 \frac{\overline{V_{IN}}}{V_{REF}}
+\end{align*}
+\(R\), \(C\) and \(T_{clk}\) cancel.
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Noise Rejection (Q4/Q8)}: phase 1 averages \(V_{IN}\) over \(T_1\).
+    For \(V_{IN} = A\sin(2\pi f t + \theta)\):
+    \begin{align*}
+      \overline{V_{IN}} &= \frac{1}{T_1}\int_0^{T_1} A\sin(2\pi f t + \theta)\, dt, \hspace{1cm}
+      |H(f)| = \left|\frac{\sin(\pi f T_1)}{\pi f T_1}\right|
+    \end{align*}
+    with nulls at \(f = \frac{k}{T_1}\): \(T_1 = 100\,\)ms rejects both 50\,Hz and
+    60\,Hz mains and their harmonics.
+  \item \textbf{Conversion Time}: up to \(2 \cdot 2^n T_{clk}\), e.g. 16 bits at
+    1\,MHz: 131\,ms.
+\end{enumerate}

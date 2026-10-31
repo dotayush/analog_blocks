@@ -1,0 +1,80 @@
+\subsection{Over-Sampled (Delta-Sigma) ADC}\label{sec:adc_ds}
+
+\subsubsection{Overview}
+A coarse quantiser (\(n_q\) bits, often 1) inside a feedback loop with a
+loop filter \(H(z)\), clocked at \(f_s = 2\, OSR\, f_B\). The loop passes the
+signal and pushes (shapes) the quantisation noise out of the signal band,
+where a digital decimation filter removes it.
+
+\subsubsection{Schematic (first order)}
+\begin{circuitfig}
+  \draw (0,0) node[circ]{} node[left]{$U$};
+  \draw[->] (0,0) -- (1.2,0);
+  \draw (1.5,0) circle (0.3) node{$\Sigma$};
+  \draw[->] (1.8,0) -- (2.6,0);
+  \draw (2.6,-0.6) rectangle (4.4,0.6) node[midway]{$\frac{z^{-1}}{1 - z^{-1}}$};
+  \draw[->] (4.4,0) -- node[above]{$Y$} (5.4,0);
+  \draw (5.7,0) circle (0.3) node{$\Sigma$};
+  \draw[->] (5.7,1.2) node[above]{$E$} -- (5.7,0.3);
+  \draw[->] (6,0) -- (7.4,0) node[right]{$V$};
+  \draw (6.7,0) -- (6.7,-1.4) -| (1.5,-0.3);
+  \node at (1.2,-0.55) {$-$};
+\end{circuitfig}
+
+\subsubsection{Transfer Function}
+\textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)} in the
+\(z\) domain (\(z = e^{sT}\), \(T = \frac{1}{f_s}\)), the quantiser modelled as
+\(V = Y + E\):
+\begin{align*}
+  Y &= \frac{z^{-1}}{1 - z^{-1}}(U - V) \\
+  V &= \frac{z^{-1}}{1 - z^{-1}}(U - V) + E \\
+  V\left(1 + \frac{z^{-1}}{1 - z^{-1}}\right) &= \frac{z^{-1}}{1 - z^{-1}} U + E \\
+  V \cdot \frac{1}{1 - z^{-1}} &= \frac{z^{-1}}{1 - z^{-1}} U + E \\
+  V &= \underbrace{z^{-1}}_{STF} U + \underbrace{(1 - z^{-1})}_{NTF} E
+\end{align*}
+The signal is only delayed; the noise is differentiated (first order high
+pass). An \(L\)-th order loop gives \(NTF = (1 - z^{-1})^L\).
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Noise Shaping}: on \(z = e^{j2\pi f/f_s}\),
+    \begin{align*}
+      |1 - e^{-j2\pi f/f_s}| &= |e^{-j\pi f/f_s}|\,|e^{j\pi f/f_s} - e^{-j\pi f/f_s}| = 2\sin\left(\frac{\pi f}{f_s}\right) \approx \frac{2\pi f}{f_s}
+    \end{align*}
+  \item \textbf{In-band Noise}: \(E\) is white with power \(\frac{X_{LSB}^2}{12}\) spread
+    over \(\pm\frac{f_s}{2}\), i.e. density \(\frac{X_{LSB}^2}{12 f_s}\):
+    \begin{align*}
+      P_n &= \int_{-f_B}^{f_B} \frac{X_{LSB}^2}{12 f_s}\left(\frac{2\pi f}{f_s}\right)^{2L} df
+           = \frac{X_{LSB}^2}{12 f_s}\left(\frac{2\pi}{f_s}\right)^{2L} \frac{2 f_B^{2L+1}}{2L + 1} \\
+      P_n &= \frac{X_{LSB}^2}{12} \cdot \frac{\pi^{2L}}{2L + 1} \cdot \left(\frac{2 f_B}{f_s}\right)^{2L+1}
+           = \frac{X_{LSB}^2}{12} \cdot \frac{\pi^{2L}}{(2L + 1)\, OSR^{2L+1}}
+    \end{align*}
+    \begin{align*}
+      SQNR_{dB} = 6.02\, n_q + 1.76 - 10\log_{10}\frac{\pi^{2L}}{2L + 1} + (2L + 1)\, 10\log_{10}(OSR)
+    \end{align*}
+    First order (\(L = 1\)): \(-5.17\,\)dB \(+ 30\log_{10}(OSR)\) (1.5 bits per
+    doubling of \(OSR\)); second order: \(-12.9\,\)dB \(+ 50\log_{10}(OSR)\).
+  \item \textbf{Single-Bit vs Multi-Bit}: a 1-bit quantiser and DAC are
+    inherently linear but limit stable loop orders and input range (higher
+    order 1-bit loops are only conditionally stable, typically \(|U| < 0.7\)
+    of full scale). A multi-bit quantiser adds \(6.02\) dB per bit and relaxes
+    stability, but the feedback DAC's mismatch enters directly with the
+    signal (STF path) and needs element shuffling.
+  \item \textbf{Continuous-Time}: the loop filter is built from active RC or
+    \(G_m\)-C integrators, \(H(s)\), and the quantiser samples. The loop is
+    equivalent to a discrete one when \(\mathcal{Z}^{-1}\{H(z)\}\) equals the sampled
+    impulse response of \(H(s)\) with the DAC pulse (impulse invariance);
+    e.g. an NRZ DAC pulse and \(H(s) = \frac{f_s}{s}\) reproduce
+    \(\frac{z^{-1}}{1 - z^{-1}}\). The continuous filter is an implicit
+    anti-alias filter and needs no settling op-amps, but is sensitive to
+    clock jitter (Section~\ref{sec:dc_char}) and to RC spread.
+\end{enumerate}
+
+\subsubsection{Question}
+Audio, \(f_B = 20\,\)kHz, 16 bit (\(SQNR \geq 98\,\)dB), 1-bit quantiser. Find the
+\(OSR\) for \(L = 1\) and \(L = 2\).
+\paragraph{Solution:}
+\begin{align*}
+  L = 1&: \ 98 = 7.78 - 5.17 + 30\log_{10}OSR \Rightarrow OSR = 10^{95.39/30} = 1512 \ (f_s = 60.5\,MHz) \\
+  L = 2&: \ 98 = 7.78 - 12.9 + 50\log_{10}OSR \Rightarrow OSR = 10^{103.1/50} = 115 \ (f_s = 4.6\,MHz)
+\end{align*}

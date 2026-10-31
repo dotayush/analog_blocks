@@ -1,0 +1,27 @@
+\subsection{SAR, Pipeline and Delta-Sigma DACs}\label{sec:dac_other}
+
+\subsubsection{SAR (Serial) DAC}
+A small DAC is reused once per bit. Charge sharing serial DAC: a capacitor
+\(C_1\) is charged to \(b_k V_{REF}\) and shared with an equal \(C_2\) holding
+the running result, LSB first:
+\begin{align*}
+  V^{(k)} &= \frac{C_1 b_k V_{REF} + C_2 V^{(k-1)}}{C_1 + C_2} = \frac{b_k V_{REF} + V^{(k-1)}}{2} \hspace{1cm} [C_1 = C_2,\ V^{(-1)} = 0] \\
+  V^{(n-1)} &= V_{REF} \sum_{k=0}^{n-1} b_k 2^{k-n}
+\end{align*}
+the same recursion as the R-2R ladder (Section~\ref{sec:dac_r2r}), in time
+instead of space. \(n\) cycles per conversion.
+
+\subsubsection{Pipeline DAC}
+Each stage \(k\) (one per bit, MSB last) computes
+\(V^{(k)} = \frac{V^{(k-1)} + b_k V_{REF}}{2}\) and passes it on, so a new code
+enters every cycle with latency \(n\) cycles.
+
+\subsubsection{Delta-Sigma DAC}
+A digital modulator (Section~\ref{sec:adc_ds}) maps the \(n\)-bit code at
+\(f_s = 2\, OSR\, f_B\) onto a 1-bit (or few-bit) stream whose quantisation
+noise is pushed above \(f_B\); a 1-bit DAC is perfectly linear (two levels
+define a line) and an analog low pass filter removes the shaped noise:
+\[
+  SQNR_{dB} = 6.02\, n_q + 1.76 - 10\log_{10}\frac{\pi^{2L}}{2L + 1} + (2L + 1)\, 10\log_{10}(OSR)
+\]
+for an \(L\)-th order modulator with an \(n_q\)-bit quantiser.

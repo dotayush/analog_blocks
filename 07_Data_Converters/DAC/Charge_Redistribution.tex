@@ -1,0 +1,45 @@
+\subsection{Charge Redistribution DAC and MDAC}\label{sec:dac_mdac}
+
+\subsubsection{Overview}
+Binary weighted capacitors \(C_k = 2^k C_u\) plus a terminating \(C_u\)
+(total \(2^n C_u\)) share a top plate \(V_x\). After a reset the bottom
+plates are switched to \(V_{REF}\) or ground and charge redistributes.
+Capacitor matching is the best of any integrated element, and no static
+current flows. When the reference is replaced by an analog input the
+output is the product \(V_{IN} \cdot \frac{D}{2^n}\): a Multiplying DAC (MDAC),
+the core of SAR and pipeline ADCs.
+
+\subsubsection{Transfer Function}
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}: reset
+    puts zero charge on the top plate (\(V_x = 0\), all bottom plates at 0).
+    With top plate parasitic \(C_p\), charge conservation after switching:
+    \begin{align*}
+      \sum_{k=0}^{n-1} C_k (V_x - b_k V_{REF}) + C_u (V_x - 0) + C_p V_x &= 0 \\
+      V_x \left(\sum_k C_k + C_u + C_p\right) &= V_{REF} \sum_k b_k 2^k C_u \\
+      V_x &= \frac{D\, C_u}{2^n C_u + C_p} V_{REF} = \frac{D}{2^n} V_{REF} \cdot \frac{1}{1 + \frac{C_p}{2^n C_u}}
+    \end{align*}
+    \(C_p\) is a gain error only (linearity is untouched).
+  \item \textbf{Pipeline MDAC stage}: \(C_1\), \(C_2\) around an op-amp. Phase 1:
+    both sample \(V_{IN}\) against the virtual ground (top plate charge
+    \(-(C_1 + C_2)V_{IN}\)). Phase 2: \(C_2\) is the feedback capacitor, \(C_1\)
+    switches to \(b V_{REF}\), \(b \in \{-1, 0, 1\}\):
+    \begin{align*}
+      -(C_1 + C_2) V_{IN} &= -C_1 b V_{REF} - C_2 V_{OUT} \\
+      V_{OUT} &= \left(1 + \frac{C_1}{C_2}\right) V_{IN} - \frac{C_1}{C_2} b V_{REF} \xrightarrow{C_1 = C_2} 2 V_{IN} - b V_{REF}
+    \end{align*}
+    With finite op-amp gain \(A\) and feedback factor \(F = \frac{C_2}{C_1 + C_2 + C_{in}}\),
+    the residue is scaled by \(\frac{AF}{1 + AF}\) (Section~\ref{sec:devices_opamp}).
+\end{enumerate}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Mismatch}: as the binary current DAC,
+    \(SD(DNL_{N/2}) = \sqrt{2^n - 1}\, S_C\).
+  \item \textbf{Area}: \(2^n C_u\) grows fast; a bridge (split) capacitor
+    \(C_b = \frac{2^{m}}{2^{m} - 1} C_u\) between an \(m\)-bit LSB array and the MSB
+    array cuts the total to \(\approx (2^{n-m} + 2^m) C_u\).
+  \item \textbf{kT/C}: sampling on \(C_{tot}\) adds noise
+    \(\frac{kT}{C_{tot}}\) (Section~\ref{sec:theory_general_noise}); it must stay
+    below \(\frac{X_{LSB}^2}{12}\), i.e. \(C_{tot} > \frac{12 kT 2^{2n}}{V_{REF}^2}\).
+\end{enumerate}

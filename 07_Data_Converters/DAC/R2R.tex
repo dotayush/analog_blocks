@@ -1,0 +1,52 @@
+\subsection{R-2R Ladder DAC}\label{sec:dac_r2r}
+
+\subsubsection{Overview}
+\(n\) legs of \(2R\), one per bit, switched to \(V_{REF}\) (\(b_k = 1\)) or
+ground (\(b_k = 0\)), joined by series \(R\) and terminated by \(2R\). Only
+two resistor values for any \(n\), and a constant output resistance \(R\).
+
+\subsubsection{Schematic}
+\begin{circuitfig}
+  \draw (0,0) node[ground]{} to[european resistor, l={$2R$}] (0,2) node[circ]{} node[above left]{$V_0$};
+  \draw (0,2) to[european resistor, l={$R$}] (2.5,2) node[circ]{} node[above left]{$V_1$};
+  \draw[dashed] (2.5,2) -- (3.5,2);
+  \draw (3.5,2) to[european resistor, l={$R$}] (6,2) node[circ]{} node[above left]{$V_{n-1}$} -- (7,2) node[circ]{} node[right]{$V_{OUT}$};
+  \draw (0,2) to[european resistor, l_={$2R$}] (0,4) node[above]{$b_0 V_{REF}$};
+  \draw (2.5,2) to[european resistor, l_={$2R$}] (2.5,4) node[above]{$b_1 V_{REF}$};
+  \draw (6,2) to[european resistor, l_={$2R$}] (6,4) node[above]{$b_{n-1} V_{REF}$};
+\end{circuitfig}
+
+\subsubsection{Transfer Function}
+\textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}, by repeated
+Thevenin reduction from the LSB end:
+\begin{enumerate}
+  \item Node \(V_0\): the termination \(2R\) to ground in parallel with the leg
+    \(2R\) to \(b_0 V_{REF}\):
+    \[
+      V_{th,0} = \frac{b_0 V_{REF} \cdot G + 0 \cdot G}{G + G} = \frac{b_0 V_{REF}}{2}, \hspace{1cm} R_{th,0} = 2R \parallel 2R = R
+    \]
+  \item Node \(V_k\): the source \((V_{th,k-1}, R_{th,k-1} + R = 2R)\) in parallel
+    with the leg \((b_k V_{REF}, 2R)\):
+    \[
+      V_{th,k} = \frac{V_{th,k-1} + b_k V_{REF}}{2}, \hspace{1cm} R_{th,k} = 2R \parallel 2R = R
+    \]
+  \item Unrolling the recursion to \(k = n - 1\):
+    \begin{align*}
+      V_{th,n-1} &= \frac{b_{n-1}V_{REF}}{2} + \frac{b_{n-2}V_{REF}}{4} + \cdots + \frac{b_0 V_{REF}}{2^n} \\
+      V_{OUT} &= V_{REF} \sum_{k=0}^{n-1} b_k 2^{k - n} = \frac{D}{2^n} V_{REF}, \hspace{1cm} R_{out} = R
+    \end{align*}
+\end{enumerate}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Current mode}: legs switched between ground and the virtual
+    ground of an op-amp (feedback \(R_F\)): every leg then carries a constant
+    current, the MSB leg \(\frac{V_{REF}}{2R}\), each next leg half; switches never
+    see a voltage swing and
+    \(V_{OUT} = -R_F \frac{V_{REF}}{R} \sum_{k} b_k 2^{k-n}\).
+  \item \textbf{Matching}: the MSB leg weighs \(\frac{1}{2}\) of full scale; the
+    midscale transition \(0111\ldots \to 1000\ldots\) needs the MSB leg to match
+    the sum of all others to \(\frac{1}{2^n}\), so
+    \(S_R \lesssim \frac{1}{2^n}\) for \(|DNL| < 1\)
+    (switch resistance must be scaled or included in each \(2R\)).
+\end{enumerate}

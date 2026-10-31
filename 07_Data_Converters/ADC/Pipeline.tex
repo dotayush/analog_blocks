@@ -1,0 +1,49 @@
+\subsection{Pipeline ADC}\label{sec:adc_pipeline}
+
+\subsubsection{Overview}
+A chain of \(m\) stages, each a sample and hold, a coarse sub-ADC of
+\(n_s\) bits, and an MDAC (Section~\ref{sec:dac_mdac}) forming the
+amplified residue for the next stage. All stages work concurrently on
+successive samples: throughput of one sample per clock, latency \(m\)
+clocks.
+
+\subsubsection{Schematic}
+\begin{circuitfig}
+  \foreach \i/\t in {0/Stage 1, 2.6/Stage 2, 5.2/$\cdots$, 7.8/Stage $m$}
+    \draw (\i,0) rectangle ++(1.8,1.2) node[midway]{\t};
+  \draw[->] (-1,0.6) node[left]{$V_{IN}$} -- (0,0.6);
+  \foreach \i in {1.8, 4.4, 7.0} \draw[->] (\i,0.6) -- ++(0.8,0);
+  \foreach \i in {0.9, 3.5, 8.7} \draw[->] (\i,0) -- ++(0,-0.8);
+  \draw (0,-1.8) rectangle (9.6,-0.8) node[midway]{delay alignment and digital correction};
+  \draw[->] (9.6,-1.3) -- ++(0.8,0) node[right]{$D$};
+\end{circuitfig}
+
+\subsubsection{Transfer Function}
+\textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}, 1.5 bit stage
+(\(b \in \{-1, 0, 1\}\), input range \(\pm V_{REF}\)):
+\begin{align*}
+  b &= \begin{cases} -1 & V_{IN} < -\frac{V_{REF}}{4} \\ 0 & -\frac{V_{REF}}{4} \leq V_{IN} \leq \frac{V_{REF}}{4} \\ +1 & V_{IN} > \frac{V_{REF}}{4} \end{cases} \\
+  V_{RES} &= 2 V_{IN} - b V_{REF} \in \left[-V_{REF}, V_{REF}\right]
+\end{align*}
+Unrolling \(m\) stages (\(V_{RES,k} = 2V_{RES,k-1} - b_k V_{REF}\)):
+\begin{align*}
+  V_{RES,m} &= 2^m V_{IN} - V_{REF}\sum_{k=1}^{m} b_k 2^{m-k} \\
+  V_{IN} &= V_{REF}\sum_{k=1}^{m} b_k 2^{-k} + \frac{V_{RES,m}}{2^m}
+\end{align*}
+so \(D = \sum_k b_k 2^{m-k}\) (an overlapping add) resolves \(V_{IN}\) to
+\(\frac{V_{REF}}{2^m}\) plus a final flash on \(V_{RES,m}\).
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Redundancy}: the thresholds \(\pm\frac{V_{REF}}{4}\) can move by up
+    to \(\pm\frac{V_{REF}}{4}\) and \(V_{RES}\) still stays inside \(\pm V_{REF}\); later
+    stages correct the decision, so cheap comparators with large offsets
+    suffice.
+  \item \textbf{Gain Error}: an inter-stage gain \(2(1 + e)\) (finite op-amp
+    gain, capacitor mismatch) gives an error at stage 1 transitions of
+    \(e V_{REF}\) referred to the output, i.e. \(e\, 2^{n-1}\) LSB. Needs
+    \(\frac{1}{AF} < \frac{1}{2^{n}}\): \(A > \frac{2^{n}}{F} = 2^{n+1}\) for \(F = \frac{1}{2}\).
+  \item \textbf{Noise}: stage \(k\) noise is divided by \(2^{k-1}\) referred to
+    the input, so the first stage dominates and later stages are scaled down
+    in capacitance and power.
+\end{enumerate}

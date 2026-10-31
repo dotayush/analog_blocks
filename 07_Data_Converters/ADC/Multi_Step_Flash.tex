@@ -1,0 +1,32 @@
+\subsection{Two-Step and Multi-Step Flash ADC}\label{sec:adc_twostep}
+
+\subsubsection{Overview}
+An \(n_1\)-bit coarse flash finds the MSBs, a DAC reconstructs them, the
+residue \(V_{IN} - V_{DAC}\) is amplified by \(2^{n_1}\) and an \(n_2\)-bit fine flash
+finds the LSBs (\(n = n_1 + n_2\)). Multi-step repeats this \(m\) times.
+Comparators drop from \(2^n - 1\) to \((2^{n_1} - 1) + (2^{n_2} - 1)\).
+
+\subsubsection{Transfer Function}
+\textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}:
+\begin{align*}
+  D_1 &= \left\lfloor \frac{V_{IN}}{V_{REF}} 2^{n_1} \right\rfloor \hspace{1cm}
+  V_{RES} = 2^{n_1}\left(V_{IN} - \frac{D_1}{2^{n_1}} V_{REF}\right) \in [0, V_{REF}) \\
+  D_2 &= \left\lfloor \frac{V_{RES}}{V_{REF}} 2^{n_2} \right\rfloor \hspace{1cm}
+  D = D_1 2^{n_2} + D_2
+\end{align*}
+Substituting:
+\(\frac{D}{2^n} V_{REF} = \frac{D_1}{2^{n_1}} V_{REF} + \frac{D_2}{2^{n}} V_{REF} \approx \frac{D_1}{2^{n_1}} V_{REF} + \frac{V_{RES}}{2^{n_1}} = V_{IN}\).
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Accuracy}: the coarse DAC and the residue amplifier must be
+    accurate to the full \(n\) bits; a coarse comparator error \(e\) pushes
+    \(V_{RES}\) outside \([0, V_{REF})\). Redundancy (gain \(2^{n_1 - 1}\), fine
+    range doubled, one extra fine bit) lets digital correction absorb
+    \(|e| < \frac{V_{REF}}{2^{n_1 + 1}}\).
+  \item \textbf{Count}: \(n = 8\), \(n_1 = n_2 = 4\): \(15 + 15 = 30\) comparators
+    instead of 255. Multi-step with \(m\) steps of \(\frac{n}{m}\) bits:
+    \(m(2^{n/m} - 1)\).
+  \item \textbf{Speed}: two (or \(m\)) sequential comparisons plus DAC and
+    amplifier settling per sample.
+\end{enumerate}

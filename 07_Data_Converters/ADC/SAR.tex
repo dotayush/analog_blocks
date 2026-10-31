@@ -1,0 +1,62 @@
+\subsection{Successive Approximation (SAR) ADC}\label{sec:adc_sar}
+
+\subsubsection{Overview}
+A comparator, an \(n\)-bit DAC (usually the charge redistribution array of
+Section~\ref{sec:dac_mdac}) and a successive approximation register
+perform a binary search: one bit per clock, MSB first. Moderate speed,
+very low power, no op-amp.
+
+\subsubsection{Schematic}
+\begin{circuitfig}
+  \draw (0,0) rectangle (1.6,1.2) node[midway]{S/H};
+  \draw[->] (-1,0.6) node[left]{$V_{IN}$} -- (0,0.6);
+  \draw (3,0.6) node[op amp, scale=0.7](C){};
+  \draw (1.6,0.6) -- ++(0.3,0) |- (C.+);
+  \draw (5,0) rectangle (6.8,1.2) node[midway]{SAR};
+  \draw[->] (C.out) -- (5,0.6);
+  \draw[->] (6.8,0.6) -- ++(0.8,0) node[right]{$D$};
+  \draw (2.6,-1.6) rectangle (4.4,-0.6) node[midway]{DAC};
+  \draw[->] (5.9,0) |- (4.4,-1.1);
+  \draw (2.6,-1.1) -- (1.9,-1.1) |- (C.-);
+\end{circuitfig}
+
+\subsubsection{Transfer Function}
+\textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}: trial \(k\)
+(\(k = n - 1 \ldots 0\)) sets \(b_k = 1\) with all decided higher bits kept:
+\begin{align*}
+  V_{DAC}^{(k)} &= V_{REF}\left(\sum_{j > k} b_j 2^{j-n} + 2^{k-n}\right) \\
+  b_k &= \begin{cases} 1 & V_{IN} \geq V_{DAC}^{(k)} \\ 0 & V_{IN} < V_{DAC}^{(k)} \end{cases}
+\end{align*}
+After trial \(k\) the remaining interval is \(\frac{V_{REF}}{2^{n-k}}\); after
+\(n\) trials \(0 \leq V_{IN} - \frac{D}{2^n} V_{REF} < X_{LSB}\).
+
+\paragraph{Charge redistribution form:} the array samples \(V_{IN}\) on its
+bottom plates with the top plate at 0 (charge \(-2^n C_u V_{IN}\)); the top plate
+is then floated and bottom plates switched to \(b_k V_{REF}\):
+\begin{align*}
+  2^n C_u V_x - C_u V_{REF} \sum_k b_k 2^k &= -2^n C_u V_{IN} \\
+  V_x &= -V_{IN} + \frac{D}{2^n} V_{REF}
+\end{align*}
+The comparator only checks the sign of \(V_x\); sampling, DAC and
+subtraction share one capacitor array.
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Speed}: \(f_s = \frac{f_{clk}}{n + 1}\) (one sampling cycle).
+    The DAC must settle to \(\frac{1}{2}\) LSB in each cycle:
+    \(T_c \ln(2^{n+1}) < \frac{1}{f_{clk}}\).
+  \item \textbf{Comparator}: offset is a pure offset (same comparator every
+    trial); noise must be \(< \frac{X_{LSB}}{2}\) at the final, smallest trial.
+  \item \textbf{Linearity}: set by the DAC matching (Section~\ref{sec:dac_mdac}).
+\end{enumerate}
+
+\subsubsection{Question}
+\(n = 10\), \(V_{REF} = 1\,\)V, \(V_{IN} = 0.3\,\)V. Give the first four trials.
+\paragraph{Solution:}
+\begin{align*}
+  k = 9&: V_{DAC} = 0.5 \hspace{0.3cm} \Rightarrow b_9 = 0 \hspace{1cm}
+  k = 8: V_{DAC} = 0.25 \hspace{0.3cm} \Rightarrow b_8 = 1 \\
+  k = 7&: V_{DAC} = 0.375 \hspace{0.3cm} \Rightarrow b_7 = 0 \hspace{1cm}
+  k = 6: V_{DAC} = 0.3125 \hspace{0.3cm} \Rightarrow b_6 = 0
+\end{align*}
+\(D = 0100\ldots\); the final code is \(\lfloor 0.3 \cdot 1024 \rfloor = 307 = 0100110011_2\).

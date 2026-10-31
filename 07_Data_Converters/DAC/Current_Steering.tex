@@ -1,0 +1,63 @@
+\subsection{Current Source, Current Sink and Current Steering DACs}\label{sec:dac_current}
+
+\subsubsection{Overview}
+The output is a sum of unit currents \(I_u\) (PMOS current \emph{sources} or
+NMOS current \emph{sinks}, built from the mirrors of
+Chapter~\ref{ch:Current_Mirrors}) delivered into a load \(R_L\) or the virtual
+ground of an op-amp. In a switched source/sink DAC unused currents are
+turned off. In a \emph{current steering} DAC every unit current always
+flows and a differential pair switch steers it to \(I_{OUT+}\) or
+\(I_{OUT-}\) (no turn-on transient, differential output). The units are
+either binary weighted (\(2^k I_u\) for bit \(k\)) or unary (one unit per LSB,
+thermometer decoded, a single unit switching per step).
+
+\subsubsection{Transfer Function}
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}:
+    \begin{align*}
+      I_{OUT+} &= I_u \sum_{k=0}^{n-1} b_k 2^k = D I_u \hspace{1cm}
+      I_{OUT-} = (2^n - 1 - D) I_u \\
+      V_{OUT} &= D I_u R_L \hspace{1cm} [\text{ideal sources}]
+    \end{align*}
+  \item \textbf{Finite Output Impedance}: each connected unit has conductance
+    \(g_u\); code \(D\) puts \(D g_u\) in parallel with \(G_L\):
+    \begin{align*}
+      V_{OUT} &= \frac{D I_u}{G_L + D g_u} = \frac{D I_u R_L}{1 + a D}, \hspace{1cm} a = g_u R_L \\
+      \frac{V_{OUT}}{I_u R_L} &\approx D - a D^2 \hspace{1cm} [aD \ll 1]
+    \end{align*}
+    The end point line through \(D = 0\) and \(D = N = 2^n\) is
+    \(D(1 - aN)\); the deviation is
+    \begin{align*}
+      INL(D) &= D - aD^2 - D(1 - aN) = a D (N - D) \\
+      INL_{\max} &= a \frac{N^2}{4} \hspace{1cm} \left[D = \tfrac{N}{2}\right]
+    \end{align*}
+    so \(INL_{\max} < \frac{1}{2}\) LSB requires \(g_u R_L < \frac{2}{2^{2n}}\): a
+    cascoded (Section~\ref{sec:amp_cascode}) unit source.
+\end{enumerate}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{DNL, binary}: at mid scale the MSB (\(2^{n-1}\) units) replaces
+    \(2^{n-1} - 1\) units; with unit error \(S_I I_u\),
+    \[
+      \text{var}(DNL_{N/2}) = (2^{n-1} + 2^{n-1} - 1) S_I^2 \hspace{0.5cm} \Rightarrow \hspace{0.5cm} SD(DNL) = \sqrt{2^n - 1}\, S_I
+    \]
+  \item \textbf{DNL, unary}: each step adds one unit, \(SD(DNL) = S_I\), and the
+    DAC is monotonic by construction. Both have
+    \(SD(INL_{N/2}) = \frac{\sqrt{2^n}}{2} S_I\) (as the string DAC).
+  \item \textbf{Segmented}: \(m\) unary MSBs and \(n - m\) binary LSBs trade the
+    \(2^m - 1\) thermometer decoder against \(SD(DNL) = \sqrt{2^{n-m+1} - 1}\, S_I\).
+  \item \textbf{Speed}: no internal high impedance nodes; the output pole is
+    \(\frac{1}{R_L C_L}\), which makes current steering the architecture of
+    choice above \(\approx 100\,\)MS/s.
+\end{enumerate}
+
+\subsubsection{Question}
+A 12-bit unary/binary DAC drives \(R_L = 50\,\Omega\). Find the unit source
+output resistance needed for \(INL < \frac{1}{2}\) LSB, and \(SD(DNL)\) of a fully
+binary version with \(S_I = 0.1\%\).
+\paragraph{Solution:}
+\begin{align*}
+  g_u &< \frac{2}{2^{24} \cdot 50} = 2.38\,nS \hspace{1cm} r_u > 420\,M\Omega \\
+  SD(DNL) &= \sqrt{4095} \cdot 0.001 = 0.064\,\text{LSB}
+\end{align*}
