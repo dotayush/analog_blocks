@@ -1,0 +1,77 @@
+\section*{Symbols and Labels}
+\addcontentsline{toc}{section}{Symbols and Labels}
+Every symbol and label that appears in this appendix, grouped by section.
+\begin{symtable}
+\multicolumn{3}{|l|}{\textbf{Loading, Parasitics, Tolerances}} \\ \hline
+\(Box_1, Box_2, Box_3\) & three cascaded circuit stages & - \\ \hline
+\(Z_{in_k},\ Z_{out_k}\) & input and output impedance of stage \(k\) & \(\Omega\) \\ \hline
+\(V_{out_2},\ V_{in_3},\ I_{out_2},\ I_{in_3}\) & open circuit output of stage 2 and input of stage 3 (voltage, current) & V, A \\ \hline
+\(V_s,\ I\) & source amplitude and loop current of the matching example & V, A \\ \hline
+\(R_o + jX_o,\ R_i + jX_i\) & source (output) and load (input) impedance, resistance and reactance & \(\Omega\) \\ \hline
+\(Z_0,\ Z^*\) & line characteristic impedance; complex conjugate of \(Z\) & \(\Omega\) \\ \hline
+\(P_{in},\ P_{in,\max}\) & power into the load and its largest value & W \\ \hline
+\(R_k, L_k, C_{13}\) & parasitic resistances, inductances and end to end capacitance of the resistor model & \(\Omega\), H, F \\ \hline
+\(R_s,\ L_s\) & \(R_1 + R_2 + R_3\), \(L_1 + L_2 + L_3\) & \(\Omega\), H \\ \hline
+\(Z_{L_k},\ Z_{C_{13}},\ A \parallel B\) & impedance of \(L_k\), of \(C_{13}\); parallel combination \(\frac{AB}{A + B}\) & \(\Omega\) \\ \hline
+\(R,\ R_{\min},\ R_{\max}\) & nominal resistance and its tolerance limits & \(\Omega\) \\ \hline
+\multicolumn{3}{|l|}{\textbf{Probability and Noise}} \\ \hline
+\(N,\ x_i\) & number of measurements and measurement \(i\) & - \\ \hline
+\(M,\ M_X, M_Y,\ M[\cdot]\) & mean, mean of \(X\) (of \(Y\)), mean of an expression & - \\ \hline
+\(Var,\ SD\) & variance and standard deviation & - \\ \hline
+\(X,\ Y\) & independent random variables & - \\ \hline
+\(F(x),\ P(X \leq x),\ f(x)\) & cumulative distribution, probability, density & - \\ \hline
+\(dP,\ K_{dP},\ W, L, WL\) & mismatch of a parameter, its Pelgrom coefficient, device width, length, area & -, -, m, m, m\(^2\) \\ \hline
+\(S_v(f),\ S_i(f)\) & voltage and current noise power spectral density & V\(^2\)/Hz, A\(^2\)/Hz \\ \hline
+\(k,\ T,\ q\) & Boltzmann constant, absolute temperature, electron charge & J/K, K, C \\ \hline
+\(V_n,\ I_n,\ \overline{V_n^2}\) & rms noise voltage, current; mean square noise voltage & V, A, V\(^2\) \\ \hline
+\(f_L,\ f_H\) & lower and upper band edge & Hz \\ \hline
+\(K,\ a\) & flicker coefficient and exponent & V\(^2\), - \\ \hline
+\(V_{n1}, V_{n2},\ V_{n,total}\) & two uncorrelated noise sources and their total & V \\ \hline
+\(H(j2\pi f),\ x\) & RC transfer to the capacitor; substitution \(2\pi fRC\) & - \\ \hline
+\multicolumn{3}{|l|}{\textbf{Second Order Systems}} \\ \hline
+\(H(s),\ N(s),\ D(s)\) & transfer function, numerator (zeros), denominator (poles) & - \\ \hline
+\(b_2, b_1, b_0,\ a_2, a_1, a_0\) & numerator and denominator coefficients & - \\ \hline
+\(a, b, c,\ x\) & coefficients and variable of the general quadratic \(ax^2 + bx + c\) & - \\ \hline
+\(p_1, p_2,\ p_{1,2}\) & factored form constants; the poles are \(-p_1, -p_2\) & rad/s \\ \hline
+\(k\) & pole separation \(\frac{p_2}{p_1}\) & - \\ \hline
+\(p_r,\ p_i\) & real and imaginary part of a complex \(p_{1,2} = p_r \pm jp_i\) & rad/s \\ \hline
+\(\omega_n,\ D_R,\ Q\) & natural frequency, damping ratio, quality factor \(\frac{1}{2D_R}\) & rad/s, -, - \\ \hline
+\multicolumn{3}{|l|}{\textbf{Electromagnetics}} \\ \hline
+\(x, y, z,\ t,\ \mathbf{r}\) & Cartesian coordinates, time, position vector & m, s, m \\ \hline
+\(V, W\) & scalar functions & - \\ \hline
+\(\mathbf{F},\ \mathbf{G},\ \mathbf{R},\ R\) & vector functions (components \(F_x, F_y, F_z\), \ldots); a result & - \\ \hline
+\(\mathbf{C}\) & \(\nabla \times \mathbf{F}\) in the curl of curl proof & - \\ \hline
+\(\nabla,\ \nabla^2\) & del operator and Laplacian & m\(^{-1}\), m\(^{-2}\) \\ \hline
+\(\hat{\mathbf{x}}, \hat{\mathbf{y}}, \hat{\mathbf{z}}\) & unit vectors & - \\ \hline
+\(\mathbf{E}\) & electric field & V/m \\ \hline
+\(\mathbf{D}\) & electric flux density & C/m\(^2\) \\ \hline
+\(\mathbf{H}\) & magnetic field & A/m \\ \hline
+\(\mathbf{B}\) & magnetic flux density & Wb/m\(^2\) \\ \hline
+\(\mathbf{J_e},\ \mathbf{J_m}\) & electric and magnetic current density & A/m\(^2\), V/m\(^2\) \\ \hline
+\(Q_V,\ Q(t)\) & volume charge density and the charge inside a volume & C/m\(^3\), C \\ \hline
+\(\mathbf{v}\) & charge velocity & m/s \\ \hline
+\(V,\ S,\ d\mathbf{S},\ d\mathbf{l}\) & volume, its closing surface, surface element, line element & m\(^3\), m\(^2\), m\(^2\), m \\ \hline
+\(V(\mathbf{r},t),\ \phi\) & scalar potential; a scalar function in the example & V \\ \hline
+\(a, b,\ \mathbf{r}_0\) & end points of a path; reference point of the potential & - \\ \hline
+\(t_0, t_1\) & two instants & s \\ \hline
+\(\mathbf{P},\ \mathbf{M}\) & polarisation and magnetisation & C/m\(^2\), A/m \\ \hline
+\(\epsilon_0,\ \mu_0\) & permittivity and permeability of free space (constants) & F/m, H/m \\ \hline
+\(\mathbf{K}_E,\ K_{E,ij}\) & permittivity tensor and its element \(i, j\) (\(i, j \in \{x, y, z\}\)) & F/m \\ \hline
+\(\mathbf{K}_M,\ K_{M,ij}\) & permeability tensor and its element & H/m \\ \hline
+\(\mathbf{K}_{ER},\ \mathbf{K}_{MR}\) & relative permittivity and permeability tensors & - \\ \hline
+\(\mathbf{X}_E,\ \mathbf{X}_M\) & electric and magnetic susceptibility tensors & - \\ \hline
+\(\mathbb{I},\ I_{ij}\) & identity matrix and its element (Kronecker delta) & - \\ \hline
+\(\omega,\ l,\ c\) & angular frequency, size of a region, speed of light & rad/s, m, m/s \\ \hline
+\(L,\ C,\ I,\ V\) & inductance, capacitance, current, voltage of the lumped elements & H, F, A, V \\ \hline
+\(KVL,\ KCL\) & Kirchhoff's voltage and current laws & - \\ \hline
+\(FDTD\) & finite difference time domain method & - \\ \hline
+\multicolumn{3}{|l|}{\textbf{Other}} \\ \hline
+\(F_x, F_y, F_z\) & the \(x, y, z\) components of \(\mathbf{F}\); likewise for \(\mathbf{B}, \mathbf{C}, \mathbf{D}, \mathbf{E}, \mathbf{G}, \mathbf{H}, \mathbf{M}, \mathbf{P}\) & as the vector \\ \hline
+\(f_1, f_2, \ldots, f_n\) & component functions of a vector function & - \\ \hline
+\(K_E, K_{ER}, X_E, X_M\) & scalar (isotropic) or named forms of the tensors above & - \\ \hline
+\(Z_C, Z_L, Z_{in}, Z_{out}, V_{in}, V_{out}\) & capacitor and inductor impedance, input/output impedance and voltage & \(\Omega\), V \\ \hline
+\(e,\ f_n\) & Euler's number; natural frequency \(\frac{\omega_n}{2\pi}\) & -, Hz \\ \hline
+\(d, dF, dI, dP_{in}, dQ, dR_i, dV\) & derivative operator and small changes of the named quantities & - \\ \hline
+\(kT, kTR, kTG, RC\) & products of the named quantities & - \\ \hline
+\(J, Wb, m, n, nA, \mu\) & joule, weber, metre (units); nano, micro prefixes; nanoampere & - \\ \hline
+\end{symtable}

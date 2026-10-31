@@ -1,0 +1,38 @@
+\section*{Symbols and Labels}
+\addcontentsline{toc}{section}{Symbols and Labels}
+Every symbol and label that appears in this chapter.
+\begin{symtable}
+\multicolumn{3}{|l|}{\textbf{Passive Filters}} \\ \hline
+\(V_1,\ V_2\) & the two driving sources of the full schematic; \(V_1\) alone gives the low pass (or band pass), \(V_2\) alone the high pass (or band stop) & V \\ \hline
+\(V_{out},\ V_{out_1} \ldots V_{out_4}\) & output voltage and its part due to each source (superposition) & V \\ \hline
+\(V_x\) & internal node of the series RLC filter & V \\ \hline
+\(G_1, R_1,\ C_1,\ L_1\) & conductance and resistance \(R_1 = \frac{1}{G_1}\), capacitance, inductance & S, \(\Omega\), F, H \\ \hline
+\(H_1 \ldots H_4,\ N_1 \ldots N_4,\ D_1 \ldots D_4\) & transfer functions, their numerators and denominators & - \\ \hline
+\(D(s),\ N(s)\) & denominator (poles) and numerator (zeros) of a transfer function & - \\ \hline
+\(s_p,\ s_z\) & a pole and a zero (values of \(s\)) & rad/s \\ \hline
+\(f_p,\ f_z,\ f_c\) & frequency of a pole, of a zero; cutoff frequency & Hz \\ \hline
+\(A_{DC},\ A_{DC_1},\ A_{DC_2}\) & DC gain \(H(0)\), of \(H_1\), of \(H_2\) & - \\ \hline
+\(GBW\) & gain-bandwidth product \(|A_{DC} \cdot f_p|\) & Hz \\ \hline
+\(Z_{in},\ Z_{out},\ Z_{LC}\) & input, output impedance; impedance of the L-C combination & \(\Omega\) \\ \hline
+\(D_R,\ Q\) & damping ratio and quality factor \(Q = \frac{1}{2D_R}\) & - \\ \hline
+\(\omega_n,\ \omega_0,\ f_0\) & natural (centre) angular frequency and centre frequency & rad/s, Hz \\ \hline
+\(\omega_1, \omega_2,\ \omega_{1,2},\ f_1, f_2\) & lower and upper \(-3\,dB\) frequencies of a band filter & rad/s, Hz \\ \hline
+\(BW,\ BW_{parallel},\ BW_{series}\) & \(-3\,dB\) bandwidth \(f_2 - f_1\); of the parallel and series RLC & Hz \\ \hline
+\(a, b, c\) & coefficients of a quadratic \(as^2 + bs + c\) or \(a\omega^2 + b\omega + c\) & - \\ \hline
+\(s,\ j,\ \omega,\ f,\ \pi\) & Laplace variable, \(\sqrt{-1}\), angular frequency, frequency, pi & rad/s, -, rad/s, Hz, - \\ \hline
+\(dB\) & decibel, \(20\log_{10}\) of a gain & - \\ \hline
+\multicolumn{3}{|l|}{\textbf{Active Filters}} \\ \hline
+\(V_+,\ V_-\) & non-inverting and inverting op-amp inputs & V \\ \hline
+\(V_{in}\) & filter input & V \\ \hline
+\(V_x,\ V_y\) & internal nodes of the Sallen-Key (and \(V_x\) of the MFB) filter & V \\ \hline
+\(G_1, G_2,\ R_1, R_2,\ C, C_1, C_2\) & the filter conductances, resistances and capacitors & S, \(\Omega\), F \\ \hline
+\(H(s),\ H_{LP}(s),\ H_{HP}(s)\) & transfer function; low pass and high pass version & - \\ \hline
+\(H_0\) & centre gain magnitude of the normalised band pass & - \\ \hline
+\(R_o,\ A,\ F\) & op-amp output resistance, open loop gain, feedback factor (Section~\ref{sec:devices_opamp}) & \(\Omega\), -, - \\ \hline
+\(GB,\ |H(f_0)|\) & op-amp gain-bandwidth product; filter gain magnitude at \(f_0\) & Hz, - \\ \hline
+\multicolumn{3}{|l|}{\textbf{Other}} \\ \hline
+\(R,\ S\) & resistance in general; siemens (unit) & \(\Omega\), - \\ \hline
+\(sC, sC_1, sC_2, sL_1, sR_1, sR_2,\ LC,\ AF\) & products of the named quantities & - \\ \hline
+\(k, n, \mu\) & kilo, nano, micro prefixes & - \\ \hline
+\(x, y\) & substitution variables as defined where used & - \\ \hline
+\end{symtable}

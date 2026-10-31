@@ -1,0 +1,104 @@
+\section*{Symbols and Labels}
+\addcontentsline{toc}{section}{Symbols and Labels}
+Every symbol and label that appears in this chapter, grouped by device. Where one letter is reused by two devices both meanings are given.
+\begin{symtable}
+\multicolumn{3}{|l|}{\textbf{General and Passives}} \\ \hline
+\(V,\ I\) & voltage across and current through a device & V, A \\ \hline
+\(R,\ G\) & resistance and conductance \(G = \frac{1}{R}\) & \(\Omega\), S \\ \hline
+\(P\) & power & W \\ \hline
+\(E\) & stored energy & J \\ \hline
+\(Q,\ dQ\) & charge and a small change of it & C \\ \hline
+\(C,\ S\) & capacitance and elastance \(S = \frac{1}{C}\) & F, F\(^{-1}\) \\ \hline
+\(L\) & inductance (also MOSFET channel length below) & H \\ \hline
+\(\psi\) & flux linkage (flux times turns) & Wb \\ \hline
+\(N,\ R_m\) & number of turns and core reluctance & -, H\(^{-1}\) \\ \hline
+\(Z,\ Z_C,\ Z_L\) & impedance; of a capacitor, of an inductor & \(\Omega\) \\ \hline
+\(Y\) & admittance \(\frac{1}{Z}\) & S \\ \hline
+\(V(s),\ I(s),\ V(0),\ I(0)\) & Laplace transforms and initial values & V\(\cdot\)s, A\(\cdot\)s, V, A \\ \hline
+\(s,\ j,\ \omega,\ f,\ \pi\) & Laplace variable, \(\sqrt{-1}\), angular frequency, frequency, pi & rad/s, -, rad/s, Hz, - \\ \hline
+\(t,\ t',\ dt\) & time, integration variable, small time step & s \\ \hline
+\(dV,\ dI\) & small change of voltage, current & V, A \\ \hline
+\multicolumn{3}{|l|}{\textbf{Diode}} \\ \hline
+\(V_D,\ V_{DQ},\ I_{DQ}\) & diode voltage, its bias value and bias current & V, A \\ \hline
+\(I_S\) & reverse saturation (scale) current of the Shockley law & A \\ \hline
+\(n,\ V_T,\ nV_T\) & ideality factor, thermal voltage \(\frac{kT}{q}\), their product & -, V, V \\ \hline
+\(k,\ T,\ q,\ kT\) & Boltzmann constant, absolute temperature, electron charge, thermal energy & J/K, K, C, J \\ \hline
+\(V_{bi},\ N_A,\ N_D,\ n_i\) & built-in potential, acceptor and donor doping, intrinsic carrier concentration & V, m\(^{-3}\) \\ \hline
+\(V_F\) & forward voltage drop (diode); see MOSFET for the Fermi potential & V \\ \hline
+\(V_{BR},\ R_{ZK}\) & reverse breakdown voltage and breakdown resistance & V, \(\Omega\) \\ \hline
+\(I_F,\ I_R\) & maximum forward current and reverse leakage current (diode); see BJT for the Ebers-Moll meaning & A \\ \hline
+\(V_{TH}\) & threshold of the piecewise linear diode model & V \\ \hline
+\(R_S\) & diode series resistance & \(\Omega\) \\ \hline
+\(V_j,\ dV_j\) & junction voltage \(V_D - IR_S\) and its change & V \\ \hline
+\(I_0\) & nominal operating current where \(V_j \approx V_{TH}\) & A \\ \hline
+\(g_d,\ r_d,\ I_d,\ V_d\) & diode small signal conductance, resistance, current, voltage & S, \(\Omega\), A, V \\ \hline
+\(C_j,\ C_{j0},\ m\) & junction capacitance, its zero bias value, grading coefficient & F, F, - \\ \hline
+\(C_d,\ T_F\) & diffusion capacitance and forward transit time & F, s \\ \hline
+\(Y_d(s)\) & small signal admittance of the diode & S \\ \hline
+\multicolumn{3}{|l|}{\textbf{BJT}} \\ \hline
+\(B, C, E\) & base, collector, emitter terminals & - \\ \hline
+\(I_B,\ I_C,\ I_E\) & base, collector, emitter currents & A \\ \hline
+\(V_{BE},\ V_{BC},\ V_{CE}\) & large signal junction and collector-emitter voltages & V \\ \hline
+\(V_B,\ V_C,\ V_E\) & terminal voltages & V \\ \hline
+\(I_F,\ I_R,\ I_{FS},\ I_{RS}\) & Ebers-Moll forward and reverse diode currents and their saturation currents & A \\ \hline
+\(A_F,\ A_R\) & forward and reverse common base current gains (usually \(\alpha\)) & - \\ \hline
+\(B_F,\ B_R\) & forward and reverse common emitter current gains (usually \(\beta\)) & - \\ \hline
+\(I_S\) & BJT saturation current \(A_F I_{FS} = A_R I_{RS}\) & A \\ \hline
+\(V_A\) & Early voltage & V \\ \hline
+\(V_{th},\ V_{Fth},\ V_{Rth}\) & junction turn on threshold; for base-emitter, base-collector & V \\ \hline
+\(V_{CE(sat)}\) & collector-emitter voltage in saturation & V \\ \hline
+\(B_{forced}\) & forced current gain \(\frac{I_C}{I_B}\) used to guarantee saturation & - \\ \hline
+\(V_{CC},\ V_{IN},\ R_B,\ R_C\) & supply, drive voltage, base and collector resistors of the switch/amplifier & V, \(\Omega\) \\ \hline
+\(V_{BE(Q)},\ V_{CE(Q)},\ I_{C(Q)}\) & bias point & V, A \\ \hline
+\(V_{be},\ V_{ce},\ I_b,\ I_c\) & small signal voltages and currents & V, A \\ \hline
+\(V_b,\ V_c,\ V_e\) & small signal node voltages at base, collector, emitter & V \\ \hline
+\(g_m,\ g_{be},\ r_{be},\ g_o\) & transconductance, base-emitter conductance and resistance (usually \(g_\pi\), \(r_\pi\)), output conductance & S, S, \(\Omega\), S \\ \hline
+\(C_{be},\ C_{bc}\) & base-emitter and base-collector capacitance & F \\ \hline
+\multicolumn{3}{|l|}{\textbf{MOSFET}} \\ \hline
+\(G, D, S, B\) & gate, drain, source, body terminals & - \\ \hline
+\(NMOS,\ PMOS\) & N channel and P channel MOSFET & - \\ \hline
+\(I_D,\ I_G\) & drain and gate current & A \\ \hline
+\(V_{GS},\ V_{DS},\ V_{SB},\ V_{BS}\) & large signal gate-source, drain-source, source-body, body-source voltages & V \\ \hline
+\(V_{SG},\ V_{SD}\) & the same for a PMOS, written positive & V \\ \hline
+\(V_{th},\ V_{th0}\) & threshold voltage; at \(V_{SB} = 0\) & V \\ \hline
+\(V_{ov}\) & overdrive \(V_{GS} - V_{th}\) & V \\ \hline
+\(K_P,\ \mu_n,\ C_{ox}\) & process transconductance \(\mu_n C_{ox}\); electron mobility; oxide capacitance per area & A/V\(^2\), m\(^2\)/Vs, F/m\(^2\) \\ \hline
+\(W,\ L\) & channel width and length & m \\ \hline
+\(k_n\) & device factor \(\frac{K_P}{2}\frac{W}{L}\) & A/V\(^2\) \\ \hline
+\(K_{CLM}\) & channel length modulation coefficient (usually \(\lambda\)) & V\(^{-1}\) \\ \hline
+\(y,\ V(y),\ dy\) & position along the channel, channel voltage there, small step & m, V, m \\ \hline
+\(K_B,\ V_F\) & body effect coefficient and Fermi potential (MOSFET) & V\(^{1/2}\), V \\ \hline
+\(I_{D0}\) & subthreshold scale current & A \\ \hline
+\(V_{GS(Q)},\ V_{DS(Q)},\ V_{SB(Q)},\ I_{D(Q)}\) & bias point & V, A \\ \hline
+\(V_{gs},\ V_{ds},\ V_{bs},\ I_d,\ I_g\) & small signal voltages and currents & V, A \\ \hline
+\(V_g,\ V_d,\ V_s,\ V_b\) & small signal node voltages at gate, drain, source, body & V \\ \hline
+\(g_m,\ g_{mb},\ g_o,\ r_o\) & transconductance, body transconductance, output conductance, \(\frac{1}{g_o}\) & S, S, S, \(\Omega\) \\ \hline
+\(R_{on}\) & triode on resistance & \(\Omega\) \\ \hline
+\(C_{gs},\ C_{gd},\ C_{ov}\) & gate-source, gate-drain and overlap capacitance & F \\ \hline
+\(f_T\) & transit (unity current gain) frequency & Hz \\ \hline
+\(V_{DS,\min}\) & smallest \(V_{DS}\) that keeps saturation & V \\ \hline
+\(I_n,\ V_n,\ K_f,\ df\) & noise current, noise voltage, flicker coefficient, bandwidth slice & A, V, -, Hz \\ \hline
+\multicolumn{3}{|l|}{\textbf{Op-Amp}} \\ \hline
+\(V_+,\ V_-,\ V_{out}\) & non-inverting input, inverting input, output & V \\ \hline
+\(V_{id},\ V_{ic}\) & differential input \(V_+ - V_-\) and common mode input \(\frac{V_+ + V_-}{2}\) & V \\ \hline
+\(A,\ A(s),\ A_0\) & open loop gain; as a function of \(s\); its DC value & - \\ \hline
+\(p_1\) & dominant pole & rad/s \\ \hline
+\(\omega_u,\ GB\) & unity gain angular frequency and gain-bandwidth product \(\frac{\omega_u}{2\pi}\) & rad/s, Hz \\ \hline
+\(R_{id},\ R_o\) & differential input resistance and output resistance & \(\Omega\) \\ \hline
+\(V_{OL},\ V_{OH}\) & lowest and highest output voltage & V \\ \hline
+\(SR\) & slew rate, the largest \(\left|\frac{dV_{out}}{dt}\right|\) & V/s \\ \hline
+\(V_p,\ f_{FP}\) & sine amplitude and full power bandwidth & V, Hz \\ \hline
+\(F,\ T = AF\) & feedback factor and loop gain & - \\ \hline
+\(V_{in},\ A_{CL},\ f_{-3dB,CL}\) & input of the feedback amplifier, closed loop gain and its bandwidth & V, -, Hz \\ \hline
+\(dV_{out}\) & change of the output & V \\ \hline
+\(V_{OS},\ I_{B+},\ I_{B-},\ I_{OS}\) & input offset voltage, input bias currents, offset current & V, A \\ \hline
+\(A_d,\ A_c,\ CMRR\) & differential gain, common mode gain, their ratio & - \\ \hline
+\(PSRR,\ V_{dd}\) & power supply rejection ratio and supply voltage & -, V \\ \hline
+\multicolumn{3}{|l|}{\textbf{Other}} \\ \hline
+\(e\) & Euler's number & - \\ \hline
+\(d,\ dV_D,\ dV_j\) & derivative operator; small changes of \(V_D\), \(V_j\) & -, V \\ \hline
+\(sC,\ sC_j,\ sL,\ sI,\ sV\) & products of \(s\) with the named quantity & - \\ \hline
+\(IR,\ LI,\ VG\) & products \(I \cdot R\), \(L \cdot I\), \(V \cdot G\) & V, Wb, A \\ \hline
+\(\mu\) & micro prefix (\(10^{-6}\)); \(\mu_n\) is electron mobility & - \\ \hline
+\(u\) & subscript of \(\omega_u\), unity gain & - \\ \hline
+\end{symtable}
