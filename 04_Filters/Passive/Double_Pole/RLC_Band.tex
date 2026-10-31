@@ -1,4 +1,4 @@
-\subsection{RLC Band Filter}
+\subsection{RLC Band Filter}\label{sec:filt_rlc_band}
 
 \subsubsection{Overview}
 Constructed from a resistor, inductor, and capacitor in series
@@ -123,7 +123,10 @@ or parallel. An RLC Band Filter can be broken down into two types:
 \subsubsection{Transfer Function}
 \begin{enumerate}
   \item \textbf{Parallel Configuration:}
-    Applying KCL (Q4) on Full Schematic of Parallel Configuration, \\
+    Only linear devices are present, so the \textbf{Large Signal, Time
+    Domain, DC Input Analysis (Q5)} is the \textbf{Small Signal, Frequency
+    Domain, AC Input Analysis (Q4)} at \(s = 0\). Applying KCL (Q4) on the
+    Full Schematic of the Parallel Configuration, \\
     At \(V_{out}\), we get:
     \begin{align*}
       (V_{out} - V_{1}){G_1} + \frac{(V_{out} - V_{2})}{sL_1} + (V_{out} - V_{2}){sC_1} &= 0 \\
@@ -156,7 +159,8 @@ or parallel. An RLC Band Filter can be broken down into two types:
         V_{out} &= \underbrace{\frac{G_1}{G_1 + \frac{1}{sL_1} + sC_1}V_{1}}_{\text{Band Pass Character}} + \underbrace{\frac{\frac{1}{sL_1} + sC_1}{G_1 + \frac{1}{sL_1} + sC_1}V_{2}}_{\text{Band Stop Character}}
       \end{align*}
   \item \textbf{Series Configuration:}
-    Applying KCL on Full Schematic of Series Configuration, we get: \\
+    Applying KCL (\textbf{Small Signal, Frequency Domain, AC Input Analysis
+    (Q4)}) on the Full Schematic of the Series Configuration, we get: \\
     At \(V_{out}\):
     \begin{align*}
       (V_{out} - V_{x})sC_1 + (V_{out} - V_{2}){G_1} &= 0 \tag{1}
@@ -325,9 +329,9 @@ or parallel. An RLC Band Filter can be broken down into two types:
           \begin{align*}
             H_2(s) &= \frac{\frac{1}{sL_1} + sC_1}{G_1 + \frac{1}{sL_1} + sC_1} \cdot \frac{sL_1}{sL_1} = \frac{1 + s^2 L_1 C_1}{s^2 L_1 C_1 + s L_1 G_1 + 1} \\
             N_2(s) &= 0 \\
-            \frac{1}{sL_1} + sC_1 &= 0 \\
-            s^2 C_1 L_1 + 1 &= 0 \\
-            s^2 + \frac{1}{L_1 C_1} &= 0 \\
+            1 + s^2 L_1 C_1 &= 0 \hspace{1cm} \text{(Numerator of the cleared form)} \\
+            s^2 + \frac{1}{L_1 C_1} &= 0 \hspace{1cm} \text{(Dividing by \(L_1 C_1\))} \\
+            s^2 &= -\frac{1}{L_1 C_1} \\
             s &= \pm j\sqrt{\frac{1}{L_1 C_1}} \quad \text{[let \(s = s_z\)]} \\
             f_z = \frac{|s_z|}{2\pi} = \frac{\sqrt{\frac{1}{L_1 C_1}}}{2\pi} = \frac{1}{2\pi \sqrt{L_1 C_1}}
           \end{align*}
@@ -336,16 +340,17 @@ or parallel. An RLC Band Filter can be broken down into two types:
         \item \textbf{Series Configuration:}\\
         For \(H_3(s)\):
           \begin{align*}
-            sC_1 &= 0 \\
-            s &= 0
+            N_3(s) = sC_1 &= 0 \\
+            s_z &= 0 \hspace{1cm} f_z = 0 Hz
           \end{align*}
           Zero at origin for \(H_3(s)\) means at DC the filter will have
           zero output.
         For \(H_4(s)\):
           \begin{align*}
-            G_1(1 + s^2 L_1 C_1) &= 0 \\
-            1 + s^2 L_1 C_1 &= 0 \\
-            s^2 + \frac{1}{L_1 C_1} &= 0 \\
+            N_4(s) = G_1(1 + s^2 L_1 C_1) &= 0 \\
+            1 + s^2 L_1 C_1 &= 0 \hspace{1cm} \text{(Dividing by \(G_1 \neq 0\))} \\
+            s^2 + \frac{1}{L_1 C_1} &= 0 \hspace{1cm} \text{(Dividing by \(L_1 C_1\))} \\
+            s^2 &= -\frac{1}{L_1 C_1} \\
             s &= \pm j\sqrt{\frac{1}{L_1 C_1}} \quad \text{[let \(s = s_z\)]} \\
             f_z = \frac{|s_z|}{2\pi} = \frac{\sqrt{\frac{1}{L_1 C_1}}}{2\pi} = \frac{1}{2\pi \sqrt{L_1 C_1}}
           \end{align*}
@@ -357,23 +362,25 @@ or parallel. An RLC Band Filter can be broken down into two types:
     \item \textbf{Parallel Configuration:}\\
         For band pass \(H_1(s)\):
         \begin{align*}
-          H_1(0) &= \frac{G_1}{G_1 + \frac{1}{0 \cdot L_1} + 0 \cdot C_1} = \frac{G_1}{G_1 + \infty} = 0
+          H_1(s) &= \frac{s L_1 G_1}{s^2 L_1 C_1 + s L_1 G_1 + 1} \hspace{1cm} \text{(Cleared form from the zeros)} \\
+          H_1(0) &= \frac{0 \cdot L_1 G_1}{0^2 \cdot L_1 C_1 + 0 \cdot L_1 G_1 + 1} = \frac{0}{1} = 0
         \end{align*}
         Zero DC gain for \(H_1(s)\). \\
         For band stop \(H_2(s)\):
         \begin{align*}
-          H_2(0) &= \frac{\frac{1}{0 \cdot L_1} + 0 \cdot C_1}{G_1 + \frac{1}{0 \cdot L_1} + 0 \cdot C_1} = \frac{\infty + 0}{G_1 + \infty} = 1
+          H_2(s) &= \frac{1 + s^2 L_1 C_1}{s^2 L_1 C_1 + s L_1 G_1 + 1} \hspace{1cm} \text{(Cleared form from the zeros)} \\
+          H_2(0) &= \frac{1 + 0^2 \cdot L_1 C_1}{0^2 \cdot L_1 C_1 + 0 \cdot L_1 G_1 + 1} = \frac{1}{1} = 1
         \end{align*}
         Unity DC gain for \(H_2(s)\).
       \item \textbf{Series Configuration:}\\
         For band pass \(H_3(s)\):
         \begin{align*}
-          H_3(0) &= \frac{0 \cdot C_1}{0 \cdot C_1 + G_1(1 + 0^2 \cdot L_1 C_1)} = 0
+          H_3(0) &= \frac{0 \cdot C_1}{0 \cdot C_1 + G_1(1 + 0^2 \cdot L_1 C_1)} = \frac{0}{G_1} = 0
         \end{align*}
         Zero DC gain for \(H_3(s)\). \\
         For band stop \(H_4(s)\):
         \begin{align*}
-          H_4(0) &= \frac{G_1(1 + 0^2 \cdot L_1 C_1)}{0 \cdot C_1 + G_1(1 + 0^2 \cdot L_1 C_1)} = \frac{G_1(1 + 0)}{0 + G_1(1 + 0)} = 1 \\
+          H_4(0) &= \frac{G_1(1 + 0^2 \cdot L_1 C_1)}{0 \cdot C_1 + G_1(1 + 0^2 \cdot L_1 C_1)} = \frac{G_1(1 + 0)}{0 + G_1(1 + 0)} = \frac{G_1}{G_1} = 1
         \end{align*}
         Unity DC gain for \(H_4(s)\).
     \end{enumerate}
@@ -382,23 +389,38 @@ or parallel. An RLC Band Filter can be broken down into two types:
     the \(LC\) term vanishes). The \(-3\,dB\) points \(\omega_{1,2}\) satisfy
     \(|D(j\omega)|^2 = 2|N(j\omega)|^2\). For the parallel band pass,
     \begin{align*}
-      \left|1 - \omega^2 L_1 C_1 + j\omega L_1 G_1\right|^2 &= 2 (\omega L_1 G_1)^2 \\
+      H_1(j\omega) &= \frac{j\omega L_1 G_1}{(j\omega)^2 L_1 C_1 + j\omega L_1 G_1 + 1} = \frac{j\omega L_1 G_1}{1 - \omega^2 L_1 C_1 + j\omega L_1 G_1} \hspace{1cm} [j^2 = -1] \\
+      H_1(j\omega_0) &= \frac{j\omega_0 L_1 G_1}{0 + j\omega_0 L_1 G_1} = 1 \hspace{1cm} [\omega_0^2 L_1 C_1 = 1] \\
+      \left|1 - \omega^2 L_1 C_1 + j\omega L_1 G_1\right|^2 &= 2 (\omega L_1 G_1)^2 \hspace{1cm} [|H_1|^2 = \tfrac{1}{2}] \\
+      (1 - \omega^2 L_1 C_1)^2 + (\omega L_1 G_1)^2 &= 2 (\omega L_1 G_1)^2 \hspace{1cm} [|a + jb|^2 = a^2 + b^2] \\
       (1 - \omega^2 L_1 C_1)^2 &= (\omega L_1 G_1)^2 \\
       1 - \omega^2 L_1 C_1 &= \pm \omega L_1 G_1 \\
-      \omega^2 \pm \omega \frac{G_1}{C_1} - \frac{1}{L_1 C_1} &= 0 \\
-      \omega_{1,2} &= \frac{\mp \frac{G_1}{C_1} + \sqrt{\frac{G_1^2}{C_1^2} + \frac{4}{L_1 C_1}}}{2} \hspace{1cm} [\text{positive roots}] \\
-      \omega_2 - \omega_1 &= \frac{G_1}{C_1} = \frac{\omega_n}{Q} \hspace{1cm} \omega_1 \omega_2 = \frac{1}{L_1 C_1} = \omega_n^2
+      \omega^2 L_1 C_1 \pm \omega L_1 G_1 - 1 &= 0 \\
+      \omega^2 \pm \omega \frac{G_1}{C_1} - \frac{1}{L_1 C_1} &= 0 \hspace{1cm} [\div L_1 C_1]
     \end{align*}
+    Each sign is a quadratic with one positive root (the product of its roots
+    is \(-\frac{1}{L_1 C_1} < 0\)); with \(a = 1\), \(b = \pm\frac{G_1}{C_1}\),
+    \(c = -\frac{1}{L_1 C_1}\):
+    \begin{align*}
+      \omega &= \frac{-b + \sqrt{b^2 - 4ac}}{2a} = \frac{\mp \frac{G_1}{C_1} + \sqrt{\frac{G_1^2}{C_1^2} + \frac{4}{L_1 C_1}}}{2} \\
+      \omega_1 &= \frac{-\frac{G_1}{C_1} + \sqrt{\frac{G_1^2}{C_1^2} + \frac{4}{L_1 C_1}}}{2} \hspace{1cm}
+      \omega_2 = \frac{+\frac{G_1}{C_1} + \sqrt{\frac{G_1^2}{C_1^2} + \frac{4}{L_1 C_1}}}{2} \\
+      \omega_2 - \omega_1 &= \frac{\frac{G_1}{C_1} + \frac{G_1}{C_1}}{2} = \frac{G_1}{C_1} = \frac{\omega_n}{Q} \hspace{1cm} \text{(\(Q = \frac{C_1}{G_1}\omega_n\))} \\
+      \omega_1 \omega_2 &= \frac{\left(\frac{G_1^2}{C_1^2} + \frac{4}{L_1 C_1}\right) - \frac{G_1^2}{C_1^2}}{4} = \frac{1}{L_1 C_1} = \omega_n^2 \hspace{1cm} [(x - y)(x + y) = x^2 - y^2]
+    \end{align*}
+    The series band pass \(H_3\) has the same form after multiplying by
+    \(\frac{1}{G_1}\): \(H_3(s) = \frac{s\frac{C_1}{G_1}}{s^2 L_1 C_1 + s\frac{C_1}{G_1} + 1}\), so the same steps with
+    \(L_1 G_1 \to \frac{C_1}{G_1}\) give \(\omega_2 - \omega_1 = \frac{1}{L_1 G_1} = \frac{\omega_n}{Q}\).
     so in general \(BW = f_2 - f_1 = \frac{f_0}{Q}\) (exact for this second
     order section) and, because the peak gain is 1, \(GBW = 1 \cdot BW\).
     \begin{enumerate}
       \item \textbf{Parallel Configuration:}
         \[
-          BW_{parallel} = \frac{\frac{1}{2\pi \sqrt{L_1 C_1}}}{\frac{C_1}{G_1} \sqrt{\frac{1}{L_1 C_1}}} = \frac{G_1}{2\pi C_1}
+          BW_{parallel} = \frac{f_0}{Q} = \frac{\frac{1}{2\pi \sqrt{L_1 C_1}}}{\frac{C_1}{G_1} \cdot \frac{1}{\sqrt{L_1 C_1}}} = \frac{1}{2\pi \sqrt{L_1 C_1}} \cdot \frac{G_1 \sqrt{L_1 C_1}}{C_1} = \frac{G_1}{2\pi C_1}
         \]
       \item \textbf{Series Configuration:}
         \[
-          BW_{series} = \frac{\frac{1}{2\pi \sqrt{L_1 C_1}}}{G_1 \sqrt{\frac{L_1}{C_1}}} = \frac{1}{2\pi G_1 L_1}
+          BW_{series} = \frac{f_0}{Q} = \frac{\frac{1}{2\pi \sqrt{L_1 C_1}}}{G_1 \sqrt{\frac{L_1}{C_1}}} = \frac{1}{2\pi G_1 \sqrt{L_1 C_1}\sqrt{\frac{L_1}{C_1}}} = \frac{1}{2\pi G_1 \sqrt{L_1^2}} = \frac{1}{2\pi G_1 L_1}
         \]
     \end{enumerate}
   \item \textbf{Impedances:}
@@ -412,6 +434,7 @@ or parallel. An RLC Band Filter can be broken down into two types:
             their combination is in series with \(R_1\):
             \begin{align*}
               Z_{LC} &= \frac{j \omega L_1 \cdot \frac{1}{j \omega C_1}}{j \omega L_1 + \frac{1}{j \omega C_1}} \\
+              Z_{LC} &= \frac{\frac{L_1}{C_1}}{\frac{(j \omega)^2 L_1 C_1 + 1}{j \omega C_1}} = \frac{\frac{L_1}{C_1}}{\frac{1 - \omega^2 L_1 C_1}{j \omega C_1}} \hspace{1cm} [j^2 = -1] \\
               Z_{LC} &= \frac{L_1}{C_1} \cdot \frac{j \omega C_1}{1 - \omega^2 L_1 C_1} \\
               Z_{LC} &= \frac{L_1 j \omega}{1 - \omega^2 L_1 C_1} \\
               Z_{in} &= R_1 + Z_{LC} \\
@@ -422,6 +445,7 @@ or parallel. An RLC Band Filter can be broken down into two types:
             their combination is in parallel with \(R_1\):
             \begin{align*}
               Z_{LC} &= \frac{j \omega L_1 \cdot \frac{1}{j \omega C_1}}{j \omega L_1 + \frac{1}{j \omega C_1}} \\
+              Z_{LC} &= \frac{\frac{L_1}{C_1}}{\frac{(j \omega)^2 L_1 C_1 + 1}{j \omega C_1}} = \frac{\frac{L_1}{C_1}}{\frac{1 - \omega^2 L_1 C_1}{j \omega C_1}} \hspace{1cm} [j^2 = -1] \\
               Z_{LC} &= \frac{L_1}{C_1} \cdot \frac{j \omega C_1}{1 - \omega^2 L_1 C_1} \\
               Z_{LC} &= \frac{L_1 j \omega}{1 - \omega^2 L_1 C_1} \\
               Z_{out} &= \frac{R_1 \cdot Z_{LC}}{R_1 + Z_{LC}} \\
@@ -438,6 +462,7 @@ or parallel. An RLC Band Filter can be broken down into two types:
             their combination is in series with \(R_1\):
             \begin{align*}
               Z_{LC} &= j \omega L_1 + \frac{1}{j \omega C_1} \\
+              Z_{LC} &= j \omega L_1 + \frac{-j}{\omega C_1} \hspace{1cm} [\tfrac{1}{j} = \tfrac{j}{j^2} = -j] \\
               Z_{LC} &= j \left(\omega L_1 - \frac{1}{\omega C_1}\right) \\
               Z_{in} &= R_1 + Z_{LC} \\
               Z_{in} = R_1 + j \left(\omega L_1 - \frac{1}{\omega C_1}\right)
@@ -468,7 +493,8 @@ Configurations with the following specifications:
   \item \textbf{Parallel RLC Configuration:}
     \begin{align*}
       f_0 &= \frac{1}{2\pi \sqrt{L_1 C_1}} = 1 \text{ kHz} \\
-      \implies L_1 C_1 &= \frac{1}{(2\pi \cdot 1000)^2} = 2.533 \times 10^{-8} \text{ H-F} \tag{6} \\
+      \sqrt{L_1 C_1} &= \frac{1}{2\pi \cdot 1000} = \frac{1}{6283.19} = 1.5915 \times 10^{-4} \\
+      \implies L_1 C_1 &= \frac{1}{(2\pi \cdot 1000)^2} = \frac{1}{3.9478 \times 10^{7}} = 2.533 \times 10^{-8} \text{ H-F} \tag{6} \\
       Q &= \frac{C_1}{G_1} \sqrt{\frac{1}{L_1 C_1}} = 10 \\
       \implies G_1 &= \frac{C_1}{10} \sqrt{\frac{1}{L_1 C_1}} = \frac{C_1}{10} \cdot 2\pi \cdot 1000 = 628.32 C_1 \text{ S} \tag{7}
     \end{align*}
@@ -487,12 +513,12 @@ Configurations with the following specifications:
       f_0 &= \frac{1}{2\pi \sqrt{L_1 C_1}} = 1 \text{ kHz} \\
       \implies L_1 C_1 &= \frac{1}{(2\pi \cdot 1000)^2} = 2.533 \times 10^{-8} \text{ H-F} \tag{8} \\
       Q &= G_1 \sqrt{\frac{L_1}{C_1}} = 10 \\
-      \implies G_1 &= 10 \sqrt{\frac{C_1}{L_1}} \tag{9} \\
+      \implies G_1 &= 10 \sqrt{\frac{C_1}{L_1}} \tag{9}
     \end{align*}
     Assuming \(C_1 = 1 \mu F = 1 \times 10^{-6} F\):
     \begin{align*}
       \text{From (8): } L_1 &= \frac{2.533 \times 10^{-8}}{1 \times 10^{-6}} = 0.02533 H = 25.33 mH \\
-      \text{From (9): } G_1 &= 10 \sqrt{\frac{1 \times 10^{-6}}{0.02533}} \approx 0.0628319 S \\
+      \text{From (9): } G_1 &= 10 \sqrt{\frac{1 \times 10^{-6}}{0.02533}} = 10 \sqrt{3.948 \times 10^{-5}} = 10 \cdot 6.283 \times 10^{-3} \approx 0.0628319 S \\
       \implies R_1 &= \frac{1}{G_1} = \frac{1}{0.0628319} \approx 15.9155 \Omega
     \end{align*}
     We find the values as:
@@ -510,14 +536,15 @@ Compute their input and output impedances at \(f_0\).
       f_0 &= \frac{1}{2\pi\sqrt{L_1 C_1}} \\
       L_1 &= \frac{1}{(2\pi f_0)^2 C_1} \\
       L_1 &= \frac{1}{(2\pi (1000))^2 (0.1 \times 10^{-6})} \\
+      L_1 &= \frac{1}{(3.9478 \times 10^{7})(1 \times 10^{-7})} = \frac{1}{3.9478} \\
       L_1 &\approx 0.2533 H
     \end{align*}
   \item \textbf{Calculate \(R_1\):}
     \begin{align*}
       Q &= \frac{f_0}{BW} = \frac{1000}{100} = 10 \\
-      Q &= R_1 \sqrt{\frac{C_1}{L_1}} \\
+      Q &= \frac{C_1}{G_1}\sqrt{\frac{1}{L_1 C_1}} = R_1 \frac{C_1}{\sqrt{L_1 C_1}} = R_1 \sqrt{\frac{C_1}{L_1}} \hspace{1cm} \text{(Parallel \(Q\), \(G_1 = \frac{1}{R_1}\))} \\
       R_1 &= Q \sqrt{\frac{L_1}{C_1}} \\
-      R_1 &= 10 \sqrt{\frac{0.2533}{0.1 \times 10^{-6}}} \\
+      R_1 &= 10 \sqrt{\frac{0.2533}{0.1 \times 10^{-6}}} = 10 \sqrt{2.533 \times 10^{6}} = 10 \cdot 1591.5 \\
       R_1 &\approx 15915.49 \Omega
     \end{align*}
   \item \textbf{Calculate Input and Output Impedance at \(f_0\):}
