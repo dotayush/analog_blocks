@@ -17,15 +17,15 @@ we only need its terminal behaviour to use it inside blocks
 \begin{itemize}
   \item \textbf{Mathematical Model}:
     \[
-      V_{out} = A(s) \left( V_+ - V_- \right) = A(s) V_d
+      V_{out} = A(s) \left( V_+ - V_- \right) = A(s) V_{id}
     \]
     \begin{itemize}
       \item \textbf{Ideal Model}: \(A \to \infty\), \(R_{id} \to \infty\),
         \(R_o \to 0\). For a finite output with infinite gain,
         \begin{align*}
-          V_d &= \frac{V_{out}}{A} \xrightarrow{A \to \infty} 0
+          V_{id} &= \frac{V_{out}}{A} \xrightarrow{A \to \infty} 0
           \hspace{0.5cm} \Rightarrow \hspace{0.5cm} V_+ = V_- \hspace{0.5cm} \text{[virtual short, negative feedback only]} \\
-          I_+ &= I_- = \frac{V_d}{R_{id}} = 0 \hspace{0.5cm} \text{[no input current]}
+          I_+ &= I_- = \frac{V_{id}}{R_{id}} = 0 \hspace{0.5cm} \text{[no input current]}
         \end{align*}
       \item \textbf{Single Pole Model}: a dominant pole \(p_1\) and DC gain
         \(A_0\),
@@ -86,7 +86,7 @@ we only need its terminal behaviour to use it inside blocks
     \end{align*}
   \item \textbf{Non-Idealities}:
     \begin{itemize}
-      \item \textbf{Offset} \(V_{OS}\): the \(V_d\) needed to bring
+      \item \textbf{Offset} \(V_{OS}\): the \(V_{id}\) needed to bring
         \(V_{out}\) to its intended value. It appears in series with \(V_+\),
         so it is amplified by \(\frac{1}{F}\).
       \item \textbf{Bias Currents} \(I_{B+}\), \(I_{B-}\) flow into the
@@ -94,7 +94,7 @@ we only need its terminal behaviour to use it inside blocks
       \item \textbf{Common Mode Rejection}: with
         \(V_{ic} = \frac{V_+ + V_-}{2}\),
         \begin{align*}
-          V_{out} &= A_d V_d + A_c V_{ic} \hspace{1cm}
+          V_{out} &= A_d V_{id} + A_c V_{ic} \hspace{1cm}
           CMRR = \frac{A_d}{A_c}
         \end{align*}
       \item \textbf{Power Supply Rejection}:
