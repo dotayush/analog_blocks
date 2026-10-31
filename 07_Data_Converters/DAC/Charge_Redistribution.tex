@@ -51,16 +51,18 @@ the core of SAR and pipeline ADCs.
   \item \textbf{Mismatch}: as the binary current DAC (Section~\ref{sec:dac_current}), at mid scale
     the MSB (\(2^{n-1}\) units) replaces the other \(2^{n-1} - 1\) switched units
     (the terminating \(C_u\) never switches):
-    \(\text{var}(DNL_{N/2}) = (2^{n-1} + 2^{n-1} - 1) S_C^2\),
+    \(Var(DNL_{N/2}) = (2^{n-1} + 2^{n-1} - 1) S_C^2\),
     \(SD(DNL_{N/2}) = \sqrt{2^n - 1}\, S_C\).
   \item \textbf{Area}: \(2^n C_u\) grows fast; a bridge (split) capacitor
     \(C_b\) between an \(m\)-bit LSB array (total \(2^m C_u\) with its
     terminating \(C_u\)) and the MSB array must make the whole LSB array look
     like one unit \(C_u\) from the MSB side (series combination):
     \begin{align*}
-      \frac{C_b \cdot 2^m C_u}{C_b + 2^m C_u} &= C_u \hspace{0.5cm} \Rightarrow \hspace{0.5cm}
-      2^m C_b = C_b + 2^m C_u \hspace{0.5cm} \Rightarrow \hspace{0.5cm}
-      C_b = \frac{2^{m}}{2^{m} - 1} C_u
+      \frac{C_b \cdot 2^m C_u}{C_b + 2^m C_u} &= C_u \\
+      C_b \cdot 2^m C_u &= C_u (C_b + 2^m C_u) \hspace{1cm} [\times (C_b + 2^m C_u)] \\
+      2^m C_b &= C_b + 2^m C_u \hspace{1cm} [\div C_u] \\
+      C_b (2^m - 1) &= 2^m C_u \\
+      C_b &= \frac{2^{m}}{2^{m} - 1} C_u
     \end{align*}
     The MSB array (\(2^{n-m} - 1\) units plus the bridged unit) and the LSB
     array then total \(\approx 2^{n-m} C_u + 2^m C_u + C_b \approx (2^{n-m} + 2^m) C_u\).
@@ -73,3 +75,18 @@ the core of SAR and pipeline ADCs.
       C_{tot} > \frac{12 kT 2^{2n}}{V_{REF}^2}
     \]
 \end{enumerate}
+
+\subsubsection{Question}
+\(n = 10\), \(V_{REF} = 1\,V\), \(C_u = 20\,fF\), \(C_p = 1\,pF\), \(S_C = 0.1\%\),
+\(T = 300\,K\). Find \(V_x\) for \(D = 512\), \(SD(DNL_{N/2})\), the kT/C bound on
+\(C_{tot}\), and the bridge capacitor for a \(5 + 5\) split.
+\paragraph{Solution:}
+\begin{align*}
+  2^n C_u &= 1024 \cdot 20\,fF = 20.48\,pF \hspace{1cm} \frac{C_p}{2^n C_u} = \frac{1\,pF}{20.48\,pF} = 0.0488 \\
+  V_x &= \frac{512}{1024} \cdot 1\,V \cdot \frac{1}{1 + 0.0488} = \frac{0.5\,V}{1.0488} = 0.477\,V \hspace{1cm} [\text{a } 4.7\% \text{ gain error}] \\
+  SD(DNL_{N/2}) &= \sqrt{2^{10} - 1}\, S_C = \sqrt{1023} \cdot 0.001 = 31.98 \cdot 0.001 = 0.032\,\text{LSB} \\
+  kT &= 1.381 \times 10^{-23} \cdot 300 = 4.14 \times 10^{-21}\,J \\
+  C_{tot} &> \frac{12 kT\, 2^{2n}}{V_{REF}^2} = \frac{12 \cdot 4.14 \times 10^{-21} \cdot 1048576}{1^2} = 52.1\,fF \hspace{1cm} [20.48\,pF \text{ satisfies it}] \\
+  C_b &= \frac{2^5}{2^5 - 1} C_u = \frac{32}{31} \cdot 20\,fF = 20.65\,fF \hspace{1cm}
+  C_{tot,split} \approx (2^5 + 2^5) C_u = 64 \cdot 20\,fF = 1.28\,pF
+\end{align*}
