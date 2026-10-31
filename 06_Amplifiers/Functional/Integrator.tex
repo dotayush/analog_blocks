@@ -15,33 +15,64 @@ The output is the negative time integral of the input.
 \end{circuitfig}
 
 \subsubsection{Transfer Function}
-Applying KCL at \(V_-\) (\(G_F\) absent), \(V_- = -\frac{V_{out}}{A}\):
+\textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}, \(A = A(s)\),
+\(G_F\) absent: \(V_+ = 0\), so \(V_- = -\frac{V_{out}}{A}\). Applying KCL at \(V_-\):
 \begin{align*}
   (V_- - V_{in}) G_1 + (V_- - V_{out}) sC &= 0 \\
+  V_- (G_1 + sC) - V_{out} sC &= V_{in} G_1 \\
+  -\frac{V_{out}}{A}(G_1 + sC) - V_{out} sC &= V_{in} G_1 \hspace{1cm} \text{(Substituting \(V_- = -\frac{V_{out}}{A}\))} \\
   -V_{out}\left(\frac{G_1 + sC}{A} + sC\right) &= V_{in} G_1 \\
-  H(s) &= -\frac{G_1}{sC + \frac{G_1 + sC}{A}} \xrightarrow{A \to \infty} -\frac{G_1}{sC} = -\frac{1}{s R_1 C}
+  H(s) = \frac{V_{out}}{V_{in}} &= -\frac{G_1}{sC + \frac{G_1 + sC}{A}} \xrightarrow{A \to \infty} -\frac{G_1}{sC} = -\frac{1}{s R_1 C}
 \end{align*}
-In time (Q4 \(\to\) Q2, \(\frac{1}{s}\) is integration):
+\textbf{Small Signal, Time Domain, AC Input Analysis (Q2)}: \(V_{out}(s) = -\frac{1}{R_1 C}\cdot\frac{V_{in}(s)}{s}\)
+and division by \(s\) is integration from \(0\) (the capacitor's initial
+voltage adds \(V_{out}(0)\)):
 \[
   V_{out}(t) = -\frac{1}{R_1 C}\int_0^t V_{in}(t')\, dt' + V_{out}(0)
 \]
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \textbf{Finite DC Gain}: with \(A = A_0\),
+  \item \textbf{Finite DC Gain}: with \(A = A_0\), multiplying numerator and
+    denominator of \(H\) by \(A_0\):
     \begin{align*}
-      H(s) &= -\frac{A_0 G_1}{sC(1 + A_0) + G_1} = -\frac{A_0}{1 + s R_1 C (1 + A_0)}
+      H(s) &= -\frac{A_0 G_1}{A_0 sC + G_1 + sC} = -\frac{A_0 G_1}{sC(1 + A_0) + G_1} \\
+      H(s) &= -\frac{A_0}{1 + s \frac{C}{G_1}(1 + A_0)} = -\frac{A_0}{1 + s R_1 C (1 + A_0)} \hspace{1cm} [\div G_1]
     \end{align*}
-    a real integrator is a low pass with DC gain \(-A_0\) and pole
-    \(p = \frac{1}{R_1 C (1 + A_0)}\); it integrates only for \(\omega \gg p\).
-  \item \textbf{DC Drift}: an offset \(V_{OS}\) is integrated without limit
-    (\(V_{out} = \frac{V_{OS}}{R_1 C} t\)) until saturation. \(G_F\) in parallel
-    with \(C\) bounds it:
+    A real integrator is a low pass with DC gain \(H(0) = -A_0\) and pole
+    \(p = \frac{1}{R_1 C (1 + A_0)}\) (rad/s); for \(\omega \gg p\),
+    \(1 + j\omega R_1 C(1 + A_0) \approx j\omega R_1 C(1 + A_0)\) and
+    \(H \approx -\frac{A_0}{j\omega R_1 C (1 + A_0)} \approx -\frac{1}{j\omega R_1 C}\): it integrates.
+  \item \textbf{DC Drift, Large Signal, Time Domain, DC Input Analysis (Q5)}:
+    an offset \(V_{OS}\) at \(V_+\) with \(V_{in} = 0\) puts \(V_- = V_{OS}\). KCL at
+    \(V_-\) (currents leaving through \(G_1\) and through \(C\)):
     \begin{align*}
-      (V_- - V_{in}) G_1 + (V_- - V_{out})(G_F + sC) &= 0, \hspace{0.5cm} V_- = 0 \\
-      H(s) &= -\frac{G_1}{G_F + sC} = -\frac{R_F}{R_1} \cdot \frac{1}{1 + s R_F C}
+      (V_{OS} - 0) G_1 + C\frac{d(V_{OS} - V_{out})}{dt} &= 0 \\
+      \frac{V_{OS}}{R_1} - C\frac{dV_{out}}{dt} &= 0 \hspace{1cm} [V_{OS} \text{ constant}] \\
+      \frac{dV_{out}}{dt} &= \frac{V_{OS}}{R_1 C} \hspace{1cm} \Rightarrow \hspace{1cm}
+      V_{out}(t) = V_{OS} + \frac{V_{OS}}{R_1 C} t
     \end{align*}
-    which integrates for \(f \gg \frac{1}{2\pi R_F C}\).
-  \item \textbf{Unity Gain Frequency}: \(|H(j\omega)| = 1\) at
-    \(\omega = \frac{1}{R_1 C}\).
+    a ramp without limit until saturation. \(G_F\) in parallel with \(C\)
+    bounds it; with the ideal op-amp (\(V_- = 0\)):
+    \begin{align*}
+      (0 - V_{in}) G_1 + (0 - V_{out})(G_F + sC) &= 0 \\
+      H(s) &= -\frac{G_1}{G_F + sC} = -\frac{\frac{1}{R_1}}{\frac{1 + s R_F C}{R_F}} = -\frac{R_F}{R_1} \cdot \frac{1}{1 + s R_F C}
+    \end{align*}
+    the single pole active low pass (Section~\ref{sec:filt_active_sp}),
+    which integrates for \(f \gg \frac{1}{2\pi R_F C}\); the DC offset gain is
+    now \(1 + \frac{R_F}{R_1}\) (non-inverting gain seen by \(V_{OS}\)).
+  \item \textbf{Unity Gain Frequency}: \(|H(j\omega)| = \frac{1}{\omega R_1 C} = 1\) at
+    \(\omega = \frac{1}{R_1 C}\), \(f = \frac{1}{2\pi R_1 C}\).
 \end{enumerate}
+
+\subsubsection{Question}
+\(R_1 = 10\,k\Omega\), \(C = 10\,nF\), \(V_{out}(0) = 0\). A \(1\,V\) step is
+applied. Find the output slope, the time to reach \(-10\,V\) and the unity gain
+frequency.
+\paragraph{Solution:}
+\begin{align*}
+  R_1 C &= 10^4\,\Omega \cdot 10^{-8}\,F = 10^{-4}\,s \\
+  V_{out}(t) &= -\frac{1}{R_1 C}\int_0^t 1\,V\, dt' = -\frac{1\,V}{10^{-4}\,s} t = -10^4\,\frac{V}{s}\cdot t \\
+  t_{-10V} &= \frac{10\,V}{10^4\,V/s} = 1\,ms \\
+  f &= \frac{1}{2\pi R_1 C} = \frac{1}{2\pi \cdot 10^{-4}\,s} = 1.59\,kHz
+\end{align*}
