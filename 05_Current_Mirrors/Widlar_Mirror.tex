@@ -1,0 +1,140 @@
+\subsection{Widlar Mirror}\label{sec:mirror_widlar}
+
+\subsubsection{Overview}
+Constructed from two transistors and a source (emitter) degeneration
+resistor \(G_S\) under the mirroring transistor. The resistor eats part
+of \(V_{GS}\), so a small output current can be produced from a large
+input current without an extreme \(\frac{W}{L}\) ratio, and the local
+series feedback raises the output impedance.
+
+\subsubsection{Schematic}
+\begin{circuitfig}
+  \draw (0,0) node[nmos, xscale=-1](M0){};
+  \node[left] at (-0.4,0) {$M_0$};
+  \draw (3,0) node[nmos](M1){};
+  \node[right] at (3.4,0) {$M_1$};
+  \draw (M0.G) -- (M1.G);
+  \draw (M0.D) -- (0,1.5) node[circ]{} node[left]{$V_x$} -| (1.5,0) node[circ]{};
+  \draw (0,1.5) to[european resistor, l={$G_2$}] (0,3.5) node[vcc]{$V_{cc}$};
+  \draw (M1.D) -- (3,1.5) node[circ]{} node[right]{$V_{out}$} to[european resistor, l_={$G_3$}] (3,3.5) node[vcc]{$V_{cc}$};
+  \draw (M1.S) -- (3,-1.2) node[circ]{} node[right]{$V_s$} to[european resistor, l_={$G_S$}] (3,-2.9);
+  \draw (M0.S) -- (0,-2.9) -- (3,-2.9) -- (4,-2.9) node[right]{$V_{ee}$};
+\end{circuitfig}
+As in Section~\ref{sec:mirror_basic}, \(G_3\) exists only for analysis
+(the load).
+
+\subsubsection{Transfer Function}
+\begin{tabularx}{\linewidth}{|X|X|X|X|X|X|} \hline
+  Transistor & Gate (G) & Source (S) & Drain (D) & $V_{gs}$ & $V_{ds}$ \\ \hline
+  $M_0$ & $V_{x}$ & $V_{ee}$ & $V_{x}$ & $V_{x} - V_{ee}$ & $V_{x} - V_{ee}$ \\ \hline
+  $M_1$ & $V_{x}$ & $V_{s}$ & $V_{out}$ & $V_{x} - V_{s}$ & $V_{out} - V_{s}$ \\ \hline
+\end{tabularx}
+\begin{enumerate}
+  \item \textbf{Large Signal Analysis (Q5)}: (\(K_{CLM} = 0\))
+    \begin{align*}
+      I_{in} = I_{M_0} &= k_{n_0}(V_x - V_{ee} - V_{th})^2
+        \hspace{0.5cm} \Rightarrow \hspace{0.5cm} V_x - V_{ee} = V_{th} + \sqrt{\frac{I_{in}}{k_{n_0}}} \tag{1} \\
+      I_{out} = I_{M_1} &= k_{n_1}(V_x - V_s - V_{th})^2
+        \hspace{0.5cm} \Rightarrow \hspace{0.5cm} V_x - V_s = V_{th} + \sqrt{\frac{I_{out}}{k_{n_1}}} \tag{2} \\
+      (V_s - V_{ee}) G_S &= I_{out}
+        \hspace{0.5cm} \Rightarrow \hspace{0.5cm} V_s - V_{ee} = \frac{I_{out}}{G_S} \tag{3}
+    \end{align*}
+    Adding (2) and (3) and equating with (1):
+    \begin{align*}
+      V_{th} + \sqrt{\frac{I_{out}}{k_{n_1}}} + \frac{I_{out}}{G_S} &= V_{th} + \sqrt{\frac{I_{in}}{k_{n_0}}} \\
+      \frac{I_{out}}{G_S} + \sqrt{\frac{I_{out}}{k_{n_1}}} - \sqrt{\frac{I_{in}}{k_{n_0}}} &= 0 \tag{4}
+    \end{align*}
+    With \(u = \sqrt{I_{out}}\), (4) is a quadratic,
+    \(\frac{1}{G_S} u^2 + \frac{1}{\sqrt{k_{n_1}}} u - \sqrt{\frac{I_{in}}{k_{n_0}}} = 0\):
+    \begin{align*}
+      u &= \frac{-\frac{1}{\sqrt{k_{n_1}}} + \sqrt{\frac{1}{k_{n_1}} + \frac{4}{G_S}\sqrt{\frac{I_{in}}{k_{n_0}}}}}{\frac{2}{G_S}} \hspace{1cm} [u > 0] \\
+      I_{out} &= \frac{G_S^2}{4} \left( \sqrt{\frac{1}{k_{n_1}} + \frac{4}{G_S}\sqrt{\frac{I_{in}}{k_{n_0}}}} - \frac{1}{\sqrt{k_{n_1}}} \right)^2
+    \end{align*}
+    For design it is easier to invert (4) for \(G_S\):
+    \begin{align*}
+      \frac{1}{G_S} = R_S &= \frac{\sqrt{\frac{I_{in}}{k_{n_0}}} - \sqrt{\frac{I_{out}}{k_{n_1}}}}{I_{out}} = \frac{V_{ov_0} - V_{ov_1}}{I_{out}}
+    \end{align*}
+    \(G_S \to \infty\) gives back the basic mirror,
+    \(\sqrt{I_{out}/k_{n_1}} = \sqrt{I_{in}/k_{n_0}}\).
+  \item \textbf{Small Signal Analysis (Q4)}: (\(g_{mb}\) neglected)\\
+    Applying KCL at $V_{x}$:
+    \begin{align*}
+      v_x(G_2 + g_{o_0} + g_{m_0}) &= i_{in} \tag{5}
+    \end{align*}
+    Applying KCL at $V_{s}$ (current into \(G_S\) equals drain current of \(M_1\)):
+    \begin{align*}
+      v_s G_S &= g_{m_1}(v_x - v_s) + g_{o_1}(v_{out} - v_s) \\
+      v_s (G_S + g_{m_1} + g_{o_1}) &= g_{m_1} v_x + g_{o_1} v_{out} \tag{6}
+    \end{align*}
+    Applying KCL at $V_{out}$:
+    \begin{align*}
+      v_{out} G_3 + g_{m_1}(v_x - v_s) + g_{o_1}(v_{out} - v_s) &= 0 \\
+      v_{out} G_3 + v_s G_S &= 0 \hspace{1cm} \text{[using (6)]} \tag{7}
+    \end{align*}
+\end{enumerate}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Current Gain}: output at AC ground (\(v_{out} = 0\)),
+    \(i_{out} = v_s G_S\). From (6) and (5):
+    \begin{align*}
+      v_s &= \frac{g_{m_1} v_x}{G_S + g_{m_1} + g_{o_1}} \\
+      i_{out} &= \frac{G_S\, g_{m_1}}{G_S + g_{m_1} + g_{o_1}} \cdot \frac{i_{in}}{G_2 + g_{o_0} + g_{m_0}} \\
+      \frac{i_{out}}{i_{in}} &\approx \frac{g_{m_1}}{g_{m_0}} \cdot \frac{1}{1 + g_{m_1} R_S} \hspace{1cm} [g_{o_1} \ll G_S,\ G_2, g_{o_0} \ll g_{m_0}]
+    \end{align*}
+  \item \textbf{Impedances}:
+    \paragraph{At Input:} identical to the basic mirror, from (5):
+      \[
+        Z_{in} = \frac{1}{G_2 + g_{o_0} + g_{m_0}} \approx \frac{1}{g_{m_0}}
+      \]
+    \paragraph{At Output:} \(i_{in} = 0 \Rightarrow v_x = 0\) by (5). Apply
+      \(I_{test}\) at \(V_{out}\) (with \(G_3\) removed); it flows through
+      \(M_1\) into \(G_S\): \(v_s = \frac{I_{test}}{G_S}\). From (6):
+      \begin{align*}
+        \frac{I_{test}}{G_S}(G_S + g_{m_1} + g_{o_1}) &= g_{o_1} v_{out} \\
+        I_{test}\left(1 + \frac{g_{m_1} + g_{o_1}}{G_S}\right) &= g_{o_1} v_{out} \\
+        Z_{out} = \frac{v_{out}}{I_{test}} &= \frac{1 + (g_{m_1} + g_{o_1}) R_S}{g_{o_1}} \\
+        Z_{out} &= r_{o_1} + R_S + g_{m_1} r_{o_1} R_S \approx r_{o_1}(1 + g_{m_1} R_S)
+      \end{align*}
+      The degeneration multiplies the basic mirror output impedance by
+      \(1 + g_{m_1} R_S\).
+  \item \textbf{Output Load (Max)}: \(M_1\) saturated needs
+    \(V_{out} - V_s \geq V_{ov_1}\):
+    \begin{align*}
+      V_{out,\min} &= V_{ee} + I_{out} R_S + V_{ov_1} \\
+      R_{L,\max} &= \frac{V_{cc} - V_{out,\min}}{I_{out}}
+    \end{align*}
+\end{enumerate}
+
+\subsubsection{Design}
+\begin{enumerate}
+  \item Choose \(V_{ov_0}\); then \(V_x = V_{ee} + V_{th} + V_{ov_0}\) and
+    \(W_0 = \frac{2 I_{in} L_0}{K_P V_{ov_0}^2}\).
+  \item Choose \(W_1\) (often \(W_1 = W_0\)); then
+    \(V_{ov_1} = \sqrt{\frac{2 I_{out} L_1}{K_P W_1}}\).
+  \item \(R_S = \frac{V_{ov_0} - V_{ov_1}}{I_{out}}\) and
+    \(R_2 = \frac{V_{cc} - V_x}{I_{in}}\).
+\end{enumerate}
+
+\subsubsection{Question}
+Generate \(I_{out} = 10\,\mu\)A from \(I_{in} = 100\,\mu\)A with
+\(W_0 = W_1\), \(L = 1\,\mu\)m, \(K_P = 200\,\mu\)A/V\(^2\), \(V_{th} = 1\)V,
+\(K_{CLM} = 0.02\)V\(^{-1}\), \(V_{cc} = 5\)V, \(V_{ee} = 0\)V,
+\(V_{ov_0} = 0.2\)V. Find \(R_S\), \(R_2\), \(Z_{out}\) and compare with a
+basic mirror delivering the same \(10\,\mu\)A.
+\paragraph{Solution:}
+\begin{align*}
+  W_0 &= \frac{2 \cdot 100\,\mu A \cdot 1\,\mu m}{200\,\mu A/V^2 \cdot (0.2V)^2} = 25\,\mu m = W_1 \\
+  k_{n_1} &= \frac{K_P}{2}\frac{W_1}{L_1} = 100\,\mu A/V^2 \cdot 25 = 2.5\,mA/V^2 \\
+  V_{ov_1} &= \sqrt{\frac{I_{out}}{k_{n_1}}} = \sqrt{\frac{10\,\mu A}{2.5\,mA/V^2}} = 63.2\,mV \\
+  R_S &= \frac{0.2V - 0.0632V}{10\,\mu A} = 13.68\,k\Omega \\
+  R_2 &= \frac{5V - (0 + 1 + 0.2)V}{100\,\mu A} = 38\,k\Omega \\
+  g_{m_1} &= \frac{2 \cdot 10\,\mu A}{0.0632V} = 316\,\mu S \hspace{1cm}
+  r_{o_1} = \frac{1}{0.02 \cdot 10\,\mu A} = 5\,M\Omega \\
+  Z_{out} &= 5\,M\Omega + 13.68\,k\Omega + (316\,\mu S)(5\,M\Omega)(13.68\,k\Omega) \approx 26.6\,M\Omega \\
+  Z_{out,basic} &= r_{o_1} = 5\,M\Omega \\
+  V_{out,\min} &= 0.1368V + 0.0632V = 0.2V \hspace{1cm} R_{L,\max} = \frac{5V - 0.2V}{10\,\mu A} = 480\,k\Omega
+\end{align*}
+\(V_{ov_1} = 63\,\)mV is close to weak inversion where the square law
+overestimates \(I_D\); the result should be checked in Q5 simulation
+(DC/OP).
