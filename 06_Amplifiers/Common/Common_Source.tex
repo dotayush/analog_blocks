@@ -32,18 +32,30 @@ outside the symbol.
       \item Cutoff, \(V_{in} < V_{th}\): \(I_D = 0\), \(V_{out} = V_{dd}\).
       \item Saturation, \(V_{in} \geq V_{th}\), \(V_{out} \geq V_{in} - V_{th}\):
         \begin{align*}
-          V_{out} &= V_{dd} - \frac{k_n (V_{in} - V_{th})^2 (1 + K_{CLM} V_{out})}{G_D} \\
+          V_{out} &= V_{dd} - \frac{k_n (V_{in} - V_{th})^2 (1 + K_{CLM} V_{out})}{G_D} \quad [V_{DS} = V_{out}] \\
+          V_{out} &= V_{dd} - \frac{k_n (V_{in} - V_{th})^2}{G_D} - \frac{k_n K_{CLM} (V_{in} - V_{th})^2}{G_D} V_{out} \\
           V_{out}\left(1 + \frac{k_n K_{CLM} (V_{in} - V_{th})^2}{G_D}\right) &= V_{dd} - \frac{k_n (V_{in} - V_{th})^2}{G_D} \\
+          V_{out}\left(G_D + k_n K_{CLM} (V_{in} - V_{th})^2\right) &= V_{dd} G_D - k_n (V_{in} - V_{th})^2 \quad [\times G_D] \\
           V_{out} &= \frac{V_{dd} G_D - k_n (V_{in} - V_{th})^2}{G_D + k_n K_{CLM} (V_{in} - V_{th})^2}
         \end{align*}
       \item Edge of saturation (\(K_{CLM} = 0\)), \(V_{out} = V_{in} - V_{th} = V_{ov}\):
         \begin{align*}
           V_{ov} &= V_{dd} - \frac{k_n V_{ov}^2}{G_D} \\
           \frac{k_n}{G_D} V_{ov}^2 + V_{ov} - V_{dd} &= 0 \\
-          V_{ov,edge} &= \frac{-1 + \sqrt{1 + \frac{4 k_n V_{dd}}{G_D}}}{\frac{2 k_n}{G_D}}
+          V_{ov,edge} &= \frac{-1 + \sqrt{1^2 - 4 \cdot \frac{k_n}{G_D} \cdot (-V_{dd})}}{2 \cdot \frac{k_n}{G_D}} \hspace{1cm} [\text{positive root}] \\
+          V_{ov,edge} &= \frac{-1 + \sqrt{1 + \frac{4 k_n V_{dd}}{G_D}}}{\frac{2 k_n}{G_D}} = \frac{G_D}{2 k_n}\left(\sqrt{1 + \frac{4 k_n V_{dd}}{G_D}} - 1\right)
         \end{align*}
-      \item Triode, \(V_{out} < V_{in} - V_{th}\):
-        \(V_{out} = V_{dd} - \frac{2 k_n}{G_D}\left[ (V_{in} - V_{th}) V_{out} - \frac{V_{out}^2}{2} \right]\).
+      \item Triode, \(V_{out} < V_{in} - V_{th}\), with
+        \(I_D = K_P \frac{W}{L}\left[(V_{in} - V_{th}) V_{out} - \frac{V_{out}^2}{2}\right] = 2 k_n \left[\ldots\right]\)
+        and \(V_x = V_{in} - V_{th}\):
+        \begin{align*}
+          V_{out} &= V_{dd} - \frac{2 k_n}{G_D}\left[ V_x V_{out} - \frac{V_{out}^2}{2} \right] \\
+          V_{out} &= V_{dd} - \frac{2 k_n V_x}{G_D} V_{out} + \frac{k_n}{G_D} V_{out}^2 \\
+          \frac{k_n}{G_D} V_{out}^2 - \left(1 + \frac{2 k_n V_x}{G_D}\right) V_{out} + V_{dd} &= 0 \\
+          k_n V_{out}^2 - \left(G_D + 2 k_n V_x\right) V_{out} + G_D V_{dd} &= 0 \hspace{1cm} [\times G_D] \\
+          V_{out} &= \frac{G_D + 2 k_n V_x - \sqrt{(G_D + 2 k_n V_x)^2 - 4 k_n G_D V_{dd}}}{2 k_n}
+        \end{align*}
+        taking the smaller root (the larger one gives \(V_{out} > V_x\), outside triode).
     \end{enumerate}
     The amplifier is biased in saturation, between
     \(V_{in} = V_{th}\) and \(V_{in} = V_{th} + V_{ov,edge}\).
@@ -52,26 +64,35 @@ outside the symbol.
     Applying KCL at \(V_g\):
     \begin{align*}
       (V_g - V_{in})G_S + V_g sC_{gs} + (V_g - V_{out})sC_{gd} &= 0 \\
+      V_g G_S - V_{in} G_S + V_g sC_{gs} + V_g sC_{gd} - V_{out} sC_{gd} &= 0 \\
       V_g (G_S + s(C_{gs} + C_{gd})) - V_{out} sC_{gd} &= V_{in} G_S \tag{2}
     \end{align*}
     Applying KCL at \(V_{out}\):
     \begin{align*}
       V_{out}(G_D + g_o) + g_m V_g + V_{out} sC_L + (V_{out} - V_g)sC_{gd} &= 0 \\
+      V_{out} G_o + V_{out} sC_L + V_{out} sC_{gd} &= V_g sC_{gd} - g_m V_g \\
       V_{out}(G_o + s(C_L + C_{gd})) &= V_g (sC_{gd} - g_m) \\
       V_g &= \frac{G_o + s(C_L + C_{gd})}{sC_{gd} - g_m} V_{out} \tag{3}
     \end{align*}
     Substituting (3) into (2):
     \begin{align*}
       V_{out}\left(\frac{(G_o + s(C_L + C_{gd}))(G_S + s(C_{gs} + C_{gd}))}{sC_{gd} - g_m} - sC_{gd}\right) &= V_{in} G_S \\
-      V_{out}\left(\frac{(G_o + s(C_L + C_{gd}))(G_S + s(C_{gs} + C_{gd})) - sC_{gd}(sC_{gd} - g_m)}{sC_{gd} - g_m}\right) &= V_{in} G_S
+      V_{out}\left(\frac{(G_o + s(C_L + C_{gd}))(G_S + s(C_{gs} + C_{gd})) - sC_{gd}(sC_{gd} - g_m)}{sC_{gd} - g_m}\right) &= V_{in} G_S \\
+      V_{out}\left[(G_o + s(C_L + C_{gd}))(G_S + s(C_{gs} + C_{gd})) - sC_{gd}(sC_{gd} - g_m)\right] &= V_{in} G_S (sC_{gd} - g_m)
     \end{align*}
     \begin{align*}
       H(s) = \frac{V_{out}}{V_{in}} = \frac{G_S (sC_{gd} - g_m)}{(G_o + s(C_L + C_{gd}))(G_S + s(C_{gs} + C_{gd})) - sC_{gd}(sC_{gd} - g_m)} \tag{4}
     \end{align*}
     Expanding the denominator:
     \begin{align*}
-      D(s) &= G_o G_S + s\left[G_o (C_{gs} + C_{gd}) + G_S (C_L + C_{gd})\right] + s^2 (C_L + C_{gd})(C_{gs} + C_{gd}) + s g_m C_{gd} - s^2 C_{gd}^2 \\
-      D(s) &= G_o G_S + s\left[G_o (C_{gs} + C_{gd}) + G_S (C_L + C_{gd}) + g_m C_{gd}\right] + s^2 \left[C_L C_{gs} + C_L C_{gd} + C_{gs} C_{gd}\right]
+      D(s) &= G_o G_S + s G_o (C_{gs} + C_{gd}) + s G_S (C_L + C_{gd}) \\
+           &\quad + s^2 (C_L + C_{gd})(C_{gs} + C_{gd}) - s^2 C_{gd}^2 + s g_m C_{gd} \\
+      D(s) &= G_o G_S + s\left[G_o (C_{gs} + C_{gd}) + G_S (C_L + C_{gd}) + g_m C_{gd}\right] \\
+           &\quad + s^2 \left[(C_L + C_{gd})(C_{gs} + C_{gd}) - C_{gd}^2\right] \\
+      (C_L + C_{gd})(C_{gs} + C_{gd}) - C_{gd}^2 &= C_L C_{gs} + C_L C_{gd} + C_{gd} C_{gs} + C_{gd}^2 - C_{gd}^2 \\
+           &= C_L C_{gs} + C_L C_{gd} + C_{gs} C_{gd} \\
+      D(s) &= G_o G_S + s\left[G_o (C_{gs} + C_{gd}) + G_S (C_L + C_{gd}) + g_m C_{gd}\right] \\
+           &\quad + s^2 \left[C_L C_{gs} + C_L C_{gd} + C_{gs} C_{gd}\right]
     \end{align*}
 \end{enumerate}
 
@@ -79,10 +100,10 @@ outside the symbol.
 \begin{enumerate}
   \item \textbf{DC Gain}: \(s = 0\) in (4),
     \[
-      A_{V0} = \frac{-g_m G_S}{G_o G_S} = -\frac{g_m}{G_D + g_o} = -g_m (R_D \parallel r_o)
+      A_{V0} = H(0) = \frac{G_S (0 - g_m)}{(G_o + 0)(G_S + 0) - 0} = \frac{-g_m G_S}{G_o G_S} = -\frac{g_m}{G_D + g_o} = -g_m (R_D \parallel r_o)
     \]
     The largest possible gain (\(G_D \to 0\), current source load) is the
-    intrinsic gain \(-\frac{g_m}{g_o} = -\frac{2}{K_{CLM} V_{ov}}\).
+    intrinsic gain \(-\frac{g_m}{g_o} = -\frac{2 I_D / V_{ov}}{K_{CLM} I_D} = -\frac{2}{K_{CLM} V_{ov}}\).
   \item \textbf{Zeros}: \(N(s) = G_S(sC_{gd} - g_m) = 0\):
     \[
       s_z = +\frac{g_m}{C_{gd}} \hspace{1cm} \text{[right half plane: the input feeds forward through } C_{gd}\text{]}
@@ -92,28 +113,38 @@ outside the symbol.
     \(p_1 p_2 = \frac{a_0}{a_2}\), \(p_1 + p_2 = \frac{a_1}{a_2}\), \(p_2 \gg p_1\)):
     \begin{align*}
       p_1 &\approx \frac{a_0}{a_1} = \frac{G_o G_S}{G_o (C_{gs} + C_{gd}) + G_S (C_L + C_{gd}) + g_m C_{gd}} \\
+      p_1 &\approx \frac{1}{\frac{C_{gs} + C_{gd}}{G_S} + \frac{C_L + C_{gd}}{G_o} + \frac{g_m C_{gd}}{G_o G_S}}
+          = \frac{1}{R_S (C_{gs} + C_{gd}) + R_o (C_L + C_{gd}) + g_m R_o R_S C_{gd}} \\
       p_1 &\approx \frac{1}{R_S\left[C_{gs} + C_{gd}\left(1 + g_m R_o\right)\right] + R_o (C_L + C_{gd})} \hspace{1cm} \left[\text{divide by } G_o G_S,\ R_o = \tfrac{1}{G_o}\right] \\
       p_2 &\approx \frac{a_1}{a_2} = \frac{G_o (C_{gs} + C_{gd}) + G_S (C_L + C_{gd}) + g_m C_{gd}}{C_L C_{gs} + C_L C_{gd} + C_{gs} C_{gd}}
     \end{align*}
     The term \(C_{gd}(1 + g_m R_o) = C_{gd}(1 + |A_{V0}|)\) is the Miller
     multiplication of \(C_{gd}\) seen at the gate.
-  \item \textbf{Ideal Source} (\(G_S \to \infty\)): divide (4) by \(G_S\):
+  \item \textbf{Ideal Source} (\(G_S \to \infty\)): divide numerator and denominator of (4) by \(G_S\):
     \begin{align*}
-      H(s) = \frac{sC_{gd} - g_m}{G_o + s(C_L + C_{gd})} \hspace{1cm}
-      p_1 = \frac{G_D + g_o}{C_L + C_{gd}} \hspace{1cm}
-      GB = \frac{|A_{V0}| p_1}{2\pi} = \frac{g_m}{2\pi (C_L + C_{gd})}
+      H(s) &= \frac{sC_{gd} - g_m}{(G_o + s(C_L + C_{gd}))\left(1 + \frac{s(C_{gs} + C_{gd})}{G_S}\right) - \frac{sC_{gd}(sC_{gd} - g_m)}{G_S}}
+      \xrightarrow{G_S \to \infty} \frac{sC_{gd} - g_m}{G_o + s(C_L + C_{gd})}
+    \end{align*}
+    The pole is the root of \(G_o + s(C_L + C_{gd}) = 0\), \(s = -p_1\):
+    \begin{align*}
+      H(s) &= \frac{sC_{gd} - g_m}{G_o + s(C_L + C_{gd})} \hspace{1cm}
+      p_1 = \frac{G_D + g_o}{C_L + C_{gd}} \\
+      GB &= \frac{|A_{V0}| p_1}{2\pi} = \frac{1}{2\pi} \cdot \frac{g_m}{G_D + g_o} \cdot \frac{G_D + g_o}{C_L + C_{gd}} = \frac{g_m}{2\pi (C_L + C_{gd})}
     \end{align*}
   \item \textbf{Impedances}:
     \paragraph{At Input:} \(I_G = 0\) at DC, so only capacitances load the gate.
-      With the output gain \(A_{V}\) across \(C_{gd}\):
-      \[
-        Z_{in} = \frac{1}{s\left[C_{gs} + C_{gd}(1 - A_V)\right]} \approx \frac{1}{s\left[C_{gs} + C_{gd}(1 + g_m R_o)\right]}
-      \]
+      With \(V_{out} = A_{V} V_g\) at the other end of \(C_{gd}\), the current
+      drawn from the gate node is
+      \begin{align*}
+        I_{in} &= V_g sC_{gs} + (V_g - A_V V_g) sC_{gd} = V_g s\left[C_{gs} + C_{gd}(1 - A_V)\right] \\
+        Z_{in} &= \frac{V_g}{I_{in}} = \frac{1}{s\left[C_{gs} + C_{gd}(1 - A_V)\right]} \approx \frac{1}{s\left[C_{gs} + C_{gd}(1 + g_m R_o)\right]} \hspace{1cm} [A_V \approx A_{V0} = -g_m R_o]
+      \end{align*}
     \paragraph{At Output:} \(V_{in} = 0\) and (low frequency) \(V_g = 0\), so
-      \(g_m V_g = 0\):
-      \[
-        Z_{out} = \frac{1}{G_D + g_o} = R_D \parallel r_o
-      \]
+      \(g_m V_g = 0\). A test voltage \(V_{test}\) at the output draws
+      \begin{align*}
+        I_{test} &= V_{test} G_D + V_{test} g_o + g_m \cdot 0 = V_{test}(G_D + g_o) \\
+        Z_{out} &= \frac{V_{test}}{I_{test}} = \frac{1}{G_D + g_o} = R_D \parallel r_o
+      \end{align*}
   \item \textbf{Swing}: \(V_{ov} \leq V_{out} \leq V_{dd}\) (saturation to cutoff).
 \end{enumerate}
 
@@ -124,7 +155,12 @@ outside the symbol.
   \item Choose the output bias \(V_{OUT}\) (mid swing):
     \(R_D = \frac{V_{dd} - V_{OUT}}{I_D}\).
   \item Bias the gate at \(V_{IN} = V_{th} + V_{ov}\).
-  \item \(A_{V0} = -\frac{2 I_D}{V_{ov}} \cdot \frac{1}{\frac{I_D}{V_{dd} - V_{OUT}} + K_{CLM} I_D} = -\frac{2 (V_{dd} - V_{OUT})}{V_{ov}\left(1 + K_{CLM}(V_{dd} - V_{OUT})\right)}\).
+  \item With \(g_m = \frac{2 I_D}{V_{ov}}\), \(G_D = \frac{I_D}{V_{dd} - V_{OUT}}\), \(g_o = K_{CLM} I_D\):
+    \begin{align*}
+      A_{V0} = -\frac{g_m}{G_D + g_o} &= -\frac{2 I_D}{V_{ov}} \cdot \frac{1}{\frac{I_D}{V_{dd} - V_{OUT}} + K_{CLM} I_D}
+              = -\frac{2}{V_{ov}} \cdot \frac{1}{\frac{1}{V_{dd} - V_{OUT}} + K_{CLM}} \\
+             &= -\frac{2 (V_{dd} - V_{OUT})}{V_{ov}\left(1 + K_{CLM}(V_{dd} - V_{OUT})\right)} \hspace{1cm} [\times \tfrac{V_{dd} - V_{OUT}}{V_{dd} - V_{OUT}}]
+    \end{align*}
 \end{enumerate}
 
 \subsubsection{Question}
@@ -134,12 +170,13 @@ outside the symbol.
 \(R_D\), \(A_{V0}\), \(f_{p1}\) and \(GB\) (neglect \(C_{gd}\)).
 \paragraph{Solution:}
 \begin{align*}
-  \frac{W}{L} &= \frac{2 \cdot 100\,\mu A}{200\,\mu A/V^2 \cdot (0.2V)^2} = 25 \hspace{1cm}
+  \frac{W}{L} &= \frac{2 \cdot 100\,\mu A}{200\,\mu A/V^2 \cdot (0.2V)^2} = \frac{200\,\mu A}{8\,\mu A} = 25 \hspace{1cm}
   R_D = \frac{1.8V - 1V}{100\,\mu A} = 8\,k\Omega \\
   g_m &= \frac{2 \cdot 100\,\mu A}{0.2V} = 1\,mS \hspace{1cm}
   g_o = 0.1 \cdot 100\,\mu A = 10\,\mu S \hspace{1cm}
-  G_D = 125\,\mu S \\
-  A_{V0} &= -\frac{1\,mS}{125\,\mu S + 10\,\mu S} = -7.41 \hspace{1cm} (17.4\,dB) \\
-  f_{p1} &= \frac{135\,\mu S}{2\pi \cdot 1\,pF} = 21.5\,MHz \hspace{1cm}
+  G_D = \frac{1}{8\,k\Omega} = 125\,\mu S \\
+  A_{V0} &= -\frac{1\,mS}{125\,\mu S + 10\,\mu S} = -\frac{1000}{135} = -7.41 \hspace{1cm} (20\log_{10} 7.41 = 17.4\,dB) \\
+  A_{V0} &= -\frac{2 \cdot 0.8}{0.2 \cdot (1 + 0.1 \cdot 0.8)} = -\frac{1.6}{0.216} = -7.41 \hspace{1cm} [\text{check with the design formula}] \\
+  f_{p1} &= \frac{p_1}{2\pi} = \frac{135\,\mu S}{2\pi \cdot 1\,pF} = 21.5\,MHz \hspace{1cm}
   GB = \frac{1\,mS}{2\pi \cdot 1\,pF} = 159\,MHz
 \end{align*}
