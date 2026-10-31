@@ -81,7 +81,8 @@ In these cases, we can summarize the loading effect as follows:
     \begin{align*}
       P_{in} &= \frac{|V_s|^2}{2} \cdot \frac{R_i}{(R_o + R_i)^2} \\
       \frac{dP_{in}}{dR_i} &= \frac{|V_s|^2}{2} \cdot \frac{(R_o + R_i)^2 - 2R_i(R_o + R_i)}{(R_o + R_i)^4}
-      = \frac{|V_s|^2}{2} \cdot \frac{R_o - R_i}{(R_o + R_i)^3} = 0
+      = \frac{|V_s|^2}{2} \cdot \frac{(R_o + R_i)(R_o + R_i - 2R_i)}{(R_o + R_i)^4} \hspace{0.5cm} [\text{factor } (R_o + R_i)] \\
+      &= \frac{|V_s|^2}{2} \cdot \frac{R_o - R_i}{(R_o + R_i)^3} = 0
       \hspace{0.5cm} \Rightarrow \hspace{0.5cm} R_i = R_o \\
       P_{in,\text{max}} &= \frac{|V_s|^2}{2} \cdot \frac{R_o}{(2R_o)^2} = \frac{|V_s|^2}{8R_o}
     \end{align*}
