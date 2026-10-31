@@ -18,17 +18,21 @@ multiplied by \(B_F + 1\), output impedance divided by \(B_F + 1\).
 \subsubsection{Transfer Function}
 \begin{enumerate}
   \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}:
-    KVL from the source through \(R_S\) and the base-emitter junction,
-    \(V_{OUT} = V_{IN} - I_B R_S - V_{BE} = V_{IN} - I_B R_S - V_T \ln\frac{I_C}{I_S}\) with
-    \(I_C = A_F I_E = A_F \frac{V_{OUT}}{R_E}\), \(I_B = \frac{I_C}{B_F}\). Substituting:
-    \[
-      V_{OUT}\left(1 + \frac{A_F R_S}{B_F R_E}\right) = V_{IN} - V_T \ln\frac{A_F V_{OUT}}{I_S R_E}
-    \]
-    solved by iteration from \(V_{BE} = 0.7\,\)V: the output
-    sits one \(V_{BE} \approx 0.7\,\)V below the base.
+    KVL from the source through \(R_S\) and the base-emitter junction (forward
+    active, \(V_{BE} = V_T \ln\frac{I_C}{I_S}\)):
+    \begin{align*}
+      V_{OUT} &= V_{IN} - I_B R_S - V_{BE} = V_{IN} - I_B R_S - V_T \ln\frac{I_C}{I_S} \\
+      I_E &= \frac{V_{OUT}}{R_E} \hspace{1cm} I_C = A_F I_E = A_F \frac{V_{OUT}}{R_E} \hspace{1cm} I_B = \frac{I_C}{B_F} = \frac{A_F V_{OUT}}{B_F R_E} \\
+      V_{OUT} &= V_{IN} - \frac{A_F V_{OUT}}{B_F R_E} R_S - V_T \ln\frac{A_F V_{OUT}}{I_S R_E} \hspace{1cm} \text{(Substituting)} \\
+      V_{OUT}\left(1 + \frac{A_F R_S}{B_F R_E}\right) &= V_{IN} - V_T \ln\frac{A_F V_{OUT}}{I_S R_E} \\
+      V_{OUT} &= \frac{V_{IN} - V_T \ln\frac{A_F V_{OUT}}{I_S R_E}}{1 + \frac{R_S}{(B_F + 1) R_E}} \hspace{1cm} [\tfrac{A_F}{B_F} = \tfrac{1}{B_F + 1}]
+    \end{align*}
+    solved by iteration starting from \(V_{BE} = 0.7\,\)V (the logarithm moves
+    only \(V_T \ln 10 = 60\,\)mV per decade of current): the output sits one
+    \(V_{BE} \approx 0.7\,\)V below the base.
   \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}:
-    \(g_o\) neglected.\\
-    Applying KCL at \(V_b\):
+    \(g_o\) neglected, \(V_{cc}\) is AC ground, \(V_{be} = V_b - V_{out}\).\\
+    Applying KCL at \(V_b\) (\(I_b = g_{be} V_{be}\) leaves into the base):
     \begin{align*}
       (V_b - V_{in}) G_S + g_{be}(V_b - V_{out}) &= 0 \tag{1}
     \end{align*}
@@ -53,6 +57,13 @@ multiplied by \(B_F + 1\), output impedance divided by \(B_F + 1\).
 
 \subsubsection{Analysis}
 \begin{enumerate}
+  \item \textbf{Gain With Source}: multiplying numerator and denominator of
+    \(H\) by \(R_S r_{be} R_E\) (\(G_S R_S = 1\), \(g_{be} r_{be} = 1\), \(G_E R_E = 1\),
+    \((g_m + g_{be}) r_{be} = B_F + 1\)):
+    \begin{align*}
+      H &= \frac{G_S R_S (g_m + g_{be}) r_{be} R_E}{G_S R_S \left(G_E R_E r_{be} + (g_m + g_{be}) r_{be} R_E\right) + g_{be} r_{be} G_E R_E R_S}
+         = \frac{(B_F + 1) R_E}{R_S + r_{be} + (B_F + 1) R_E}
+    \end{align*}
   \item \textbf{Gain}: \(G_S \to \infty\), divide numerator and denominator by \(G_S\):
     \begin{align*}
       A_{V0} &= \lim_{G_S \to \infty} \frac{g_m + g_{be}}{G_E + g_m + g_{be} + \frac{g_{be} G_E}{G_S}} = \frac{g_m + g_{be}}{g_m + g_{be} + G_E} \\
@@ -63,7 +74,7 @@ multiplied by \(B_F + 1\), output impedance divided by \(B_F + 1\).
       \(V_{out} = \frac{g_m + g_{be}}{G_E + g_m + g_{be}} V_b\) from (2),
       \(I_b = g_{be}(V_b - V_{out}) = \frac{g_{be} G_E}{g_m + g_{be}} \cdot \frac{g_m + g_{be}}{G_E + g_m + g_{be}} V_b = \frac{g_{be} G_E}{G_E + g_m + g_{be}} V_b\),
       \[
-        Z_{in} = \frac{V_b}{I_b} = \frac{G_E + g_m + g_{be}}{g_{be} G_E} = \frac{1}{g_{be}} + \left(\frac{g_m}{g_{be}} + 1\right) R_E = r_{be} + (B_F + 1) R_E
+        Z_{in} = \frac{V_b}{I_b} = \frac{G_E + g_m + g_{be}}{g_{be} G_E} = \frac{G_E}{g_{be} G_E} + \frac{g_m + g_{be}}{g_{be} G_E} = \frac{1}{g_{be}} + \left(\frac{g_m}{g_{be}} + 1\right) R_E = r_{be} + (B_F + 1) R_E
       \]
     \paragraph{At Output:} \(V_{in} = 0\), \(G_E\) removed, \(I_{test}\) into the
       emitter. (1) gives \(V_b = \frac{g_{be}}{G_S + g_{be}} V_{out}\), and the
@@ -79,11 +90,12 @@ multiplied by \(B_F + 1\), output impedance divided by \(B_F + 1\).
 
 \subsubsection{Question}
 \(I_C = 1\,\)mA, \(B_F = 100\), \(R_E = 1\,k\Omega\), \(R_S = 10\,k\Omega\),
-\(V_T = 26\,\)mV. Find \(A_{V0}\) (ideal source), \(Z_{in}\) and \(Z_{out}\).
+\(V_T = 26\,\)mV. Find \(A_{V0}\) (ideal source), \(H\) (with \(R_S\)), \(Z_{in}\) and \(Z_{out}\).
 \paragraph{Solution:}
 \begin{align*}
   r_{be} &= \frac{B_F}{g_m} = \frac{B_F V_T}{I_C} = \frac{100 \cdot 26\,mV}{1\,mA} = 2.6\,k\Omega \hspace{1cm} (B_F + 1) R_E = 101 \cdot 1\,k\Omega = 101\,k\Omega \\
-  A_{V0} &= \frac{101\,k}{2.6\,k + 101\,k} = \frac{101}{103.6} = 0.975 \hspace{1cm}
-  Z_{in} = 2.6\,k + 101\,k = 103.6\,k\Omega \\
-  Z_{out} &= \frac{10\,k + 2.6\,k}{101} = \frac{12.6\,k}{101} = 125\,\Omega
+  A_{V0} &= \frac{(B_F + 1) R_E}{(B_F + 1) R_E + r_{be}} = \frac{101\,k}{2.6\,k + 101\,k} = \frac{101}{103.6} = 0.975 \\
+  H &= \frac{(B_F + 1) R_E}{R_S + r_{be} + (B_F + 1) R_E} = \frac{101\,k}{10\,k + 2.6\,k + 101\,k} = \frac{101}{113.6} = 0.889 \\
+  Z_{in} &= r_{be} + (B_F + 1) R_E = 2.6\,k + 101\,k = 103.6\,k\Omega \\
+  Z_{out} &= \frac{R_S + r_{be}}{B_F + 1} = \frac{10\,k + 2.6\,k}{101} = \frac{12.6\,k}{101} = 125\,\Omega
 \end{align*}
