@@ -24,13 +24,19 @@ at the collector, emitter shared. An emitter resistor \(G_E\)
       V_{IN} &= V_{BE} + I_E R_E = V_T \ln\left(\frac{I_C}{I_S}\right) + \frac{I_C R_E}{A_F} \tag{1} \\
       V_{OUT} &= V_{cc} - I_C R_C \tag{2}
     \end{align*}
-    (1) is transcendental; iterate \(I_C^{(k+1)} = \frac{A_F}{R_E}\left(V_{IN} - V_T \ln\frac{I_C^{(k)}}{I_S}\right)\)
-    starting from \(V_{BE} = 0.7\,\)V. Forward active needs
-    \(V_{OUT} \gtrsim V_e + 0.3\,\)V.
+    (1) is transcendental. Solving its linear term for \(I_C\):
+    \begin{align*}
+      \frac{I_C R_E}{A_F} &= V_{IN} - V_T \ln\left(\frac{I_C}{I_S}\right) \\
+      I_C^{(k+1)} &= \frac{A_F}{R_E}\left(V_{IN} - V_T \ln\frac{I_C^{(k)}}{I_S}\right)
+    \end{align*}
+    iterated starting from \(V_{BE} = 0.7\,\)V, i.e.
+    \(I_C^{(0)} = \frac{A_F}{R_E}(V_{IN} - 0.7\,\text{V})\). Forward active needs
+    \(V_{CE} = V_{OUT} - V_e \gtrsim 0.3\,\)V, i.e. \(V_{OUT} \gtrsim V_e + 0.3\,\)V.
   \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}: \(V_b = V_{in}\), \(g_o\) neglected.\\
     Applying KCL at \(V_e\) (\(I_e = I_b + I_c\) arrives from the device):
     \begin{align*}
-      V_e G_E &= g_{be}(V_{in} - V_e) + g_m (V_{in} - V_e) \\
+      V_e G_E &= g_{be}(V_{in} - V_e) + g_m (V_{in} - V_e) \hspace{1cm} [I_b = g_{be} V_{be},\ I_c = g_m V_{be},\ V_{be} = V_{in} - V_e] \\
+      V_e G_E + g_{be} V_e + g_m V_e &= g_{be} V_{in} + g_m V_{in} \\
       V_e (G_E + g_m + g_{be}) &= (g_m + g_{be}) V_{in} \\
       V_e &= \frac{g_m + g_{be}}{G_E + g_m + g_{be}} V_{in} \tag{3}
     \end{align*}
@@ -40,8 +46,9 @@ at the collector, emitter shared. An emitter resistor \(G_E\)
     \end{align*}
     Substituting (3) into (4):
     \begin{align*}
-      V_{in} - V_e &= \frac{G_E}{G_E + g_m + g_{be}} V_{in} \\
+      V_{in} - V_e &= \left(1 - \frac{g_m + g_{be}}{G_E + g_m + g_{be}}\right) V_{in} = \frac{G_E}{G_E + g_m + g_{be}} V_{in} \\
       V_{out} &= -\frac{g_m}{G_C} \cdot \frac{G_E}{G_E + g_m + g_{be}} V_{in} \\
+      V_{out} &= -g_m R_C \cdot \frac{1}{1 + (g_m + g_{be}) R_E} V_{in} \hspace{1cm} [\tfrac{1}{G_C} = R_C,\ \text{divide by } G_E] \\
       H = \frac{V_{out}}{V_{in}} &= -\frac{g_m R_C}{1 + (g_m + g_{be}) R_E}
     \end{align*}
 \end{enumerate}
@@ -49,18 +56,30 @@ at the collector, emitter shared. An emitter resistor \(G_E\)
 \subsubsection{Analysis}
 \begin{enumerate}
   \item \textbf{Gain}: \(R_E = 0\): \(A_{V0} = -g_m R_C = -\frac{I_C R_C}{V_T}\)
-    (with \(g_o\): \(-g_m (R_C \parallel r_o)\)). Large \(g_m R_E\):
-    \(A_{V0} \approx -\frac{g_m}{g_m + g_{be}}\cdot\frac{R_C}{R_E} = -A_F \frac{R_C}{R_E}\).
+    (with \(g_o\): \(-g_m (R_C \parallel r_o)\)). Large \(g_m R_E\)
+    (\((g_m + g_{be}) R_E \gg 1\)), with \(g_{be} = \frac{g_m}{B_F}\):
+    \[
+      A_{V0} \approx -\frac{g_m R_C}{(g_m + g_{be}) R_E} = -\frac{g_m}{g_m + \frac{g_m}{B_F}}\cdot\frac{R_C}{R_E} = -\frac{B_F}{B_F + 1}\cdot\frac{R_C}{R_E} = -A_F \frac{R_C}{R_E}
+    \]
   \item \textbf{Impedances}:
     \paragraph{At Input:} \(I_b = g_{be}(V_{in} - V_e) = \frac{g_{be} G_E}{G_E + g_m + g_{be}} V_{in}\):
       \[
-        Z_{in} = \frac{G_E + g_m + g_{be}}{g_{be} G_E} = \frac{1}{g_{be}} + \frac{g_m + g_{be}}{g_{be}} R_E = r_{be} + (B_F + 1) R_E
+        Z_{in} = \frac{V_{in}}{I_b} = \frac{G_E + g_m + g_{be}}{g_{be} G_E} = \frac{G_E}{g_{be} G_E} + \frac{g_m + g_{be}}{g_{be} G_E} = \frac{1}{g_{be}} + \left(\frac{g_m}{g_{be}} + 1\right) R_E = r_{be} + (B_F + 1) R_E
       \]
-    \paragraph{At Output:} \(Z_{out} = R_C \parallel r_o(1 + g_m (R_E \parallel r_{be}))\approx R_C\).
+    \paragraph{At Output:} \(g_o\) kept, \(V_{in} = 0\) (\(V_{be} = -V_e\)),
+      \(G_C\) removed, \(I_{test}\) into the collector. KCL at \(V_e\) and at the collector \(V_c\):
+      \begin{align*}
+        V_e G_E &= I_{test} + I_b = I_{test} - g_{be} V_e
+        \hspace{0.5cm} \Rightarrow \hspace{0.5cm} V_e = \frac{I_{test}}{G_E + g_{be}} = I_{test}(R_E \parallel r_{be}) \\
+        I_{test} &= g_m V_{be} + g_o (V_c - V_e) = -(g_m + g_o) V_e + g_o V_c \\
+        g_o V_c &= I_{test} + (g_m + g_o) I_{test} (R_E \parallel r_{be}) \\
+        Z'_{out} &= \frac{V_c}{I_{test}} = r_o\left(1 + (g_m + g_o)(R_E \parallel r_{be})\right) \approx r_o\left(1 + g_m (R_E \parallel r_{be})\right) \hspace{0.5cm} [g_o \ll g_m] \\
+        Z_{out} &= R_C \parallel Z'_{out} \approx R_C
+      \end{align*}
   \item \textbf{Linearity}: the plain CE obeys the bound
     \(|V_{be}| \ll 2V_T\) of Section~\ref{sec:analysis_linearization};
-    degeneration divides the input between \(V_{be}\) and \(R_E\), so
-    \(V_{be} = \frac{V_{in}}{1 + (g_m + g_{be})R_E}\) and the input range grows
+    degeneration divides the input between \(V_{be}\) and \(R_E\); from (3),
+    \(V_{be} = V_{in} - V_e = \frac{G_E}{G_E + g_m + g_{be}} V_{in} = \frac{V_{in}}{1 + (g_m + g_{be})R_E}\) and the input range grows
     by the same factor the gain falls.
 \end{enumerate}
 
@@ -69,7 +88,8 @@ at the collector, emitter shared. An emitter resistor \(G_E\)
 Find \(A_{V0}\) and \(Z_{in}\) for \(R_E = 0\) and \(R_E = 500\,\Omega\).
 \paragraph{Solution:}
 \begin{align*}
-  g_m &= \frac{1\,mA}{26\,mV} = 38.5\,mS \hspace{1cm} g_{be} = \frac{g_m}{B_F} = 385\,\mu S \hspace{1cm} r_{be} = 2.6\,k\Omega \\
-  R_E = 0 &: \hspace{0.5cm} A_{V0} = -38.5\,m \cdot 5\,k = -192 \hspace{1cm} Z_{in} = 2.6\,k\Omega \\
-  R_E = 500 &: \hspace{0.5cm} A_{V0} = -\frac{192}{1 + 38.9\,m \cdot 500} = -\frac{192}{20.4} = -9.42 \hspace{1cm} Z_{in} = 2.6\,k + 101 \cdot 500 = 53.1\,k\Omega
+  g_m &= \frac{1\,mA}{26\,mV} = 38.46\,mS \hspace{1cm} g_{be} = \frac{g_m}{B_F} = 384.6\,\mu S \hspace{1cm} r_{be} = \frac{1}{g_{be}} = 2.6\,k\Omega \\
+  R_E = 0 &: \hspace{0.5cm} A_{V0} = -38.46\,m \cdot 5\,k = -192.3 \hspace{1cm} Z_{in} = r_{be} = 2.6\,k\Omega \\
+  R_E = 500 &: \hspace{0.5cm} (g_m + g_{be}) R_E = 38.85\,m \cdot 500 = 19.42 \\
+  &\hspace{0.5cm} A_{V0} = -\frac{192.3}{1 + 19.42} = -\frac{192.3}{20.42} = -9.42 \hspace{1cm} Z_{in} = 2.6\,k + 101 \cdot 500 = 2.6\,k + 50.5\,k = 53.1\,k\Omega
 \end{align*}
