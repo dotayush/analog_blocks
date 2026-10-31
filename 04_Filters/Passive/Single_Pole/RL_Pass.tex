@@ -50,7 +50,7 @@ down into two types: Low Pass Filter and High Pass.
 \end{circuitfig}
 
 \subsubsection{Transfer Function}
-Applying KCL at $V_{out}$ on Full Schematic, we get:
+Applying KCL (Q4) at $V_{out}$ on Full Schematic, we get:
 \[
   \frac{V_{out} - V_{1}}{sL_1} + (V_{out} - V_{2}){G_1} = 0
 \]
@@ -205,8 +205,9 @@ Also compute the input and output impedance at \(f = 10kHz\).
       \begin{align*}
         Z_{out} &= \frac{\omega^2 R_1 L_1^2}{R_1^2 + (\omega L_1)^2} + j \frac{\omega R_1^2 L_1}{R_1^2 + (\omega L_1)^2} \\
         Z_{out} &= \frac{(2 \pi (10000))^2 (330) (1.167 \times 10^{-3})^2}{(330)^2 + (2 \pi (10000) (1.167 \times 10^{-3}))^2} + j \frac{(2 \pi (10000)) (330)^2 (1.167 \times 10^{-3})}{(330)^2 + (2 \pi (10000) (1.167 \times 10^{-3}))^2} \\
-        Z_{out} &= 6.94 + j 69.4 \\
-        Z_{out} = 6.94 + j 69.4 \Omega
+        Z_{out} &= \frac{(73.33)^2 (330)}{(330)^2 + (73.33)^2} + j \frac{(73.33)(330)^2}{(330)^2 + (73.33)^2} \\
+        Z_{out} &= \frac{1774578}{114278} + j \frac{7985837}{114278} \\
+        Z_{out} &\approx 15.53 + j 69.88 \Omega
       \end{align*}
 \end{enumerate}
 

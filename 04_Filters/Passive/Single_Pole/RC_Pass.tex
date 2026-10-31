@@ -1,12 +1,10 @@
-\typeout{=== RC_Pass START ===}
 \subsection{RC Pass Filter}
 
 \subsubsection{Overview}
-\paragraph
 Constructed from a resistor and capacitor in series. It
 is a single pole filter. An RC Pass Filter can be broken
 down into two types: Low Pass and High Pass.
-\begin {enumerate}
+\begin{enumerate}
   \item \textbf{Low Pass Filter:} Allows low frequency
     signals to pass while attenuating high frequency
     signals.
@@ -14,7 +12,7 @@ down into two types: Low Pass and High Pass.
     signals to pass while attenuating low frequency
     signals.
 \end{enumerate}
-\par
+
 \subsubsection{Schematic}
 \begin{circuitfig}
   % Paths, nodes and wires:
@@ -52,7 +50,7 @@ down into two types: Low Pass and High Pass.
 \end{circuitfig}
 
 \subsubsection{Transfer Function}
-Applying KCL at $V_{out}$ on Full Schematic, we get:
+Applying KCL (Q4) at $V_{out}$ on Full Schematic, we get:
 \[
   (V_{out} - V_{1}){G_1} + (V_{out} - V_{2}){sC_1} = 0
 \]
@@ -187,7 +185,7 @@ Also compute the input and output impedance at
       \omega &= 2 \pi f = 2 \pi (10kHz) = 62,832 \text{ rad/s} \\
       Z_{in} &= R_1 - j \frac{1}{\omega C_1} \\
              &= 3.54 \Omega - j \frac{1}{(62,832)(1\mu F)} \\
-             &\approx 3.54 \Omega - j 15.9 \Omega \\
+             &\approx 3.54 \Omega - j 15.9 \Omega
     \end{align*}
     \begin{align*}
             Z_{out} &= \frac{R_1}{1 + (\omega R_1 C_1)^2} - j \frac{\omega R_1^2 C_1}{1 + (\omega R_1 C_1)^2} \\
@@ -216,11 +214,13 @@ Also compute the input and output impedance at
       \omega &= 2 \pi f = 2 \pi (75Hz) = 471.24 \text{ rad/s} \\
       Z_{in} &= R_1 - j \frac{1}{\omega C_1} \\
              &= 159 \Omega - j \frac{1}{(471.24)(1\mu F)} \\
-             &\approx 159 \Omega - j 2123.72 \Omega \\
+             &\approx 159 \Omega - j 2122.07 \Omega
     \end{align*}
     \begin{align*}
           Z_{out} &= \frac{R_1}{1 + (\omega R_1 C_1)^2} - j \frac{\omega R_1^2 C_1}{1 + (\omega R_1 C_1)^2} \\
               &= \frac{159 \Omega}{1 + (471.24 \cdot 159 \Omega \cdot 1\mu F)^2} - j \frac{(471.24)(159 \Omega)^2 (1\mu F)}{1 + (471.24 \cdot 159 \Omega \cdot 1\mu F)^2} \\
-              &\approx 153.96 \Omega - j 11.52 \Omega
+              &= \frac{159 \Omega}{1 + (0.0749)^2} - j \frac{(471.24)(25281 \Omega^2)(1\mu F)}{1 + (0.0749)^2} \\
+              &= \frac{159 \Omega}{1.00561} - j \frac{11.913 \Omega}{1.00561} \\
+              &\approx 158.11 \Omega - j 11.85 \Omega
     \end{align*}
 \end{enumerate}

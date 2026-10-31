@@ -123,7 +123,7 @@ or parallel. An RLC Band Filter can be broken down into two types:
 \subsubsection{Transfer Function}
 \begin{enumerate}
   \item \textbf{Parallel Configuration:}
-    Applying KCL on Full Schematic of Parallel Configuration, \\
+    Applying KCL (Q4) on Full Schematic of Parallel Configuration, \\
     At \(V_{out}\), we get:
     \begin{align*}
       (V_{out} - V_{1}){G_1} + \frac{(V_{out} - V_{2})}{sL_1} + (V_{out} - V_{2}){sC_1} &= 0 \\
@@ -244,12 +244,12 @@ or parallel. An RLC Band Filter can be broken down into two types:
         \end{align*}
         While the nature of the poles depends on the value of the
         discriminant \(\left(G_1^2 - \frac{4 C_1}{L_1}\right)\).
-        We can still make a comparison of equation (iv) with natural
+        We can still make a comparison of equation (4) with natural
         second order system equation.\\ \\
         \begin{tabularx}{\linewidth}{|X|X|X|X|} \hline
           Type & Term A & Term B & Term C \\ \hline
-          Equation (iv) & \(s^2\) & \(\frac{G_1}{C_1} s\) & \(\frac{1}{L_1 C_1}\) \\ \hline
-          Natural & \(s^2\) & \(2 \zeta \omega_n s\) & \(\omega_n^2\) \\ \hline
+          Equation (4) & \(s^2\) & \(\frac{G_1}{C_1} s\) & \(\frac{1}{L_1 C_1}\) \\ \hline
+          Natural & \(s^2\) & \(2 D_R \omega_n s\) & \(\omega_n^2\) \\ \hline
         \end{tabularx}\\ \\
         We get:
         \begin{enumerate}
@@ -260,11 +260,11 @@ or parallel. An RLC Band Filter can be broken down into two types:
             \end{align*}
           \item Damping Ratio:
             \[
-              2 \zeta \omega_n = \frac{G_1}{C_1} \implies \zeta = \frac{G_1}{2C_1 \omega_n} = \frac{G_1}{2 C_1} \sqrt{L_1 C_1}
+              2 D_R \omega_n = \frac{G_1}{C_1} \implies D_R = \frac{G_1}{2C_1 \omega_n} = \frac{G_1}{2 C_1} \sqrt{L_1 C_1}
             \]
           \item Q Factor:
             \[
-              Q = \frac{1}{2\zeta} = \frac{C_1}{G_1} \sqrt{\frac{1}{L_1 C_1}}
+              Q = \frac{1}{2D_R} = \frac{C_1}{G_1} \sqrt{\frac{1}{L_1 C_1}}
             \]
         \end{enumerate}
       \item \textbf{Series Configuration:}
@@ -285,12 +285,12 @@ or parallel. An RLC Band Filter can be broken down into two types:
         \end{align*}
         While the nature of the poles depends on the value of the
         discriminant \(\left(1 - \frac{4 G_1^2 L_1}{C_1}\right)\).
-        We can still make a comparison of equation (v) with natural
+        We can still make a comparison of equation (5) with natural
         second order system equation.\\ \\
         \begin{tabularx}{\linewidth}{|X|X|X|X|} \hline
           Type & Term A & Term B & Term C \\ \hline
-          Equation (v) & \(s^2\) & \(\frac{1}{L_1 G_1} s\) & \(\frac{1}{L_1 C_1}\) \\ \hline
-          Natural & \(s^2\) & \(2 \zeta \omega_n s\) & \(\omega_n^2\) \\ \hline
+          Equation (5) & \(s^2\) & \(\frac{1}{L_1 G_1} s\) & \(\frac{1}{L_1 C_1}\) \\ \hline
+          Natural & \(s^2\) & \(2 D_R \omega_n s\) & \(\omega_n^2\) \\ \hline
         \end{tabularx}\\ \\
         We get,
         \begin{enumerate}
@@ -301,27 +301,30 @@ or parallel. An RLC Band Filter can be broken down into two types:
             \end{align*}
           \item Damping Ratio:
             \[
-              2 \zeta \omega_n = \frac{1}{L_1 G_1} \implies \zeta = \frac{1}{2 L_1 G_1 \omega_n} = \frac{1}{2 G_1} \sqrt{\frac{C_1}{L_1}}
+              2 D_R \omega_n = \frac{1}{L_1 G_1} \implies D_R = \frac{1}{2 L_1 G_1 \omega_n} = \frac{1}{2 G_1} \sqrt{\frac{C_1}{L_1}}
             \]
           \item Q Factor:
             \[
-              Q = \frac{1}{2\zeta} = G_1 \sqrt{\frac{L_1}{C_1}}
+              Q = \frac{1}{2D_R} = G_1 \sqrt{\frac{L_1}{C_1}}
             \]
         \end{enumerate}
     \end{enumerate}
   \item \textbf{Zeros (\(N(s) = 0\)):} \\
     \begin{enumerate}
       \item \textbf{Parallel Configuration:}\\
-        For band pass \(H_1(s)\):
+        For band pass \(H_1(s)\), first clear the fractions by multiplying
+        numerator and denominator by \(sL_1\):
           \begin{align*}
-            N(s) &= 0 \\
-            G_1 &\neq 0 \\
+            H_1(s) &= \frac{G_1}{G_1 + \frac{1}{sL_1} + sC_1} \cdot \frac{sL_1}{sL_1} = \frac{s L_1 G_1}{s^2 L_1 C_1 + s L_1 G_1 + 1} \\
+            N_1(s) &= s L_1 G_1 = 0 \\
+            s_z &= 0 \hspace{1cm} f_z = 0 Hz
           \end{align*}
-          No zeros for \(H_1(s)\) means the filter will have non-zero output
-          at all frequencies. \\
+          Zero at origin for \(H_1(s)\) means at DC the filter will have zero
+          output (the inductor shorts the output to \(V_2\)). \\
         For band stop \(H_2(s)\):
           \begin{align*}
-            N(s) &= 0 \\
+            H_2(s) &= \frac{\frac{1}{sL_1} + sC_1}{G_1 + \frac{1}{sL_1} + sC_1} \cdot \frac{sL_1}{sL_1} = \frac{1 + s^2 L_1 C_1}{s^2 L_1 C_1 + s L_1 G_1 + 1} \\
+            N_2(s) &= 0 \\
             \frac{1}{sL_1} + sC_1 &= 0 \\
             s^2 C_1 L_1 + 1 &= 0 \\
             s^2 + \frac{1}{L_1 C_1} &= 0 \\
@@ -374,20 +377,28 @@ or parallel. An RLC Band Filter can be broken down into two types:
         \end{align*}
         Unity DC gain for \(H_4(s)\).
     \end{enumerate}
-  \item \textbf{Gain-Bandwidth Product (\(GBW\)):}
-    We know that,
+  \item \textbf{Bandwidth (\(BW\)):}
+    The band pass gain at \(f_0\) is unity (\(H_1(j\omega_0) = H_3(j\omega_0) = 1\),
+    the \(LC\) term vanishes). The \(-3\,dB\) points \(\omega_{1,2}\) satisfy
+    \(|D(j\omega)|^2 = 2|N(j\omega)|^2\). For the parallel band pass,
     \begin{align*}
-      GBW &\approx \frac{f_0}{Q} \\
-      \text{where } f_0 &= \frac{1}{2\pi \sqrt{L_1 C_1}} \quad \text{(resonant frequency)} \\
+      \left|1 - \omega^2 L_1 C_1 + j\omega L_1 G_1\right|^2 &= 2 (\omega L_1 G_1)^2 \\
+      (1 - \omega^2 L_1 C_1)^2 &= (\omega L_1 G_1)^2 \\
+      1 - \omega^2 L_1 C_1 &= \pm \omega L_1 G_1 \\
+      \omega^2 \pm \omega \frac{G_1}{C_1} - \frac{1}{L_1 C_1} &= 0 \\
+      \omega_{1,2} &= \frac{\mp \frac{G_1}{C_1} + \sqrt{\frac{G_1^2}{C_1^2} + \frac{4}{L_1 C_1}}}{2} \hspace{1cm} [\text{positive roots}] \\
+      \omega_2 - \omega_1 &= \frac{G_1}{C_1} = \frac{\omega_n}{Q} \hspace{1cm} \omega_1 \omega_2 = \frac{1}{L_1 C_1} = \omega_n^2
     \end{align*}
+    so in general \(BW = f_2 - f_1 = \frac{f_0}{Q}\) (exact for this second
+    order section) and, because the peak gain is 1, \(GBW = 1 \cdot BW\).
     \begin{enumerate}
       \item \textbf{Parallel Configuration:}
         \[
-          GBW_{parallel} \approx \frac{\frac{1}{2\pi \sqrt{L_1 C_1}}}{\frac{C_1}{G_1} \sqrt{\frac{1}{L_1 C_1}}} = \frac{G_1}{2\pi C_1}
+          BW_{parallel} = \frac{\frac{1}{2\pi \sqrt{L_1 C_1}}}{\frac{C_1}{G_1} \sqrt{\frac{1}{L_1 C_1}}} = \frac{G_1}{2\pi C_1}
         \]
       \item \textbf{Series Configuration:}
         \[
-          GBW_{series} \approx \frac{\frac{1}{2\pi \sqrt{L_1 C_1}}}{G_1 \sqrt{\frac{L_1}{C_1}}} = \frac{1}{2\pi G_1 L_1}
+          BW_{series} = \frac{\frac{1}{2\pi \sqrt{L_1 C_1}}}{G_1 \sqrt{\frac{L_1}{C_1}}} = \frac{1}{2\pi G_1 L_1}
         \]
     \end{enumerate}
   \item \textbf{Impedances:}
@@ -516,14 +527,18 @@ Compute their input and output impedances at \(f_0\).
       \quad \text{and} \quad
       Z_{out} &= \frac{R_1 L_1 j \omega}{R_1(1 - \omega^2 L_1 C_1) + L_1 j \omega}
     \end{align*}
-    where \(\omega = 2 \pi f_0 = 6283.19 \, rad/s\).
+    where \(\omega = 2 \pi f_0 = 6283.19 \, rad/s\). At \(f_0\) the tank
+    term vanishes exactly:
     \begin{align*}
-      Z_{in} &\approx 15915.49 + \frac{0.2533 j (6283.19)}{1 - (6283.19)^2 (0.2533)(0.1 \times 10^{-6})} \\
-              &\approx 15915.49 - j 7167.704 \times 10^{15} \Omega \\
-      Z_{out} &\approx \frac{15915.49 \times 0.2533 j (6283.19)}{15915.49(1 - (6283.19)^2 (0.2533)(0.1 \times 10^{-6})) + 0.2533 j (6283.19)} \\
-              &\approx \frac{25330295.91 j}{-3.533 \times 10^{-12} + j 1591.54} \\
-              &\approx \frac{(25330295.91 j)(3.533 \times 10^{-12} - j 1591.54)}{(-3.533 \times 10^{-12} + j 1591.54)(3.533 \times 10^{-12} - j 1591.54)} \\
-              &\approx 1.24 \times 10^{-22} - j 15915.5 \Omega
+      1 - \omega_0^2 L_1 C_1 &= 1 - \frac{1}{L_1 C_1} L_1 C_1 = 0 \\
+      Z_{LC} &= \frac{L_1 j \omega_0}{0} \to \infty \hspace{1cm} [\text{ideal parallel tank is an open circuit}] \\
+      Z_{in} &= R_1 + Z_{LC} \to \infty \\
+      Z_{out} &= \frac{R_1 L_1 j \omega_0}{R_1 \cdot 0 + L_1 j \omega_0} = R_1 \approx 15915.49 \, \Omega
     \end{align*}
+    Numerically, rounding \(L_1\) to \(0.2533\,H\) leaves
+    \(1 - \omega_0^2 L_1 C_1 \approx 1.17 \times 10^{-5}\), so \(Z_{in}\) is a
+    large but finite \(\approx 15915 + j\,1.36 \times 10^{8}\,\Omega\) and
+    \(Z_{out} \approx 15915\,\Omega\) (real); any series resistance of the
+    inductor bounds \(Z_{in}\) in practice.
 \end{enumerate}
 

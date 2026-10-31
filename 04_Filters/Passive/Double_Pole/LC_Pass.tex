@@ -48,7 +48,7 @@ down into two types: Low Pass Filter and High Pass.
 \end{circuitfig}
 
 \subsubsection{Transfer Function}
-Applying KCL at $V_{out}$ on Full Schematic, we get:
+Applying KCL (Q4) at $V_{out}$ on Full Schematic, we get:
 \[
   \frac{(V_{out} - V_{1})}{sL_1} + (V_{out} - V_{2}){sC_1} = 0
 \]
@@ -93,8 +93,9 @@ Applying KCL at $V_{out}$ on Full Schematic, we get:
       s^2C_1L_1 + 1 &= 0 \\
       s^2C_1L_1 &= -1 \\
       s^2 &= -\frac{1}{C_1L_1} \\
-      s &= -2 \pi f_p \\
-      (-2 \pi f_p)^2 &= -\frac{1}{C_1L_1} \hspace{1cm} \text{[let \(s = -2 \pi f_p\)]} \\
+      s &= \pm j \frac{1}{\sqrt{C_1L_1}} \\
+      (\pm j 2 \pi f_p)^2 &= -\frac{1}{C_1L_1} \hspace{1cm} \text{[let \(s = \pm j 2 \pi f_p\)]} \\
+      -4 \pi^2 f_p^2 &= -\frac{1}{C_1L_1} \\
       4 \pi^2 f_p^2 &= \frac{1}{C_1L_1} \\
       f_p &= \frac{1}{2 \pi \sqrt{C_1L_1}}
     \end{align*}
@@ -103,14 +104,14 @@ Applying KCL at $V_{out}$ on Full Schematic, we get:
   \item \textbf{Zeroes (\(N(s) = 0\)):} \\
     For low pass \(H_1(s)\):
     \begin{align*}
-        N_1(s) = 0
-        1 \neq 0
+        N_1(s) &= 0 \\
+        1 &\neq 0
     \end{align*}
     No zeroes for \(H_1(s)\). \\
     For high pass \(H_2(s)\):
     \begin{align*}
-        N_2(s) = 0 \\
-        s^2C_1L_1 = 0 \\
+        N_2(s) &= 0 \\
+        s^2C_1L_1 &= 0 \\
         s_z &= 0 \hspace{1cm} \text{[let \(s = s_z\)]} \\
         f_z &= \frac{|s_z|}{2\pi} = 0 Hz
     \end{align*}
@@ -118,14 +119,14 @@ Applying KCL at $V_{out}$ on Full Schematic, we get:
   \item \textbf{DC Gain \(A_{DC}\):} \\
     For low pass \(H_1(s)\):
     \begin{align*}
-      H_1(0) &= \frac{1}{0^2C_1L_1 + 1} = 1
-      A_{DC_1} = 1 = 0 dB
+      H_1(0) &= \frac{1}{0^2C_1L_1 + 1} = 1 \\
+      A_{DC_1} &= 1 = 0 dB
     \end{align*}
     Unity DC gain for \(H_1(s)\). \\
-    For low pass \(H_2(s)\):
+    For high pass \(H_2(s)\):
     \begin{align*}
-      H_2(0) &= \frac{0^2C_1L_1}{0^2C_1L_1 + 1} = 0
-      A_{DC_2} = 0 = -\infty dB
+      H_2(0) &= \frac{0^2C_1L_1}{0^2C_1L_1 + 1} = 0 \\
+      A_{DC_2} &= 0 = -\infty dB
     \end{align*}
     Zero DC gain for \(H_2(s)\).
   \item \textbf{Gain Bandwidth Product (GBW):}
@@ -147,7 +148,7 @@ Applying KCL at $V_{out}$ on Full Schematic, we get:
   \item \textbf{Impedance:}
     Both low pass and high pass filters have the same input
     and output impedance.
-    Substituting \(G_1 = \frac{1}{R_1}\) and \(s = j \omega\):
+    Substituting \(s = j \omega\):
     \paragraph{At Input:}
       \begin{align*}
         Z_{in} &= sL_1 + \frac{1}{sC_1} \\
