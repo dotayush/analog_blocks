@@ -22,31 +22,45 @@ very low power, no op-amp.
 
 \subsubsection{Transfer Function}
 \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}: trial \(k\)
-(\(k = n - 1 \ldots 0\)) sets \(b_k = 1\) with all decided higher bits kept:
+(\(k = n - 1 \ldots 0\)) sets \(b_k = 1\) with all decided higher bits kept and
+the lower bits 0, so the DAC (Section~\ref{sec:dc_char}) outputs
 \begin{align*}
-  V_{DAC}^{(k)} &= V_{REF}\left(\sum_{j > k} b_j 2^{j-n} + 2^{k-n}\right) \\
+  V_{DAC}^{(k)} &= V_{REF}\left(\sum_{j > k} b_j 2^{j-n} + 1 \cdot 2^{k-n}\right) \\
   b_k &= \begin{cases} 1 & V_{IN} \geq V_{DAC}^{(k)} \\ 0 & V_{IN} < V_{DAC}^{(k)} \end{cases}
 \end{align*}
-After trial \(k\) the remaining interval is \(\frac{V_{REF}}{2^{n-k}}\); after
-\(n\) trials \(0 \leq V_{IN} - \frac{D}{2^n} V_{REF} < X_{LSB}\).
+Before trial \(k\), \(V_{IN}\) is known to lie in an interval of width
+\(\frac{V_{REF}}{2^{n-k-1}}\) starting at \(V_{REF}\sum_{j > k} b_j 2^{j-n}\); \(V_{DAC}^{(k)}\) is its midpoint and the
+comparison keeps one half, of width \(\frac{V_{REF}}{2^{n-k-1}}\cdot\frac{1}{2} = \frac{V_{REF}}{2^{n-k}}\). After the last
+trial (\(k = 0\)) the width is \(\frac{V_{REF}}{2^n} = X_{LSB}\), so
+\(0 \leq V_{IN} - \frac{D}{2^n} V_{REF} < X_{LSB}\) with \(D = \sum_k b_k 2^k\).
 
-\paragraph{Charge redistribution form:} the array samples \(V_{IN}\) on its
-bottom plates with the top plate at 0 (charge \(-2^n C_u V_{IN}\)); the top plate
-is then floated and bottom plates switched to \(b_k V_{REF}\):
+\paragraph{Charge redistribution form:} the array is \(2^k C_u\) for bit \(k\) plus
+a dummy \(C_u\), total \(\sum_{k=0}^{n-1} 2^k C_u + C_u = (2^n - 1) C_u + C_u = 2^n C_u\). It samples \(V_{IN}\) on
+the bottom plates with the top plate at 0, storing
+\(Q = 2^n C_u (0 - V_{IN}) = -2^n C_u V_{IN}\) on the top plate node. The top plate is
+then floated (charge conserved) and the bottom plates switched to
+\(b_k V_{REF}\) (dummy to 0):
 \begin{align*}
+  \sum_{k=0}^{n-1} 2^k C_u (V_x - b_k V_{REF}) + C_u (V_x - 0) &= -2^n C_u V_{IN} \\
   2^n C_u V_x - C_u V_{REF} \sum_k b_k 2^k &= -2^n C_u V_{IN} \\
-  V_x &= -V_{IN} + \frac{D}{2^n} V_{REF}
+  V_x &= -V_{IN} + \frac{\sum_k b_k 2^k}{2^n} V_{REF} = -V_{IN} + \frac{D}{2^n} V_{REF} \hspace{1cm} [\div 2^n C_u]
 \end{align*}
-The comparator only checks the sign of \(V_x\); sampling, DAC and
-subtraction share one capacitor array.
+The comparator only checks the sign of \(V_x\) (\(b_k\) kept if \(V_x \leq 0\));
+sampling, DAC and subtraction share one capacitor array.
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \textbf{Speed}: \(f_s = \frac{f_{clk}}{n + 1}\) (one sampling cycle).
-    The DAC must settle to \(\frac{1}{2}\) LSB in each cycle:
-    \(T_c \ln(2^{n+1}) < \frac{1}{f_{clk}}\).
-  \item \textbf{Comparator}: offset is a pure offset (same comparator every
-    trial); noise must be \(< \frac{X_{LSB}}{2}\) at the final, smallest trial.
+  \item \textbf{Speed}: one sampling cycle plus \(n\) trials,
+    \(f_s = \frac{f_{clk}}{n + 1}\). The DAC (time constant \(T_c\)) must settle a full
+    scale step to \(\frac{1}{2}\) LSB in each cycle:
+    \begin{align*}
+      V_{REF}\, e^{-t/T_c} &< \frac{1}{2}\cdot\frac{V_{REF}}{2^n} = \frac{V_{REF}}{2^{n+1}} \\
+      e^{t/T_c} &> 2^{n+1} \hspace{1cm} \Rightarrow \hspace{1cm} t > T_c \ln(2^{n+1}) = (n + 1) T_c \ln 2 \\
+      T_c (n + 1) \ln 2 &< \frac{1}{f_{clk}}
+    \end{align*}
+  \item \textbf{Comparator}: the same comparator makes every decision, so its
+    offset shifts all transitions equally (a pure offset, no DNL); its noise
+    must be \(< \frac{X_{LSB}}{2}\) at the final, smallest trial.
   \item \textbf{Linearity}: set by the DAC matching (Section~\ref{sec:dac_mdac}).
 \end{enumerate}
 
@@ -54,9 +68,10 @@ subtraction share one capacitor array.
 \(n = 10\), \(V_{REF} = 1\,\)V, \(V_{IN} = 0.3\,\)V. Give the first four trials.
 \paragraph{Solution:}
 \begin{align*}
-  k = 9&: V_{DAC} = 0.5 \hspace{0.3cm} \Rightarrow b_9 = 0 \hspace{1cm}
-  k = 8: V_{DAC} = 0.25 \hspace{0.3cm} \Rightarrow b_8 = 1 \\
-  k = 7&: V_{DAC} = 0.375 \hspace{0.3cm} \Rightarrow b_7 = 0 \hspace{1cm}
-  k = 6: V_{DAC} = 0.3125 \hspace{0.3cm} \Rightarrow b_6 = 0
+  k = 9&: V_{DAC} = 2^{-1} = 0.5 > 0.3 \hspace{0.3cm} \Rightarrow b_9 = 0 \\
+  k = 8&: V_{DAC} = 2^{-2} = 0.25 \leq 0.3 \hspace{0.3cm} \Rightarrow b_8 = 1 \\
+  k = 7&: V_{DAC} = 0.25 + 2^{-3} = 0.375 > 0.3 \hspace{0.3cm} \Rightarrow b_7 = 0 \\
+  k = 6&: V_{DAC} = 0.25 + 2^{-4} = 0.3125 > 0.3 \hspace{0.3cm} \Rightarrow b_6 = 0
 \end{align*}
-\(D = 0100\ldots\); the final code is \(\lfloor 0.3 \cdot 1024 \rfloor = 307 = 0100110011_2\).
+\(D = 0100\ldots\); the final code is
+\(\lfloor 0.3 \cdot 1024 \rfloor = \lfloor 307.2 \rfloor = 307 = 256 + 32 + 16 + 2 + 1 = 0100110011_2\).
