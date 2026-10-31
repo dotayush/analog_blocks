@@ -1,0 +1,83 @@
+\section{Charge Pump PLL}\label{sec:pll_cp}
+
+\subsection{Overview}
+PFD and charge pump, loop filter \(Z(s)\), VCO (gain \(K_v\) in rad/s/V) and a
+divider by \(N\). In lock \(f_{out} = N f_{ref}\) with zero static phase error.
+
+\subsection{Schematic}
+\begin{circuitfig}
+  \draw (0,0) rectangle (1.8,1.2) node[midway, align=center]{PFD\\+CP};
+  \draw[->] (-1,0.8) node[left]{$\theta_{ref}$} -- (0,0.8);
+  \draw[->] (1.8,0.6) -- node[above]{$i_{cp}$} (3,0.6);
+  \draw (3,0.6) node[circ]{} node[above]{$V_c$} -- (5,0.6);
+  \draw (3,0.6) to[european resistor, l_={$R$}] (3,-1) to[capacitor, l_={$C_1$}] (3,-2.6) node[ground]{};
+  \draw (4,0.6) to[capacitor, l={$C_2$}] (4,-2.6) node[ground]{};
+  \draw (5,0) rectangle (6.8,1.2) node[midway]{VCO};
+  \draw[->] (6.8,0.6) -- (8.2,0.6) node[right]{$\theta_{out}$};
+  \draw (7.5,0.6) -- (7.5,2.2);
+  \draw (3.4,1.8) rectangle (5.2,2.6) node[midway]{$\div N$};
+  \draw[->] (7.5,2.2) -- (5.2,2.2);
+  \draw[->] (3.4,2.2) -- (-0.4,2.2) |- (0,0.4);
+  \node at (0.5,2.45) {$\theta_{div}$};
+\end{circuitfig}
+
+\subsection{Transfer Function}
+\textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}, phase domain.
+Loop filter (KCL at \(V_c\)):
+\begin{align*}
+  i_{cp} &= V_c\left(sC_2 + \frac{1}{R + \frac{1}{sC_1}}\right) = V_c\left(sC_2 + \frac{sC_1}{1 + sRC_1}\right) \\
+  Z(s) &= \frac{V_c}{i_{cp}} = \frac{1 + sRC_1}{s(C_1 + C_2)\left(1 + sR\frac{C_1 C_2}{C_1 + C_2}\right)}
+\end{align*}
+VCO: \(\omega_{out} = K_v V_c \Rightarrow \theta_{out} = \frac{K_v}{s} V_c\). Divider:
+\(\theta_{div} = \frac{\theta_{out}}{N}\). The open loop gain (\(\theta_{div}/\theta_e\)) is
+\[
+  G(s) = \frac{I_{cp}}{2\pi} Z(s) \frac{K_v}{s} \frac{1}{N}
+\]
+and the closed loop
+\[
+  \frac{\theta_{out}}{\theta_{ref}} = \frac{N G(s)}{1 + G(s)}
+\]
+\paragraph{Second order approximation} (\(C_2 = 0\), \(Z = R + \frac{1}{sC_1}\)): with
+\(K = \frac{I_{cp} K_v}{2\pi N C_1}\),
+\begin{align*}
+  G(s) &= \frac{K(1 + sRC_1)}{s^2} \\
+  \frac{\theta_{out}}{\theta_{ref}} &= N\frac{K(1 + sRC_1)}{s^2 + K RC_1 s + K}
+\end{align*}
+Comparing \(s^2 + KRC_1 s + K\) with \(s^2 + 2D_R\omega_n s + \omega_n^2\)
+(Section~\ref{sec:theory_cs_second_order}):
+\[
+  \omega_n = \sqrt{\frac{I_{cp} K_v}{2\pi N C_1}} \hspace{1cm}
+  D_R = \frac{RC_1}{2}\omega_n = \frac{R}{2}\sqrt{\frac{I_{cp} K_v C_1}{2\pi N}}
+\]
+
+\subsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Type II}: two integrators (\(C_1\) and the VCO) in the loop.
+    Phase error for a reference frequency step \(\theta_{ref} = \frac{d\omega}{s^2}\):
+    \begin{align*}
+      \theta_e(s) &= \frac{\theta_{ref}}{1 + G} = \frac{d\omega}{s^2}\cdot\frac{s^2}{s^2 + K RC_1 s + K} \\
+      \theta_e(\infty) &= \lim_{s \to 0} s\,\theta_e(s) = \lim_{s \to 0} \frac{s\, d\omega}{s^2 + KRC_1 s + K} = 0
+    \end{align*}
+    (an XOR detector with a passive RC filter is type I and keeps
+    \(\theta_e = \frac{d\omega}{K_{pd} K_v}\)).
+  \item \textbf{Loop Bandwidth}: for \(D_R \gtrsim 1\) the unity gain of \(G\) is
+    at \(\omega_c \approx 2D_R\omega_n\); keep \(\omega_c < \frac{2\pi f_{ref}}{10}\).
+  \item \textbf{\(C_2\)}: smooths the charge pump pulses (ripple on \(V_c\) gives
+    reference spurs). It adds a pole at \(\frac{C_1 + C_2}{RC_1 C_2}\); with
+    \(C_2 \approx \frac{C_1}{10}\) the second order results stay close.
+  \item \textbf{Noise Transfer}: reference (and PFD/CP) noise sees
+    \(\frac{N G}{1 + G}\): low pass, multiplied by \(N\). VCO noise sees
+    \(\frac{1}{1 + G}\): high pass. The loop bandwidth trades them.
+\end{enumerate}
+
+\subsection{Question}
+\(f_{ref} = 10\,\)MHz, \(N = 100\), \(K_v = 2\pi \cdot 100\,\)MHz/V,
+\(I_{cp} = 100\,\mu\)A, target \(\omega_n = 2\pi \cdot 200\,\)kHz, \(D_R = 1\). Find
+\(C_1\), \(R\), \(C_2\).
+\paragraph{Solution:}
+\begin{align*}
+  C_1 &= \frac{I_{cp} K_v}{2\pi N \omega_n^2} = \frac{100\,\mu \cdot 2\pi \cdot 10^8}{2\pi \cdot 100 \cdot (2\pi \cdot 2 \times 10^5)^2} = \frac{10^{-1}}{1.579 \times 10^{12}} = 63.3\,pF \\
+  R &= \frac{2 D_R}{\omega_n C_1} = \frac{2}{1.257 \times 10^6 \cdot 63.3\,p} = 25.1\,k\Omega \\
+  C_2 &= \frac{C_1}{10} = 6.3\,pF \hspace{1cm}
+  \frac{\omega_c}{2\pi} \approx 400\,kHz < \frac{f_{ref}}{10}
+\end{align*}

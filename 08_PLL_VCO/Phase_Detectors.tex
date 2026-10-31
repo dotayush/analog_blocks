@@ -1,0 +1,38 @@
+\section{Phase Detectors and Charge Pump}\label{sec:pll_pd}
+
+All loop quantities are written in the phase domain: a signal
+\(\cos(\omega_0 t + \theta(t))\) is represented by its excess phase \(\theta\).
+Frequency is the derivative of phase, \(\omega = \frac{d\theta}{dt}\), so in
+Q4 \(\theta(s) = \frac{\omega(s)}{s}\).
+
+\subsection{XOR Phase Detector}
+For two square waves of duty cycle \(\frac{1}{2}\) and phase difference
+\(\theta_e = \theta_{ref} - \theta_{div}\), \(0 \leq \theta_e \leq \pi\), the XOR output is high
+for a fraction \(\frac{\theta_e}{\pi}\) of each period:
+\[
+  \overline{V_{pd}} = V_{dd}\frac{\theta_e}{\pi} \hspace{1cm} K_{pd} = \frac{d\overline{V_{pd}}}{d\theta_e} = \frac{V_{dd}}{\pi} \ \text{[V/rad]}
+\]
+The characteristic is periodic and folds back beyond \(\pi\); the output
+ripple at \(2 f_{ref}\) must be filtered.
+
+\subsection{Phase Frequency Detector (PFD) and Charge Pump}
+Two flip-flops: a reference edge sets \(UP\), a divided edge sets \(DN\), and
+when both are high both reset. \(UP\) is high for \(\frac{\theta_e}{2\pi} T_{ref}\) each
+cycle when \(\theta_e > 0\) (and \(DN\) for \(\theta_e < 0\)). The charge pump sources
+\(I_{cp}\) during \(UP\) and sinks \(I_{cp}\) during \(DN\):
+\[
+  \overline{i_{cp}} = I_{cp}\frac{\theta_e}{2\pi} \hspace{1cm} K_{pd} = \frac{I_{cp}}{2\pi} \ \text{[A/rad]}, \hspace{1cm} -2\pi < \theta_e < 2\pi
+\]
+For a frequency difference \(\theta_e\) grows without bound and the PFD
+holds \(UP\) (or \(DN\)) most of the time: it detects frequency too, so the loop
+always acquires lock. The averaged (continuous time) model is valid for
+loop bandwidths below \(\approx \frac{f_{ref}}{10}\).
+
+\textbf{Mismatch}: if the sink is \(I_{cp}(1 + e)\), in lock the net charge per
+cycle must be zero; with a minimum reset pulse \(t_{on}\) on both outputs,
+\[
+  I_{cp}\left(t_{on} + \frac{\theta_e}{2\pi}T_{ref}\right) = I_{cp}(1 + e)\, t_{on}
+  \hspace{0.5cm} \Rightarrow \hspace{0.5cm}
+  \theta_e = 2\pi e \frac{t_{on}}{T_{ref}}
+\]
+a static phase offset and a reference spur.
