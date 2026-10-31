@@ -39,22 +39,26 @@ case!). One can use the following tools to analyze and
 interpret the data collected from measurements or simulations:
 \begin{itemize}
   \item \textbf{Mean (Average):} The mean is the average value
-    of all measured component values.\[\mu = \frac{1}{N} \sum_{i=1}^{N} x_i\]
+    of all measured component values.\[M = \frac{1}{N} \sum_{i=1}^{N} x_i\]
     where \(N\) is the total number of measurements and \(x_i\)
     represents each individual measurement. This gives a
     central value around which the component values are
     distributed. A designer usually designs for the mean value.
-  \item \textbf{Variance (\(\sigma^2\)):} Variance measures how
+  \item \textbf{Variance (\(Var\)):} Variance measures how
     much the component values deviate from the mean. It is
     calculated as the average of the squared differences from
-    the mean.\[\sigma^2 = \frac{1}{N} \sum_{i=1}^{N} (x_i - \mu)^2\]
-  \item \textbf{Standard Deviation (SD or \(\sigma\)):} The
+    the mean.\[Var = \frac{1}{N} \sum_{i=1}^{N} (x_i - M)^2\]
+    For independent \(X\), \(Y\) the variances add,
+    \(Var(X \pm Y) = Var(X) + Var(Y)\): expanding
+    \(M[((X - M_X) \pm (Y - M_Y))^2] = Var(X) \pm 2M[(X - M_X)(Y - M_Y)] + Var(Y)\) (\(M[\cdot]\) the mean), the
+    cross term is zero for independent variables.
+  \item \textbf{Standard Deviation (\(SD\)):} The
     standard deviation is the square root of the variance and
     provides a measure of how tightly or loosely the
     component values are clustered around the mean. A smaller
     standard deviation indicates that the values are closely
     clustered, while a larger standard deviation indicates
-    more spread out values.\[\sigma = \sqrt{\sigma^2}\]
+    more spread out values.\[SD = \sqrt{Var}\]
   \item \textbf{Histogram:} A histogram is a graphical
     representation of the distribution of component values. It
     shows the frequency of occurrence of different values
@@ -92,8 +96,8 @@ mitigate the impact of variations:
     components, you can reduce the impact of random variations
     (by approximately the square root of the area):
     \[
-      \sigma(dP) = \frac{K_{dP}}{\sqrt{W L}} \hspace{0.5cm} \Rightarrow \hspace{0.5cm}
-      \frac{\sigma(dP)\big|_{4WL}}{\sigma(dP)\big|_{WL}} = \frac{\sqrt{WL}}{\sqrt{4WL}} = \frac{1}{2}
+      SD(dP) = \frac{K_{dP}}{\sqrt{W L}} \hspace{0.5cm} \Rightarrow \hspace{0.5cm}
+      \frac{SD(dP)\big|_{4WL}}{SD(dP)\big|_{WL}} = \frac{\frac{K_{dP}}{\sqrt{4WL}}}{\frac{K_{dP}}{\sqrt{WL}}} = \frac{\sqrt{WL}}{\sqrt{4WL}} = \frac{1}{\sqrt{4}} = \frac{1}{2}
     \]
     where \(dP\) is the mismatch of a parameter between two identical devices of area
     \(WL\) and \(K_{dP}\) its Pelgrom coefficient: four times the area halves the
