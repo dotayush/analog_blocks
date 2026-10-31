@@ -78,17 +78,21 @@ Comparing \(s^2 + KRC_1 s + K\) with \(s^2 + 2D_R\omega_n s + \omega_n^2\)
     \(RC_1 = \frac{2D_R}{\omega_n}\) into \(G(j\omega)\) and set \(|G(j\omega_c)| = 1\)
     with \(x = \frac{\omega_c}{\omega_n}\):
     \begin{align*}
+      G(j\omega) &= \frac{K(1 + j\omega RC_1)}{(j\omega)^2} = -\frac{K(1 + j\omega RC_1)}{\omega^2} \hspace{1cm} [j^2 = -1] \\
       |G(j\omega)| &= \frac{K\sqrt{1 + (\omega RC_1)^2}}{\omega^2} = \frac{\omega_n^2\sqrt{1 + \left(\frac{2D_R\omega}{\omega_n}\right)^2}}{\omega^2} \\
-      1 &= \frac{\sqrt{1 + 4D_R^2 x^2}}{x^2} \hspace{0.5cm} \Rightarrow \hspace{0.5cm} x^4 = 1 + 4D_R^2 x^2 \hspace{0.5cm} \Rightarrow \hspace{0.5cm} x^4 - 4D_R^2 x^2 - 1 = 0 \\
-      x^2 &= \frac{4D_R^2 + \sqrt{16D_R^4 + 4}}{2} = 2D_R^2 + \sqrt{4D_R^4 + 1} \\
+      1 &= \frac{\omega_n^2\sqrt{1 + 4D_R^2 \frac{x^2\omega_n^2}{\omega_n^2}}}{x^2\omega_n^2} = \frac{\sqrt{1 + 4D_R^2 x^2}}{x^2} \hspace{1cm} [\omega_c = x\omega_n] \\
+      x^4 &= 1 + 4D_R^2 x^2 \hspace{1cm} [\text{squaring}, \times x^4] \hspace{1cm} \Rightarrow \hspace{1cm} (x^2)^2 - 4D_R^2 (x^2) - 1 = 0 \\
+      x^2 &= \frac{4D_R^2 + \sqrt{(4D_R^2)^2 + 4}}{2} = \frac{4D_R^2 + \sqrt{16D_R^4 + 4}}{2} = 2D_R^2 + \sqrt{4D_R^4 + 1} \hspace{0.5cm} [\text{positive root}] \\
       \omega_c &= \omega_n\sqrt{2D_R^2 + \sqrt{4D_R^4 + 1}} \hspace{0.5cm} \xrightarrow{D_R^4 \gg 1} \hspace{0.5cm} \omega_n\sqrt{2D_R^2 + 2D_R^2} = 2D_R\omega_n
     \end{align*}
     (\(D_R = 1\): \(\omega_c = 2.06\,\omega_n\), so \(\omega_c \approx 2D_R\omega_n\) already holds for
     \(D_R \gtrsim 1\)); keep \(\omega_c < \frac{2\pi f_{ref}}{10}\).
   \item \textbf{\(C_2\)}: smooths the charge pump pulses (ripple on \(V_c\) gives
     reference spurs). It adds a pole where \(1 + sR\frac{C_1C_2}{C_1 + C_2} = 0\), at
-    \(|s| = \frac{C_1 + C_2}{RC_1 C_2}\); with
-    \(C_2 \approx \frac{C_1}{10}\) the second order results stay close.
+    \(|s| = \frac{C_1 + C_2}{RC_1 C_2}\); with \(C_2 = \frac{C_1}{10}\),
+    \(|s| = \frac{1.1 C_1}{RC_1 \cdot 0.1 C_1} = \frac{11}{RC_1}\), eleven times the zero
+    \(\frac{1}{RC_1}\) (and \(\frac{11}{RC_1} = \frac{11\omega_n}{2D_R}\) above \(\omega_c \approx 2D_R\omega_n\) for
+    \(D_R \approx 1\)), so the second order results stay close.
   \item \textbf{Noise Transfer}: reference (and PFD/CP) noise sees
     \(\frac{N G}{1 + G}\): low pass, multiplied by \(N\). VCO noise
     \(\theta_{vco}\) adds at the VCO output; with \(\theta_{ref} = 0\),
@@ -106,10 +110,10 @@ Comparing \(s^2 + KRC_1 s + K\) with \(s^2 + 2D_R\omega_n s + \omega_n^2\)
 \(C_1\), \(R\), \(C_2\).
 \paragraph{Solution:}
 \begin{align*}
-  \omega_n &= 2\pi \cdot 2 \times 10^5 = 1.257 \times 10^6\,\text{rad/s} \hspace{1cm} \omega_n^2 = 1.579 \times 10^{12} \\
-  C_1 &= \frac{I_{cp} K_v}{2\pi N \omega_n^2} = \frac{100\,\mu \cdot 2\pi \cdot 10^8}{2\pi \cdot 100 \cdot (2\pi \cdot 2 \times 10^5)^2} = \frac{10^{-4} \cdot 10^8 / 100}{1.579 \times 10^{12}} = \frac{10^{2}}{1.579 \times 10^{12}} = 63.3\,pF \\
-  R &= \frac{2 D_R}{\omega_n C_1} = \frac{2 \cdot 1}{1.257 \times 10^6 \cdot 63.3\,p} = \frac{2}{7.96 \times 10^{-5}} = 25.1\,k\Omega \\
+  \omega_n &= 2\pi \cdot 2 \times 10^5 = 1.257 \times 10^6\,\text{rad/s} \hspace{1cm} \omega_n^2 = (1.257 \times 10^6)^2 = 1.579 \times 10^{12} \\
+  \omega_n^2 &= \frac{I_{cp} K_v}{2\pi N C_1} \hspace{0.5cm} \Rightarrow \hspace{0.5cm} C_1 = \frac{I_{cp} K_v}{2\pi N \omega_n^2} = \frac{100\,\mu \cdot 2\pi \cdot 10^8}{2\pi \cdot 100 \cdot (2\pi \cdot 2 \times 10^5)^2} = \frac{10^{-4} \cdot 10^8 / 100}{1.579 \times 10^{12}} = \frac{10^{2}}{1.579 \times 10^{12}} = 63.3\,pF \\
+  D_R &= \frac{RC_1}{2}\omega_n \hspace{0.5cm} \Rightarrow \hspace{0.5cm} R = \frac{2 D_R}{\omega_n C_1} = \frac{2 \cdot 1}{1.257 \times 10^6 \cdot 63.3\,p} = \frac{2}{7.96 \times 10^{-5}} = 25.1\,k\Omega \\
   C_2 &= \frac{C_1}{10} = \frac{63.3\,p}{10} = 6.3\,pF \\
-  \frac{\omega_c}{\omega_n} &= \sqrt{2 D_R^2 + \sqrt{4 D_R^4 + 1}} = \sqrt{2 + \sqrt{5}} = 2.058 \hspace{0.5cm} \Rightarrow \hspace{0.5cm}
+  \frac{\omega_c}{\omega_n} &= \sqrt{2 D_R^2 + \sqrt{4 D_R^4 + 1}} = \sqrt{2 \cdot 1 + \sqrt{4 \cdot 1 + 1}} = \sqrt{2 + 2.236} = \sqrt{4.236} = 2.058 \hspace{0.5cm} \Rightarrow \hspace{0.5cm}
   \frac{\omega_c}{2\pi} = 2.058 \cdot 200\,kHz = 412\,kHz < \frac{f_{ref}}{10} = 1\,MHz
 \end{align*}
