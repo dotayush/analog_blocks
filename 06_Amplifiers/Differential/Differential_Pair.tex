@@ -27,62 +27,112 @@ written as differential and common mode parts,
 \subsubsection{Transfer Function}
 \begin{enumerate}
   \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}:
-    matched \(k_n\), \(K_{CLM} = 0\), both saturated:
+    matched \(k_n\), \(K_{CLM} = 0\), both saturated, so
+    \(I_{D1,2} = k_n (V_{GS1,2} - V_{th})^2\), i.e.
+    \(V_{GS1,2} = V_{th} + \sqrt{\frac{I_{D1,2}}{k_n}}\). The sources are tied at
+    \(V_S\), so \(V_{GS1} = V_{I1} - V_S\) and \(V_{GS2} = V_{I2} - V_S\):
     \begin{align*}
       I_{D1} + I_{D2} &= I_T \tag{1} \\
-      V_{id} = V_{GS1} - V_{GS2} &= \sqrt{\frac{I_{D1}}{k_n}} - \sqrt{\frac{I_{D2}}{k_n}} \tag{2}
+      V_{ID} = V_{I1} - V_{I2} = V_{GS1} - V_{GS2} &= \sqrt{\frac{I_{D1}}{k_n}} - \sqrt{\frac{I_{D2}}{k_n}} \tag{2}
     \end{align*}
-    Squaring (2) and using (1):
+    Squaring (2), multiplying by \(k_n\) and using (1):
     \begin{align*}
-      k_n V_{id}^2 &= I_{D1} + I_{D2} - 2\sqrt{I_{D1} I_{D2}} = I_T - 2\sqrt{I_{D1} I_{D2}} \\
-      I_{D1} I_{D2} &= \frac{(I_T - k_n V_{id}^2)^2}{4}
+      V_{ID}^2 &= \frac{I_{D1}}{k_n} + \frac{I_{D2}}{k_n} - \frac{2\sqrt{I_{D1} I_{D2}}}{k_n} \\
+      k_n V_{ID}^2 &= I_{D1} + I_{D2} - 2\sqrt{I_{D1} I_{D2}} = I_T - 2\sqrt{I_{D1} I_{D2}} \\
+      2\sqrt{I_{D1} I_{D2}} &= I_T - k_n V_{ID}^2 \hspace{1cm} [\text{needs } I_T - k_n V_{ID}^2 \geq 0] \\
+      I_{D1} I_{D2} &= \frac{(I_T - k_n V_{ID}^2)^2}{4}
     \end{align*}
     Then
     \begin{align*}
-      (I_{D1} - I_{D2})^2 &= (I_{D1} + I_{D2})^2 - 4 I_{D1} I_{D2} = I_T^2 - (I_T - k_n V_{id}^2)^2 \\
-      (I_{D1} - I_{D2})^2 &= 2 I_T k_n V_{id}^2 - k_n^2 V_{id}^4 \\
-      I_{D1} - I_{D2} &= \sqrt{k_n}\, V_{id} \sqrt{2 I_T - k_n V_{id}^2} \hspace{1cm} \left[|V_{id}| \leq \sqrt{\tfrac{I_T}{k_n}}\right]
+      (I_{D1} - I_{D2})^2 &= (I_{D1} + I_{D2})^2 - 4 I_{D1} I_{D2} = I_T^2 - (I_T - k_n V_{ID}^2)^2 \\
+      (I_{D1} - I_{D2})^2 &= I_T^2 - I_T^2 + 2 I_T k_n V_{ID}^2 - k_n^2 V_{ID}^4 = 2 I_T k_n V_{ID}^2 - k_n^2 V_{ID}^4 \\
+      (I_{D1} - I_{D2})^2 &= k_n V_{ID}^2 (2 I_T - k_n V_{ID}^2) \\
+      I_{D1} - I_{D2} &= \sqrt{k_n}\, V_{ID} \sqrt{2 I_T - k_n V_{ID}^2} \hspace{1cm} \left[|V_{ID}| \leq \sqrt{\tfrac{I_T}{k_n}}\right] \tag{3}
     \end{align*}
-    Beyond \(|V_{id}| = \sqrt{I_T/k_n} = \sqrt{2}\, V_{ov}\) (with
-    \(V_{ov}\) the quiescent overdrive, \(k_n V_{ov}^2 = \frac{I_T}{2}\)) one
+    (the root takes the sign of \(V_{ID}\): by (2), \(V_{ID} > 0 \Leftrightarrow I_{D1} > I_{D2}\)).
+    Adding (1) and (3), and subtracting (3) from (1), then halving:
+    \[
+      I_{D1} = \frac{I_T}{2} + \frac{\sqrt{k_n}\, V_{ID}}{2}\sqrt{2 I_T - k_n V_{ID}^2}
+      \hspace{1cm}
+      I_{D2} = \frac{I_T}{2} - \frac{\sqrt{k_n}\, V_{ID}}{2}\sqrt{2 I_T - k_n V_{ID}^2}
+    \]
+    At the limit \(V_{ID}^2 = \frac{I_T}{k_n}\), (3) gives
+    \(\sqrt{k_n}\sqrt{\frac{I_T}{k_n}}\sqrt{2 I_T - I_T} = I_T\), so \(I_{D1} = I_T\),
+    \(I_{D2} = 0\). With \(V_{ov}\) the quiescent overdrive
+    (\(V_{ID} = 0\): \(k_n V_{ov}^2 = \frac{I_T}{2}\), so \(\frac{I_T}{k_n} = 2 V_{ov}^2\)),
+    the limit is \(|V_{ID}| = \sqrt{2 V_{ov}^2} = \sqrt{2}\, V_{ov}\). Beyond it one
     device is off and all of \(I_T\) flows in the other. The outputs are
-    \(V_{o1,2} = V_{dd} - \frac{I_{D1,2}}{G_D}\) and the common mode \(V_{ic}\)
+    \(V_{O1,2} = V_{dd} - \frac{I_{D1,2}}{G_D}\) and the common mode \(V_{IC}\)
     appears nowhere in \(I_{D1} - I_{D2}\).
   \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}:
+    linearising (3) about \(V_{ID} = 0\) (product rule):
     \begin{align*}
-      \left.\frac{d(I_{D1} - I_{D2})}{dV_{id}}\right|_{V_{id} = 0} &= \sqrt{k_n}\sqrt{2 I_T} = \sqrt{2 k_n I_T} = 2\sqrt{k_n I_D} = g_m \hspace{1cm} [I_D = \tfrac{I_T}{2}]
+      \frac{d(I_{D1} - I_{D2})}{dV_{ID}} &= \sqrt{k_n}\sqrt{2 I_T - k_n V_{ID}^2} + \sqrt{k_n}\, V_{ID} \cdot \frac{-2 k_n V_{ID}}{2\sqrt{2 I_T - k_n V_{ID}^2}} \\
+      \left.\frac{d(I_{D1} - I_{D2})}{dV_{ID}}\right|_{V_{ID} = 0} &= \sqrt{k_n}\sqrt{2 I_T} + 0 = \sqrt{2 k_n I_T} = \sqrt{4 k_n I_D} = 2\sqrt{k_n I_D} \hspace{1cm} [I_D = \tfrac{I_T}{2}] \\
+      2\sqrt{k_n I_D} &= 2\sqrt{k_n \cdot k_n V_{ov}^2} = 2 k_n V_{ov} = \frac{2 I_D}{V_{ov}} = g_m
     \end{align*}
-    so \(I_{d1} - I_{d2} = g_m V_{id}\) and \(I_{d1} = -I_{d2} = \frac{g_m V_{id}}{2}\).
-    By symmetry \(V_s = 0\) for a purely differential input (half circuit:
-    a CS stage driven by \(\frac{V_{id}}{2}\)).
+    so \(I_{d1} - I_{d2} = g_m V_{id}\). The ideal tail fixes the sum, so (1)
+    gives \(I_{d1} + I_{d2} = 0\); adding and subtracting,
+    \(I_{d1} = -I_{d2} = \frac{g_m V_{id}}{2}\). At the source node
+    (\(g_o\) neglected):
+    \begin{align*}
+      I_{d1} + I_{d2} = g_m (V_{i1} - V_s) + g_m (V_{i2} - V_s) &= g_m (2 V_{ic} - 2 V_s) = 0 \\
+      V_s &= V_{ic}
+    \end{align*}
+    so \(V_s = 0\) for a purely differential input (\(V_{ic} = 0\)), and each
+    half is a CS stage driven by \(\pm\frac{V_{id}}{2}\) (half circuit).
 \end{enumerate}
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \textbf{Differential Gain}: KCL at \(V_{o1}\):
-    \(V_{o1}(G_D + g_o) + g_m \frac{V_{id}}{2} = 0\), and \(V_{o2} = -V_{o1}\):
+  \item \textbf{Differential Gain (Q4)}: with \(V_s = 0\),
+    \(I_{d1} = g_m \frac{V_{id}}{2} + g_o V_{o1}\). KCL at \(V_{o1}\) (\(I_{d1}\)
+    and the current through \(G_D\) leave the node):
+    \begin{align*}
+      V_{o1} G_D + I_{d1} &= 0 \\
+      V_{o1} G_D + g_m \frac{V_{id}}{2} + g_o V_{o1} &= 0 \\
+      V_{o1} &= -\frac{g_m}{2(G_D + g_o)} V_{id}
+    \end{align*}
+    The other half is driven by \(-\frac{V_{id}}{2}\), so
+    \(V_{o2} = +\frac{g_m}{2(G_D + g_o)} V_{id} = -V_{o1}\):
     \[
-      A_d = \frac{V_{o1} - V_{o2}}{V_{id}} = -\frac{g_m}{G_D + g_o}
+      A_d = \frac{V_{o1} - V_{o2}}{V_{id}} = \frac{2 V_{o1}}{V_{id}} = -\frac{2 g_m}{2(G_D + g_o)} = -\frac{g_m}{G_D + g_o}
     \]
-  \item \textbf{Common Mode Gain}: tail current source with output conductance
-    \(g_{o,tail}\), \(V_{i1} = V_{i2} = V_{ic}\), \(g_o\) neglected. Both halves carry
-    \(I_d = \frac{g_{o,tail} V_s}{2}\) and \(I_d = g_m(V_{ic} - V_s)\):
+  \item \textbf{Common Mode Gain (Q4)}: tail current source with output conductance
+    \(g_{o,tail}\), \(V_{i1} = V_{i2} = V_{ic}\), \(g_o\) neglected. Both halves
+    are identical and their sum flows through the tail, \(2 I_d = g_{o,tail} V_s\),
+    so \(I_d = \frac{g_{o,tail} V_s}{2}\); also \(I_d = g_m(V_{ic} - V_s)\):
     \begin{align*}
-      \frac{g_{o,tail}}{2} V_s &= g_m (V_{ic} - V_s) \hspace{0.5cm} \Rightarrow \hspace{0.5cm} V_s = \frac{2 g_m}{2 g_m + g_{o,tail}} V_{ic} \\
-      I_d &= \frac{g_m g_{o,tail}}{2 g_m + g_{o,tail}} V_{ic} \hspace{0.5cm} \Rightarrow \hspace{0.5cm}
-      A_c = \frac{V_{o1}}{V_{ic}} = -\frac{g_m g_{o,tail}}{G_D(2 g_m + g_{o,tail})} \approx -\frac{g_{o,tail}}{2 G_D}
+      \frac{g_{o,tail}}{2} V_s &= g_m V_{ic} - g_m V_s \\
+      V_s \left(g_m + \frac{g_{o,tail}}{2}\right) &= g_m V_{ic} \\
+      V_s &= \frac{2 g_m}{2 g_m + g_{o,tail}} V_{ic} \\
+      I_d &= \frac{g_{o,tail}}{2} \cdot \frac{2 g_m}{2 g_m + g_{o,tail}} V_{ic} = \frac{g_m g_{o,tail}}{2 g_m + g_{o,tail}} V_{ic} \\
+      V_{o1} &= -\frac{I_d}{G_D} \\
+      A_c &= \frac{V_{o1}}{V_{ic}} = -\frac{g_m g_{o,tail}}{G_D(2 g_m + g_{o,tail})} \approx -\frac{g_{o,tail}}{2 G_D} \hspace{1cm} [g_{o,tail} \ll 2 g_m]
     \end{align*}
-    In a single ended output, \(CMRR = \frac{|A_d/2|}{|A_c|} = \frac{g_m}{g_{o,tail}}\)
+    In a single ended output the differential gain is
+    \(\frac{V_{o1}}{V_{id}} = \frac{A_d}{2} = -\frac{g_m}{2 G_D}\) (\(g_o\) neglected), so
+    \[
+      CMRR = \frac{|A_d/2|}{|A_c|} = \frac{g_m}{2 G_D} \cdot \frac{G_D(2 g_m + g_{o,tail})}{g_m g_{o,tail}} = \frac{2 g_m + g_{o,tail}}{2 g_{o,tail}} = \frac{g_m}{g_{o,tail}} + \frac{1}{2} \approx \frac{g_m}{g_{o,tail}}
+    \]
     (perfectly matched halves give \(V_{o1} - V_{o2} = 0\) for any \(V_{ic}\)).
-  \item \textbf{Linear Range}: dividing the large signal result by \(g_m V_{id}\)
-    and using \(k_n = \frac{I_T}{2 V_{ov}^2}\):
+  \item \textbf{Linear Range (Q5)}: dividing (3) by the linear part \(g_m V_{ID}\)
+    (\(g_m = \sqrt{2 k_n I_T}\)) and using
+    \(k_n = \frac{I_T}{2 V_{ov}^2}\) (from \(k_n V_{ov}^2 = \frac{I_T}{2}\)):
     \begin{align*}
-      \frac{I_{D1} - I_{D2}}{g_m V_{id}} &= \frac{\sqrt{k_n} V_{id}\sqrt{2 I_T - k_n V_{id}^2}}{\sqrt{2 k_n I_T}\, V_{id}} = \sqrt{1 - \frac{k_n V_{id}^2}{2 I_T}} = \sqrt{1 - \frac{V_{id}^2}{4 V_{ov}^2}}
+      \frac{I_{D1} - I_{D2}}{g_m V_{ID}} &= \frac{\sqrt{k_n} V_{ID}\sqrt{2 I_T - k_n V_{ID}^2}}{\sqrt{2 k_n I_T}\, V_{ID}} = \sqrt{\frac{2 I_T - k_n V_{ID}^2}{2 I_T}} = \sqrt{1 - \frac{k_n V_{ID}^2}{2 I_T}} \\
+      \frac{I_{D1} - I_{D2}}{g_m V_{ID}} &= \sqrt{1 - \frac{I_T}{2 V_{ov}^2} \cdot \frac{V_{ID}^2}{2 I_T}} = \sqrt{1 - \frac{V_{ID}^2}{4 V_{ov}^2}}
     \end{align*}
-    A \(1\%\) gain error (\(\sqrt{1 - x} = 0.99\), \(x = 0.0199\)) is reached at
-    \(V_{id} = \sqrt{4 \cdot 0.0199}\, V_{ov} = 0.282\, V_{ov}\). Larger \(V_{ov}\)
-    widens the linear range and lowers \(g_m\) for the same current.
-  \item \textbf{Input Common Mode Range}: \(V_{ic,\min} = V_{GS} + V_{ov,T}\)
-    (tail saturated), \(V_{ic,\max} = V_{dd} - \frac{I_D}{G_D} + V_{th}\)
-    (\(M_1\) saturated).
+    A \(1\%\) gain error, with \(x = \frac{V_{ID}^2}{4 V_{ov}^2}\):
+    \begin{align*}
+      \sqrt{1 - x} = 0.99 \hspace{0.5cm} &\Rightarrow \hspace{0.5cm} 1 - x = 0.9801 \hspace{0.5cm} \Rightarrow \hspace{0.5cm} x = 0.0199 \\
+      V_{ID} &= \sqrt{4 \cdot 0.0199}\, V_{ov} = \sqrt{0.0796}\, V_{ov} = 0.282\, V_{ov}
+    \end{align*}
+    Larger \(V_{ov}\) widens the linear range and lowers \(g_m = \frac{2 I_D}{V_{ov}}\)
+    for the same current.
+  \item \textbf{Input Common Mode Range (Q5)}: the tail needs
+    \(V_S \geq V_{ov,T}\) and \(V_{IC} = V_S + V_{GS}\), so
+    \(V_{IC,\min} = V_{GS} + V_{ov,T}\). \(M_1\) saturated needs
+    \(V_{O1} - V_S \geq V_{GS} - V_{th}\), i.e. \(V_{O1} \geq V_{IC} - V_{th}\), so
+    \(V_{IC,\max} = V_{O1} + V_{th} = V_{dd} - \frac{I_D}{G_D} + V_{th}\).
 \end{enumerate}
