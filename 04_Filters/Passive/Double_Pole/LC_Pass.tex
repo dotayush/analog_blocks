@@ -48,7 +48,9 @@ down into two types: Low Pass Filter and High Pass.
 \end{circuitfig}
 
 \subsubsection{Transfer Function}
-Applying KCL (Q4) at $V_{out}$ on Full Schematic, we get:
+\textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)} (only
+linear devices are present, so no linearization is needed). Applying KCL
+at $V_{out}$ on Full Schematic, we get:
 \[
   \frac{(V_{out} - V_{1})}{sL_1} + (V_{out} - V_{2}){sC_1} = 0
 \]
@@ -62,7 +64,9 @@ Applying KCL (Q4) at $V_{out}$ on Full Schematic, we get:
       V_{out}(sC_1 + \frac{1}{sL_1}) - \frac{V_{1}}{sL_1} &= 0 \\
       V_{out}(sC_1 + \frac{1}{sL_1}) &= \frac{V_{1}}{sL_1} \\
       V_{out} &= \frac{\frac{V_{1}}{sL_1}}{(sC_1 + \frac{1}{sL_1})} \\
+      V_{out} &= \frac{\frac{V_{1}}{sL_1}}{\frac{sC_1 \cdot sL_1 + 1}{sL_1}} \hspace{1cm} \text{(Common denominator \(sL_1\))} \\
       V_{out} &= \frac{\frac{V_{1}}{sL_1}}{\frac{s^2C_1L_1 + 1}{sL_1}} \\
+      V_{out} &= \frac{V_{1}}{sL_1} \cdot \frac{sL_1}{s^2C_1L_1 + 1} \\
       V_{out} &= \frac{V_{1}}{s^2C_1L_1 + 1} \\
       H_1(s) = \frac{N_1(s)}{D_1(s)} = \frac{V_{out_1}}{V_{1}} &= \frac{1}{s^2C_1L_1 + 1}
     \end{align*}
@@ -71,9 +75,11 @@ Applying KCL (Q4) at $V_{out}$ on Full Schematic, we get:
     \begin{align*}
       \frac{(V_{out} - 0)}{sL_1} + (V_{out} - V_{2})sC_1 &= 0 \\
       \frac{V_{out}}{sL_1} + V_{out}sC_1 - V_{2}sC_1 &= 0 \\
+      V_{out}(\frac{1}{sL_1} + sC_1) - V_{2}sC_1 &= 0 \\
       V_{out}(\frac{1}{sL_1} + sC_1) &= V_{2}sC_1 \\
       V_{out} &= \frac{V_{2}sC_1}{(\frac{1}{sL_1} + sC_1)} \\
-      V_{out} &= \frac{V_{2}sC_1}{\frac{s^2C_1L_1 + 1}{sL_1}} \\
+      V_{out} &= \frac{V_{2}sC_1}{\frac{s^2C_1L_1 + 1}{sL_1}} \hspace{1cm} \text{(Common denominator \(sL_1\))} \\
+      V_{out} &= V_{2}sC_1 \cdot \frac{sL_1}{s^2C_1L_1 + 1} \\
       V_{out} &= \frac{V_{2}s^2C_1L_1}{s^2C_1L_1 + 1} \\
       H_2(s) = \frac{N_2(s)}{D_2(s)} = \frac{V_{out_2}}{V_{2}} &= \frac{s^2C_1L_1}{s^2C_1L_1 + 1}
     \end{align*}
@@ -93,14 +99,24 @@ Applying KCL (Q4) at $V_{out}$ on Full Schematic, we get:
       s^2C_1L_1 + 1 &= 0 \\
       s^2C_1L_1 &= -1 \\
       s^2 &= -\frac{1}{C_1L_1} \\
-      s &= \pm j \frac{1}{\sqrt{C_1L_1}} \\
+      s &= \pm \sqrt{-\frac{1}{C_1L_1}} = \pm \sqrt{-1} \cdot \sqrt{\frac{1}{C_1L_1}} \\
+      s_p &= \pm j \frac{1}{\sqrt{C_1L_1}} \hspace{1cm} \text{[let \(s = s_p\)]} \\
       (\pm j 2 \pi f_p)^2 &= -\frac{1}{C_1L_1} \hspace{1cm} \text{[let \(s = \pm j 2 \pi f_p\)]} \\
       -4 \pi^2 f_p^2 &= -\frac{1}{C_1L_1} \\
       4 \pi^2 f_p^2 &= \frac{1}{C_1L_1} \\
-      f_p &= \frac{1}{2 \pi \sqrt{C_1L_1}}
+      f_p^2 &= \frac{1}{4 \pi^2 C_1L_1} \\
+      f_p &= \frac{1}{2 \pi \sqrt{C_1L_1}} \hspace{1cm} \text{(Taking the positive root)}
     \end{align*}
     Complex conjugate poles on the imaginary axis indicate
-    a marginally stable second-order system.
+    a marginally stable second-order system. Comparing
+    \(s^2 + \frac{1}{L_1C_1}\) with the natural form
+    \(s^2 + 2D_R\omega_n s + \omega_n^2\) (Section~\ref{sec:theory_cs_second_order})
+    gives \(\omega_n = \frac{1}{\sqrt{L_1C_1}}\) and \(2D_R\omega_n = 0\), i.e.\
+    \(D_R = 0\) and \(Q = \frac{1}{2D_R} \to \infty\): at \(f = f_p\) the
+    denominator \(1 - \omega^2 L_1C_1\) is zero and the ideal (lossless)
+    filter has an infinite resonant peak. In practice the source resistance
+    and the inductor's series resistance set a finite \(D_R\) (see the RLC
+    Band Filter).
   \item \textbf{Zeroes (\(N(s) = 0\)):} \\
     For low pass \(H_1(s)\):
     \begin{align*}
@@ -120,13 +136,13 @@ Applying KCL (Q4) at $V_{out}$ on Full Schematic, we get:
     For low pass \(H_1(s)\):
     \begin{align*}
       H_1(0) &= \frac{1}{0^2C_1L_1 + 1} = 1 \\
-      A_{DC_1} &= 1 = 0 dB
+      A_{DC_1} &= 1 = 20\log_{10}(1) = 0 dB
     \end{align*}
     Unity DC gain for \(H_1(s)\). \\
     For high pass \(H_2(s)\):
     \begin{align*}
       H_2(0) &= \frac{0^2C_1L_1}{0^2C_1L_1 + 1} = 0 \\
-      A_{DC_2} &= 0 = -\infty dB
+      A_{DC_2} &= 0 = 20\log_{10}(0) \to -\infty dB
     \end{align*}
     Zero DC gain for \(H_2(s)\).
   \item \textbf{Gain Bandwidth Product (GBW):}
@@ -149,21 +165,28 @@ Applying KCL (Q4) at $V_{out}$ on Full Schematic, we get:
     Both low pass and high pass filters have the same input
     and output impedance.
     Substituting \(s = j \omega\):
-    \paragraph{At Input:}
+    \paragraph{At Input:} (looking in from the driving source with the other
+    source shorted, \(L_1\) and \(C_1\) are in series)
       \begin{align*}
         Z_{in} &= sL_1 + \frac{1}{sC_1} \\
-        Z_{in} &= j \omega L_1 - j \frac{1}{\omega C_1} \\
-        Z_{in} = j \left( \omega L_1 - \frac{1}{\omega C_1} \right)
+        Z_{in} &= j \omega L_1 + \frac{1}{j \omega C_1} \hspace{1cm} \text{(Substituting \(s = j \omega\))} \\
+        Z_{in} &= j \omega L_1 - j \frac{1}{\omega C_1} \hspace{1cm} \text{(\(\frac{1}{j} = -j\))} \\
+        Z_{in} &= j \left( \omega L_1 - \frac{1}{\omega C_1} \right)
       \end{align*}
-    \paragraph{At Output:}
+    \paragraph{At Output:} (looking in from \(V_{out}\) with both sources
+    shorted, \(L_1\) and \(C_1\) are in parallel)
       \begin{align*}
-        Z_{out} &= \frac{1}{sC_1} || sL_1 \\
+        Z_{out} &= \frac{1}{sC_1} \parallel sL_1 \\
         Z_{out} &= \frac{\left( \frac{1}{sC_1} \cdot sL_1 \right)}{\left( \frac{1}{sC_1} + sL_1 \right)} \\
-        Z_{out} &= \frac{\frac{L_1}{C_1}}{s^2 L_1 C_1 + 1} \\
-        Z_{out} &= \frac{\frac{L_1}{C_1}}{(j \omega)^2 L_1 C_1 + 1} \\
-        Z_{out} &= \frac{\frac{L_1}{C_1}}{- \omega^2 L_1 C_1 + 1} \\
-        Z_{out} = \frac{\frac{L_1}{C_1}}{1 - \omega^2 L_1 C_1}
+        Z_{out} &= \frac{\frac{L_1}{C_1}}{\frac{1 + s^2 L_1 C_1}{sC_1}} \hspace{1cm} \text{(Common denominator \(sC_1\))} \\
+        Z_{out} &= \frac{L_1}{C_1} \cdot \frac{sC_1}{s^2 L_1 C_1 + 1} \\
+        Z_{out} &= \frac{sL_1}{s^2 L_1 C_1 + 1} \\
+        Z_{out} &= \frac{j \omega L_1}{(j \omega)^2 L_1 C_1 + 1} \hspace{1cm} \text{(Substituting \(s = j \omega\))} \\
+        Z_{out} &= \frac{j \omega L_1}{- \omega^2 L_1 C_1 + 1} \\
+        Z_{out} &= j \frac{\omega L_1}{1 - \omega^2 L_1 C_1}
       \end{align*}
+    Both impedances are purely reactive: \(Z_{in} = 0\) and
+    \(|Z_{out}| \to \infty\) at \(\omega = \frac{1}{\sqrt{L_1 C_1}}\).
 \end{enumerate}
 
 \subsubsection{Question}
@@ -178,7 +201,8 @@ Design a LC Low Pass Filter with a cutoff frequency of
       1 kHz &= \frac{1}{2 \pi \sqrt{C_1L_1}} \\
       \sqrt{C_1L_1} &= \frac{1}{2 \pi \cdot 1 kHz} \\
       C_1L_1 &= \left( \frac{1}{2 \pi \cdot 1 kHz} \right)^2 \\
-      C_1L_1 &\approx 2.533 \times 10^{-8} \\
+      C_1L_1 &= \left( \frac{1}{6283.19} \right)^2 = (1.5915 \times 10^{-4})^2 \\
+      C_1L_1 &\approx 2.533 \times 10^{-8} \, s^2 \\
       L_1 &= \frac{2.533 \times 10^{-8}}{C_1} = \frac{2.533 \times 10^{-8}}{1 \mu F} = 25.330 mH
     \end{align*}
     Standard value: \(L_1 = 22 mH\)
@@ -186,7 +210,8 @@ Design a LC Low Pass Filter with a cutoff frequency of
     \begin{align*}
       f_p &= \frac{1}{2 \pi \sqrt{C_1L_1}} \\
       f_p &= \frac{1}{2 \pi \sqrt{1 \mu F \cdot 22 mH}} \\
-      f_p &\approx 1073 Hz \\
+      f_p &= \frac{1}{2 \pi \sqrt{2.2 \times 10^{-8}}} = \frac{1}{2 \pi \cdot 1.4832 \times 10^{-4}} = \frac{1}{9.3193 \times 10^{-4}} \\
+      f_p &\approx 1073 Hz
     \end{align*}
     Close to desired \(1 kHz\).
 \end{enumerate}
@@ -201,6 +226,7 @@ and \(C_1\).
       f_c &= \frac{1}{2 \pi \sqrt{C_1L_1}} \\
       L_1 &= \frac{1}{(2 \pi f_c)^2 C_1} \\
       L_1 &= \frac{1}{(2 \pi \cdot 10 \times 10^3)^2 \cdot 10 \times 10^{-9}} \\
+      L_1 &= \frac{1}{(6.2832 \times 10^4)^2 \cdot 10^{-8}} = \frac{1}{3.9478 \times 10^9 \cdot 10^{-8}} = \frac{1}{39.478} \\
       L_1 &\approx 25.33 mH
     \end{align*}
     Choose standard value \(L_1 = 27 mH\).
@@ -208,7 +234,8 @@ and \(C_1\).
     \begin{align*}
       f_p &= \frac{1}{2 \pi \sqrt{C_1L_1}} \\
       f_p &= \frac{1}{2 \pi \sqrt{0.01 \times 10^{-6} \cdot 27 \times 10^{-3}}} \\
-      f_p &\approx 9.685 kHz
+      f_p &= \frac{1}{2 \pi \sqrt{2.7 \times 10^{-10}}} = \frac{1}{2 \pi \cdot 1.6432 \times 10^{-5}} = \frac{1}{1.0324 \times 10^{-4}} \\
+      f_p &\approx 9.686 kHz
     \end{align*}
     Close to desired pole frequency.
 \end{enumerate}
