@@ -7,8 +7,10 @@ input must have an output, and that output must be unique (one input never
 gives two outputs; two inputs may share an output).
 
 Each input can be thought of as a dimension in an n-dimensional space where
-n is the total number of inputs and thus a function forms a n-dimensional
-surface in that space representing all possible outputs.
+n is the total number of inputs. A scalar output adds one more dimension, so
+the graph of a scalar function of \(n\) inputs is an n-dimensional surface
+living in an \((n + 1)\)-dimensional space (e.g.\ \(z = x^2 + y^2\) is a 2D bowl in
+3D).
 
 Here are some example functions:
 \begin{align*}
@@ -111,21 +113,10 @@ Let's try arithmetic operations on these combos.
           R(x, y, z) &= V(x, y, z) + W(x, y, z) \\
           R(x, y, z) &= V(x, y, z) - W(x, y, z)
         \end{align*}
-      \item Scalar on Vector:
-        \begin{align*}
-          \mathbf{R}(x, y, z) &= V(x, y, z) + \mathbf{F}(x, y, z) \\
-                               &= \begin{bmatrix}
-                                    V(x, y, z) + F_x(x, y, z) \\
-                                    V(x, y, z) + F_y(x, y, z) \\
-                                    V(x, y, z) + F_z(x, y, z)
-                                  \end{bmatrix} \\
-          \mathbf{R}(x, y, z) &= V(x, y, z) - \mathbf{F}(x, y, z) \\
-                               &= \begin{bmatrix}
-                                    V(x, y, z) - F_x(x, y, z) \\
-                                    V(x, y, z) - F_y(x, y, z) \\
-                                    V(x, y, z) - F_z(x, y, z)
-                                  \end{bmatrix}
-        \end{align*}
+      \item Scalar on Vector: \textbf{not defined}. A scalar has one
+        component and a vector three, and adding \(V\) to each component would
+        depend on the chosen axes (rotate the axes and the ``sum'' changes),
+        so it is not a vector function. Only like with like can be added.
       \item Vector on Vector:
         \begin{align*}
           \mathbf{R}(x, y, z) &= \mathbf{F}(x, y, z) + \mathbf{G}(x, y, z) \\
@@ -152,13 +143,13 @@ Let's try arithmetic operations on these combos.
       \end{align*}
     \item Scalar on Vector: Results in a vector function.
       \begin{align*}
-        \mathbf{R}(x, y, z) &= V(x, y, z) \cdot \mathbf{F}(x, y, z) \\
+        \mathbf{R}(x, y, z) &= V(x, y, z)\, \mathbf{F}(x, y, z) \hspace{1cm} \text{[scaling, not a dot product]} \\
                              &= \begin{bmatrix}
                                   V(x, y, z) \cdot F_x(x, y, z) \\
                                   V(x, y, z) \cdot F_y(x, y, z) \\
                                   V(x, y, z) \cdot F_z(x, y, z)
                                 \end{bmatrix} \\
-        R(x, y, z) &= \mathbf{F}(x, y, z) \cdot V(x, y, z) \\
+        \mathbf{R}(x, y, z) &= \mathbf{F}(x, y, z)\, V(x, y, z) \hspace{1cm} \text{[same result, scaling commutes]} \\
                              &= \begin{bmatrix}
                                   F_x(x, y, z) \cdot V(x, y, z) \\
                                   F_y(x, y, z) \cdot V(x, y, z) \\
@@ -166,7 +157,9 @@ Let's try arithmetic operations on these combos.
                                 \end{bmatrix}
       \end{align*}
     \item Vector on Vector: Results in either a scalar function
-      (dot product) or a vector function (cross product). \textbf{This
+      (dot product) or a vector function (cross product, defined only in
+      3D; it is perpendicular to both \(\mathbf{F}\) and \(\mathbf{G}\) and
+      \(\mathbf{F} \times \mathbf{G} = -\mathbf{G} \times \mathbf{F}\), so it does not commute). \textbf{This
       is worth reading about in more detail. It is used extensively
       in electromagnetism.}
       \begin{align*}
@@ -205,8 +198,10 @@ multiplication}.
     \end{align*}
   \item \textbf{Divergence}:  Acts on a vector function \( \mathbf{F}(x, y, z) \)
     to produce a scalar function. Intuitively, \textbf{the divergence
-    measures  the \textbf{outflow} (positive) or \textbf{inflow} (negative) of the
-    vector function at a given point}. It is defined as:
+    measures the net \textbf{outflow} (positive) or \textbf{inflow} (negative) of the
+    vector function per unit volume around a point}: the flux through a
+    small closed surface \(S\) around a volume \(dV\), divided by \(dV\), as
+    \(dV \to 0\). It is defined as:
     \begin{align*}
       \nabla \cdot \mathbf{F}(x,y,z) &= \left[\frac{\partial}{\partial x}, \frac{\partial}{\partial y}, \frac{\partial}{\partial z}\right] \cdot \left[F_x, F_y, F_z\right] \hspace{1cm} \text{[Dot Product]} \\
       &= \frac{\partial F_x(x,y,z)}{\partial x} +
@@ -214,10 +209,13 @@ multiplication}.
       \frac{\partial F_z(x,y,z)}{\partial z}
     \end{align*}
   \item \textbf{Curl}: Acts on vector function \( \mathbf{F}(x, y, z) \) to
-    produce a new vector function that is orthogonal/normal/perpendicular to
-    the original vector function at each point in space. Intuitively, \textbf{
-    the curl measures the rotation or circulation of the vector function at a
-    given point}. It is defined as:
+    produce a new vector function. Intuitively, \textbf{the curl measures the
+    circulation of the vector function around a point}: its direction is the
+    axis of the local rotation and its magnitude the circulation per unit
+    area. It is \emph{not} in general perpendicular to \(\mathbf{F}\); for example
+    \(\mathbf{F} = [\sin z, \cos z, 0]\) has
+    \(\nabla \times \mathbf{F} = \left[0 - \frac{\partial \cos z}{\partial z}, \frac{\partial \sin z}{\partial z} - 0, 0 - 0\right] = [\sin z, \cos z, 0] = \mathbf{F}\),
+    parallel to \(\mathbf{F}\). It is defined as:
     \begin{align*}
       \nabla \times \mathbf{F}(x,y,z) &=
       \begin{bmatrix}
