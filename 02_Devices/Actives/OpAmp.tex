@@ -1,0 +1,90 @@
+\section{Operational Amplifier (Op-Amp)}\label{sec:devices_opamp}
+
+An op-amp is treated here as a device: a three-terminal (plus supplies),
+active, (ideally) linear, time-invariant differential voltage amplifier.
+How it is built is the subject of Section~\ref{sec:amp_differential}; here
+we only need its terminal behaviour to use it inside blocks
+(Section~\ref{sec:amp_functional}).
+
+\begin{circuitfig}
+  \draw (0,0) node[op amp](A){};
+  \draw (A.-) node[left]{$V_-$} (A.+) node[left]{$V_+$} (A.out) node[right]{$V_{out}$};
+  \draw (4,1) node[left]{$V_+$} to[short, o-] (4.8,1) to[european resistor, l_={$R_{id}$}] (4.8,-1) to[short, -o] (4,-1) node[left]{$V_-$};
+  \draw (9,1) to[european resistor, l={$R_o$}] (10.8,1) to[short, -o] (11.3,1) node[right]{$V_{out}$};
+  \draw (9,-1.2) node[ground]{} to[american controlled voltage source, l={$A(s)(V_+ - V_-)$}] (9,1);
+\end{circuitfig}
+
+\begin{itemize}
+  \item \textbf{Mathematical Model}:
+    \[
+      V_{out} = A(s) \left( V_+ - V_- \right) = A(s) V_d
+    \]
+    \begin{itemize}
+      \item \textbf{Ideal Model}: \(A \to \infty\), \(R_{id} \to \infty\),
+        \(R_o \to 0\). For a finite output with infinite gain,
+        \begin{align*}
+          V_d &= \frac{V_{out}}{A} \xrightarrow{A \to \infty} 0
+          \hspace{0.5cm} \Rightarrow \hspace{0.5cm} V_+ = V_- \hspace{0.5cm} \text{[virtual short, negative feedback only]} \\
+          I_+ &= I_- = \frac{V_d}{R_{id}} = 0 \hspace{0.5cm} \text{[no input current]}
+        \end{align*}
+      \item \textbf{Single Pole Model}: a dominant pole \(p_1\) and DC gain
+        \(A_0\),
+        \begin{align*}
+          A(s) &= \frac{A_0}{1 + \frac{s}{p_1}} = \frac{A_0 p_1}{s + p_1} \\
+          GB &= A_0 \cdot \frac{p_1}{2\pi} \hspace{1cm} \text{[gain-bandwidth product, Hz]} \\
+          A(s) &\approx \frac{2\pi GB}{s} \hspace{1cm} [|s| \gg p_1]
+        \end{align*}
+      \item \textbf{Large Signal Limits (Q5/Q6)}: the output saturates and
+        slews,
+        \begin{align*}
+          V_{OL} \leq V_{out} \leq V_{OH} \hspace{1cm}
+          \left|\frac{dV_{out}}{dt}\right| \leq SR
+        \end{align*}
+        A sine of amplitude \(V_p\) and frequency \(f\) has maximum slope
+        \(2\pi f V_p\), so it is undistorted only while
+        \[
+          f \leq f_{FP} = \frac{SR}{2\pi V_p} \hspace{1cm} \text{[full power bandwidth]}
+        \]
+    \end{itemize}
+  \item \textbf{Negative Feedback}: A network returns a fraction \(F\) of
+    the output to the inverting input, \(V_- = F V_{out}\), \(V_+ = V_{in}\).
+    \begin{align*}
+      V_{out} &= A(V_{in} - F V_{out}) \\
+      V_{out}(1 + AF) &= A V_{in} \\
+      A_{CL} &= \frac{V_{out}}{V_{in}} = \frac{A}{1 + AF} = \frac{1}{F} \cdot \frac{AF}{1 + AF} \xrightarrow{AF \to \infty} \frac{1}{F}
+    \end{align*}
+    \(T = AF\) is the loop gain. With the single pole model:
+    \begin{align*}
+      A_{CL}(s) &= \frac{\frac{A_0 p_1}{s + p_1}}{1 + \frac{A_0 p_1 F}{s + p_1}} \\
+      A_{CL}(s) &= \frac{A_0 p_1}{s + p_1 + A_0 p_1 F} \\
+      A_{CL}(s) &= \frac{A_0 p_1}{s + p_1(1 + A_0 F)} \\
+      A_{CL}(s) &= \frac{\frac{A_0}{1 + A_0 F}}{1 + \frac{s}{p_1(1 + A_0 F)}}
+    \end{align*}
+    The closed loop DC gain falls by \(1 + A_0F\) and the pole rises by
+    \(1 + A_0F\): gain times bandwidth is conserved,
+    \[
+      f_{-3dB,CL} = \frac{p_1 (1 + A_0 F)}{2\pi} \approx F \cdot GB
+    \]
+  \item \textbf{Non-Idealities}:
+    \begin{itemize}
+      \item \textbf{Offset} \(V_{OS}\): the \(V_d\) needed to bring
+        \(V_{out}\) to its intended value. It appears in series with \(V_+\),
+        so it is amplified by \(\frac{1}{F}\).
+      \item \textbf{Bias Currents} \(I_{B+}\), \(I_{B-}\) flow into the
+        inputs; \(I_{OS} = |I_{B+} - I_{B-}|\).
+      \item \textbf{Common Mode Rejection}: with
+        \(V_{ic} = \frac{V_+ + V_-}{2}\),
+        \begin{align*}
+          V_{out} &= A_d V_d + A_c V_{ic} \hspace{1cm}
+          CMRR = \frac{A_d}{A_c}
+        \end{align*}
+      \item \textbf{Power Supply Rejection}:
+        \(PSRR = \frac{A_d}{V_{out}/V_{dd}}\), the gain from the input divided
+        by the gain from the supply.
+    \end{itemize}
+  \item \textbf{Circuit Analysis}: In Q5 check that \(V_{out}\) is inside
+    \(V_{OL} \ldots V_{OH}\) and the input common mode is inside its range.
+    In Q4 write KCL with \(V_{out} = A(s)(V_+ - V_-)\) and take
+    \(A \to \infty\) at the end; this keeps the derivation honest about
+    which results need high gain.
+\end{itemize}
