@@ -170,14 +170,17 @@ Here's a table of the voltages at each terminal of the transistors:
       I_{in} = I_{M_0} &= I_{M_3} \quad \text{[from (2)]} \\
       I_{out} = I_{M_1} &= I_{M_2} \quad \text{[from (3)]} \\
       I_{M_0} &= I_{M_1} \quad \text{[from (5) and (6) and assuming } k_{n_0} = k_{n_1} \text{]} \\
-      \therefore, I_{in} &= I_{out} \\
+      \therefore, I_{in} &= I_{out}
     \end{align*}
     Thus,
     \begin{align*}
-      \frac{I_{out}}{I_{in}} \approx \frac{I_{M_2}}{I_{M_3}} \approx \frac{I_{M_1}}{I_{M_0}}
-                                                                    \approx \frac{k_{n_1}}{k_{n_0}} = \frac{\frac{K_P W_1}{L_1}}{\frac{K_P W_0}{L_0}} = \frac{\frac{W_1}{L_1}}{\frac{W_0}{L_0}} = \frac{W_1 L_0}{L_1 W_0}
-                                                                  = \frac{W_2 L_3}{L_2 W_3} \\
+      \frac{I_{out}}{I_{in}} &= \frac{I_{M_1}}{I_{M_0}} = \frac{k_{n_1} (V_{x} - V_{ee} - V_{th})^2}{k_{n_0} (V_{x} - V_{ee} - V_{th})^2} \hspace{1cm} \text{(From (5), (6): same } V_{GS}\text{)} \\
+      &= \frac{k_{n_1}}{k_{n_0}} = \frac{\frac{K_P}{2}\frac{W_1}{L_1}}{\frac{K_P}{2}\frac{W_0}{L_0}} = \frac{\frac{W_1}{L_1}}{\frac{W_0}{L_0}} = \frac{W_1 L_0}{L_1 W_0}
     \end{align*}
+    \(M_2\) carries \(I_{M_1}\) and \(M_3\) carries \(I_{M_0}\) (from (2), (3)); choosing
+    \(\frac{W_2 L_3}{L_2 W_3} = \frac{W_1 L_0}{L_1 W_0}\) gives \(M_2\) and \(M_3\) the same
+    \(V_{ov}\) (from (7), (8)), so \(V_y = V_z - V_{th} - V_{ov_2} = V_x\): \(M_1\) then sees
+    \(V_{DS_1} = V_{DS_0}\) and the ratio holds even with \(K_{CLM} \neq 0\).
   \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}:\\
     Applying KCL at $V_{out}$:
     \begin{align*}
@@ -205,59 +208,104 @@ Here's a table of the voltages at each terminal of the transistors:
       V_{z}G_4 + V_{z}g_{o_3} - V_{x}g_{o_3} + V_{z}g_{m_3} - V_{x}g_{m_3} &= 0 \\
       V_{z}(G_4 + g_{o_3} + g_{m_3}) - V_{x}(g_{o_3} + g_{m_3}) &= 0 \tag{12}
     \end{align*}
-    Adding voltage source $V_s$ at $V_z$ that supplies
-    a current $I_s$ into $V_z$, we get:
+    \paragraph{Voltage Transfer \(\frac{V_{out}}{V_z}\):} a source \(V_s\) forcing \(V_z = V_s\)
+    supplies whatever current (12) needs, so (12) drops out and (9), (10),
+    (11) are solved with \(V_z\) known. Let
     \begin{align*}
-      V_{z}(G_4 + g_{o_3} + g_{m_3}) - V_{x}(g_{o_3} + g_{m_3}) - I_s &= 0 \tag{13}
+      S &= g_{m_0} + g_{o_0} + g_{m_3} + g_{o_3} \hspace{1cm} P = g_{m_2} + g_{o_1} + g_{o_2} \hspace{1cm} a = \frac{g_{m_3} + g_{o_3}}{S}
     \end{align*}
-    Fifth equation arises from Voltage source:
+    From (10):
     \begin{align*}
-      V_{z} = V_s \tag{14}
+      V_x S &= V_z (g_{o_3} + g_{m_3}) \\
+      V_x &= a V_z \tag{13}
     \end{align*}
-    Equations (9), (10), (11), (13), and (14) can be
-    solved analytically. It is cumbersome so, I've
-    chosen to give the final result directly:
+    From (11) with (13):
     \begin{align*}
-      \frac{V_{out}}{V_{s}} \quad \text{where,} \\
-      V_{out} = - g_{m_0}g_{m_2}g_{o_1} - g_{m_1}g_{m_2}(g_{m_3} + g_{o_3}) - g_{m_1}g_{o_2}(g_{m_3} + g_{o_3}) - g_{m_2}g_{o_1}(g_{m_3} + (g_{o_0} + g_{o_3})) \\
-      V_{s} = G_{5}[(g_{m_0}(g_{m_2} + g_{o_1} + g_{o_2}) + g_{m_2}(g_{m_3} + g_{o_0} + g_{o_3}) + g_{m_3}(g_{o_1} + g_{o_2})) + g_{o_0}(g_{o_1} + g_{o_2}) \\
-              + (g_{o_3}(g_{o_1} + g_{o_2}))] + g_{o_1}g_{o_2}(g_{m_0} + g_{m_3} + g_{o_0} + g_{o_3})
+      V_y P &= V_{out} g_{o_2} + V_z g_{m_2} - a V_z g_{m_1} \\
+      V_y &= \frac{V_{out} g_{o_2} + V_z (g_{m_2} - a g_{m_1})}{P} \tag{14}
     \end{align*}
+    Substituting (14) into (9) and multiplying by \(P\):
+    \begin{align*}
+      V_{out}(G_5 + g_{o_2}) P - (g_{o_2} + g_{m_2})\left(V_{out} g_{o_2} + V_z (g_{m_2} - a g_{m_1})\right) + V_z g_{m_2} P &= 0 \\
+      V_{out}\left[(G_5 + g_{o_2}) P - g_{o_2}(g_{o_2} + g_{m_2})\right] &= V_z\left[(g_{o_2} + g_{m_2})(g_{m_2} - a g_{m_1}) - g_{m_2} P\right]
+    \end{align*}
+    The left bracket, with \(P - (g_{o_2} + g_{m_2}) = g_{o_1}\):
+    \begin{align*}
+      G_5 P + g_{o_2} P - g_{o_2}(g_{o_2} + g_{m_2}) &= G_5 P + g_{o_2}\left(P - g_{o_2} - g_{m_2}\right) = G_5 P + g_{o_1} g_{o_2}
+    \end{align*}
+    The right bracket:
+    \begin{align*}
+      (g_{o_2} + g_{m_2}) g_{m_2} - a g_{m_1}(g_{o_2} + g_{m_2}) - g_{m_2} P
+        &= -g_{m_2}\left(P - g_{o_2} - g_{m_2}\right) - a g_{m_1}(g_{m_2} + g_{o_2}) \\
+        &= -g_{m_2} g_{o_1} - a g_{m_1}(g_{m_2} + g_{o_2})
+    \end{align*}
+    so, multiplying numerator and denominator by \(S\) (\(aS = g_{m_3} + g_{o_3}\)):
+    \begin{align*}
+      \frac{V_{out}}{V_z} &= -\frac{g_{m_2} g_{o_1} + a g_{m_1}(g_{m_2} + g_{o_2})}{G_5 P + g_{o_1} g_{o_2}} \\
+      \frac{V_{out}}{V_z} &= -\frac{g_{m_1}(g_{m_2} + g_{o_2})(g_{m_3} + g_{o_3}) + g_{m_2} g_{o_1}(g_{m_0} + g_{o_0} + g_{m_3} + g_{o_3})}{(g_{m_0} + g_{o_0} + g_{m_3} + g_{o_3})\left(G_5 (g_{m_2} + g_{o_1} + g_{o_2}) + g_{o_1} g_{o_2}\right)}
+    \end{align*}
+    \paragraph{Current Transfer \(\frac{I_{out}}{I_{in}}\):} with the output shorted
+    (\(V_{out} = 0\)), \(I_{in}\) is the current \(M_3\) delivers into \(V_x\) and \(I_{out}\) the
+    current \(M_1\) draws from \(V_y\). KCL at \(V_x\) says all of \(I_{in}\) flows down
+    \(M_0\), and KCL at \(V_y\) says all of \(I_{out}\) flows down \(M_1\):
+    \begin{align*}
+      I_{in} &= (g_{m_0} + g_{o_0}) V_x \hspace{1cm} I_{out} = g_{m_1} V_x + g_{o_1} V_y
+    \end{align*}
+    From (14) with \(V_{out} = 0\) and \(V_z = \frac{V_x}{a} = V_x\frac{S}{g_{m_3} + g_{o_3}}\) from (13):
+    \begin{align*}
+      V_y &= \frac{V_z g_{m_2} - V_x g_{m_1}}{P} = \frac{V_x}{P}\left(\frac{g_{m_2} S}{g_{m_3} + g_{o_3}} - g_{m_1}\right) \\
+      I_{out} &= g_{m_1} V_x + \frac{g_{o_1} V_x}{P}\left(\frac{g_{m_2} S}{g_{m_3} + g_{o_3}} - g_{m_1}\right)
+               = \frac{V_x}{P}\left(g_{m_1}(P - g_{o_1}) + \frac{g_{o_1} g_{m_2} S}{g_{m_3} + g_{o_3}}\right) \\
+      I_{out} &= V_x\frac{g_{m_1}(g_{m_2} + g_{o_2})(g_{m_3} + g_{o_3}) + g_{m_2} g_{o_1} S}{P (g_{m_3} + g_{o_3})} \\
+      \frac{I_{out}}{I_{in}} &= \frac{g_{m_1}(g_{m_2} + g_{o_2})(g_{m_3} + g_{o_3}) + g_{m_2} g_{o_1} S}{(g_{m_0} + g_{o_0})(g_{m_3} + g_{o_3})(g_{m_2} + g_{o_1} + g_{o_2})}
+    \end{align*}
+    With \(g_m \gg g_o\), keeping the largest term in each factor:
+    \(\frac{I_{out}}{I_{in}} \approx \frac{g_{m_1} g_{m_2} g_{m_3}}{g_{m_0} g_{m_3} g_{m_2}} = \frac{g_{m_1}}{g_{m_0}}\), the
+    Q5 ratio \(\frac{W_1 L_0}{L_1 W_0}\) for equal \(V_{ov}\).
 \end{enumerate}
 
 
 \subsubsection{Analysis}
 \begin{enumerate}
   \item \textbf{Output Load (Max)}: \(M_2\) saturated needs
-    \(V_{out} - V_y \geq V_{ov_2}\), i.e. \(V_{out} \geq V_z - V_{th}\):
+    \(V_{DS_2} \geq V_{ov_2}\). With \(V_{GS_2} = V_z - V_y = V_{th} + V_{ov_2}\), i.e.
+    \(V_y = V_z - V_{th} - V_{ov_2}\):
     \begin{align*}
-      V_{out,\min} &= V_y + V_{ov_2} = V_z - V_{th} \\
+      V_{out,\min} &= V_y + V_{ov_2} = V_z - V_{th} - V_{ov_2} + V_{ov_2} = V_z - V_{th} \\
+      V_{cc} - I_{M_2} R_{L} &\geq V_{out,\min} \\
       R_{L, \max} &= \frac{V_{cc} - V_{out,\min}}{I_{M_2}}
     \end{align*}
   \item \textbf{Impedances}:
-    \paragraph{At Input:}Applying a test current $I_{test}$
-      at the input node $V_{z}$, from equation (12):
+    \paragraph{At Input:} a test current \(I_{test}\) into \(V_z\) adds to the
+    left side of (12):
       \begin{align*}
-        V_{z}(G_4 + g_{o_3} + g_{m_3}) - V_{x}(g_{o_3} + g_{m_3}) - I_{test} &= 0 \\
         V_{z}(G_4 + g_{o_3} + g_{m_3}) - V_{x}(g_{o_3} + g_{m_3}) &= I_{test} \tag{15}
       \end{align*}
-      Solving equations (9), (10), (11), (15) simultaneously for $\frac{V_{z}}{I_{test}}$
-      gives the input impedance. It is cumbersome so, I've chosen to give the final
-      result directly from Octave:
+      (10) still gives \(V_x = a V_z\) from (13), so
       \begin{align*}
-        Z_{in} = \frac{V_{z}}{I_{test}} = \frac{g_{m_0} + g_{m_3} + g_{o_0} + g_{o_3}}{G_{4}(g_{m_3} + g_{o_3}) + (g_{m_0} + g_{o_0})(G_{4} + g_{m_3} + g_{o_3})}
+        I_{test} &= V_z\left(G_4 + (g_{o_3} + g_{m_3}) - a(g_{o_3} + g_{m_3})\right) = V_z\left(G_4 + (g_{m_3} + g_{o_3})(1 - a)\right) \\
+        1 - a &= \frac{S - (g_{m_3} + g_{o_3})}{S} = \frac{g_{m_0} + g_{o_0}}{S} \\
+        I_{test} &= V_z\left(G_4 + \frac{(g_{m_3} + g_{o_3})(g_{m_0} + g_{o_0})}{S}\right) = V_z\frac{G_4 S + (g_{m_3} + g_{o_3})(g_{m_0} + g_{o_0})}{S} \\
+        Z_{in} &= \frac{V_{z}}{I_{test}} = \frac{g_{m_0} + g_{m_3} + g_{o_0} + g_{o_3}}{G_{4}(g_{m_0} + g_{m_3} + g_{o_0} + g_{o_3}) + (g_{m_0} + g_{o_0})(g_{m_3} + g_{o_3})}
       \end{align*}
-    \paragraph{At Output:}Applying a test current $I_{test}$
-      at the output node $V_{out}$, from equation (9):
+      i.e.\ \(R_4 \parallel \left(\frac{1}{g_{m_0} + g_{o_0}} + \frac{1}{g_{m_3} + g_{o_3}}\right)\): two diodes in series
+      shunted by \(R_4\).
+    \paragraph{At Output:} a test current \(I_{test}\) into \(V_{out}\) adds to
+      the left side of (9):
       \begin{align*}
-        V_{out}(G_5 + g_{o_2}) - V_{y}(g_{o_2} + g_{m_2}) + V_{z}g_{m_2} - I_{test} &= 0 \\
         V_{out}(G_5 + g_{o_2}) - V_{y}(g_{o_2} + g_{m_2}) + V_{z}g_{m_2} &= I_{test} \tag{16}
       \end{align*}
-      Solving equations (10), (11), (12) and (16) simultaneously for $\frac{V_{out}}{I_{test}}$
-      gives the output impedance. It is cumbersome so, I've chosen to give the final
-      result directly from Octave:
+      (10) and (12) are now both homogeneous in \(V_x, V_z\); from (10)
+      \(V_x = aV_z\), and (12) becomes \(V_z\left(G_4 + (g_{m_3} + g_{o_3})(1 - a)\right) = 0\).
+      The bracket is positive, so \(V_z = 0\) and \(V_x = 0\). Then (11) gives
       \begin{align*}
-        Z_{out} = \frac{V_{out}}{I_{test}} = \frac{g_{m_2} + g_{o_1} + g_{o_2}}{G_{5}(g_{m_2} + g_{o_1} + g_{o_2}) + g_{o_1} g_{o_2}}
+        V_y P &= V_{out} g_{o_2} \hspace{1cm} \Rightarrow \hspace{1cm} V_y = \frac{g_{o_2}}{P} V_{out}
+      \end{align*}
+      and (16):
+      \begin{align*}
+        I_{test} &= V_{out}(G_5 + g_{o_2}) - \frac{g_{o_2}(g_{o_2} + g_{m_2})}{P} V_{out}
+                  = V_{out}\frac{G_5 P + g_{o_2}(P - g_{o_2} - g_{m_2})}{P} = V_{out}\frac{G_5 P + g_{o_1} g_{o_2}}{P} \\
+        Z_{out} &= \frac{V_{out}}{I_{test}} = \frac{g_{m_2} + g_{o_1} + g_{o_2}}{G_{5}(g_{m_2} + g_{o_1} + g_{o_2}) + g_{o_1} g_{o_2}}
       \end{align*}
 \end{enumerate}
 
@@ -270,7 +318,7 @@ currents and voltages in this circuit.
     ($W$ and $L$) for transistors $M_0$ and $M_1$
     to achieve the desired current gain.
     \begin{align*}
-      \frac{I_{out}}{I_{in}} &= \frac{W_1 L_0}{L_1 W_0} = \frac{W_2 L_3}{L_2 W_3} \\
+      \frac{I_{out}}{I_{in}} &= \frac{W_1 L_0}{L_1 W_0} = \frac{W_2 L_3}{L_2 W_3}
     \end{align*}
   \item Choose a suitable overdrive voltage value
     ($V_{ov}$) for computing the bias voltages at
@@ -366,6 +414,7 @@ Find the following:
       V_{out, \max} &\approx V_{cc} = 5 \text{ V} \\
       R_{L, \max} &= \frac{V_{cc} - V_{out,\min}}{I_{M_2}} = \frac{5 - 1.1}{50 \times 10^{-6}} = 78 k\Omega
     \end{align*}
+    With \(R_L = 50\,k\Omega\): \(V_{out} = V_{cc} - I_{M_2} R_L = 5 - 50 \times 10^{-6} \times 50 \times 10^{3} = 5 - 2.5 = 2.5\,V \geq 1.1\,V\),
     so the \(50\,k\Omega\) load keeps \(M_2\) saturated.
   \item Small signal output resistance:
     \begin{align*}
@@ -374,13 +423,15 @@ Find the following:
       g_{o_2} &= I_{M_2} K_{CLM} = 50 \times 10^{-6} \times 0.02 = 1 \times 10^{-6} \text{ S} \\
       G_5 &= \frac{1}{R_L} = \frac{1}{50 k\Omega} = 2 \times 10^{-5} \text{ S} \\
       \\
+      g_{m_2} + g_{o_1} + g_{o_2} &= 5 \times 10^{-4} + 1 \times 10^{-6} + 1 \times 10^{-6} = 5.02 \times 10^{-4} \text{ S} \\
       Z_{out} &= \frac{g_{m_2} + g_{o_1} + g_{o_2}}{G_{5}(g_{m_2} + g_{o_1} + g_{o_2}) + g_{o_1} g_{o_2}} \\
               &= \frac{5.02 \times 10^{-4}}{(2 \times 10^{-5})(5.02 \times 10^{-4}) + (10^{-6})(10^{-6})} \\
-              &= \frac{5.02 \times 10^{-4}}{1.004 \times 10^{-8} + 10^{-12}} \approx 49.995 k\Omega
+              &= \frac{5.02 \times 10^{-4}}{1.004 \times 10^{-8} + 10^{-12}} = \frac{5.02 \times 10^{-4}}{1.0041 \times 10^{-8}} \approx 49.995 k\Omega
     \end{align*}
     The load dominates. The mirror alone (\(G_5 \to 0\)):
     \begin{align*}
-      Z_{out,mirror} &= \frac{g_{m_2} + g_{o_1} + g_{o_2}}{g_{o_1} g_{o_2}} = \frac{5.02 \times 10^{-4}}{10^{-12}} = 502 M\Omega \approx g_{m_2} r_{o_1} r_{o_2}
+      Z_{out,mirror} &= \frac{g_{m_2} + g_{o_1} + g_{o_2}}{g_{o_1} g_{o_2}} = \frac{5.02 \times 10^{-4}}{10^{-12}} = 502 M\Omega \\
+      g_{m_2} r_{o_1} r_{o_2} &= \frac{g_{m_2}}{g_{o_1} g_{o_2}} = \frac{5 \times 10^{-4}}{10^{-12}} = 500 M\Omega \hspace{1cm} \text{(the \(g_m \gg g_o\) estimate)}
     \end{align*}
 \end{enumerate}
 
@@ -389,55 +440,32 @@ Find the following:
   clear; clc;
   pkg load symbolic;
 
-  syms Vx Vy Vz Vout Vs Is Itest
+  syms Vx Vy Vz Vout Itest
   syms G5 G4 go0 gm0 go1 gm1 go2 gm2 go3 gm3
 
-  % system kcl
-  eq1 = Vout*(G5 + go2) - Vy*(go2 + gm2) + Vz*gm2 == 0; % KCL at Vout
-  eq2 = Vx*(go0 + gm0 + go3 + gm3) - Vz*(go3 + gm3) == 0; % KCL at Vx
-  eq3 = Vy*(go1 + go2 + gm2) - Vout*go2 - Vz*gm2 + Vx*gm1 == 0; % KCL at Vy
-  eq4 = Vz*(G4 + go3 + gm3) - Vx*(go3 + gm3) == 0; % KCL at Vz
+  % small signal kcl, equations (9) to (12)
+  eq9  = Vout*(G5 + go2) - Vy*(go2 + gm2) + Vz*gm2 == 0;  % KCL at Vout
+  eq10 = Vx*(go0 + gm0 + go3 + gm3) - Vz*(go3 + gm3) == 0; % KCL at Vx
+  eq11 = Vy*(go1 + go2 + gm2) - Vout*go2 - Vz*gm2 + Vx*gm1 == 0; % KCL at Vy
+  eq12 = Vz*(G4 + go3 + gm3) - Vx*(go3 + gm3) == 0;        % KCL at Vz
 
-  % voltage transfer function: Vs forced at Vz
-  eq4_vt = Vz*(G4 + go3 + gm3) - Vx*(go3 + gm3) - Is == 0;
-  eq5_vt = Vz == Vs;
-  sol_vt = solve([eq1, eq2, eq3, eq4_vt, eq5_vt], [Vout, Vx, Vy, Vz, Vs]);
-  volt_transfer = simplify(sol_vt.Vout/sol_vt.Vs);
-  % volt_transfer = collect(volt_transfer, G5);
-  % volt_transfer = subs(volt_transfer, 'G4', 0);
-  % volt_transfer = subs(volt_transfer, 'G5', 0);
-  printf('=== Voltage Transfer Results ===\n');
-  pretty(volt_transfer)
-  printf('\n');
+  % voltage transfer: Vz forced by a source, so (12) drops out
+  sol = solve([eq9, eq10, eq11], [Vout, Vx, Vy]);
+  printf('=== Vout/Vz ===\n'); pretty(factor(simplify(sol.Vout/Vz)))
 
-  % current transfer function: Is injected into Vz
-  sol_ct = solve([eq1, eq2, eq3, eq4_vt], [Vout, Vx, Vy, Vz]);
-  Iout = -sol_ct.Vout * G5; % current from AC ground through G5 into the drain
-  curr_transfer = simplify(Iout/Is);
-  % curr_transfer = collect(curr_transfer, G4*G5);
-  printf('=== Current Transfer Results ===\n');
-  pretty(curr_transfer)
-  printf('\n');
+  % current transfer: output shorted (Vout = 0), Vz forced
+  sol = solve([eq10, subs(eq11, Vout, 0)], [Vx, Vy]);
+  Iin  = (gm0 + go0)*sol.Vx;            % all of Iin flows down M0
+  Iout = gm1*sol.Vx + go1*sol.Vy;       % all of Iout flows down M1
+  printf('=== Iout/Iin ===\n'); pretty(factor(simplify(Iout/Iin)))
 
-  % input impedance: Itest injected into Vz
-  eq4_zin = Vz*(G4 + go3 + gm3) - Vx*(go3 + gm3) - Itest == 0;
-  sol_zin = solve([eq1, eq2, eq3, eq4_zin], [Vout, Vx, Vy, Vz]);
-  zin = simplify(sol_zin.Vz/Itest);
-  % zin = collect(zin, G4*G5);
-  % zin = collect(zin, G4);
-  % zin = subs(zin, 'G5', 0);
-  printf('=== Input Impedance Results ===\n');
-  pretty(zin);
-  printf('\n');
+  % input impedance: Itest injected into Vz, equation (15)
+  eq15 = Vz*(G4 + go3 + gm3) - Vx*(go3 + gm3) == Itest;
+  sol = solve([eq9, eq10, eq11, eq15], [Vout, Vx, Vy, Vz]);
+  printf('=== Zin ===\n'); pretty(factor(simplify(sol.Vz/Itest)))
 
-  % output impedance: Itest injected into Vout
-  eq1_zout = Vout*(G5 + go2) - Vy*(go2 + gm2) + Vz*gm2 - Itest == 0;
-  sol_zout = solve([eq1_zout, eq2, eq3, eq4], [Vout, Vx, Vy, Vz]);
-  zout = simplify(sol_zout.Vout/Itest);
-  % zout = collect(zout, G4*G5);
-  % zout = subs(zout, 'G4', 0);
-  % zout = collect(zout, G5);
-  printf('=== Output Impedance Results ===\n');
-  pretty(zout)
-  printf('\n');
+  % output impedance: Itest injected into Vout, equation (16)
+  eq16 = Vout*(G5 + go2) - Vy*(go2 + gm2) + Vz*gm2 == Itest;
+  sol = solve([eq16, eq10, eq11, eq12], [Vout, Vx, Vy, Vz]);
+  printf('=== Zout ===\n'); pretty(factor(simplify(sol.Vout/Itest)))
 \end{lstlisting}
