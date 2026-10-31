@@ -3,9 +3,14 @@
 \subsubsection{SAR (Serial) DAC}
 A small DAC is reused once per bit. Charge sharing serial DAC: a capacitor
 \(C_1\) is charged to \(b_k V_{REF}\) and shared with an equal \(C_2\) holding
-the running result, LSB first:
+the running result, LSB first. \textbf{Large Signal, Time Domain, DC Input
+Analysis (Q5)}, charge conservation when \(C_1\) and \(C_2\) are joined:
 \begin{align*}
+  C_1 b_k V_{REF} + C_2 V^{(k-1)} &= (C_1 + C_2) V^{(k)} \\
   V^{(k)} &= \frac{C_1 b_k V_{REF} + C_2 V^{(k-1)}}{C_1 + C_2} = \frac{b_k V_{REF} + V^{(k-1)}}{2} \hspace{1cm} [C_1 = C_2,\ V^{(-1)} = 0] \\
+  V^{(0)} &= \frac{b_0 V_{REF}}{2}, \hspace{0.5cm}
+  V^{(1)} = \frac{b_1 V_{REF}}{2} + \frac{b_0 V_{REF}}{4}, \hspace{0.5cm} \ldots \hspace{0.5cm}
+  V^{(k)} = V_{REF} \sum_{j=0}^{k} b_j 2^{j-(k+1)} \\
   V^{(n-1)} &= V_{REF} \sum_{k=0}^{n-1} b_k 2^{k-n}
 \end{align*}
 the same recursion as the R-2R ladder (Section~\ref{sec:dac_r2r}), in time
@@ -13,8 +18,10 @@ instead of space. \(n\) cycles per conversion.
 
 \subsubsection{Pipeline DAC}
 Each stage \(k\) (one per bit, MSB last) computes
-\(V^{(k)} = \frac{V^{(k-1)} + b_k V_{REF}}{2}\) and passes it on, so a new code
-enters every cycle with latency \(n\) cycles.
+\(V^{(k)} = \frac{V^{(k-1)} + b_k V_{REF}}{2}\) and passes it on: the same
+recursion (Q5) as the serial DAC, so \(V^{(n-1)} = V_{REF} \sum_{k} b_k 2^{k-n}\), but
+unrolled over \(n\) stages, so a new code (its bits delayed by one cycle per
+stage) enters every cycle with latency \(n\) cycles.
 
 \subsubsection{Delta-Sigma DAC}
 A digital modulator (Section~\ref{sec:adc_ds}) maps the \(n\)-bit code at
@@ -24,4 +31,6 @@ define a line) and an analog low pass filter removes the shaped noise:
 \[
   SQNR_{dB} = 6.02\, n_q + 1.76 - 10\log_{10}\frac{\pi^{2L}}{2L + 1} + (2L + 1)\, 10\log_{10}(OSR)
 \]
-for an \(L\)-th order modulator with an \(n_q\)-bit quantiser.
+for an \(L\)-th order modulator with an \(n_q\)-bit quantiser (derived for
+the Delta-Sigma ADC in Section~\ref{sec:adc_ds}; the digital loop has the same
+\(NTF = (1 - z^{-1})^L\)).
