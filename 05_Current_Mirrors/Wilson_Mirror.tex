@@ -1,7 +1,7 @@
 \subsection{Wilson Mirror}
 
 \subsubsection{Overview}
-Constructed from three transistors, It improves
+Constructed from three transistors, it improves
 upon the Basic Mirror by providing a higher output
 impedance (negative feedback through \(M_0\) holds
 \(V_x\), and so \(I_{M_1} = I_{out}\), constant), which
@@ -117,7 +117,8 @@ Here's a table of the voltages at each terminal of the transistors:
     \begin{align*}
       (V_{out} - V_{cc})G_4 + I_{M_2} &= 0 \hspace{1cm} \text{[KCL at } V_{out}\text{]} \\
       V_{out} &= V_{cc} - \frac{I_{M_2}}{G_4} \tag{1} \\
-      (V_{y} - V_{cc})G_3 + I_{M_0} &= 0 \hspace{1cm} \text{[KCL at } V_{y}\text{]} \\
+      (V_{y} - V_{cc})G_3 + I_{M_0} + I_{G_2} &= 0 \hspace{1cm} \text{[KCL at } V_{y}\text{, } I_{G_2} \text{ into the gate of } M_2\text{]} \\
+      (V_{y} - V_{cc})G_3 + I_{M_0} &= 0 \hspace{1cm} \text{[} I_{G_2} \approx 0 \text{ by MOS physics]} \\
       V_{y} &= V_{cc} - \frac{I_{M_0}}{G_3} \tag{2} \\
       I_{M_1} + I_{G} - I_{M_2} &= 0 \hspace{1cm} \text{[KCL at } V_{x}\text{]} \\
       I_{M_1} + I_{G} &= I_{M_2} \tag{3}
@@ -138,20 +139,31 @@ Here's a table of the voltages at each terminal of the transistors:
               &= k_{n_2}\left(V_{y} - V_{x} - V_{th}\right)^2 \cdot \left(1 + K_{CLM} \left(V_{cc} - \frac{I_{M_2}}{G_4} - V_{x}\right)\right) \\
               &= k_{n_2}\left(V_{y} - V_{x} - V_{th}\right)^2 \quad \text{[assuming } K_{CLM} = 0 \text{]} \tag{6} \\
     \end{align*}
-    It can be seen that,
+    The input current is the current through \(G_3\) and the output
+    current is the drain current of \(M_2\):
     \begin{align*}
-      I_{in}  = I_{M_0} &\approx I_{M_1}  \quad \text{[if } k_{n_0} = k_{n_1} \text{]} \\
-      I_{out} = I_{M_2} &= I_{M_1} + I_{G} \approx I_{M_1} \quad \text{[as } I_{G} \approx 0 \text{ by MOS physics]}
+      I_{in} &= (V_{cc} - V_y)G_3 = I_{M_0} \quad \text{[from (2)]} \\
+      I_{out} &= I_{M_2} = I_{M_1} + I_{G} \approx I_{M_1} \quad \text{[from (3), } I_{G} \approx 0 \text{ by MOS physics]}
     \end{align*}
-    Thus,
+    \(M_0\) and \(M_1\) share \(V_{GS} = V_x - V_{ee}\), so dividing the
+    second line of (5) by the second line of (4) cancels the square term:
     \begin{align*}
-      \frac{I_{out}}{I_{in}} \approx \frac{I_{M_2}}{I_{M_0}} \approx \frac{I_{M_1}}{I_{M_0}} \approx \frac{k_{n_1}}{k_{n_0}} = \frac{\frac{K_P W_1}{L_1}}{\frac{K_P W_0}{L_0}} = \frac{\frac{W_1}{L_1}}{\frac{W_0}{L_0}} = \frac{W_1 L_0}{L_1 W_0}
+      \frac{I_{M_1}}{I_{M_0}} &= \frac{k_{n_1}(V_{x} - V_{ee} - V_{th})^2 (1 + K_{CLM} (V_{x} - V_{ee}))}{k_{n_0}(V_{x} - V_{ee} - V_{th})^2 (1 + K_{CLM} (V_{y} - V_{ee}))} \\
+                              &= \frac{k_{n_1}}{k_{n_0}} \cdot \frac{1 + K_{CLM} (V_{x} - V_{ee})}{1 + K_{CLM} (V_{y} - V_{ee})} \\
+                              &= \frac{k_{n_1}}{k_{n_0}} \quad \text{[assuming } K_{CLM} = 0 \text{]}
+    \end{align*}
+    With \(K_{CLM} \neq 0\) the factor stays, since
+    \(V_y - V_x = V_{GS_2} \neq 0\): \(V_{DS_0} \neq V_{DS_1}\). This is the
+    systematic error removed by the Modified Wilson Mirror. Thus, with
+    \(k_n = \frac{K_P}{2}\frac{W}{L}\),
+    \begin{align*}
+      \frac{I_{out}}{I_{in}} \approx \frac{I_{M_2}}{I_{M_0}} \approx \frac{I_{M_1}}{I_{M_0}} \approx \frac{k_{n_1}}{k_{n_0}} = \frac{\frac{K_P}{2} \frac{W_1}{L_1}}{\frac{K_P}{2} \frac{W_0}{L_0}} = \frac{\frac{W_1}{L_1}}{\frac{W_0}{L_0}} = \frac{W_1 L_0}{L_1 W_0}
     \end{align*}
   \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}:\\
     Applying KCL at $V_{out}$:
     \begin{align*}
       V_{out}G_4 + (V_{out} - V_{x})g_{o_2} + g_{m_2}(V_{y} - V_{x}) &= 0 \\
-      V_{out}(G_4 + g_{o_2}) - V_{x}(g_{o_2} + g_{m_2}) + g_{m_2}V_{y} &= 0 \tag{7} \\
+      V_{out}(G_4 + g_{o_2}) - V_{x}(g_{o_2} + g_{m_2}) + g_{m_2}V_{y} &= 0 \tag{7}
     \end{align*}
     Applying KCL at $V_{x}$:
     \begin{align*}
@@ -182,7 +194,7 @@ Here's a table of the voltages at each terminal of the transistors:
       V_{x}(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) - V_{out}g_{o_2} - g_{m_2}V_{y} &= 0 \\
       V_{x}(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) - V_{out}g_{o_2} - g_{m_2}V_{s} &= 0 \quad \text{[from (11)]} \\
       V_{x}(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) &= V_{out}g_{o_2} + g_{m_2}V_{s} \\
-      V_{x} &= \frac{V_{out}g_{o_2} + g_{m_2}V_{s}}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}} \tag{13} \\
+      V_{x} &= \frac{V_{out}g_{o_2} + g_{m_2}V_{s}}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}} \tag{13}
     \end{align*}
     Putting (13) in (12),
     \begin{align*}
@@ -193,24 +205,24 @@ Here's a table of the voltages at each terminal of the transistors:
       V_{out}\left(\frac{G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) - g_{o_2}(g_{o_2} + g_{m_2})}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}}\right) \\ \qquad \, = -V_{s}\left(\frac{g_{m_2}(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) - g_{m_2}(g_{o_2} + g_{m_2})}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}}\right) \\
       V_{out}\left(\frac{G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1}) + g_{o_2}(g_{o_2} + g_{m_2}) - g_{o_2}(g_{o_2} + g_{m_2})}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}}\right) \\ \qquad \, = -V_{s}\left(\frac{g_{m_2}(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) - g_{m_2}(g_{o_2} + g_{m_2})}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}}\right) \\
       V_{out}\left(\frac{G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}}\right) \\ \qquad \, = -V_{s}\left(\frac{g_{m_2}(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) - g_{m_2}(g_{o_2} + g_{m_2})}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}}\right) \\
-      V_{out}\left(\frac{G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}}\right) \\ \qquad \, = -V_{s}\left(\frac{g_{m_2}(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) - g_{m_2}(g_{o_2} + g_{m_2})}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}}\right) \\
       V_{out}(G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})) \\ \qquad \, = -V_{s}(g_{m_2}(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) - g_{m_2}(g_{o_2} + g_{m_2})) \\\\
       V_{out}(G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})) \\ \qquad \, = -V_{s}(g_{m_2}g_{o_2} + g_{m_2}g_{o_1} + g_{m_2}g_{m_1} + g_{m_2}^2 - g_{m_2}g_{o_2} - g_{m_2}^2) \\\\
       V_{out}(G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})) \\ \qquad \, = -V_{s}(g_{m_2}g_{o_1} + g_{m_2}g_{m_1}) \\\\
       V_{out}(G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})) \\ \qquad \, = -V_{s}(g_{m_2}(g_{o_1} + g_{m_1})) \\\\
-      \therefore \frac{V_{out}}{V_s} = \frac{-g_{m_2}(g_{o_1} + g_{m_1})}{G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})} \tag{14} \\
+      \therefore \frac{V_{out}}{V_s} = \frac{-g_{m_2}(g_{o_1} + g_{m_1})}{G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})} \tag{14}
     \end{align*}
 \end{enumerate}
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \textbf{Impedance}:
+  \item \textbf{Impedances, Small Signal, Frequency Domain, AC Input (Q4)}:
     \paragraph{At Input:} Applying a test current $I_{test}$
       at $V_{y}$, from equation (9):
       \begin{align*}
-        V_{y}(G_3 + g_{o_0}) + g_{m_0}V_{x} &= I_{test} \\
+        V_{y}(G_3 + g_{o_0}) + g_{m_0}V_{x} &= I_{test}
       \end{align*}
-      Substituting (14) into (13):
+      Substituting (14) into (13) (\(V_s = V_y\) by (11), and (14) holds for
+      any \(V_y\) since it follows from (7) and (8) only):
       \begin{align*}
         V_{x} &= \frac{V_{out}g_{o_2} + g_{m_2}V_{y}}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}} \\
               &= \frac{\left(V_{y} \cdot \frac{-g_{m_2}(g_{o_1} + g_{m_1})}{G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})}\right)g_{o_2} + g_{m_2}V_{y}}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}} \\
@@ -218,14 +230,14 @@ Here's a table of the voltages at each terminal of the transistors:
               &= V_{y} \cdot \frac{g_{m_2} - \frac{g_{m_2}g_{o_2}(g_{o_1} + g_{m_1})}{G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})}}{g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}} \\
               &= V_{y} \cdot \frac{g_{m_2}G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{m_2}g_{o_2}(g_{o_1} + g_{m_1}) - g_{m_2}g_{o_2}(g_{o_1} + g_{m_1})}{(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2})G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2})} \\
               &= V_{y} \cdot \frac{g_{m_2}G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2})}{(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2})G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2})} \\
-              &= V_{y} \cdot \frac{g_{m_2}G_4}{G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})} \tag{15} \\
+              &= V_{y} \cdot \frac{g_{m_2}G_4}{G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})} \tag{15}
       \end{align*}
       Substituting (15) into (9):
       \begin{align*}
         V_{y}(G_3 + g_{o_0}) + g_{m_0}\left(V_{y} \cdot \frac{g_{m_2}G_4}{G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})}\right) &= I_{test} \\
         V_{y}\left((G_3 + g_{o_0}) + \frac{g_{m_0}g_{m_2}G_4}{G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})}\right) &= I_{test} \\
         V_{y}\left(\frac{(G_3 + g_{o_0})(G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})) + g_{m_0}g_{m_2}G_4}{G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})}\right) &= I_{test} \\
-        \therefore Z_{in} = \frac{V_{y}}{I_{test}} = \frac{G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})}{(G_3 + g_{o_0})(G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})) + g_{m_0}g_{m_2}G_4} \\
+        \therefore Z_{in} = \frac{V_{y}}{I_{test}} = \frac{G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})}{(G_3 + g_{o_0})(G_4(g_{o_2} + g_{o_1} + g_{m_1} + g_{m_2}) + g_{o_2}(g_{o_1} + g_{m_1})) + g_{m_0}g_{m_2}G_4}
       \end{align*}
     \paragraph{At Output:} Applying a test current $I_{test}$
       at $V_{out}$ (the input current source is opened, so (9) holds
@@ -258,22 +270,34 @@ Here's a table of the voltages at each terminal of the transistors:
         \therefore Z_{out} = \frac{V_{out}}{I_{test}} = \frac{S H + g_{m_0} g_{m_2}}{G_4 (S H + g_{m_0} g_{m_2}) + g_{o_2} H (g_{o_1} + g_{m_1})}
       \end{align*}
       which is the load \(G_4\) in parallel with the mirror's own output
-      impedance (\(G_4 \to 0\)):
+      impedance. Dividing numerator and denominator by \(S H + g_{m_0} g_{m_2}\):
       \begin{align*}
-        Z_{out,mirror} &= \frac{(G_3 + g_{o_0}) S + g_{m_0} g_{m_2}}{g_{o_2} (g_{o_1} + g_{m_1}) (G_3 + g_{o_0})}
+        Z_{out} &= \frac{1}{G_4 + \frac{g_{o_2} H (g_{o_1} + g_{m_1})}{S H + g_{m_0} g_{m_2}}} = \frac{1}{G_4 + \frac{1}{Z_{out,mirror}}}
       \end{align*}
-      With an ideal input current source (\(G_3 \to 0\)) and \(g_m \gg g_o\):
+      so the mirror alone is (\(G_4 \to 0\)):
       \begin{align*}
-        Z_{out,mirror} &\approx \frac{g_{o_0}(g_{m_1} + g_{m_2}) + g_{m_0} g_{m_2}}{g_{o_2} g_{m_1} g_{o_0}} \approx \frac{g_{m_0} g_{m_2}}{g_{o_0} g_{o_2} g_{m_1}}
+        Z_{out,mirror} &= \frac{S H + g_{m_0} g_{m_2}}{g_{o_2} (g_{o_1} + g_{m_1}) H} = \frac{(G_3 + g_{o_0}) S + g_{m_0} g_{m_2}}{g_{o_2} (g_{o_1} + g_{m_1}) (G_3 + g_{o_0})}
+      \end{align*}
+      With an ideal input current source (\(G_3 \to 0\), \(H = g_{o_0}\)) and
+      \(g_m \gg g_o\) (\(S \approx g_{m_1} + g_{m_2}\), \(g_{o_1} + g_{m_1} \approx g_{m_1}\)):
+      \begin{align*}
+        Z_{out,mirror} &= \frac{g_{o_0} S + g_{m_0} g_{m_2}}{g_{o_2} (g_{o_1} + g_{m_1}) g_{o_0}} \\
+                       &\approx \frac{g_{o_0}(g_{m_1} + g_{m_2}) + g_{m_0} g_{m_2}}{g_{o_2} g_{m_1} g_{o_0}} \\
+                       &\approx \frac{g_{m_0} g_{m_2}}{g_{o_0} g_{o_2} g_{m_1}} \quad \text{[} g_{o_0}(g_{m_1} + g_{m_2}) \ll g_{m_0} g_{m_2} \text{]}
       \end{align*}
       With \(g_m = \frac{2I}{V_{ov}}\), \(g_o = K_{CLM} I\), equal \(V_{ov}\) and
       \(I_{M_1} = I_{M_2} = I_{out}\), \(I_{M_0} = I_{in}\):
       \begin{align*}
-        Z_{out,mirror} &\approx \frac{\frac{2I_{in}}{V_{ov}} \cdot \frac{2I_{out}}{V_{ov}}}{K_{CLM} I_{in} \cdot K_{CLM} I_{out} \cdot \frac{2I_{out}}{V_{ov}}} = \frac{2}{K_{CLM}^2 I_{out} V_{ov}}
+        Z_{out,mirror} &\approx \frac{\frac{2I_{in}}{V_{ov}} \cdot \frac{2I_{out}}{V_{ov}}}{K_{CLM} I_{in} \cdot K_{CLM} I_{out} \cdot \frac{2I_{out}}{V_{ov}}}
+                        = \frac{\frac{4 I_{in} I_{out}}{V_{ov}^2}}{\frac{2 K_{CLM}^2 I_{in} I_{out}^2}{V_{ov}}}
+                        = \frac{4 I_{in} I_{out} V_{ov}}{2 K_{CLM}^2 I_{in} I_{out}^2 V_{ov}^2}
+                        = \frac{2}{K_{CLM}^2 I_{out} V_{ov}}
       \end{align*}
-  \item \textbf{Output Load (Max)}: \(M_2\) saturated needs
-    \(V_{out} - V_x \geq V_{y} - V_{x} - V_{th}\):
+  \item \textbf{Output Load (Max), Large Signal, Time Domain, DC Input (Q5)}:
+    \(M_2\) saturated needs \(V_{DS_2} \geq V_{ov_2} = V_{GS_2} - V_{th}\):
     \begin{align*}
+      V_{out} - V_x &\geq V_{y} - V_{x} - V_{th} \\
+      V_{out} &\geq V_y - V_{th} \\
       V_{out,\min} &= V_y - V_{th} \\
       R_{L,\max} &= \frac{V_{cc} - V_{out,\min}}{I_{out}}
     \end{align*}
@@ -308,12 +332,18 @@ currents and voltages in this circuit.
       \therefore W_0 &= \frac{2 I_{in} L_0}{K_P V_{ov_0}^2}
     \end{align*}
     $W_1$ can then be computed using the current
-    gain relation from step (a).
+    gain relation from step (a). \(M_2\) carries \(I_{M_2} = I_{out}\)
+    at the chosen \(V_{ov_2}\):
+    \begin{align*}
+      I_{out} = I_{M_2} &= \frac{K_P}{2} \frac{W_2}{L_2} V_{ov_2}^2 \\
+      \therefore W_2 &= \frac{2 I_{out} L_2}{K_P V_{ov_2}^2}
+    \end{align*}
   \item Compute the required value of $G_3$ (or
     $R_3$) to ensure that the voltage at node
     $V_{y}$ is as calculated in step (b).
     \begin{align*}
       (V_{y} - V_{cc})G_3 + I_{M_0} &= 0 \\
+      (V_{cc} - V_{y})G_3 &= I_{M_0} \\
       \therefore G_3 &= \frac{I_{in}}{V_{cc} - V_{y}} \quad \text{[}I_{M_0} = I_{in} \text{]} \\
       R_3 &= \frac{1}{G_3} = \frac{V_{cc} - V_{y}}{I_{in}}
     \end{align*}
@@ -329,17 +359,18 @@ transistor parameters: $V_{th} = 1V$, $K_{CLM} = 0.02 V^{-1}$,
 $K_P = 200 \mu A/V^2$ and
 $L = 1 \mu m$ for all transistors. Find the output impedance
 and the maximum possible load that can be connected at the
-output assuming $V_{L, \max} = V_{cc}$.
+output, with the load returned to $V_{cc}$.
 \paragraph{Solution:}
 \begin{enumerate}
   \item \textbf{Choose appropriate transistor dimensions:}
     \begin{align*}
       \frac{I_{out}}{I_{in}} &= \frac{W_1 L_0}{L_1 W_0} = 5 \\
       \text{Assuming } L_0 &= L_1 = 1 \mu m \\
+      \frac{W_1 \cdot 1 \mu m}{1 \mu m \cdot W_0} &= 5 \\
       \therefore W_1 &= 5 W_0 \tag{i}
     \end{align*}
   \item \textbf{Choose a suitable overdrive voltage and determine
-    the resulting bias voltages:} Assuming $V_{ov} = 0.2V$,
+    the resulting bias voltages:} Assuming $V_{ov_0} = V_{ov_2} = 0.2V$,
     \begin{align*}
       V_{x} &= V_{ov_0} + V_{th} + V_{ee} = 0.2V + 1V + 0V = 1.2V \\
       V_{y} &= V_{ov_2} + V_{th} + V_{x} = 0.2V + 1V + 1.2V = 2.4V
@@ -350,30 +381,36 @@ output assuming $V_{L, \max} = V_{cc}$.
       W_0 &= \frac{2 I_{in} L_0}{K_P V_{ov_0}^2} \\
           &= \frac{2 \cdot 100 \mu A \cdot 1 \mu m}{200 \mu A/V^2 \cdot (0.2V)^2} \\
           &= 25 \mu m \\
-      W_1 &= 5 W_0 = 125 \mu m
+      W_1 &= 5 W_0 = 5 \cdot 25 \mu m = 125 \mu m \quad \text{[from (i)]}
+    \end{align*}
+    \(M_2\) carries \(I_{out} = 5 \cdot 100 \mu A = 500 \mu A\) at \(V_{ov_2} = 0.2V\):
+    \begin{align*}
+      W_2 &= \frac{2 I_{out} L_2}{K_P V_{ov_2}^2} = \frac{2 \cdot 500 \mu A \cdot 1 \mu m}{200 \mu A/V^2 \cdot (0.2V)^2} = 125 \mu m
     \end{align*}
   \item \textbf{Compute the required value of $G_3$ (or $R_3$):}
     \begin{align*}
       R_3 &= \frac{1}{G_3} = \frac{V_{cc} - V_{y}}{I_{in}} \\
-          &= \frac{(5 - 2.4)}{100 \mu A} = 26k \Omega
+          &= \frac{5V - 2.4V}{100 \mu A} = \frac{2.6V}{100 \mu A} = 26k \Omega
     \end{align*}
   \item \textbf{Compute the output impedance:} \(M_2\) is sized like \(M_1\)
-    (\(V_{ov_2} = 0.2V\) at \(500\,\mu A\)).
+    (\(V_{ov_2} = 0.2V\) at \(500\,\mu A\)). With \(g_m = \frac{2 I_D}{V_{ov}}\),
+    \(g_o = K_{CLM} I_D\):
     \begin{align*}
       g_{m_0} &= \frac{2 \cdot 100 \mu A}{0.2V} = 1 mS \hspace{1cm}
       g_{m_1} = g_{m_2} = \frac{2 \cdot 500 \mu A}{0.2V} = 5 mS \\
       g_{o_0} &= 0.02 \cdot 100 \mu A = 2 \mu S \hspace{1cm}
       g_{o_1} = g_{o_2} = 0.02 \cdot 500 \mu A = 10 \mu S \\
       G_3 &= \frac{1}{26 k\Omega} = 38.46 \mu S \hspace{1cm}
-      S = 10.02 mS
+      S = g_{o_1} + g_{m_1} + g_{o_2} + g_{m_2} = 10 \mu S + 5 mS + 10 \mu S + 5 mS = 10.02 mS
     \end{align*}
     Ideal input current source (\(G_3 \to 0\)):
     \begin{align*}
-      Z_{out,mirror} &\approx \frac{2}{K_{CLM}^2 I_{out} V_{ov}} = \frac{2}{0.02^2 \cdot 500 \mu A \cdot 0.2V} = 50 M\Omega
+      Z_{out,mirror} &\approx \frac{2}{K_{CLM}^2 I_{out} V_{ov}} = \frac{2}{0.02^2 \cdot 500 \mu A \cdot 0.2V} = \frac{2}{4 \times 10^{-8} \, A} = 50 M\Omega
     \end{align*}
     Input current set by \(R_3\) (\(H = G_3 + g_{o_0} = 40.46\,\mu S\)):
     \begin{align*}
-      Z_{out,mirror} &= \frac{H S + g_{m_0} g_{m_2}}{g_{o_2} (g_{o_1} + g_{m_1}) H} = \frac{(40.46 \mu)(10.02 m) + (1 m)(5 m)}{(10 \mu)(5.01 m)(40.46 \mu)} \approx 2.67 M\Omega
+      Z_{out,mirror} &= \frac{H S + g_{m_0} g_{m_2}}{g_{o_2} (g_{o_1} + g_{m_1}) H} = \frac{(40.46 \mu)(10.02 m) + (1 m)(5 m)}{(10 \mu)(5.01 m)(40.46 \mu)} \\
+                     &= \frac{0.405 \times 10^{-6} + 5 \times 10^{-6}}{2.027 \times 10^{-12}} = \frac{5.405 \times 10^{-6}}{2.027 \times 10^{-12}} \approx 2.67 M\Omega
     \end{align*}
     \(R_3\) shunts the feedback node \(V_y\), which is why the Wilson mirror
     is fed from a high impedance current source in practice.
