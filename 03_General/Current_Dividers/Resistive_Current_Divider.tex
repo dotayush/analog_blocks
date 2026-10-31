@@ -7,7 +7,7 @@ commonly used circuit in electronics.
 \subsubsection{Schematic}
 \begin{circuitfig}
   % Paths, nodes and wires:
-  \draw (6.5, 4.75) to[european voltage source, mirror, v=$V_{in}$, i^>=$I_{in}$, current/distance=0.6] (6.5, 6.5);
+  \draw (6.5, 4.75) to[american current source, l=$I_{in}$] (6.5, 6.5);
   \draw (8, 6.5) to[european resistor, l_={$G_1$}] (8, 4.75);
   \draw (8, 6.5) to[european resistor, l={$G_2$}] (8, 8.25);
   \node[ground] at (6.5, 4.75){};
@@ -89,18 +89,19 @@ For \(I_{G_2}\):
         Z_{out} &= R_1 + R_2 \hspace{1cm} \text{(Substituting \(G_1 = \frac{1}{R_1}\) and \(G_2 = \frac{1}{R_2}\))}
       \end{align*}
   \item \textbf{Loading Effect:}
-    The output of the current divider is a current signal.
-    If we connect a load to the output, it will change the current flowing through
-    \(G_1\) and \(G_2\). The load will form a parallel combination with
-    \(G_1\) or \(G_2\), depending on where it is connected. This will
-    change the effective conductance seen by the input current, thus
-    altering the current division ratio. To minimize loading effects,
-    the load impedance should be at least 10 times larger than the output
-    impedance of the current divider.
+    The output of the current divider is a current signal, so a load
+    \(R_L\) is inserted in series with the branch whose current we use.
+    The branch conductance becomes \(G_1' = \frac{1}{R_1 + R_L}\):
+    \begin{align*}
+      \frac{I_{out}}{I_{in}} &= \frac{G_1'}{G_1' + G_2} = \frac{R_2}{R_1 + R_2 + R_L}
+    \end{align*}
+    To minimize loading effects, the load impedance should be at least
+    10 times \textbf{smaller} than the output impedance
+    \(Z_{out} = R_1 + R_2\) of the current divider.
 \end{enumerate}
 
 \subsubsection{Question}
-Design a resistive voltage divider to attenuate a 5A current signal to
+Design a resistive current divider to attenuate a 5A current signal to
 10mA. Establish the ratio of the resistors and calculate the input
 and output impedance.
 \paragraph{Solution:}

@@ -1,12 +1,12 @@
 \subsection{Inductive Current Divider}
 
 This block is constructed from two inductors in parallel and is used
-to attenuate a voltage signal.
+to attenuate a current signal.
 
 \subsubsection{Schematic}
 \begin{circuitfig}
   % Paths, nodes and wires:
-  \draw (6.5, 4.75) to[european voltage source, mirror, v=$V_{in}$, i^>=$I_{in}$, current/distance=0.6] (6.5, 6.5);
+  \draw (6.5, 4.75) to[american current source, l=$I_{in}$] (6.5, 6.5);
   \node[ground] at (6.5, 4.75){};
   \node[ground] at (8, 4.75){};
   \node[ground, xscale=-1, yscale=-1] at (8, 8.25){};

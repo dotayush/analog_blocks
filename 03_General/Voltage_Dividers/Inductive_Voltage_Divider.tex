@@ -17,11 +17,12 @@ to attenuate a voltage signal.
 	\draw (7, 4.75) -| (7, 5);
 	\draw (5.5, 3.25) -| (5.5, 3) -- (7, 3);
 	\draw (7, 7) to[american inductor, l={$L_1$}] (7, 5.25);
-	\draw (7, 4.75) to[american inductor, l={$L_1$}] (7, 3);
+	\draw (7, 4.75) to[american inductor, l={$L_2$}] (7, 3);
 \end{circuitfig}
 
 \subsubsection{Transfer Function}
-Applying KCL at $V_{out}$ we get:
+Small signal (Q4) KCL at $V_{out}$ (in Q5 both inductors are shorts and
+the divider shorts $V_{cc}$ to $V_{ee}$):
 \[
   \frac{V_{out} - V_{cc}}{sL_1} + \frac{V_{out} - V_{ee}}{sL_2} = 0
 \]
@@ -59,7 +60,7 @@ Applying KCL at $V_{out}$ we get:
   V_{out} &= V_{cc} \frac{L_2}{L_1 + L_2} + V_{ee} \frac{L_1}{L_1 + L_2}
 \end{align*}
 
-
+\subsubsection{Analysis}
 \begin{enumerate}
   \item \textbf{Inductor Ratio (\(\frac{L_1}{L_2}\)):}
     From KCL at \(V_{out}\):
@@ -117,9 +118,9 @@ value.
     \end{align*}
   \item Calculate the other inductor's value:
     \begin{align*}
-      L_2 &= 2.33L_1 \\
-      L_2 &= 2.33(18nH) \\
-      L_2 &\approx 41.94nH
+      L_2 &= \frac{7}{3}L_1 \\
+      L_2 &= \frac{7}{3}(18nH) \\
+      L_2 &= 42nH
     \end{align*}
 \end{enumerate}
 

@@ -6,7 +6,7 @@ to attenuate a current signal.
 \subsubsection{Schematic}
 \begin{circuitfig}
   % Paths, nodes and wires:
-  \draw (6.5, 4.75) to[european voltage source, mirror, v=$V_{in}$, i^>=$I_{in}$, current/distance=0.6] (6.5, 6.5);
+  \draw (6.5, 4.75) to[american current source, l=$I_{in}$] (6.5, 6.5);
   \node[ground] at (6.5, 4.75){};
   \node[ground] at (8, 4.75){};
   \node[ground, xscale=-1, yscale=-1] at (8, 8.25){};
@@ -22,7 +22,7 @@ to attenuate a current signal.
 \end{circuitfig}
 
 \subsubsection{Transfer Function}
-Applying KCL at the node between \(G_1\) and \(G_2\) we get:
+Applying KCL (Q4) at the node between \(C_1\) and \(C_2\) we get:
 \begin{align*}
   I_{in} &= I_{C_1} + I_{C_2} \\
   I_{in} &= (V_{in} - 0)sC_1 + (V_{in} - 0)sC_2 \\
@@ -79,15 +79,15 @@ For \(I_{C_2}\):
   \item \textbf{Impedance's:}
     \paragraph{At Input:}
       \begin{align*}
-        Z_{in} &= \frac{1}{sC_1} + \frac{1}{sC_2} \\
-        Z_{in} &= \frac{1}{s}\left(\frac{1}{C_1} + \frac{1}{C_2}\right) \\
-        Z_{in} &= \frac{1}{s}\left(\frac{C_1 + C_2}{C_1 C_2}\right) \\
-        Z_{in} &= \frac{C_1 + C_2}{s C_1 C_2} = \frac{1}{sC_{eq}} \hspace{1cm} \text{(where \(C_{eq} = \frac{C_1 C_2}{C_1 + C_2}\))}
+        Z_{in} &= \frac{1}{sC_1 + sC_2} \\
+        Z_{in} &= \frac{1}{s(C_1 + C_2)} = \frac{1}{sC_{eq}} \hspace{1cm} \text{(where \(C_{eq} = C_1 + C_2\))}
       \end{align*}
-    \paragraph{At Output:}
+    \paragraph{At Output:} (looking into the \(C_1\) branch with \(I_{in}\) opened)
       \begin{align*}
-        Z_{out} &= \frac{1}{sC_1 + sC_2} \\
-        Z_{out} &= \frac{1}{s(C_1 + C_2)} \\
+        Z_{out} &= \frac{1}{sC_1} + \frac{1}{sC_2} \\
+        Z_{out} &= \frac{1}{s}\left(\frac{1}{C_1} + \frac{1}{C_2}\right) \\
+        Z_{out} &= \frac{1}{s}\left(\frac{C_1 + C_2}{C_1 C_2}\right) \\
+        Z_{out} &= \frac{C_1 + C_2}{s C_1 C_2} = \frac{1}{sC_{eq}} \hspace{1cm} \text{(where \(C_{eq} = \frac{C_1 C_2}{C_1 + C_2}\))}
       \end{align*}
 \end{enumerate}
 

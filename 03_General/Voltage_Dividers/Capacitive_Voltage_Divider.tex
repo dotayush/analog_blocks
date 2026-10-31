@@ -17,11 +17,12 @@ to attenuate a voltage signal.
   \draw (7, 4.75) -| (7, 5);
   \draw (5.5, 3.25) -| (5.5, 3) -- (7, 3);
   \draw (7, 7) to[capacitor, l={$C_1$}] (7, 5.25);
-  \draw (7, 4.75) to[capacitor, l={$C_1$}] (7, 3);
+  \draw (7, 4.75) to[capacitor, l={$C_2$}] (7, 3);
 \end{circuitfig}
 
 \subsubsection{Transfer Function}
-Applying KCL at $V_{out}$ we get:
+Small signal (Q4) KCL at $V_{out}$ (in Q5 both capacitors are open and
+$V_{out}$ is set only by their initial charge):
 \[
   (V_{out} - V_{cc}){sC_1} + (V_{out} - V_{ee}){sC_2} = 0
 \]

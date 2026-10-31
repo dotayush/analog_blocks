@@ -22,6 +22,7 @@ commonly used circuit in electronics.
 \end{circuitfig}
 
 \subsubsection{Transfer Function}
+Only linear devices are present, so Q5 and Q4 give the same result.
 Applying KCL at $V_{out}$ we get:
 \[
   (V_{out} - V_{cc}){G_1} + (V_{out} - V_{ee}){G_2} = 0
@@ -69,7 +70,7 @@ Applying KCL at $V_{out}$ we get:
       \end{align*}
     \paragraph{At Output:}
       \begin{align*}
-        Z_{out} &= \frac{1}{G_1 + G2} \\
+        Z_{out} &= \frac{1}{G_1 + G_2} \\
         Z_{out} &= \frac{1}{\frac{1}{R_1} + \frac{1}{R_2}} \hspace{1cm} \text{(Substituting \(G_1 = \frac{1}{R_1}\) and \(G_2 = \frac{1}{R_2}\))} \\
         Z_{out} &= \frac{1}{\frac{R_1 + R_2}{R_1 R_2}} \\
         Z_{out} &= \frac{R_1 R_2}{R_1 + R_2}
