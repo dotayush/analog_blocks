@@ -15,6 +15,14 @@ a Q6 effect). A VCO adds a control \(V_c\) with gain
 \(N\) (odd) inverting stages in a loop. Each stage: DC gain \(-A_0\), pole
 \(\omega_p = \frac{g_o}{C}\).
 
+\subsubsection{Schematic (\(N = 3\))}
+\begin{circuitfig}
+  \draw (0,0) node[not port](I1){} (3,0) node[not port](I2){} (6,0) node[not port](I3){};
+  \draw (I1.out) -- (I2.in 1); \draw (I2.out) -- (I3.in 1);
+  \draw (I3.out) -- ++(0.6,0) coordinate(o) node[circ]{} node[above]{$V_{out}$} -- ++(0,-1.4) -| ($(I1.in 1) + (-0.6,0)$) -- (I1.in 1);
+  \foreach \n in {I1, I2, I3} \draw (\n.out) ++(0.3,0) node[circ]{} to[capacitor, l_={$C$}] ++(0,-1) node[ground]{};
+\end{circuitfig}
+
 \subsubsection{Small Signal, Frequency Domain, AC Input Analysis (Q4)}
 \begin{align*}
   A(s) &= \left(\frac{-A_0}{1 + \frac{s}{\omega_p}}\right)^N, \hspace{1cm} F = 1
@@ -51,6 +59,24 @@ A tank \(L \parallel C\) whose losses are lumped in \(R_p = Q_L \omega_0 L\)
 pair \(M_1\), \(M_2\) (tail \(I_T\)) that presents a negative resistance across the
 tank. Tuning by a varactor (a reverse biased diode,
 \(C_j(V)\), Chapter~\ref{ch:devices}).
+
+\subsubsection{Schematic}
+\begin{circuitfig}
+  \draw (0,0) node[nmos, xscale=-1](M1){}; \node[left] at (-0.3,0) {$M_1$};
+  \draw (4,0) node[nmos](M2){}; \node[right] at (4.3,0) {$M_2$};
+  \draw (M1.D) -- (0,1.6) node[circ]{} node[left]{$V_{o1}$};
+  \draw (M2.D) -- (4,1.6) node[circ]{} node[right]{$V_{o2}$};
+  \draw (0,1.6) to[american inductor, l_={$L$}] (0,3.4);
+  \draw (4,1.6) to[american inductor, l={$L$}] (4,3.4);
+  \draw (0,1.6) -- (-1.3,1.6) to[capacitor, l={$C$}] (-1.3,3.4) -- (0,3.4);
+  \draw (4,1.6) -- (5.3,1.6) to[capacitor, l_={$C$}] (5.3,3.4) -- (4,3.4);
+  \draw (0,3.4) -- (4,3.4); \draw (2,3.4) node[vcc]{$V_{dd}$};
+  \draw (M1.G) -- (4,1.6); \draw (M2.G) -- (0,1.6);
+  \draw (M1.S) |- (2,-1.1) node[circ]{} -| (M2.S);
+  \draw (2,-1.1) to[american current source, l={$I_T$}] (2,-2.6) node[ground]{};
+\end{circuitfig}
+Tank losses are lumped in \(R_p\) across each \(L\) (not drawn); \(C\)
+includes the varactor.
 
 \subsubsection{Small Signal, Frequency Domain, AC Input Analysis (Q4)}
 Negative resistance: apply \(V_x\) between the two drains (\(+\frac{V_x}{2}\),
