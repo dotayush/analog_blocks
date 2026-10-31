@@ -137,18 +137,26 @@ once \(V_D\) approaches the knee (threshold) voltage, typically around
           \item \textbf{Forward Regime:}
             For \(I \gg I_S\), the \(-1\) term is negligible and
             \(I \approx I_S e^{V_j / (nV_T)}\), so
-            \[
-              V_j \approx n V_T \ln\!\left(\frac{I}{I_S}\right)
-            \]
-            Because the logarithm varies slowly, \(V_j\) changes by only
-            \(n V_T \ln(10) \approx 60\,\text{mV}\) per decade of current, so
+            \begin{align*}
+              \frac{I}{I_S} &\approx e^{\frac{V_j}{nV_T}} \\
+              V_j &\approx n V_T \ln\!\left(\frac{I}{I_S}\right)
+            \end{align*}
+            Because the logarithm varies slowly, a decade of current
+            (\(I \to 10 I\)) changes \(V_j\) by only
+            \begin{align*}
+              dV_j &= n V_T \ln\!\left(\frac{10 I}{I_S}\right) - n V_T \ln\!\left(\frac{I}{I_S}\right) \\
+              dV_j &= n V_T \ln(10) = 1 \cdot 26\,\text{mV} \cdot 2.303 \approx 60\,\text{mV} \hspace{1cm} [n = 1]
+            \end{align*}
+            so
             across a diode's typical operating range \(V_j\) is well
             approximated as constant. Fixing \(V_j \approx V_{TH}\), the
             junction voltage at some nominal operating current \(I_0\), and
             substituting into \(V_j = V_D - I R_S\) gives
-            \[
-              I \approx \frac{V_D - V_{TH}}{R_S} \hspace{1cm} \text{if } V_D \geq V_{TH}
-            \]
+            \begin{align*}
+              V_{TH} &\approx V_D - I R_S \\
+              I R_S &\approx V_D - V_{TH} \\
+              I &\approx \frac{V_D - V_{TH}}{R_S} \hspace{1cm} \text{if } V_D \geq V_{TH}
+            \end{align*}
           \item \textbf{Cutoff Regime:}
             For \(-V_{BR} \leq V_D < V_{TH}\), the current is small enough that
             \(I R_S\) is negligible, so \(V_j \approx V_D\). Two cases:
@@ -175,9 +183,15 @@ once \(V_D\) approaches the knee (threshold) voltage, typically around
         \begin{align*}
           g_d &= \left.\frac{dI}{dV_D}\right|_{Q} \\
           g_d &= \frac{d}{dV_D}\left[I_S\left(e^{\frac{V_D}{nV_T}} - 1\right)\right]_{Q} \\
+          g_d &= \left. I_S e^{\frac{V_D}{nV_T}} \cdot \frac{1}{nV_T} \right|_{Q} \hspace{1cm} [\text{chain rule}] \\
           g_d &= \frac{I_S e^{\frac{V_{DQ}}{nV_T}}}{nV_T} \\
-          g_d &= \frac{I_{DQ} + I_S}{nV_T} \approx \frac{I_{DQ}}{nV_T}
+          g_d &= \frac{I_{DQ} + I_S}{nV_T} \hspace{1cm} \left[I_{DQ} = I_S e^{\frac{V_{DQ}}{nV_T}} - I_S\right] \\
+          g_d &\approx \frac{I_{DQ}}{nV_T} \hspace{1cm} [I_{DQ} \gg I_S]
         \end{align*}
+        so the small signal current is \(I_d = g_d V_d\) with
+        \(r_d = \frac{1}{g_d} \approx \frac{nV_T}{I_{DQ}}\)
+        (e.g.\ \(I_{DQ} = 1\,\text{mA}\), \(n = 1\):
+        \(r_d = \frac{26\,\text{mV}}{1\,\text{mA}} = 26\,\Omega\)).
         In parallel with \(g_d\) sit the junction (depletion) capacitance
         and the diffusion capacitance,
         \begin{align*}
@@ -189,7 +203,8 @@ once \(V_D\) approaches the knee (threshold) voltage, typically around
         \(Y_d = sC_j\), which is the varactor.
     \end{itemize}
   \item \textbf{Circuit Analysis:}
-    In Q5 use the Non-Linear (Shockley) or the piecewise Linear model to
-    find the bias point. In Q4 replace the diode by \(Y_d(s)\) evaluated
-    at that bias point.
+    In the Large Signal, Time Domain, DC Input Analysis (Q5) use the
+    Non-Linear (Shockley) or the piecewise Linear model to find the bias
+    point. In the Small Signal, Frequency Domain, AC Input Analysis (Q4)
+    replace the diode by \(Y_d(s)\) evaluated at that bias point.
 \end{enumerate}
