@@ -55,7 +55,8 @@ current leaves the node) we get:
   V_{out} &= V_{out_1} + V_{out_2} \\
   V_{out} &= V_{cc} \frac{G_1}{G_1 + G_2} + V_{ee} \frac{G_2}{G_1 + G_2} \\
   V_{out} &= V_{cc} \frac{\frac{1}{R_1}}{\frac{1}{R_1} + \frac{1}{R_2}} + V_{ee} \frac{\frac{1}{R_2}}{\frac{1}{R_1} + \frac{1}{R_2}} \hspace{1cm} \text{(Substituting \(G_1 = \frac{1}{R_1}\) and \(G_2 = \frac{1}{R_2}\))} \\
-  V_{out} &= V_{cc} \frac{\frac{1}{R_1}}{\frac{R_1 + R_2}{R_1 R_2}} + V_{ee} \frac{\frac{1}{R_2}}{\frac{R_1 + R_2}{R_1 R_2}} \\
+  V_{out} &= V_{cc} \frac{\frac{1}{R_1}}{\frac{R_1 + R_2}{R_1 R_2}} + V_{ee} \frac{\frac{1}{R_2}}{\frac{R_1 + R_2}{R_1 R_2}} \hspace{1cm} \text{(Common denominator \(R_1 R_2\))} \\
+  V_{out} &= V_{cc} \frac{1}{R_1}\cdot\frac{R_1 R_2}{R_1 + R_2} + V_{ee} \frac{1}{R_2}\cdot\frac{R_1 R_2}{R_1 + R_2} \hspace{1cm} \text{(Dividing by a fraction is multiplying by its reciprocal)} \\
   V_{out} &= V_{cc} \frac{R_2}{R_1 + R_2} + V_{ee} \frac{R_1}{R_1 + R_2}
 \end{align*}
 
@@ -109,6 +110,7 @@ Design a resistive voltage divider to step down a \(10V\) supply to
       \frac{R_2}{R_1} &= \frac{V_{ee} - V_{out}}{V_{out} - V_{cc}} \\
       &= \frac{0V - 3.3V}{3.3V - 10V} \\
       &= \frac{-3.3V}{-6.7V} \\
+      &= \frac{3.3}{6.7} \\
     \frac{R_2}{R_1} &\approx 0.4925
     \end{align*}
   \item Fix one of the resistors (\(R_2 = 10 k\Omega\)) to a standard
@@ -116,13 +118,15 @@ Design a resistive voltage divider to step down a \(10V\) supply to
     \begin{align*}
       R_1 &= \frac{R_2}{0.4925} \\
       &= \frac{10 k\Omega}{0.4925} \\
+      &= 20.30 k\Omega \\
       R_1 &\approx 20.3 k\Omega
     \end{align*}
   \item Verifying the output voltage:
     \begin{align*}
       V_{out} &= V_{cc}\frac{R_2}{R_1 + R_2} + V_{ee}\frac{R_1}{R_1 + R_2} \\
       &= 10V \cdot \frac{10 k\Omega}{20.3 k\Omega + 10 k\Omega} + 0V \cdot \frac{20.3 k\Omega}{20.3 k\Omega + 10 k\Omega} \\
-      &= 10V \cdot \frac{10}{30.3} \\
+      &= 10V \cdot \frac{10 k\Omega}{30.3 k\Omega} + 0V \\
+      &= 10V \cdot 0.3300 \\
       V_{out} &\approx 3.30V
     \end{align*}
   \item Calculating Input and Output Impedances:
