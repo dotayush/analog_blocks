@@ -47,11 +47,11 @@ pass). An \(L\)-th order loop gives \(NTF = (1 - z^{-1})^L\).
     over \(\pm\frac{f_s}{2}\), i.e. density \(\frac{X_{LSB}^2}{12 f_s}\):
     \begin{align*}
       P_n &= \int_{-f_B}^{f_B} \frac{X_{LSB}^2}{12 f_s}\left(\frac{2\pi f}{f_s}\right)^{2L} df
-           = \frac{X_{LSB}^2}{12 f_s}\left(\frac{2\pi}{f_s}\right)^{2L} \left[\frac{f^{2L+1}}{2L + 1}\right]_{-f_B}^{f_B}
-           = \frac{X_{LSB}^2}{12 f_s}\left(\frac{2\pi}{f_s}\right)^{2L} \frac{2 f_B^{2L+1}}{2L + 1} \\
+           = \frac{X_{LSB}^2}{12 f_s}\left(\frac{2\pi}{f_s}\right)^{2L} \left[\frac{f^{2L+1}}{2L + 1}\right]_{-f_B}^{f_B} \\
+          &= \frac{X_{LSB}^2}{12 f_s}\left(\frac{2\pi}{f_s}\right)^{2L} \frac{2 f_B^{2L+1}}{2L + 1} \\
       P_n &= \frac{X_{LSB}^2}{12} \cdot \frac{2^{2L}\pi^{2L} \cdot 2 f_B^{2L+1}}{(2L + 1) f_s^{2L+1}}
-           = \frac{X_{LSB}^2}{12} \cdot \frac{\pi^{2L}}{2L + 1} \cdot \frac{(2 f_B)^{2L+1}}{f_s^{2L+1}}
-           = \frac{X_{LSB}^2}{12} \cdot \frac{\pi^{2L}}{(2L + 1)\, OSR^{2L+1}} \hspace{0.5cm} \left[OSR = \tfrac{f_s}{2 f_B}\right]
+           = \frac{X_{LSB}^2}{12} \cdot \frac{\pi^{2L}}{2L + 1} \cdot \frac{(2 f_B)^{2L+1}}{f_s^{2L+1}} \\
+          &= \frac{X_{LSB}^2}{12} \cdot \frac{\pi^{2L}}{(2L + 1)\, OSR^{2L+1}} \hspace{0.5cm} \left[OSR = \tfrac{f_s}{2 f_B}\right]
     \end{align*}
   \item \textbf{SQNR}: a full scale sine on an \(n_q\)-bit quantiser has amplitude
     \(\frac{2^{n_q} X_{LSB}}{2}\) and power \(P_s = \frac{1}{2}\left(\frac{2^{n_q} X_{LSB}}{2}\right)^2 = \frac{2^{2n_q} X_{LSB}^2}{8}\):

@@ -90,8 +90,8 @@ its direction. The mirrors multiply the transconductance by \(B\) (a
   \item \textbf{DC Gain}: \(s = 0\), with \(g_{m1} = \frac{2 I_{D1}}{V_{ov1}} = \frac{2 \frac{I_T}{2}}{V_{ov1}} = \frac{I_T}{V_{ov1}}\),
     \(g_{o6} = K_{CLM,p} I_{D6}\), \(g_{o8} = K_{CLM,n} I_{D8}\) and \(I_{D6} = I_{D8} = B\frac{I_T}{2}\):
     \begin{align*}
-      A_{V0} &= \frac{B g_{m1}}{g_{o6} + g_{o8}} = \frac{B \cdot \frac{I_T}{V_{ov1}}}{(K_{CLM,n} + K_{CLM,p}) \frac{B I_T}{2}}
-              = \frac{B I_T}{V_{ov1}}\cdot\frac{2}{(K_{CLM,n} + K_{CLM,p}) B I_T} = \frac{2}{V_{ov1}(K_{CLM,n} + K_{CLM,p})}
+      A_{V0} &= \frac{B g_{m1}}{g_{o6} + g_{o8}} = \frac{B \cdot \frac{I_T}{V_{ov1}}}{(K_{CLM,n} + K_{CLM,p}) \frac{B I_T}{2}} \\
+             &= \frac{B I_T}{V_{ov1}}\cdot\frac{2}{(K_{CLM,n} + K_{CLM,p}) B I_T} = \frac{2}{V_{ov1}(K_{CLM,n} + K_{CLM,p})}
     \end{align*}
     the same as the 5T OTA (Section~\ref{sec:amp_5t}): \(B\) cancels.
   \item \textbf{Gain-Bandwidth}: dominant pole \(p_1 = \frac{g_{o6} + g_{o8}}{C_L}\), so

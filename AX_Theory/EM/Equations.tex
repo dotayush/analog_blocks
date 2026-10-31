@@ -20,18 +20,19 @@ where
   \item \( \mathbf{B(x,y,z,t)} \): magnetic flux density function.
     \( \frac{Wb}{m^2} \)
   \item \( \mathbf{J_m(x,y,z,t)} \): magnetic current density function.
-    \( \frac{V}{m^2} \) (the same unit as \(\frac{\partial \mathbf{B}}{\partial t}\), \(\frac{Wb}{m^2 s}\)). In nature, \( \mathbf{J_m(x,y,z,t)} = 0 \) since
+    \( \frac{V}{m^2} \), the same unit as \(\frac{\partial \mathbf{B}}{\partial t}\), which is
+    \(\frac{Wb}{m^2 s}\). In nature, \( \mathbf{J_m(x,y,z,t)} = 0 \) since
     magnetic monopoles that is, charges haven't been observed.
 \end{itemize}
 Let's have some fun with this equation.
 \begin{align*}
-  \text{[Divergence of both sides]} \\
+  & \text{[Divergence of both sides]} \\
   -\nabla \cdot (\nabla \times \mathbf{E(x,y,z,t)}) &= \nabla \cdot \left(\frac{\partial \mathbf{B(x,y,z,t)}}{\partial t} + \mathbf{J_m(x,y,z,t)}\right) \\
   -\nabla \cdot (\nabla \times \mathbf{E(x,y,z,t)}) &= \nabla \cdot \frac{\partial \mathbf{B(x,y,z,t)}}{\partial t} + \nabla \cdot \mathbf{J_m(x,y,z,t)} \\
   -\nabla \cdot (\nabla \times \mathbf{E(x,y,z,t)}) &= \frac{\partial}{\partial t} (\nabla \cdot \mathbf{B(x,y,z,t)}) + \nabla \cdot \mathbf{J_m(x,y,z,t)} \\
   0 &= \frac{\partial}{\partial t} (\nabla \cdot \mathbf{B(x,y,z,t)}) + \nabla \cdot \mathbf{J_m(x,y,z,t)} \\
   - \frac{\partial}{\partial t} (\nabla \cdot \mathbf{B(x,y,z,t)}) &= \nabla \cdot \mathbf{J_m(x,y,z,t)} \\
-  \text{[Integrating both sides over time]} \\
+  & \text{[Integrating both sides over time]} \\
   \int_{t_0}^{t_1} - \frac{\partial}{\partial t} (\nabla \cdot \mathbf{B(x,y,z,t)}) \, dt &= \int_{t_0}^{t_1} \nabla \cdot \mathbf{J_m(x,y,z,t)} \, dt \\
   - \left[\nabla \cdot \mathbf{B(x,y,z,t)}\right]_{t_0}^{t_1} &= \int_{t_0}^{t_1} \nabla \cdot \mathbf{J_m(x,y,z,t)} \, dt \\
   - \left[\nabla \cdot \mathbf{B(x,y,z,t_1)} - \nabla \cdot \mathbf{B(x,y,z,t_0)}\right] &= \int_{t_0}^{t_1} \nabla \cdot \mathbf{J_m(x,y,z,t)} \, dt \\
@@ -39,7 +40,7 @@ Let's have some fun with this equation.
   - \nabla \cdot \mathbf{B(x,y,z,t_1)} &= - \nabla \cdot \mathbf{B(x,y,z,t_0)} + \int_{t_0}^{t_1} \nabla \cdot \mathbf{J_m(x,y,z,t)} \, dt \\
   - \nabla \cdot \mathbf{B(x,y,z,t_1)} &= - \left[\nabla \cdot \mathbf{B(x,y,z,t_0)} - \int_{t_0}^{t_1} \nabla \cdot \mathbf{J_m(x,y,z,t)} \, dt\right] \\
   \nabla \cdot \mathbf{B(x,y,z,t_1)} &= \nabla \cdot \mathbf{B(x,y,z,t_0)} - \int_{t_0}^{t_1} \nabla \cdot \mathbf{J_m(x,y,z,t)} \, dt \\
-  \text{[Since \( \mathbf{J_m(x,y,z,t)} = 0 \) in nature]} \\
+  & \text{[Since \( \mathbf{J_m(x,y,z,t)} = 0 \) in nature]} \\
   \nabla \cdot \mathbf{B(x,y,z,t_1)} &= \nabla \cdot \mathbf{B(x,y,z,t_0)} - \int_{t_0}^{t_1} 0 \, dt \\
   \nabla \cdot \mathbf{B(x,y,z,t_1)} &= \nabla \cdot \mathbf{B(x,y,z,t_0)}
 \end{align*}
@@ -75,13 +76,13 @@ where
 \end{itemize}
 Let's have some fun with this equation.
 \begin{align*}
-  \text{[Divergence of both sides]} \\
+  & \text{[Divergence of both sides]} \\
   \nabla \cdot (\nabla \times \mathbf{H(x,y,z,t)}) &= \nabla \cdot \left(\frac{\partial \mathbf{D(x,y,z,t)}}{\partial t} + \mathbf{J_e(x,y,z,t)}\right) \\
   \nabla \cdot (\nabla \times \mathbf{H(x,y,z,t)}) &= \nabla \cdot \frac{\partial \mathbf{D(x,y,z,t)}}{\partial t} + \nabla \cdot \mathbf{J_e(x,y,z,t)} \\
   \nabla \cdot (\nabla \times \mathbf{H(x,y,z,t)}) &= \frac{\partial}{\partial t} (\nabla \cdot \mathbf{D(x,y,z,t)}) + \nabla \cdot \mathbf{J_e(x,y,z,t)} \\
   0 &= \frac{\partial}{\partial t} (\nabla \cdot \mathbf{D(x,y,z,t)}) + \nabla \cdot \mathbf{J_e(x,y,z,t)} \\
   - \frac{\partial}{\partial t} (\nabla \cdot \mathbf{D(x,y,z,t)}) &= \nabla \cdot \mathbf{J_e(x,y,z,t)} \\
-  \text{[Integrating both sides over time]} \\
+  & \text{[Integrating both sides over time]} \\
   \int_{t_0}^{t_1} - \frac{\partial}{\partial t} (\nabla \cdot \mathbf{D(x,y,z,t)}) \, dt &= \int_{t_0}^{t_1} \nabla \cdot \mathbf{J_e(x,y,z,t)} \, dt \\
   - \left[\nabla \cdot \mathbf{D(x,y,z,t)}\right]_{t_0}^{t_1} &= \int_{t_0}^{t_1} \nabla \cdot \mathbf{J_e(x,y,z,t)} \, dt \\
   - \left[\nabla \cdot \mathbf{D(x,y,z,t_1)} - \nabla \cdot \mathbf{D(x,y,z,t_0)}\right] &= \int_{t_0}^{t_1} \nabla \cdot \mathbf{J_e(x,y,z,t)} \, dt \\
@@ -95,15 +96,20 @@ changes over time}. To find anything meaningful we must find more information
 about the divergence of the electric current density function. This is given
 to us by the \textbf{charge continuity equation}:
 \begin{align*}
-  Q(t) &= \int_V Q_V(x,y,z,t) \, dV \hspace{1cm} \text{[Total Charge in a Volume]} \\
-  \text{[Rate of Change of Total Charge]} \\
-  \frac{dQ(t)}{dt} &= \int_V \frac{\partial Q_V(x,y,z,t)}{\partial t} \, dV \hspace{1cm} \text{[In a Volume]} \\
-  \frac{dQ(t)}{dt} &= - \oint_S \mathbf{J_e(x,y,z,t)} \cdot d\mathbf{S} \hspace{1cm} \text{[Out of a Volume]} \\
-  \text{[Continuity; In = Out]} \\
+  & \text{[Total Charge in a Volume]} \\
+  Q(t) &= \int_V Q_V(x,y,z,t) \, dV \\
+  & \text{[Rate of Change of Total Charge]} \\
+  & \text{[In a Volume]} \\
+  \frac{dQ(t)}{dt} &= \int_V \frac{\partial Q_V(x,y,z,t)}{\partial t} \, dV \\
+  & \text{[Out of a Volume]} \\
+  \frac{dQ(t)}{dt} &= - \oint_S \mathbf{J_e(x,y,z,t)} \cdot d\mathbf{S} \\
+  & \text{[Continuity; In = Out]} \\
   - \oint_S \mathbf{J_e(x,y,z,t)} \cdot d\mathbf{S} &= \int_V \frac{\partial Q_V(x,y,z,t)}{\partial t} \, dV \\
-  - \int_V \nabla \cdot \mathbf{J_e(x,y,z,t)} \, dV &= \int_V \frac{\partial Q_V(x,y,z,t)}{\partial t} \, dV \hspace{1cm} \left[\oint_S \mathbf{J_e} \cdot d\mathbf{S} = \int_V \nabla \cdot \mathbf{J_e} \, dV\right] \\
+  & \text{[Divergence theorem: } \oint_S \mathbf{J_e} \cdot d\mathbf{S} = \int_V \nabla \cdot \mathbf{J_e} \, dV\text{]} \\
+  - \int_V \nabla \cdot \mathbf{J_e(x,y,z,t)} \, dV &= \int_V \frac{\partial Q_V(x,y,z,t)}{\partial t} \, dV \\
   \int_V \left(- \nabla \cdot \mathbf{J_e(x,y,z,t)} - \frac{\partial Q_V(x,y,z,t)}{\partial t}\right) dV &= 0 \\
-  \text{[True for every volume \(V\), however small, so the integrand is zero]} \\
+  & \text{[True for every volume \(V\), however small,} \\
+  & \text{\ so the integrand is zero]} \\
   - \nabla \cdot \mathbf{J_e(x,y,z,t)} &= \frac{\partial Q_V(x,y,z,t)}{\partial t} \tag{4}
 \end{align*}
 Substituting (4) into the time integrated result above, we get
@@ -192,12 +198,14 @@ or \(\mathbf{J}_e\) (\& \(\mathbf{J}_m\)).
     the electric function on a charge moving from point a to point b and back to
     point a is zero, \emph{at that instant}.
     \begin{align*}
-      \text{[At every instant \(t\)]} \\
+      & \text{[At every instant \(t\)]} \\
       \nabla \times \mathbf{E(x,y,z,t)} &= 0 \\
-      \text{[A curl free field on a region without holes is a gradient; define } V \text{ by]} \\
-      V(\mathbf{r},t) &= -\int_{\mathbf{r}_0}^{\mathbf{r}} \mathbf{E} \cdot d\mathbf{l} \hspace{1cm} \text{[path independent: zero curl, Stokes]} \\
-      \mathbf{E(x,y,z,t)} &= -\nabla V(x,y,z,t) \hspace{1cm} \left[\nabla \times (-\nabla V) = 0 \text{ checks: curl of a gradient}\right] \\
-      \text{[Line Integral of Electric Function: A to B to A]} \\
+      & \text{[A curl free field on a region without holes is a gradient; define } V \text{ by]} \\
+      & \text{[path independent: zero curl, Stokes]} \\
+      V(\mathbf{r},t) &= -\int_{\mathbf{r}_0}^{\mathbf{r}} \mathbf{E} \cdot d\mathbf{l} \\
+      & \text{[check: } \nabla \times (-\nabla V) = 0 \text{, curl of a gradient]} \\
+      \mathbf{E(x,y,z,t)} &= -\nabla V(x,y,z,t) \\
+      & \text{[Line Integral of Electric Function: A to B to A]} \\
       \oint_a^b \mathbf{E(x,y,z,t)} \cdot d\mathbf{l} &= \oint_a^b -\nabla V(x,y,z,t) \cdot d\mathbf{l} \\
                                                 &= \int_a^b -\nabla V(x,y,z,t) \cdot d\mathbf{l} + \int_b^a -\nabla V(x,y,z,t) \cdot d\mathbf{l} \\
                                                 &= -\left[ V(b,t) - V(a,t) \right] - \left[ V(a,t) - V(b,t) \right] \\
