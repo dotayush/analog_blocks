@@ -1,0 +1,55 @@
+\subsection{Inverting Amplifier}\label{sec:amp_inverting}
+
+\subsubsection{Overview}
+An op-amp with \(V_+\) at ground, input through \(G_1\) into \(V_-\) and
+feedback through \(G_2\). Gain \(-\frac{R_2}{R_1}\), input impedance \(R_1\).
+All functional blocks are analysed with the finite gain model
+\(V_{out} = A(V_+ - V_-)\) of Section~\ref{sec:devices_opamp}; the ideal
+result is the limit \(A \to \infty\). The op-amp is linear, so the Large
+Signal (Q5) and Small Signal (Q4) results coincide inside the output
+swing; Q4 adds \(A(s)\).
+
+\subsubsection{Schematic}
+\begin{circuitfig}
+  \draw (0,0) node[op amp](A){};
+  \draw (A.-) -- ++(-0.6,0) coordinate(n) node[circ]{} node[below left]{$V_-$} to[european resistor, l_={$G_1$}] ++(-2.4,0) node[circ]{} node[left]{$V_{in}$};
+  \draw (n) |- (-0.5,1.6) to[european resistor, l={$G_2$}] (1.6,1.6) -| (A.out);
+  \draw (A.+) -- ++(-0.6,0) node[ground]{};
+  \draw (A.out) to[short, -o] ++(0.8,0) node[right]{$V_{out}$};
+\end{circuitfig}
+
+\subsubsection{Transfer Function}
+\(V_+ = 0\), so \(V_{out} = -A V_- \Rightarrow V_- = -\frac{V_{out}}{A}\).
+Applying KCL at \(V_-\) (no current into the op-amp):
+\begin{align*}
+  (V_- - V_{in}) G_1 + (V_- - V_{out}) G_2 &= 0 \\
+  \left(-\frac{V_{out}}{A} - V_{in}\right) G_1 + \left(-\frac{V_{out}}{A} - V_{out}\right) G_2 &= 0 \\
+  -V_{out}\left(\frac{G_1}{A} + \frac{G_2}{A} + G_2\right) &= V_{in} G_1 \\
+  H = \frac{V_{out}}{V_{in}} &= -\frac{G_1}{G_2 + \frac{G_1 + G_2}{A}} \xrightarrow{A \to \infty} -\frac{G_1}{G_2} = -\frac{R_2}{R_1}
+\end{align*}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Feedback Factor}: with \(V_{in} = 0\), \(V_- = \frac{G_2}{G_1 + G_2} V_{out}\), so
+    \(F = \frac{G_2}{G_1 + G_2} = \frac{R_1}{R_1 + R_2}\). The finite gain result is
+    \[
+      H = -\frac{R_2}{R_1} \cdot \frac{AF}{1 + AF}
+    \]
+  \item \textbf{Bandwidth (Q4)}: with \(A(s) = \frac{2\pi GB}{s}\),
+    \begin{align*}
+      H(s) &= -\frac{R_2}{R_1} \cdot \frac{\frac{2\pi GB F}{s}}{1 + \frac{2\pi GB F}{s}} = -\frac{R_2}{R_1} \cdot \frac{1}{1 + \frac{s}{2\pi F \cdot GB}} \\
+      f_{-3dB} &= F \cdot GB = \frac{R_1}{R_1 + R_2} GB
+    \end{align*}
+  \item \textbf{Impedances}: \(V_- \to 0\) (virtual ground) so
+    \(Z_{in} = \frac{V_{in}}{(V_{in} - 0)G_1} = R_1\). The loop drives the
+    output impedance down: \(Z_{out} = \frac{R_o}{1 + AF}\).
+\end{enumerate}
+
+\subsubsection{Question}
+\(R_1 = 1\,k\Omega\), \(R_2 = 10\,k\Omega\), \(A_0 = 10^5\), \(GB = 1\,\)MHz.
+Find the exact DC gain and the bandwidth.
+\paragraph{Solution:}
+\begin{align*}
+  F &= \frac{1}{11} \hspace{1cm} H = -10 \cdot \frac{10^5/11}{1 + 10^5/11} = -9.9989 \hspace{1cm}
+  f_{-3dB} = \frac{1\,MHz}{11} = 90.9\,kHz
+\end{align*}

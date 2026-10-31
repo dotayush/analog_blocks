@@ -1,0 +1,56 @@
+\subsection{Differentiator}\label{sec:amp_differentiator}
+
+\subsubsection{Overview}
+An inverting amplifier with a capacitor \(C\) at the input and \(G_2\) in
+feedback. The output is the negative time derivative of the input.
+
+\subsubsection{Schematic}
+\begin{circuitfig}
+  \draw (0,0) node[op amp](A){};
+  \draw (A.-) -- ++(-0.6,0) coordinate(n) node[circ]{} to[capacitor, l_={$C$}] ++(-1.6,0) to[european resistor, l_={$G_s$ (optional)}] ++(-2,0) node[circ]{} node[left]{$V_{in}$};
+  \draw (n) |- (-0.5,1.6) to[european resistor, l={$G_2$}] (1.6,1.6) -| (A.out);
+  \draw (A.+) -- ++(-0.6,0) node[ground]{};
+  \draw (A.out) to[short, -o] ++(0.8,0) node[right]{$V_{out}$};
+\end{circuitfig}
+
+\subsubsection{Transfer Function}
+Applying KCL at \(V_-\) (\(G_s \to \infty\)), \(V_- = -\frac{V_{out}}{A}\):
+\begin{align*}
+  (V_- - V_{in}) sC + (V_- - V_{out}) G_2 &= 0 \\
+  -V_{out}\left(\frac{sC + G_2}{A} + G_2\right) &= V_{in} sC \\
+  H(s) &= -\frac{sC}{G_2 + \frac{sC + G_2}{A}} \xrightarrow{A \to \infty} -s R_2 C
+\end{align*}
+\[
+  v_{out}(t) = -R_2 C \frac{dv_{in}}{dt} \hspace{1cm} \text{[Q2]}
+\]
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Stability}: with \(V_{in} = 0\), KCL at \(V_-\) gives
+    \(V_- = \frac{G_2}{G_2 + sC} V_{out}\), so the feedback factor carries a pole,
+    \(F(s) = \frac{1}{1 + s R_2 C}\). With \(A(s) = \frac{A_0 p_1}{s + p_1}\) the
+    closed loop poles are the roots of \(1 + A F = 0\):
+    \begin{align*}
+      1 + \frac{A_0 p_1}{(s + p_1)(1 + s R_2 C)} &= 0 \\
+      (s + p_1)(1 + s R_2 C) + A_0 p_1 &= 0 \\
+      R_2 C s^2 + (1 + p_1 R_2 C) s + p_1 (1 + A_0) &= 0 \\
+      s^2 + \frac{1 + p_1 R_2 C}{R_2 C} s + \frac{p_1 (1 + A_0)}{R_2 C} &= 0
+    \end{align*}
+    Comparing with \(s^2 + \frac{\omega_n}{Q} s + \omega_n^2\)
+    (Section~\ref{sec:theory_cs_second_order}), \(p_1 (1 + A_0) \approx 2\pi GB\):
+    \begin{align*}
+      \omega_n &= \sqrt{\frac{2\pi GB}{R_2 C}} \hspace{1cm}
+      Q = \frac{\omega_n R_2 C}{1 + p_1 R_2 C} = \frac{\sqrt{2\pi GB R_2 C}}{1 + p_1 R_2 C}
+    \end{align*}
+    E.g. \(GB = 1\,\)MHz, \(R_2 C = 1\,\)ms, \(p_1 = 2\pi \cdot 10\,\)Hz:
+    \(Q = \frac{\sqrt{6283}}{1.063} = 74.6\): the circuit rings at
+    \(f_n = \frac{\omega_n}{2\pi} = 12.6\,\)kHz. It also amplifies high
+    frequency noise (\(|H| \propto f\)).
+  \item \textbf{Practical form}: a series \(G_s\) with \(C\):
+    \begin{align*}
+      (V_- - V_{in}) \frac{sC G_s}{sC + G_s} + (V_- - V_{out}) G_2 &= 0, \hspace{0.5cm} V_- = 0 \\
+      H(s) &= -\frac{\frac{sC G_s}{sC + G_s}}{G_2} = -\frac{s R_2 C}{1 + s R_s C}
+    \end{align*}
+    which differentiates for \(f \ll \frac{1}{2\pi R_s C}\) and is flat
+    (\(-\frac{R_2}{R_s}\)) above.
+\end{enumerate}

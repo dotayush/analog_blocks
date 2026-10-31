@@ -1,0 +1,47 @@
+\subsection{Integrator}\label{sec:amp_integrator}
+
+\subsubsection{Overview}
+An inverting amplifier with a capacitor \(C\) as the feedback element.
+The output is the negative time integral of the input.
+
+\subsubsection{Schematic}
+\begin{circuitfig}
+  \draw (0,0) node[op amp](A){};
+  \draw (A.-) -- ++(-0.6,0) coordinate(n) node[circ]{} to[european resistor, l_={$G_1$}] ++(-2.4,0) node[circ]{} node[left]{$V_{in}$};
+  \draw (n) |- (-0.5,1.6) to[capacitor, l={$C$}] (1.6,1.6) -| (A.out);
+  \draw (n) |- (-0.5,3.0) to[european resistor, l={$G_F$ (optional)}] (1.6,3.0) -| (A.out);
+  \draw (A.+) -- ++(-0.6,0) node[ground]{};
+  \draw (A.out) to[short, -o] ++(0.8,0) node[right]{$V_{out}$};
+\end{circuitfig}
+
+\subsubsection{Transfer Function}
+Applying KCL at \(V_-\) (\(G_F\) absent), \(V_- = -\frac{V_{out}}{A}\):
+\begin{align*}
+  (V_- - V_{in}) G_1 + (V_- - V_{out}) sC &= 0 \\
+  -V_{out}\left(\frac{G_1 + sC}{A} + sC\right) &= V_{in} G_1 \\
+  H(s) &= -\frac{G_1}{sC + \frac{G_1 + sC}{A}} \xrightarrow{A \to \infty} -\frac{G_1}{sC} = -\frac{1}{s R_1 C}
+\end{align*}
+In time (Q4 \(\to\) Q2, \(\frac{1}{s}\) is integration):
+\[
+  v_{out}(t) = -\frac{1}{R_1 C}\int_0^t v_{in}(t')\, dt' + v_{out}(0)
+\]
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Finite DC Gain}: with \(A = A_0\),
+    \begin{align*}
+      H(s) &= -\frac{A_0 G_1}{sC(1 + A_0) + G_1} = -\frac{A_0}{1 + s R_1 C (1 + A_0)}
+    \end{align*}
+    a real integrator is a low pass with DC gain \(-A_0\) and pole
+    \(p = \frac{1}{R_1 C (1 + A_0)}\); it integrates only for \(\omega \gg p\).
+  \item \textbf{DC Drift}: an offset \(V_{OS}\) is integrated without limit
+    (\(v_{out} = \frac{V_{OS}}{R_1 C} t\)) until saturation. \(G_F\) in parallel
+    with \(C\) bounds it:
+    \begin{align*}
+      (V_- - V_{in}) G_1 + (V_- - V_{out})(G_F + sC) &= 0, \hspace{0.5cm} V_- = 0 \\
+      H(s) &= -\frac{G_1}{G_F + sC} = -\frac{R_F}{R_1} \cdot \frac{1}{1 + s R_F C}
+    \end{align*}
+    which integrates for \(f \gg \frac{1}{2\pi R_F C}\).
+  \item \textbf{Unity Gain Frequency}: \(|H(j\omega)| = 1\) at
+    \(\omega = \frac{1}{R_1 C}\).
+\end{enumerate}

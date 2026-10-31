@@ -1,0 +1,35 @@
+\subsection{Summing Amplifier}\label{sec:amp_summing}
+
+\subsubsection{Overview}
+An inverting amplifier with \(N\) inputs \(V_k\) through \(G_k\) into the
+virtual ground; the output is a weighted sum.
+
+\subsubsection{Schematic}
+\begin{circuitfig}
+  \draw (0,0) node[op amp](A){};
+  \draw (A.-) -- ++(-0.6,0) coordinate(n) node[circ]{};
+  \draw (n) -- ++(0,-0.0) to[european resistor, l_={$G_1$}] ++(-2.4,0) node[circ]{} node[left]{$V_1$};
+  \draw (n) -- ++(0,-1.4) to[european resistor, l_={$G_2$}] ++(-2.4,0) node[circ]{} node[left]{$V_2$};
+  \draw (n) |- (-0.5,1.6) to[european resistor, l={$G_F$}] (1.6,1.6) -| (A.out);
+  \draw (A.+) -- ++(-0.3,0) -- ++(0,-0.3) node[ground]{};
+  \draw (A.out) to[short, -o] ++(0.8,0) node[right]{$V_{out}$};
+\end{circuitfig}
+
+\subsubsection{Transfer Function}
+Applying KCL at \(V_-\) with \(V_- = -\frac{V_{out}}{A}\):
+\begin{align*}
+  \sum_{k=1}^{N} (V_- - V_k) G_k + (V_- - V_{out}) G_F &= 0 \\
+  V_- \left(\sum_{k} G_k + G_F\right) - V_{out} G_F &= \sum_{k} G_k V_k \\
+  -V_{out}\left(\frac{\sum_{k} G_k + G_F}{A} + G_F\right) &= \sum_{k} G_k V_k \\
+  V_{out} &= -\frac{\sum_{k} G_k V_k}{G_F + \frac{\sum_k G_k + G_F}{A}} \xrightarrow{A \to \infty} -\sum_{k=1}^{N} \frac{R_F}{R_k} V_k
+\end{align*}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Feedback Factor}: \(F = \frac{G_F}{G_F + \sum_k G_k}\); every
+    added input lowers \(F\) and therefore the bandwidth \(F \cdot GB\).
+  \item \textbf{Impedances}: input \(k\) sees \(Z_{in,k} = R_k\); inputs do
+    not interact (virtual ground).
+  \item Binary weights \(R_k = 2^{k-1} R\) make this a binary weighted DAC
+    (Chapter~\ref{ch:data_converters}).
+\end{enumerate}

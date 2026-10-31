@@ -1,0 +1,38 @@
+\subsection{Non-Inverting Amplifier}\label{sec:amp_noninverting}
+
+\subsubsection{Overview}
+Input at \(V_+\); \(V_-\) taps the output through the divider \(G_2\)
+(feedback) and \(G_1\) (to ground). Gain \(1 + \frac{R_2}{R_1}\), input
+impedance \(\to \infty\).
+
+\subsubsection{Schematic}
+\begin{circuitfig}
+  \draw (0,0) node[op amp, noinv input up](A){};
+  \draw (A.+) -- ++(-1.8,0) node[circ]{} node[left]{$V_{in}$};
+  \draw (A.-) -- ++(-0.6,0) coordinate(n) node[circ]{} node[above left]{$V_-$} to[european resistor, l={$G_1$}] ++(-2.2,0) -- ++(0,-0.6) node[ground]{};
+  \draw (n) |- (-0.5,-1.8) to[european resistor, l_={$G_2$}] (1.6,-1.8) -| (A.out);
+  \draw (A.out) to[short, -o] ++(0.8,0) node[right]{$V_{out}$};
+\end{circuitfig}
+
+\subsubsection{Transfer Function}
+Applying KCL at \(V_-\):
+\begin{align*}
+  V_- G_1 + (V_- - V_{out}) G_2 &= 0 \\
+  V_- &= \frac{G_2}{G_1 + G_2} V_{out} = F V_{out}
+\end{align*}
+With \(V_{out} = A(V_{in} - V_-)\):
+\begin{align*}
+  V_{out} &= A(V_{in} - F V_{out}) \\
+  V_{out}(1 + AF) &= A V_{in} \\
+  H &= \frac{A}{1 + AF} \xrightarrow{A \to \infty} \frac{1}{F} = \frac{G_1 + G_2}{G_2} = 1 + \frac{R_2}{R_1}
+\end{align*}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Bandwidth (Q4)}: \(H(s) = \frac{1}{F}\cdot\frac{1}{1 + \frac{s}{2\pi F \cdot GB}}\),
+    \(f_{-3dB} = F \cdot GB\): gain times bandwidth \(= GB\).
+  \item \textbf{Impedances}: \(Z_{in} = R_{id}(1 + AF) \to \infty\),
+    \(Z_{out} = \frac{R_o}{1 + AF}\).
+  \item \textbf{Common Mode}: \(V_+ = V_- = V_{in}\) swings with the input,
+    so the op-amp input common mode range limits the input swing.
+\end{enumerate}

@@ -1,0 +1,59 @@
+\subsection{Difference Amplifier}\label{sec:amp_difference}
+
+\subsubsection{Overview}
+Inverting path \(V_1 \to G_1 \to V_-\) with feedback \(G_2\), non-inverting
+path \(V_2 \to G_3 \to V_+\) with \(G_4\) to ground. With matched ratios it
+amplifies \(V_2 - V_1\) and rejects the common mode.
+
+\subsubsection{Schematic}
+\begin{circuitfig}
+  \draw (0,0) node[op amp](A){};
+  \draw (A.-) -- ++(-0.6,0) coordinate(n) node[circ]{} to[european resistor, l_={$G_1$}] ++(-2.4,0) node[circ]{} node[left]{$V_1$};
+  \draw (n) |- (-0.5,1.6) to[european resistor, l={$G_2$}] (1.6,1.6) -| (A.out);
+  \draw (A.+) -- ++(-0.6,0) coordinate(p) node[circ]{} to[european resistor, l={$G_3$}] ++(-2.4,0) node[circ]{} node[left]{$V_2$};
+  \draw (p) to[european resistor, l_={$G_4$}] ++(0,-2) node[ground]{};
+  \draw (A.out) to[short, -o] ++(0.8,0) node[right]{$V_{out}$};
+\end{circuitfig}
+
+\subsubsection{Transfer Function}
+Applying KCL at \(V_+\) and \(V_-\):
+\begin{align*}
+  (V_+ - V_2) G_3 + V_+ G_4 = 0 \hspace{0.5cm} &\Rightarrow \hspace{0.5cm} V_+ = \frac{G_3}{G_3 + G_4} V_2 \\
+  (V_- - V_1) G_1 + (V_- - V_{out}) G_2 = 0 \hspace{0.5cm} &\Rightarrow \hspace{0.5cm} V_- = \frac{G_1 V_1 + G_2 V_{out}}{G_1 + G_2}
+\end{align*}
+Ideal op-amp, \(V_+ = V_-\):
+\begin{align*}
+  \frac{G_1 V_1 + G_2 V_{out}}{G_1 + G_2} &= \frac{G_3}{G_3 + G_4} V_2 \\
+  V_{out} &= \underbrace{\frac{G_3 (G_1 + G_2)}{G_2 (G_3 + G_4)}}_{a} V_2 - \underbrace{\frac{G_1}{G_2}}_{b} V_1
+         = \frac{R_4 (R_1 + R_2)}{R_1 (R_3 + R_4)} V_2 - \frac{R_2}{R_1} V_1
+\end{align*}
+With \(\frac{R_4}{R_3} = \frac{R_2}{R_1}\), substitute \(R_4 = \frac{R_2 R_3}{R_1}\):
+\begin{align*}
+  a = \frac{\frac{R_2 R_3}{R_1}(R_1 + R_2)}{R_1\left(R_3 + \frac{R_2 R_3}{R_1}\right)} = \frac{\frac{R_2 R_3}{R_1}(R_1 + R_2)}{R_3(R_1 + R_2)} = \frac{R_2}{R_1} = b
+  \hspace{1cm} \Rightarrow \hspace{1cm}
+  V_{out} = \frac{R_2}{R_1}(V_2 - V_1)
+\end{align*}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Common Mode Rejection}: write \(V_1 = V_{ic} - \frac{V_d}{2}\),
+    \(V_2 = V_{ic} + \frac{V_d}{2}\):
+    \begin{align*}
+      V_{out} &= (a - b) V_{ic} + \frac{a + b}{2} V_d \hspace{1cm}
+      A_c = a - b \hspace{0.5cm} A_d = \frac{a + b}{2} \hspace{0.5cm}
+      CMRR = \frac{a + b}{2|a - b|}
+    \end{align*}
+    Let the nominal ratio be \(k = \frac{R_2}{R_1} = \frac{R_4}{R_3}\) and let
+    \(R_4\) be off by a fraction \(e\), \(R_4 \to R_4(1 + e)\). Writing
+    \(a = \left(1 + \frac{R_2}{R_1}\right)\frac{R_4}{R_3 + R_4}\):
+    \begin{align*}
+      a &= (1 + k)\frac{k(1 + e)}{1 + k(1 + e)} = \frac{k(1 + e)}{1 + \frac{ke}{1 + k}} \approx k(1 + e)\left(1 - \frac{ke}{1 + k}\right) \approx k\left(1 + \frac{e}{1 + k}\right) \\
+      a - b &\approx \frac{k e}{1 + k} \hspace{1cm} \frac{a + b}{2} \approx k \hspace{1cm}
+      CMRR \approx \frac{1 + k}{|e|}
+    \end{align*}
+    E.g. \(k = 1\), \(e = 1\%\): \(CMRR \approx 200\) (46\,dB); exactly,
+    \(a = \frac{10.1 \cdot 20}{10 \cdot 20.1} = 1.00498\), \(CMRR = \frac{2.00498}{2 \cdot 0.00498} = 201\).
+  \item \textbf{Impedances}: \(Z_{in,1} = R_1\) (virtual ground),
+    \(Z_{in,2} = R_3 + R_4\) — unequal, which is why the instrumentation
+    amplifier buffers both inputs first.
+\end{enumerate}

@@ -1,0 +1,33 @@
+\subsection{Buffer (Voltage Follower)}\label{sec:amp_buffer}
+
+\subsubsection{Overview}
+The non-inverting amplifier with \(G_2 \to \infty\) (output shorted to
+\(V_-\)) and \(G_1 \to 0\): \(F = 1\). Unity gain, infinite input
+impedance, near zero output impedance. Used to stop loading
+(Section~\ref{sec:theory_general_loading}).
+
+\subsubsection{Schematic}
+\begin{circuitfig}
+  \draw (0,0) node[op amp](A){};
+  \draw (A.+) -- ++(-1.2,0) node[circ]{} node[left]{$V_{in}$};
+  \draw (A.-) -- ++(-0.4,0) |- (1.6,1.4) -| (A.out);
+  \draw (A.out) to[short, -o] ++(0.8,0) node[right]{$V_{out}$};
+\end{circuitfig}
+
+\subsubsection{Transfer Function}
+\(V_- = V_{out}\):
+\begin{align*}
+  V_{out} &= A(V_{in} - V_{out}) \\
+  H &= \frac{A}{1 + A} \xrightarrow{A \to \infty} 1 \hspace{1cm} \text{[gain error } \tfrac{1}{1 + A}\text{]}
+\end{align*}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Bandwidth (Q4)}: \(f_{-3dB} = GB\), the widest of any
+    configuration, and also the hardest to stabilise (largest loop gain
+    bandwidth, \(F = 1\)).
+  \item \textbf{Impedances}: \(Z_{in} = R_{id}(1 + A)\), \(Z_{out} = \frac{R_o}{1 + A}\).
+  \item \textbf{Slew (Q6)}: a step of height \(V_s\) is reproduced in
+    \(\frac{V_s}{SR}\) when \(V_s > \frac{SR}{2\pi GB}\), otherwise it settles
+    as \(V_s(1 - e^{-2\pi GB\, t})\) (Q2).
+\end{enumerate}
