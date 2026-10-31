@@ -4,6 +4,10 @@ A diode is a two-terminal, passive (it can not amplify), non-linear
 and time-invariant device that allows current to flow in one direction while blocking
 it in the opposite direction.
 
+
+\begin{circuitfig}
+  \draw (0,0) node[circ]{} node[left]{anode} to[empty diode, i>^=$I$, v_=$V_D$] (3,0) node[circ]{} node[right]{cathode};
+\end{circuitfig}
 It is constructed from a semiconductor where one side (N) is doped
 with donors that give free electrons and the other side (P) is doped
 with acceptors that give free holes. Where the two sides meet, carriers
