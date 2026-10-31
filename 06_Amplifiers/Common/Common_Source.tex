@@ -1,0 +1,145 @@
+\subsection{Common Source (CS)}\label{sec:amp_cs}
+
+\subsubsection{Overview}
+The input drives the gate, the output is taken at the drain and the
+source is shared (AC ground). It is the MOS voltage gain stage: inverting,
+infinite input impedance at DC and output impedance set by the load.
+
+\subsubsection{Schematic}
+\begin{circuitfig}
+  \draw (5,0) node[nmos](M){};
+  \node[right] at (5.4,0) {$M_1$};
+  \draw (0,-2.2) node[ground]{} to[sinusoidal voltage source, l={$V_{in}$}] (0,0) to[european resistor, l={$G_S$}] (2.6,0) node[circ]{} node[below right]{$V_g$} -- (M.G);
+  \draw (M.S) -- (5,-2.2) node[ground]{};
+  \draw (M.D) -- (5,2) node[circ]{} to[european resistor, l_={$G_D$}] (5,4) node[vcc]{$V_{dd}$};
+  \draw (5,2) -- (7.5,2) node[circ]{} node[above]{$V_{out}$} to[capacitor, l={$C_L$}] (7.5,-2.2) node[ground]{};
+  \draw (2.6,0) to[capacitor, l={$C_{gd}$}] (2.6,2) -- (5,2);
+  \draw (2.6,0) to[capacitor, l_={$C_{gs}$}] (2.6,-2.2) node[ground]{};
+\end{circuitfig}
+\(G_S\) is the conductance of the driving source; \(C_{gs}\), \(C_{gd}\)
+are the device capacitances (Section~\ref{sec:devices_mosfet}) drawn
+outside the symbol.
+
+\subsubsection{Transfer Function}
+\begin{enumerate}
+  \item \textbf{Large Signal Analysis (Q5)}: \(I_G = 0\) so \(V_g = V_{in}\).
+    KCL at \(V_{out}\):
+    \begin{align*}
+      (V_{out} - V_{dd})G_D + I_D &= 0 \\
+      V_{out} &= V_{dd} - \frac{I_D}{G_D} \tag{1}
+    \end{align*}
+    \begin{enumerate}
+      \item Cutoff, \(V_{in} < V_{th}\): \(I_D = 0\), \(V_{out} = V_{dd}\).
+      \item Saturation, \(V_{in} \geq V_{th}\), \(V_{out} \geq V_{in} - V_{th}\):
+        \begin{align*}
+          V_{out} &= V_{dd} - \frac{k_n (V_{in} - V_{th})^2 (1 + K_{CLM} V_{out})}{G_D} \\
+          V_{out}\left(1 + \frac{k_n K_{CLM} (V_{in} - V_{th})^2}{G_D}\right) &= V_{dd} - \frac{k_n (V_{in} - V_{th})^2}{G_D} \\
+          V_{out} &= \frac{V_{dd} G_D - k_n (V_{in} - V_{th})^2}{G_D + k_n K_{CLM} (V_{in} - V_{th})^2}
+        \end{align*}
+      \item Edge of saturation (\(K_{CLM} = 0\)), \(V_{out} = V_{in} - V_{th} = V_{ov}\):
+        \begin{align*}
+          V_{ov} &= V_{dd} - \frac{k_n V_{ov}^2}{G_D} \\
+          \frac{k_n}{G_D} V_{ov}^2 + V_{ov} - V_{dd} &= 0 \\
+          V_{ov,edge} &= \frac{-1 + \sqrt{1 + \frac{4 k_n V_{dd}}{G_D}}}{\frac{2 k_n}{G_D}}
+        \end{align*}
+      \item Triode, \(V_{out} < V_{in} - V_{th}\):
+        \(V_{out} = V_{dd} - \frac{2 k_n}{G_D}\left[ (V_{in} - V_{th}) V_{out} - \frac{V_{out}^2}{2} \right]\).
+    \end{enumerate}
+    The amplifier is biased in saturation, between
+    \(V_{in} = V_{th}\) and \(V_{in} = V_{th} + V_{ov,edge}\).
+  \item \textbf{Small Signal Analysis (Q4)}: \(V_{dd}\) is AC ground.
+    Let \(G_o = G_D + g_o\).\\
+    Applying KCL at \(V_g\):
+    \begin{align*}
+      (v_g - v_{in})G_S + v_g sC_{gs} + (v_g - v_{out})sC_{gd} &= 0 \\
+      v_g (G_S + s(C_{gs} + C_{gd})) - v_{out} sC_{gd} &= v_{in} G_S \tag{2}
+    \end{align*}
+    Applying KCL at \(V_{out}\):
+    \begin{align*}
+      v_{out}(G_D + g_o) + g_m v_g + v_{out} sC_L + (v_{out} - v_g)sC_{gd} &= 0 \\
+      v_{out}(G_o + s(C_L + C_{gd})) &= v_g (sC_{gd} - g_m) \\
+      v_g &= \frac{G_o + s(C_L + C_{gd})}{sC_{gd} - g_m} v_{out} \tag{3}
+    \end{align*}
+    Substituting (3) into (2):
+    \begin{align*}
+      v_{out}\left(\frac{(G_o + s(C_L + C_{gd}))(G_S + s(C_{gs} + C_{gd}))}{sC_{gd} - g_m} - sC_{gd}\right) &= v_{in} G_S \\
+      v_{out}\left(\frac{(G_o + s(C_L + C_{gd}))(G_S + s(C_{gs} + C_{gd})) - sC_{gd}(sC_{gd} - g_m)}{sC_{gd} - g_m}\right) &= v_{in} G_S
+    \end{align*}
+    \begin{align*}
+      H(s) = \frac{v_{out}}{v_{in}} = \frac{G_S (sC_{gd} - g_m)}{(G_o + s(C_L + C_{gd}))(G_S + s(C_{gs} + C_{gd})) - sC_{gd}(sC_{gd} - g_m)} \tag{4}
+    \end{align*}
+    Expanding the denominator:
+    \begin{align*}
+      D(s) &= G_o G_S + s\left[G_o (C_{gs} + C_{gd}) + G_S (C_L + C_{gd})\right] + s^2 (C_L + C_{gd})(C_{gs} + C_{gd}) + s g_m C_{gd} - s^2 C_{gd}^2 \\
+      D(s) &= G_o G_S + s\left[G_o (C_{gs} + C_{gd}) + G_S (C_L + C_{gd}) + g_m C_{gd}\right] + s^2 \left[C_L C_{gs} + C_L C_{gd} + C_{gs} C_{gd}\right]
+    \end{align*}
+\end{enumerate}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{DC Gain}: \(s = 0\) in (4),
+    \[
+      A_{V0} = \frac{-g_m G_S}{G_o G_S} = -\frac{g_m}{G_D + g_o} = -g_m (R_D \parallel r_o)
+    \]
+    The largest possible gain (\(G_D \to 0\), current source load) is the
+    intrinsic gain \(-\frac{g_m}{g_o} = -\frac{2}{K_{CLM} V_{ov}}\).
+  \item \textbf{Zeros}: \(N(s) = G_S(sC_{gd} - g_m) = 0\):
+    \[
+      s_z = +\frac{g_m}{C_{gd}} \hspace{1cm} \text{[right half plane: the input feeds forward through } C_{gd}\text{]}
+    \]
+  \item \textbf{Poles}: Writing \(D(s) = a_0 + a_1 s + a_2 s^2\) and assuming
+    widely spaced real poles (Section~\ref{sec:theory_cs_second_order},
+    \(p_1 p_2 = \frac{a_0}{a_2}\), \(p_1 + p_2 = \frac{a_1}{a_2}\), \(p_2 \gg p_1\)):
+    \begin{align*}
+      p_1 &\approx \frac{a_0}{a_1} = \frac{G_o G_S}{G_o (C_{gs} + C_{gd}) + G_S (C_L + C_{gd}) + g_m C_{gd}} \\
+      p_1 &\approx \frac{1}{R_S\left[C_{gs} + C_{gd}\left(1 + g_m R_o\right)\right] + R_o (C_L + C_{gd})} \hspace{1cm} \left[\text{divide by } G_o G_S,\ R_o = \tfrac{1}{G_o}\right] \\
+      p_2 &\approx \frac{a_1}{a_2} = \frac{G_o (C_{gs} + C_{gd}) + G_S (C_L + C_{gd}) + g_m C_{gd}}{C_L C_{gs} + C_L C_{gd} + C_{gs} C_{gd}}
+    \end{align*}
+    The term \(C_{gd}(1 + g_m R_o) = C_{gd}(1 + |A_{V0}|)\) is the Miller
+    multiplication of \(C_{gd}\) seen at the gate.
+  \item \textbf{Ideal Source} (\(G_S \to \infty\)): divide (4) by \(G_S\):
+    \begin{align*}
+      H(s) = \frac{sC_{gd} - g_m}{G_o + s(C_L + C_{gd})} \hspace{1cm}
+      p_1 = \frac{G_D + g_o}{C_L + C_{gd}} \hspace{1cm}
+      GB = \frac{|A_{V0}| p_1}{2\pi} = \frac{g_m}{2\pi (C_L + C_{gd})}
+    \end{align*}
+  \item \textbf{Impedances}:
+    \paragraph{At Input:} \(I_G = 0\) at DC, so only capacitances load the gate.
+      With the output gain \(A_{V}\) across \(C_{gd}\):
+      \[
+        Z_{in} = \frac{1}{s\left[C_{gs} + C_{gd}(1 - A_V)\right]} \approx \frac{1}{s\left[C_{gs} + C_{gd}(1 + g_m R_o)\right]}
+      \]
+    \paragraph{At Output:} \(v_{in} = 0\) and (low frequency) \(v_g = 0\), so
+      \(g_m v_g = 0\):
+      \[
+        Z_{out} = \frac{1}{G_D + g_o} = R_D \parallel r_o
+      \]
+  \item \textbf{Swing}: \(V_{ov} \leq V_{out} \leq V_{dd}\) (saturation to cutoff).
+\end{enumerate}
+
+\subsubsection{Design}
+\begin{enumerate}
+  \item Choose \(I_D\) (power) and \(V_{ov}\) (gain vs. swing):
+    \(\frac{W}{L} = \frac{2 I_D}{K_P V_{ov}^2}\).
+  \item Choose the output bias \(V_{OUT}\) (mid swing):
+    \(R_D = \frac{V_{dd} - V_{OUT}}{I_D}\).
+  \item Bias the gate at \(V_{IN} = V_{th} + V_{ov}\).
+  \item \(A_{V0} = -\frac{2 I_D}{V_{ov}} \cdot \frac{1}{\frac{I_D}{V_{dd} - V_{OUT}} + K_{CLM} I_D} = -\frac{2 (V_{dd} - V_{OUT})}{V_{ov}\left(1 + K_{CLM}(V_{dd} - V_{OUT})\right)}\).
+\end{enumerate}
+
+\subsubsection{Question}
+\(V_{dd} = 1.8\,\)V, \(K_P = 200\,\mu\)A/V\(^2\), \(V_{th} = 0.5\,\)V,
+\(K_{CLM} = 0.1\,\)V\(^{-1}\), \(I_D = 100\,\mu\)A, \(V_{ov} = 0.2\,\)V,
+\(V_{OUT} = 1\,\)V, \(C_L = 1\,\)pF, ideal source. Find \(\frac{W}{L}\),
+\(R_D\), \(A_{V0}\), \(f_{p1}\) and \(GB\) (neglect \(C_{gd}\)).
+\paragraph{Solution:}
+\begin{align*}
+  \frac{W}{L} &= \frac{2 \cdot 100\,\mu A}{200\,\mu A/V^2 \cdot (0.2V)^2} = 25 \hspace{1cm}
+  R_D = \frac{1.8V - 1V}{100\,\mu A} = 8\,k\Omega \\
+  g_m &= \frac{2 \cdot 100\,\mu A}{0.2V} = 1\,mS \hspace{1cm}
+  g_o = 0.1 \cdot 100\,\mu A = 10\,\mu S \hspace{1cm}
+  G_D = 125\,\mu S \\
+  A_{V0} &= -\frac{1\,mS}{125\,\mu S + 10\,\mu S} = -7.41 \hspace{1cm} (17.4\,dB) \\
+  f_{p1} &= \frac{135\,\mu S}{2\pi \cdot 1\,pF} = 21.5\,MHz \hspace{1cm}
+  GB = \frac{1\,mS}{2\pi \cdot 1\,pF} = 159\,MHz
+\end{align*}
