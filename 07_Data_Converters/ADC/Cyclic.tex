@@ -5,21 +5,53 @@ One pipeline stage whose residue is fed back to its own input: the same
 hardware produces one bit (or 1.5 bits) per clock cycle. \(n\) cycles per
 conversion, minimal area.
 
+\subsubsection{Schematic}
+\begin{circuitfig}
+  \draw[->] (-1,0.6) node[left]{$V_{IN}$} -- (0,0.6);
+  \draw (0,0) rectangle (2.2,1.2) node[midway, align=center]{S/H +\\MDAC};
+  \draw[->] (2.2,0.6) -- (3,0.6) node[right]{$V^{(k)}$};
+  \draw (2.6,0.6) -- (2.6,2) -| (-0.5,0.9) -- (0,0.9);
+  \draw[->] (1.1,0) -- (1.1,-0.8) node[below]{$b_k$};
+\end{circuitfig}
+
 \subsubsection{Transfer Function}
 \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}: with the 1-bit
 stage over \([0, V_{REF})\), \(V^{(0)} = V_{IN}\):
 \begin{align*}
   b_k &= \begin{cases} 1 & V^{(k-1)} \geq \frac{V_{REF}}{2} \\ 0 & \text{otherwise} \end{cases} \hspace{1cm}
-  V^{(k)} = 2 V^{(k-1)} - b_k V_{REF} \\
+  V^{(k)} = 2 V^{(k-1)} - b_k V_{REF}
+\end{align*}
+For \(b_k = 1\): \(V^{(k-1)} \in [\frac{V_{REF}}{2}, V_{REF})\) gives \(V^{(k)} \in [0, V_{REF})\); for \(b_k = 0\):
+\(V^{(k-1)} \in [0, \frac{V_{REF}}{2})\) gives \(V^{(k)} = 2V^{(k-1)} \in [0, V_{REF})\): the residue always
+returns to the input range. Unrolling as for the pipeline
+(Section~\ref{sec:adc_pipeline}), indexed by time instead of stage:
+\begin{align*}
+  V^{(n)} &= 2^n V_{IN} - V_{REF}\sum_{k=1}^{n} b_k 2^{n-k} \\
   V_{IN} &= V_{REF}\sum_{k=1}^{n} b_k 2^{-k} + \frac{V^{(n)}}{2^n}
 \end{align*}
-(the pipeline recursion of Section~\ref{sec:adc_pipeline} indexed by time).
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item The same gain error \(e\) is applied every cycle, so
-    \(V^{(n)}\) carries \((2(1 + e))^n\); errors do not average as in a
-    pipeline with independent stages but accumulate through one stage.
-  \item Conversion rate \(\frac{f_{clk}}{n}\) (one bit per cycle) or
-    \(\frac{f_{clk}}{n/2}\) with two half-cycle operations.
+  \item \textbf{Gain Error}: with a loop gain \(2(1 + e)\) the recursion is
+    \(V^{(k)} = 2(1 + e) V^{(k-1)} - b_k V_{REF}\); unrolling the \(V_{IN}\) term,
+    \begin{align*}
+      V^{(n)} &= \left(2(1 + e)\right)^n V_{IN} - \cdots = 2^n (1 + e)^n V_{IN} - \cdots \approx 2^n (1 + n e) V_{IN} - \cdots \hspace{0.5cm} [|ne| \ll 1]
+    \end{align*}
+    The same \(e\) is applied every cycle, so the error grows with \(n\)
+    through one stage; a pipeline has independent stages whose later errors
+    are divided by the earlier gains.
+  \item \textbf{Rate}: one bit per clock gives \(\frac{f_{clk}}{n}\); using both clock
+    phases (two half-cycle operations per clock) gives
+    \(\frac{f_{clk}}{n/2} = \frac{2 f_{clk}}{n}\).
 \end{enumerate}
+
+\subsubsection{Question}
+\(n = 4\), \(V_{REF} = 1\,V\), \(V_{IN} = 0.3\,V\). Run the recursion.
+\paragraph{Solution:}
+\begin{align*}
+  V^{(0)} &= 0.3 < 0.5 \Rightarrow b_1 = 0, \hspace{0.3cm} V^{(1)} = 2 \cdot 0.3 - 0 = 0.6 \\
+  V^{(1)} &= 0.6 \geq 0.5 \Rightarrow b_2 = 1, \hspace{0.3cm} V^{(2)} = 2 \cdot 0.6 - 1 = 0.2 \\
+  V^{(2)} &= 0.2 < 0.5 \Rightarrow b_3 = 0, \hspace{0.3cm} V^{(3)} = 2 \cdot 0.2 - 0 = 0.4 \\
+  V^{(3)} &= 0.4 < 0.5 \Rightarrow b_4 = 0, \hspace{0.3cm} V^{(4)} = 2 \cdot 0.4 - 0 = 0.8 \\
+  V_{IN} &= 1 \cdot \left(\frac{0}{2} + \frac{1}{4} + \frac{0}{8} + \frac{0}{16}\right) + \frac{0.8}{16} = 0.25 + 0.05 = 0.3\,V \ \checkmark \hspace{1cm} D = 0100_2 = 4
+\end{align*}
