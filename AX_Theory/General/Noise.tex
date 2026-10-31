@@ -60,3 +60,11 @@ are:
       V_{n,total} = \sqrt{V_{n1}^2 + V_{n2}^2 + \cdots}
     \end{align*}
 \end{itemize}
+
+\paragraph{Example:} \(T = 300\,K\), \(kT = 1.381 \times 10^{-23} \cdot 300 = 4.14 \times 10^{-21}\,J\).
+\begin{align*}
+  R = 1\,k\Omega,\ f_H - f_L = 20\,kHz &: \hspace{0.5cm} V_n = \sqrt{4 \cdot 4.14 \times 10^{-21} \cdot 10^{3} \cdot 2 \times 10^{4}} = \sqrt{3.31 \times 10^{-13}} = 0.575\,\mu V \\
+  C = 1\,pF &: \hspace{0.5cm} \sqrt{\frac{kT}{C}} = \sqrt{\frac{4.14 \times 10^{-21}}{10^{-12}}} = \sqrt{4.14 \times 10^{-9}} = 64.4\,\mu V \\
+  I = 1\,mA,\ f_H - f_L = 20\,kHz &: \hspace{0.5cm} I_n = \sqrt{2 \cdot 1.602 \times 10^{-19} \cdot 10^{-3} \cdot 2 \times 10^{4}} = \sqrt{6.41 \times 10^{-18}} = 2.53\,nA \\
+  \text{total of the first two} &: \hspace{0.5cm} \sqrt{0.575^2 + 64.4^2}\,\mu V = \sqrt{0.33 + 4147}\,\mu V = 64.4\,\mu V
+\end{align*}
