@@ -29,12 +29,12 @@ magnetic field.
     of voltage to current in the Laplace domain:
     \begin{align*}
       V &= L \cdot \frac{dI}{dt} \\
-      V(s) &= L \cdot s (I(s) - I(0)) \hspace{1cm} [\text{Laplace Transform}] \\
+      V(s) &= L \left( s I(s) - I(0) \right) \hspace{1cm} [\mathcal{L}\{\tfrac{dI}{dt}\} = sI(s) - I(0)] \\
       V(s) &= s L I(s) \hspace{1cm} [\text{assuming \(I(0) = 0\)}]
     \end{align*}
     We can now define the impedance of an inductor as:
     \[
-      Z_L = s L = j\omega L = j 2 \pi f L
+      Z_L = \frac{V(s)}{I(s)} = s L = j\omega L = j 2 \pi f L \hspace{1cm} [s = j\omega = j 2\pi f]
     \]
   \item \textbf{Admittance:}
     The inverse of impedance is called admittance (\(Y\)) and is
@@ -68,8 +68,9 @@ magnetic field.
       P &= L \cdot \frac{dI}{dt} \cdot I \\
       P &= L \cdot I \cdot \frac{dI}{dt} \\
       P &= L \cdot \frac{1}{2} \cdot \frac{d(I^2)}{dt} \hspace{1cm} [\frac{d(I^2)}{dt} = 2I \cdot \frac{dI}{dt}] \\
-      \int P dt &= \int L \cdot \frac{1}{2} \cdot \frac{d(I^2)}{dt} dt \\
-      E &= \frac{1}{2} L I^2
+      E &= \int_0^t P \, dt' = \int_0^t L \cdot \frac{1}{2} \cdot \frac{d(I^2)}{dt'} \, dt' \\
+      E &= \frac{1}{2} L \left[ I^2(t) - I^2(0) \right] \\
+      E &= \frac{1}{2} L I^2 \hspace{1cm} [I(0) = 0,\ I = I(t)]
     \end{align*}
   \item \textbf{Eddy Current Losses:}
     Eddy currents are circulating currents induced in the core of an

@@ -28,13 +28,14 @@ form of an electric field.
     achieve this,
     \begin{align*}
       I &= C \cdot \frac{dV}{dt} \\
-      I(s) &= C \cdot s (V(s) - V(0)) \hspace{1cm} [\text{Laplace Transform}] \\
-      V(s) &= \frac{1}{sC} I(s) \hspace{1cm} [\text{assuming \(V(0) = 0\)}]
+      I(s) &= C \left( s V(s) - V(0) \right) \hspace{1cm} [\mathcal{L}\{\tfrac{dV}{dt}\} = sV(s) - V(0)] \\
+      I(s) &= sC\, V(s) \hspace{1cm} [\text{assuming \(V(0) = 0\)}] \\
+      V(s) &= \frac{1}{sC} I(s)
     \end{align*}
     We can now define the impedance of a capacitor as the ratio
     of voltage to current in the Laplace domain:
     \[
-      Z_C = \frac{1}{s C} = \frac{1}{j\omega C} = \frac{1}{j 2 \pi f C}
+      Z_C = \frac{V(s)}{I(s)} = \frac{1}{s C} = \frac{1}{j\omega C} = \frac{1}{j 2 \pi f C} \hspace{1cm} [s = j\omega = j 2\pi f]
     \]
   \item \textbf{Admittance:}
     The inverse of impedance is called admittance (\(Y\)) and
@@ -68,8 +69,9 @@ form of an electric field.
       P &= V \cdot C \cdot \frac{dV}{dt} \\
       P &= C \cdot V \cdot \frac{dV}{dt} \\
       P &= C \cdot \frac{1}{2} \cdot \frac{d(V^2)}{dt} \hspace{1cm} [\frac{d(V^2)}{dt} = 2V \cdot \frac{dV}{dt}] \\
-      \int P dt &= \int C \cdot \frac{1}{2} \cdot \frac{d(V^2)}{dt} dt \\
-      E &= \frac{1}{2} C V^2
+      E &= \int_0^t P \, dt' = \int_0^t C \cdot \frac{1}{2} \cdot \frac{d(V^2)}{dt'} \, dt' \\
+      E &= \frac{1}{2} C \left[ V^2(t) - V^2(0) \right] \\
+      E &= \frac{1}{2} C V^2 \hspace{1cm} [V(0) = 0,\ V = V(t)]
     \end{align*}
   \item \textbf{Types of Capacitors}:
     There are many types of capacitors, some of the most common are:
@@ -96,7 +98,7 @@ form of an electric field.
         always polarized} (reverse voltage may destroy the part). These
         also have a \textbf{finite lifetime} (electrolyte evaporation, sped up
         by heat and ripple current).
-        Example: 470uF aluminum electrolytic capacitor on the output
+        Example: 470\,\(\mu\)F aluminum electrolytic capacitor on the output
         of a linear or switching power supply.
       \item \textbf{Tantalum Capacitor}: Higher capacitance density
         than ceramics and more stable over voltage and temperature
@@ -105,14 +107,14 @@ form of an electric field.
         failing short and igniting under fault) and \textbf{derating (keeping
         applied voltage well below rated) is strongly recommended} if
         you want reliability. These are often \textbf{expensive}. Example:
-        10uF tantalum capacitor used for bulk decoupling on a densely
+        10\,\(\mu\)F tantalum capacitor used for bulk decoupling on a densely
         populated board where space is at a premium.
       \item \textbf{Film Capacitor}: Excellent stability over temperature
         and voltage, very low dielectric absorption, and low ESR/ESL.\
         These are non-polarized but have \textbf{a larger and more expensive per
         unit capacitance} than other types. They are also \textbf{limited to
         lower capacitance values}. Usually used in high quality audio,
-        precision timing and filters. Example: 1uF polypropylene film
+        precision timing and filters. Example: 1\,\(\mu\)F polypropylene film
         capacitor in a high quality audio crossover network.
     \end{itemize}
   \item \textbf{They can form everywhere}:
