@@ -4,22 +4,27 @@
 Flash preamplifiers (gain \(A_p\) around their threshold) are placed at only
 every \(M\)-th threshold. Between two adjacent preamp outputs
 \(V_a = A_p(V_{IN} - V_{T,a})\) and \(V_b = A_p(V_{IN} - V_{T,b})\) a resistive divider
-creates
+creates (\textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}, \(M\)
+equal resistors, tap \(j\) from \(V_a\))
 \begin{align*}
-  V_j &= \frac{(M - j) V_a + j V_b}{M} = A_p\left(V_{IN} - \frac{(M - j) V_{T,a} + j V_{T,b}}{M}\right), \hspace{1cm} j = 1 \ldots M - 1
+  V_j &= \frac{(M - j) V_a + j V_b}{M} = \frac{(M - j) A_p(V_{IN} - V_{T,a}) + j A_p(V_{IN} - V_{T,b})}{M} \\
+  V_j &= A_p\frac{(M - j + j) V_{IN} - (M - j) V_{T,a} - j V_{T,b}}{M}
+       = A_p\left(V_{IN} - \frac{(M - j) V_{T,a} + j V_{T,b}}{M}\right), \hspace{1cm} j = 1 \ldots M - 1
 \end{align*}
-whose zero crossing lies at the linearly interpolated threshold. Preamps
-drop from \(2^n - 1\) to \(\frac{2^n}{M}\); comparators remain \(2^n - 1\).
-Valid while the preamps are linear between neighbouring thresholds.
+whose zero crossing \(V_{IN} = V_{T,a} + \frac{j}{M}(V_{T,b} - V_{T,a})\) lies at the linearly
+interpolated threshold. Preamps drop from \(2^n - 1\) to \(\approx\frac{2^n}{M}\);
+comparators remain \(2^n - 1\). Valid while the preamps are linear between
+neighbouring thresholds.
 
 \subsubsection{Folding}
 A folding circuit maps the input range onto \(F\) folds,
 \(V_{fold} = \pm\left(V_{IN} - k\frac{V_{REF}}{F}\right)\) in fold \(k\). A coarse
 \(\log_2 F\)-bit ADC finds the fold, a fine ADC of \(\frac{2^n}{F} - 1\)
 comparators digitises \(V_{fold}\):
-\[
-  \text{comparators} = (F - 1) + \left(\frac{2^n}{F} - 1\right), \hspace{0.5cm}
-  \text{minimum at } F = 2^{n/2}: \ 2 \cdot 2^{n/2} - 2
-\]
-e.g. \(n = 8\): 30 instead of 255. The folding stage runs at \(F\) times the
+\begin{align*}
+  N(F) &= (F - 1) + \left(\frac{2^n}{F} - 1\right) \\
+  \frac{dN}{dF} &= 1 - \frac{2^n}{F^2} = 0 \hspace{1cm} \Rightarrow \hspace{1cm} F = 2^{n/2} \\
+  N_{\min} &= 2^{n/2} - 1 + \frac{2^n}{2^{n/2}} - 1 = 2 \cdot 2^{n/2} - 2
+\end{align*}
+e.g. \(n = 8\): \(F = 2^4 = 16\), \(N = 2 \cdot 16 - 2 = 30\) instead of \(2^8 - 1 = 255\). The folding stage runs at \(F\) times the
 input frequency, which bounds the bandwidth.
