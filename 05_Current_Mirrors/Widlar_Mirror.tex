@@ -93,6 +93,14 @@ As in Section~\ref{sec:mirror_basic}, \(G_3\) exists only for analysis
 
 \subsubsection{Analysis}
 \begin{enumerate}
+  \item \textbf{Output Load (Max), Large Signal, Time Domain, DC Input (Q5)}:
+    \(M_1\) saturated needs \(V_{DS_1} = V_{OUT} - V_S \geq V_{ov_1}\), with
+    \(V_S = V_{ee} + \frac{I_{OUT}}{G_S} = V_{ee} + I_{OUT} R_S\) from (3):
+    \begin{align*}
+      V_{OUT} &\geq V_S + V_{ov_1} \\
+      V_{OUT,\min} &= V_{ee} + I_{OUT} R_S + V_{ov_1} \\
+      R_{L,\max} &= \frac{V_{cc} - V_{OUT,\min}}{I_{OUT}}
+    \end{align*}
   \item \textbf{Current Gain, Small Signal, Frequency Domain, AC Input (Q4)}:
     output at AC ground (\(V_{out} = 0\)); the drain current of \(M_1\) is
     the current in \(G_S\), \(I_{out} = V_s G_S\). From (6) with \(V_{out} = 0\) and (5):
@@ -121,14 +129,9 @@ As in Section~\ref{sec:mirror_basic}, \(G_3\) exists only for analysis
       \end{align*}
       The degeneration multiplies the basic mirror output impedance by
       \(1 + g_{m_1} R_S\).
-  \item \textbf{Output Load (Max), Large Signal, Time Domain, DC Input (Q5)}:
-    \(M_1\) saturated needs \(V_{DS_1} = V_{OUT} - V_S \geq V_{ov_1}\), with
-    \(V_S = V_{ee} + \frac{I_{OUT}}{G_S} = V_{ee} + I_{OUT} R_S\) from (3):
-    \begin{align*}
-      V_{OUT} &\geq V_S + V_{ov_1} \\
-      V_{OUT,\min} &= V_{ee} + I_{OUT} R_S + V_{ov_1} \\
-      R_{L,\max} &= \frac{V_{cc} - V_{OUT,\min}}{I_{OUT}}
-    \end{align*}
+  \item \textbf{Advantages \& Limitations}: small \(I_{OUT}\) from a large \(I_{IN}\) without an extreme
+    \(\frac{W}{L}\) ratio, \(Z_{out}\) raised by \(1 + g_{m_1} R_S\); but \(I_{OUT}\) is a non-linear function of
+    \(I_{IN}\) (4), \(V_{OUT,\min}\) rises by \(I_{OUT} R_S\), and a small \(V_{ov_1}\) approaches weak inversion.
 \end{enumerate}
 
 \subsubsection{Design}
@@ -168,3 +171,29 @@ basic mirror delivering the same \(10\,\mu\)A.
 \(V_{ov_1} = 63\,\)mV is close to weak inversion where the square law
 overestimates \(I_D\); the result should be checked in Q5 simulation
 (DC/OP).
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms Vx Vs Vout Iin Itest
+  syms G3 G2 GS go0 gm0 go1 gm1
+
+  % small signal kcl, equations (5), (6) and (7)
+  eq5 = Vx*(G2 + go0 + gm0) == Iin;                  % KCL at Vx
+  eq6 = Vs*(GS + gm1 + go1) == gm1*Vx + go1*Vout;    % KCL at Vs
+  eq7 = Vout*G3 + Vs*GS == 0;                        % KCL at Vout
+
+  % current gain: output shorted (Vout = 0), Iout = Vs*GS
+  sol = solve([eq5, subs(eq6, Vout, 0)], [Vx, Vs]);
+  printf('=== Iout/Iin ===\n'); pretty(simplify(sol.Vs*GS/Iin))
+
+  % input impedance: Iin = Itest into Vx
+  vx = solve(subs(eq5, Iin, Itest), Vx);
+  printf('=== Zin ===\n'); pretty(simplify(vx/Itest))
+
+  % output impedance: Iin = 0 (Vx = 0), Itest through M1 into GS
+  sol = solve([subs(eq6, Vx, 0), Vs*GS == Itest], [Vout, Vs]);
+  printf('=== Zout ===\n'); pretty(simplify(sol.Vout/Itest))
+\end{lstlisting}
