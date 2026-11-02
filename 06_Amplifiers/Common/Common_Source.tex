@@ -98,54 +98,59 @@ outside the symbol.
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \textbf{DC Gain}: \(s = 0\) in (4),
-    \[
-      A_{V0} = H(0) = \frac{G_S (0 - g_m)}{(G_o + 0)(G_S + 0) - 0} = \frac{-g_m G_S}{G_o G_S} = -\frac{g_m}{G_D + g_o} = -g_m (R_D \parallel r_o)
-    \]
-    The largest possible gain (\(G_D \to 0\), current source load) is the
-    intrinsic gain \(-\frac{g_m}{g_o} = -\frac{2 I_D / V_{ov}}{K_{CLM} I_D} = -\frac{2}{K_{CLM} V_{ov}}\).
-  \item \textbf{Zeros}: \(N(s) = G_S(sC_{gd} - g_m) = 0\):
-    \[
-      s_z = +\frac{g_m}{C_{gd}} \hspace{1cm} \text{[right half plane: the input feeds forward through } C_{gd}\text{]}
-    \]
-  \item \textbf{Poles}: Writing \(D(s) = a_0 + a_1 s + a_2 s^2\) and assuming
-    widely spaced real poles (Section~\ref{sec:theory_cs_second_order},
-    \(p_1 p_2 = \frac{a_0}{a_2}\), \(p_1 + p_2 = \frac{a_1}{a_2}\), \(p_2 \gg p_1\)):
+  \item \textbf{Poles (\(D(s) = 0\))}: \(D(s) = a_0 + a_1 s + a_2 s^2\) from (4), widely spaced
+    real poles (Section~\ref{sec:theory_cs_second_order}, \(p_1 p_2 = \frac{a_0}{a_2}\),
+    \(p_1 + p_2 = \frac{a_1}{a_2}\), \(p_2 \gg p_1\)):
     \begin{align*}
       p_1 &\approx \frac{a_0}{a_1} = \frac{G_o G_S}{G_o (C_{gs} + C_{gd}) + G_S (C_L + C_{gd}) + g_m C_{gd}} \\
-      p_1 &\approx \frac{1}{\frac{C_{gs} + C_{gd}}{G_S} + \frac{C_L + C_{gd}}{G_o} + \frac{g_m C_{gd}}{G_o G_S}}
-          = \frac{1}{R_S (C_{gs} + C_{gd}) + R_o (C_L + C_{gd}) + g_m R_o R_S C_{gd}} \\
-      p_1 &\approx \frac{1}{R_S\left[C_{gs} + C_{gd}\left(1 + g_m R_o\right)\right] + R_o (C_L + C_{gd})} \hspace{1cm} \left[\text{divide by } G_o G_S,\ R_o = \tfrac{1}{G_o}\right] \\
+      p_1 &\approx \frac{1}{R_S (C_{gs} + C_{gd}) + R_o (C_L + C_{gd}) + g_m R_o R_S C_{gd}} \hspace{1cm} \left[\div G_o G_S,\ R_o = \tfrac{1}{G_o}\right] \\
+      p_1 &\approx \frac{1}{R_S\left[C_{gs} + C_{gd}\left(1 + g_m R_o\right)\right] + R_o (C_L + C_{gd})} \\
       p_2 &\approx \frac{a_1}{a_2} = \frac{G_o (C_{gs} + C_{gd}) + G_S (C_L + C_{gd}) + g_m C_{gd}}{C_L C_{gs} + C_L C_{gd} + C_{gs} C_{gd}}
     \end{align*}
-    The term \(C_{gd}(1 + g_m R_o) = C_{gd}(1 + |A_{V0}|)\) is the Miller
-    multiplication of \(C_{gd}\) seen at the gate.
-  \item \textbf{Ideal Source} (\(G_S \to \infty\)): divide numerator and denominator of (4) by \(G_S\):
+    \(C_{gd}(1 + g_m R_o) = C_{gd}(1 + |A_{V0}|)\) is the Miller multiplication of \(C_{gd}\) seen at
+    the gate.\\
+    Ideal source (\(G_S \to \infty\)): (4) with top and bottom divided by \(G_S\),
     \begin{align*}
       H(s) &= \frac{sC_{gd} - g_m}{(G_o + s(C_L + C_{gd}))\left(1 + \frac{s(C_{gs} + C_{gd})}{G_S}\right) - \frac{sC_{gd}(sC_{gd} - g_m)}{G_S}}
-      \xrightarrow{G_S \to \infty} \frac{sC_{gd} - g_m}{G_o + s(C_L + C_{gd})}
+      \xrightarrow{G_S \to \infty} \frac{sC_{gd} - g_m}{G_o + s(C_L + C_{gd})} \tag{5} \\
+      G_o + s_p(C_L + C_{gd}) &= 0 \hspace{1cm} \Rightarrow \hspace{1cm} s_p = -\frac{G_D + g_o}{C_L + C_{gd}} = -p_1 \hspace{1cm} f_{p1} = \frac{G_D + g_o}{2\pi(C_L + C_{gd})}
     \end{align*}
-    The pole is the root of \(G_o + s(C_L + C_{gd}) = 0\), \(s = -p_1\):
+  \item \textbf{Zeroes (\(N(s) = 0\))}: \(G_S(s_z C_{gd} - g_m) = 0\):
     \begin{align*}
-      H(s) &= \frac{sC_{gd} - g_m}{G_o + s(C_L + C_{gd})} \hspace{1cm}
-      p_1 = \frac{G_D + g_o}{C_L + C_{gd}} \\
-      GB &= \frac{|A_{V0}| p_1}{2\pi} = \frac{1}{2\pi} \cdot \frac{g_m}{G_D + g_o} \cdot \frac{G_D + g_o}{C_L + C_{gd}} = \frac{g_m}{2\pi (C_L + C_{gd})}
+      s_z &= +\frac{g_m}{C_{gd}} \hspace{1cm} f_z = \frac{g_m}{2\pi C_{gd}} \hspace{1cm} [\text{right half plane: the input feeds forward through } C_{gd}]
     \end{align*}
+  \item \textbf{DC Gain (\(H(0)\))}: \(s = 0\) in (4),
+    \begin{align*}
+      A_{V0} = H(0) &= \frac{G_S (0 - g_m)}{(G_o + 0)(G_S + 0) - 0} = \frac{-g_m G_S}{G_o G_S} = -\frac{g_m}{G_D + g_o} = -g_m (R_D \parallel r_o)
+    \end{align*}
+    Largest (\(G_D \to 0\), current source load): the intrinsic gain
+    \begin{align*}
+      -\frac{g_m}{g_o} &= -\frac{\frac{2 I_D}{V_{ov}}}{K_{CLM} I_D} = -\frac{2}{K_{CLM} V_{ov}} \hspace{1cm} \left[g_m = \tfrac{2 I_D}{V_{ov}},\ g_o = K_{CLM} I_D\right]
+    \end{align*}
+  \item \textbf{Gain-Bandwidth Product (\(GBW\))}: ideal source, from (5),
+    \begin{align*}
+      GBW &= |A_{V0}| f_{p1} = \frac{g_m}{G_D + g_o} \cdot \frac{G_D + g_o}{2\pi(C_L + C_{gd})} = \frac{g_m}{2\pi (C_L + C_{gd})}
+    \end{align*}
+    independent of the load conductance.
   \item \textbf{Impedances}:
-    \paragraph{At Input:} \(I_G = 0\) at DC, so only capacitances load the gate.
-      With \(V_{out} = A_{V} V_g\) at the other end of \(C_{gd}\), the current
-      drawn from the gate node is
-      \begin{align*}
-        I_{in} &= V_g sC_{gs} + (V_g - A_V V_g) sC_{gd} = V_g s\left[C_{gs} + C_{gd}(1 - A_V)\right] \\
-        Z_{in} &= \frac{V_g}{I_{in}} = \frac{1}{s\left[C_{gs} + C_{gd}(1 - A_V)\right]} \approx \frac{1}{s\left[C_{gs} + C_{gd}(1 + g_m R_o)\right]} \hspace{1cm} [A_V \approx A_{V0} = -g_m R_o]
-      \end{align*}
-    \paragraph{At Output:} \(V_{in} = 0\) and (low frequency) \(V_g = 0\), so
-      \(g_m V_g = 0\). A test voltage \(V_{test}\) at the output draws
-      \begin{align*}
-        I_{test} &= V_{test} G_D + V_{test} g_o + g_m \cdot 0 = V_{test}(G_D + g_o) \\
-        Z_{out} &= \frac{V_{test}}{I_{test}} = \frac{1}{G_D + g_o} = R_D \parallel r_o
-      \end{align*}
-  \item \textbf{Swing}: \(V_{ov} \leq V_{out} \leq V_{dd}\) (saturation to cutoff).
+    \paragraph{At Input:} \(I_G = 0\) at DC, so only capacitances load the gate. With
+    \(V_{out} = A_V V_g\) at the other end of \(C_{gd}\):
+    \begin{align*}
+      I_{in} &= V_g sC_{gs} + (V_g - A_V V_g) sC_{gd} = V_g s\left[C_{gs} + C_{gd}(1 - A_V)\right] \\
+      Z_{in} &= \frac{V_g}{I_{in}} = \frac{1}{s\left[C_{gs} + C_{gd}(1 - A_V)\right]} \approx \frac{1}{s\left[C_{gs} + C_{gd}(1 + g_m R_o)\right]} \hspace{1cm} [A_V \approx A_{V0} = -g_m R_o]
+    \end{align*}
+    \paragraph{At Output:} \(V_{in} = 0\) and (low frequency) \(V_g = 0\), so \(g_m V_g = 0\). Test
+    voltage \(V_{test}\) at the output:
+    \begin{align*}
+      I_{test} &= V_{test} G_D + V_{test} g_o + g_m \cdot 0 = V_{test}(G_D + g_o) \hspace{1cm} \Rightarrow \hspace{1cm}
+      Z_{out} = \frac{1}{G_D + g_o} = R_D \parallel r_o
+    \end{align*}
+  \item \textbf{Output Swing (Max)}: saturation needs \(V_{OUT} \geq V_{IN} - V_{th} = V_{ov}\);
+    cutoff gives \(V_{OUT} = V_{dd}\): \(V_{ov} \leq V_{OUT} \leq V_{dd}\).
+  \item \textbf{Advantages \& Limitations}: the highest gain per transistor
+    (\(\frac{g_m}{G_D + g_o}\)), \(Z_{in} \to \infty\) at DC; but inverting, \(Z_{out} = R_D \parallel r_o\)
+    is high (needs a buffer for low impedance loads), Miller multiplied \(C_{gd}\) limits the
+    bandwidth with a resistive source, and the right half plane zero degrades phase.
 \end{enumerate}
 
 \subsubsection{Design}
