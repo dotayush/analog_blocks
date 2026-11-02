@@ -1,9 +1,9 @@
 \subsection{Non-Inverting Amplifier}\label{sec:amp_noninverting}
 
 \subsubsection{Overview}
-Input at \(V_+\); \(V_-\) taps the output through the divider \(G_2\)
-(feedback) and \(G_1\) (to ground). Gain \(1 + \frac{R_2}{R_1}\), input
-impedance \(\to \infty\).
+Input at \(V_+\); \(V_-\) taps the output through \(G_2\) (feedback) and \(G_1\)
+(to ground). Op-amp model as in Section~\ref{sec:amp_inverting}:
+\(V_{out} = A(V_+ - V_-)\), \(A = A_0\) in Q5, \(A = A(s) = \frac{A_0 p_1}{s + p_1}\) in Q4.
 
 \subsubsection{Schematic}
 \begin{circuitfig}
@@ -15,52 +15,79 @@ impedance \(\to \infty\).
 \end{circuitfig}
 
 \subsubsection{Transfer Function}
-\textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}, \(A = A(s)\)
-(\(A = A_0\) gives the Large Signal, Time Domain, DC Input Analysis (Q5)).
-Applying KCL at \(V_-\) (no current into the op-amp):
-\begin{align*}
-  (V_- - 0) G_1 + (V_- - V_{out}) G_2 &= 0 \\
-  V_- G_1 + V_- G_2 - V_{out} G_2 &= 0 \\
-  V_- (G_1 + G_2) &= V_{out} G_2 \\
-  V_- &= \frac{G_2}{G_1 + G_2} V_{out} = F V_{out} \\
-  F &= \frac{G_2}{G_1 + G_2} = \frac{\frac{1}{R_2}}{\frac{R_1 + R_2}{R_1 R_2}} = \frac{R_1}{R_1 + R_2}
-\end{align*}
-With \(V_+ = V_{in}\) and \(V_{out} = A(V_+ - V_-)\):
-\begin{align*}
-  V_{out} &= A(V_{in} - F V_{out}) \\
-  V_{out} + AF V_{out} &= A V_{in} \\
-  V_{out}(1 + AF) &= A V_{in} \\
-  H = \frac{V_{out}}{V_{in}} &= \frac{A}{1 + AF} = \frac{1}{F}\cdot\frac{AF}{1 + AF} \xrightarrow{A \to \infty} \frac{1}{F} = \frac{R_1 + R_2}{R_1} = 1 + \frac{R_2}{R_1}
-\end{align*}
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}: \(A = A_0\),
+    \(V_+ = V_{IN}\), no current into the op-amp inputs.
+    Applying KCL at \(V_-\):
+    \begin{align*}
+      (V_- - 0) G_1 + (V_- - V_{OUT}) G_2 &= 0 \\
+      V_-(G_1 + G_2) &= V_{OUT} G_2 \\
+      V_- &= \frac{G_2}{G_1 + G_2} V_{OUT} = F V_{OUT} \hspace{1cm} \left[F = \tfrac{G_2}{G_1 + G_2}\right] \tag{1}
+    \end{align*}
+    \begin{align*}
+      V_{OUT} &= A_0(V_{IN} - F V_{OUT}) \hspace{1cm} [\text{from (1)}] \\
+      V_{OUT}(1 + A_0 F) &= A_0 V_{IN} \\
+      \frac{V_{OUT}}{V_{IN}} &= \frac{A_0}{1 + A_0 F} \tag{2}
+    \end{align*}
+    valid while \(V_{OL} \leq V_{OUT} \leq V_{OH}\).
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}: (2) with
+    \(A = A(s)\):
+    \begin{align*}
+      H(s) = \frac{V_{out}}{V_{in}} &= \frac{\frac{A_0 p_1}{s + p_1}}{1 + \frac{A_0 p_1 F}{s + p_1}} \hspace{1cm} \left[A(s) = \tfrac{A_0 p_1}{s + p_1}\right] \\
+      &= \frac{A_0 p_1}{s + p_1 + A_0 p_1 F} \hspace{1cm} [\times \tfrac{s + p_1}{s + p_1}] \\
+      H(s) &= \frac{A_0 p_1}{s + p_1(1 + A_0 F)} \tag{3}
+    \end{align*}
+\end{enumerate}
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \textbf{Bandwidth, Small Signal, Frequency Domain, AC Input Analysis
-    (Q4)}: with \(A(s) = \frac{2\pi GB}{s}\),
+  \item \textbf{Poles (\(D(s) = 0\))}:
     \begin{align*}
-      H(s) &= \frac{\frac{2\pi GB}{s}}{1 + \frac{2\pi GB F}{s}} = \frac{2\pi GB}{s + 2\pi GB F} \hspace{1cm} [\times \tfrac{s}{s}] \\
-      H(s) &= \frac{1}{F}\cdot\frac{2\pi GB F}{s + 2\pi GB F} = \frac{1}{F}\cdot\frac{1}{1 + \frac{s}{2\pi F \cdot GB}} \hspace{1cm} [\div 2\pi GB F]
+      s_p + p_1(1 + A_0 F) &= 0 \hspace{1cm} \Rightarrow \hspace{1cm} s_p = -p_1(1 + A_0 F) \\
+      f_p &= \frac{p_1(1 + A_0 F)}{2\pi} \approx F \cdot \frac{A_0 p_1}{2\pi} = F \cdot GB \hspace{1cm} [A_0 F \gg 1]
     \end{align*}
-    so \(f_{-3dB} = F \cdot GB\) and the gain bandwidth product is
-    \(\frac{1}{F}\cdot F \cdot GB = GB\).
-  \item \textbf{Impedances}:
-    \paragraph{At Input:} a test voltage \(V_{test}\) at \(V_+\) gives
-    \(V_- = F V_{out} = \frac{AF}{1 + AF} V_{test}\), so
+  \item \textbf{Zeroes (\(N(s) = 0\))}: \(N(s) = A_0 p_1 \neq 0\): no finite zero.
+  \item \textbf{DC Gain (\(H(0)\))}: \(s = 0\) in (3),
+    \begin{align*}
+      H(0) &= \frac{A_0}{1 + A_0 F} = \frac{1}{F}\cdot\frac{A_0 F}{1 + A_0 F} \\
+      H(0) &\xrightarrow{A_0 \to \infty} \frac{1}{F} = \frac{G_1 + G_2}{G_2} = \frac{\frac{R_1 + R_2}{R_1 R_2}}{\frac{1}{R_2}} = \frac{R_1 + R_2}{R_1} = 1 + \frac{R_2}{R_1}
+    \end{align*}
+    gain error \(1 - \frac{A_0 F}{1 + A_0 F} = \frac{1}{1 + A_0 F}\).
+  \item \textbf{Gain-Bandwidth Product (\(GBW\))}:
+    \begin{align*}
+      GBW &= |H(0)| \cdot f_p = \frac{A_0}{1 + A_0 F}\cdot\frac{p_1(1 + A_0 F)}{2\pi} = \frac{A_0 p_1}{2\pi} = GB
+    \end{align*}
+    gain and bandwidth trade one for one.
+  \item \textbf{Feedback Factor (\(F\))}: from (1),
+    \(F = \frac{G_2}{G_1 + G_2} = \frac{R_1}{R_1 + R_2}\).
+  \item \textbf{Impedances}: op-amp input resistance \(R_{id}\), output resistance \(R_o\).
+    \paragraph{At Input:} test voltage \(V_{test}\) at \(V_+\),
+    \(V_- = F V_{out} = \frac{AF}{1 + AF} V_{test}\) [from (1), (2)]:
     \begin{align*}
       V_+ - V_- &= V_{test}\left(1 - \frac{AF}{1 + AF}\right) = \frac{V_{test}}{1 + AF} \\
-      I_{test} &= \frac{V_+ - V_-}{R_{id}} = \frac{V_{test}}{R_{id}(1 + AF)} \\
-      Z_{in} &= \frac{V_{test}}{I_{test}} = R_{id}(1 + AF) \to \infty
+      I_{test} &= \frac{V_+ - V_-}{R_{id}} = \frac{V_{test}}{R_{id}(1 + AF)} \hspace{1cm} \Rightarrow \hspace{1cm} Z_{in} = R_{id}(1 + AF)
     \end{align*}
-    \paragraph{At Output:} \(V_{in} = 0\), a test voltage \(V_{test}\) at the
-    output, \(V_- = F V_{test}\) (\(R_1 + R_2 \gg R_o\)), internal source
-    \(A(0 - F V_{test})\) behind \(R_o\):
+    \paragraph{At Output:} \(V_{in} = 0\), test voltage \(V_{test}\) at the output,
+    \(V_- = F V_{test}\) (\(R_1 + R_2 \gg R_o\)), internal source \(A(0 - F V_{test})\)
+    behind \(R_o\):
     \begin{align*}
-      I_{test} &= \frac{V_{test} - (-AF V_{test})}{R_o} = \frac{V_{test}(1 + AF)}{R_o} \\
-      Z_{out} &= \frac{V_{test}}{I_{test}} = \frac{R_o}{1 + AF}
+      I_{test} &= \frac{V_{test} - (-AF V_{test})}{R_o} = \frac{V_{test}(1 + AF)}{R_o} \hspace{1cm} \Rightarrow \hspace{1cm} Z_{out} = \frac{R_o}{1 + AF}
     \end{align*}
-  \item \textbf{Common Mode}: \(V_+ = V_{in}\) and \(V_- = F V_{out} \approx V_{in}\),
-    so both inputs swing with the input; the op-amp input common mode range
-    limits the input swing.
+  \item \textbf{Output Swing (Max)}: \(V_{OL} \leq \left(1 + \frac{R_2}{R_1}\right) V_{IN} \leq V_{OH}\);
+    also \(V_+ = V_{IN}\) and \(V_- = F V_{OUT} \approx V_{IN}\), so \(V_{IN}\) must stay inside the
+    op-amp input common mode range.
+  \item \textbf{Slew Rate (Large Signal, Time Domain, AC Input Analysis (Q6))}: output
+    \(V_p \sin(2\pi f t)\) has slope \(2\pi f V_p \cos(2\pi f t)\), largest \(2\pi f V_p\):
+    undistorted while \(f \leq \frac{SR}{2\pi V_p}\).
+  \item \textbf{Advantages \& Limitations}: \(Z_{in} \to \infty\), non-inverted output,
+    \(GBW = GB\); but gain \(\geq 1\) only, and the inputs carry the full signal as
+    common mode (finite \(CMRR\) adds error).
+\end{enumerate}
+
+\subsubsection{Design}
+\begin{enumerate}
+  \item \(\frac{R_2}{R_1} = H(0) - 1\); choose \(R_1 + R_2 \gg R_o\) and small enough for noise.
+  \item Check \(f_{-3dB} = \frac{GB}{H(0)}\) and the gain error \(\frac{1}{1 + A_0 F}\).
 \end{enumerate}
 
 \subsubsection{Question}
@@ -69,6 +96,6 @@ Find the exact DC gain and the bandwidth.
 \paragraph{Solution:}
 \begin{align*}
   F &= \frac{1\,k}{1\,k + 9\,k} = 0.1 \hspace{1cm} A_0 F = 10^5 \cdot 0.1 = 10^4 \\
-  H &= \frac{A_0}{1 + A_0 F} = \frac{10^5}{1 + 10^4} = \frac{10^5}{10001} = 9.9990 \\
-  f_{-3dB} &= F \cdot GB = 0.1 \cdot 1\,MHz = 100\,kHz
+  H(0) &= \frac{A_0}{1 + A_0 F} = \frac{10^5}{1 + 10^4} = \frac{10^5}{10001} = 9.9990 \\
+  f_p &\approx F \cdot GB = 0.1 \cdot 1\,MHz = 100\,kHz
 \end{align*}

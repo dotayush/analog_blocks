@@ -1,10 +1,10 @@
 \subsection{Buffer (Voltage Follower)}\label{sec:amp_buffer}
 
 \subsubsection{Overview}
-The non-inverting amplifier with \(G_2 \to \infty\) (output shorted to
-\(V_-\)) and \(G_1 \to 0\): \(F = 1\). Unity gain, infinite input
-impedance, near zero output impedance. Used to stop loading
-(Section~\ref{sec:theory_general_loading}).
+An op-amp with \(V_{in}\) at \(V_+\) and the output shorted to \(V_-\): the
+non-inverting amplifier (Section~\ref{sec:amp_noninverting}) with \(F = 1\).
+Op-amp model as in Section~\ref{sec:amp_inverting}: \(V_{out} = A(V_+ - V_-)\),
+\(A = A_0\) in Q5, \(A = A(s) = \frac{A_0 p_1}{s + p_1}\) in Q4.
 
 \subsubsection{Schematic}
 \begin{circuitfig}
@@ -15,60 +15,82 @@ impedance, near zero output impedance. Used to stop loading
 \end{circuitfig}
 
 \subsubsection{Transfer Function}
-\textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}, \(A = A(s)\)
-(\(A = A_0\) gives the Large Signal, Time Domain, DC Input Analysis (Q5)):
-\(V_+ = V_{in}\) and \(V_- = V_{out}\), so
-\begin{align*}
-  V_{out} &= A(V_+ - V_-) = A(V_{in} - V_{out}) \\
-  V_{out} + A V_{out} &= A V_{in} \\
-  V_{out}(1 + A) &= A V_{in} \\
-  H = \frac{V_{out}}{V_{in}} &= \frac{A}{1 + A} = \frac{(1 + A) - 1}{1 + A} = 1 - \frac{1}{1 + A} \xrightarrow{A \to \infty} 1
-\end{align*}
-The gain error is \(\frac{1}{1 + A}\). This is the non-inverting result
-\(\frac{A}{1 + AF}\) (Section~\ref{sec:amp_noninverting}) with \(F = 1\).
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}: \(A = A_0\),
+    \(V_+ = V_{IN}\), \(V_- = V_{OUT}\).
+    \begin{align*}
+      V_{OUT} &= A_0(V_{IN} - V_{OUT}) \\
+      V_{OUT}(1 + A_0) &= A_0 V_{IN} \\
+      \frac{V_{OUT}}{V_{IN}} &= \frac{A_0}{1 + A_0} \tag{1}
+    \end{align*}
+    valid while \(V_{OL} \leq V_{OUT} \leq V_{OH}\) and \(V_{IN}\) is inside the
+    op-amp input common mode range.
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}: (1) with
+    \(A = A(s)\):
+    \begin{align*}
+      H(s) = \frac{V_{out}}{V_{in}} &= \frac{\frac{A_0 p_1}{s + p_1}}{1 + \frac{A_0 p_1}{s + p_1}} \hspace{1cm} \left[A(s) = \tfrac{A_0 p_1}{s + p_1}\right] \\
+      &= \frac{A_0 p_1}{s + p_1 + A_0 p_1} \hspace{1cm} [\times \tfrac{s + p_1}{s + p_1}] \\
+      H(s) &= \frac{A_0 p_1}{s + p_1(1 + A_0)} \tag{2}
+    \end{align*}
+\end{enumerate}
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \textbf{Bandwidth, Small Signal, Frequency Domain, AC Input Analysis
-    (Q4)}: with \(A(s) = \frac{2\pi GB}{s}\),
+  \item \textbf{Poles (\(D(s) = 0\))}:
     \begin{align*}
-      H(s) &= \frac{\frac{2\pi GB}{s}}{1 + \frac{2\pi GB}{s}} = \frac{2\pi GB}{s + 2\pi GB} \hspace{1cm} [\times \tfrac{s}{s}] \\
-      H(s) &= \frac{1}{1 + \frac{s}{2\pi GB}} \hspace{1cm} [\div 2\pi GB]
+      s_p + p_1(1 + A_0) &= 0 \hspace{1cm} \Rightarrow \hspace{1cm} s_p = -p_1(1 + A_0) \\
+      f_p &= \frac{p_1(1 + A_0)}{2\pi} \approx \frac{A_0 p_1}{2\pi} = GB \hspace{1cm} [A_0 \gg 1]
     \end{align*}
-    a single pole at \(s = -2\pi GB\): \(f_{-3dB} = GB\), the widest of any
-    configuration, and also the hardest to stabilise (\(F = 1\) is the largest
-    loop gain \(AF\)).
-  \item \textbf{Impedances}: with the op-amp model of
-    Section~\ref{sec:devices_opamp} (\(R_{id}\) between \(V_+\) and \(V_-\)).
-    \paragraph{At Input:} a test voltage \(V_{test}\) at \(V_+\) gives
-    \(V_- = V_{out} = \frac{A}{1 + A} V_{test}\), so
+  \item \textbf{Zeroes (\(N(s) = 0\))}: \(N(s) = A_0 p_1 \neq 0\): no finite zero.
+  \item \textbf{DC Gain (\(H(0)\))}: \(s = 0\) in (2),
     \begin{align*}
-      V_+ - V_- &= V_{test} - \frac{A}{1 + A} V_{test} = V_{test}\frac{1 + A - A}{1 + A} = \frac{V_{test}}{1 + A} \\
-      I_{test} &= \frac{V_+ - V_-}{R_{id}} = \frac{V_{test}}{R_{id}(1 + A)} \\
-      Z_{in} &= \frac{V_{test}}{I_{test}} = R_{id}(1 + A)
+      H(0) &= \frac{A_0}{1 + A_0} = \frac{(1 + A_0) - 1}{1 + A_0} = 1 - \frac{1}{1 + A_0} \xrightarrow{A_0 \to \infty} 1
     \end{align*}
-    \paragraph{At Output:} \(V_{in} = 0\), a test voltage \(V_{test}\) at the
-    output, \(V_- = V_{test}\), the internal source is
-    \(A(0 - V_{test}) = -A V_{test}\) behind \(R_o\) (current into \(R_{id}\)
-    neglected):
+    gain error \(\frac{1}{1 + A_0}\).
+  \item \textbf{Gain-Bandwidth Product (\(GBW\))}:
     \begin{align*}
-      I_{test} &= \frac{V_{test} - (-A V_{test})}{R_o} = \frac{V_{test}(1 + A)}{R_o} \\
-      Z_{out} &= \frac{V_{test}}{I_{test}} = \frac{R_o}{1 + A}
+      GBW &= |H(0)| \cdot f_p = \frac{A_0}{1 + A_0}\cdot\frac{p_1(1 + A_0)}{2\pi} = \frac{A_0 p_1}{2\pi} = GB
     \end{align*}
-  \item \textbf{Step Response, Small Signal, Time Domain, AC Input Analysis
-    (Q2)}: a step of height \(V_s\) is \(\frac{V_s}{s}\), so
+  \item \textbf{Feedback Factor (\(F\))}: \(V_- = V_{out}\), so \(F = \frac{V_-}{V_{out}} = 1\),
+    the largest possible loop gain \(A F\) (hardest case for stability).
+  \item \textbf{Impedances}: op-amp input resistance \(R_{id}\) between \(V_+\) and \(V_-\),
+    output resistance \(R_o\).
+    \paragraph{At Input:} test voltage \(V_{test}\) at \(V_+\), \(V_- = V_{out} = \frac{A}{1 + A} V_{test}\) [from (1)]:
     \begin{align*}
-      V_{out}(s) &= \frac{V_s}{s}\cdot\frac{2\pi GB}{s + 2\pi GB} = V_s\left(\frac{1}{s} - \frac{1}{s + 2\pi GB}\right) \hspace{1cm} \text{(Partial fractions)} \\
-      V_{out}(t) &= V_s\left(1 - e^{-2\pi GB\, t}\right) \\
-      \frac{dV_{out}}{dt} &= V_s \cdot 2\pi GB\, e^{-2\pi GB\, t} \hspace{1cm} \Rightarrow \hspace{1cm} \left.\frac{dV_{out}}{dt}\right|_{\max} = V_s \cdot 2\pi GB \hspace{0.5cm} [t = 0]
+      V_+ - V_- &= V_{test}\left(1 - \frac{A}{1 + A}\right) = \frac{V_{test}}{1 + A} \\
+      I_{test} &= \frac{V_+ - V_-}{R_{id}} = \frac{V_{test}}{R_{id}(1 + A)} \hspace{1cm} \Rightarrow \hspace{1cm} Z_{in} = \frac{V_{test}}{I_{test}} = R_{id}(1 + A)
     \end{align*}
-  \item \textbf{Slew, Large Signal, Time Domain, AC Input Analysis (Q6)}: the
-    output cannot move faster than \(SR\). The Q2 slope exceeds it when
+    \paragraph{At Output:} \(V_{in} = 0\), test voltage \(V_{test}\) at the output,
+    \(V_- = V_{test}\), internal source \(A(0 - V_{test})\) behind \(R_o\):
     \begin{align*}
-      V_s \cdot 2\pi GB &> SR \hspace{1cm} \Rightarrow \hspace{1cm} V_s > \frac{SR}{2\pi GB}
+      I_{test} &= \frac{V_{test} - (-A V_{test})}{R_o} = \frac{V_{test}(1 + A)}{R_o} \hspace{1cm} \Rightarrow \hspace{1cm} Z_{out} = \frac{R_o}{1 + A}
     \end{align*}
-    and the output then ramps at \(SR\), reaching \(V_s\) after
-    \(\approx \frac{V_s}{SR}\); otherwise the Q2 exponential holds.
+  \item \textbf{Step Response (Small Signal, Time Domain, AC Input Analysis (Q2))}: step
+    \(V_s\), i.e.\ \(V_{in}(s) = \frac{V_s}{s}\), \(\omega_p = p_1(1 + A_0) \approx 2\pi GB\):
+    \begin{align*}
+      V_{out}(s) &= \frac{V_s}{s}\cdot\frac{\omega_p}{s + \omega_p} = V_s\left(\frac{1}{s} - \frac{1}{s + \omega_p}\right) \hspace{1cm} [\text{Partial fractions}] \\
+      V_{out}(t) &= V_s\left(1 - e^{-\omega_p t}\right) \hspace{1cm} [\text{Inverse Laplace}] \\
+      \frac{dV_{out}}{dt} &= V_s \omega_p e^{-\omega_p t} \hspace{1cm} \Rightarrow \hspace{1cm} \left.\frac{dV_{out}}{dt}\right|_{\max} = V_s \omega_p \approx V_s \cdot 2\pi GB \hspace{1cm} [t = 0]
+    \end{align*}
+  \item \textbf{Slew Rate (Large Signal, Time Domain, AC Input Analysis (Q6))}: the output
+    cannot move faster than \(SR\):
+    \begin{align*}
+      V_s \cdot 2\pi GB &\leq SR \hspace{1cm} \Rightarrow \hspace{1cm} V_s \leq \frac{SR}{2\pi GB}
+    \end{align*}
+    above it the output ramps at \(SR\), reaching \(V_s\) after \(\approx \frac{V_s}{SR}\).
+  \item \textbf{Output Swing (Max)}: \(V_{OUT} \approx V_{IN}\), so
+    \(\max(V_{OL}, V_{ICM,\min}) \leq V_{IN} \leq \min(V_{OH}, V_{ICM,\max})\).
+  \item \textbf{Advantages \& Limitations}: \(Z_{in} \to \infty\), \(Z_{out} \to 0\),
+    bandwidth \(GB\) (the widest of any configuration), so it stops loading
+    (Section~\ref{sec:theory_general_loading}); but no gain, both inputs follow
+    the signal (full common mode swing), and \(F = 1\) is the hardest case for stability.
+\end{enumerate}
+
+\subsubsection{Design}
+\begin{enumerate}
+  \item Check \(GB\) exceeds the signal bandwidth.
+  \item Check \(V_{s,\max} = \frac{SR}{2\pi GB}\) (steps) or \(f \leq \frac{SR}{2\pi V_p}\) (sines).
+  \item Check the op-amp phase margin at \(F = 1\) (unity gain stable).
 \end{enumerate}
 
 \subsubsection{Question}
