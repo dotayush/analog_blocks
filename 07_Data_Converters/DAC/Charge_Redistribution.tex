@@ -38,10 +38,10 @@ Pipeline MDAC stage: phase \(\phi_1\) samples \(V_{IN}\) on both capacitors, pha
       V_x \left(\sum_k C_k + C_u + C_p\right) &= V_{REF} \sum_k b_k 2^k C_u \\
       \sum_{k=0}^{n-1} C_k + C_u &= (2^0 + 2^1 + \cdots + 2^{n-1}) C_u + C_u = (2^n - 1) C_u + C_u = 2^n C_u \\
       V_x \left(2^n C_u + C_p\right) &= V_{REF} C_u D \\
-      V_x &= \frac{D\, C_u}{2^n C_u + C_p} V_{REF} = \frac{D}{2^n} V_{REF} \cdot \frac{1}{1 + \frac{C_p}{2^n C_u}}
+      V_x &= \frac{D\, C_u}{2^n C_u + C_p} V_{REF} = \frac{D}{2^n} V_{REF} \cdot \frac{1}{1 + \frac{C_p}{2^n C_u}} \tag{1}
     \end{align*}
     \(C_p\) is a gain error only (linearity is untouched).
-  \item \textbf{Pipeline MDAC stage} (\textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}):
+  \item \textbf{Pipeline MDAC Stage (Large Signal, Time Domain, DC Input Analysis (Q5))}:
     \(C_1\), \(C_2\) around an op-amp. Phase 1:
     both sample \(V_{IN}\) against the virtual ground (top plate charge
     \(-(C_1 + C_2)V_{IN}\)). Phase 2: \(C_2\) is the feedback capacitor, \(C_1\)
@@ -59,33 +59,45 @@ Pipeline MDAC stage: phase \(\phi_1\) samples \(V_{IN}\) on both capacitors, pha
       -(C_1 + C_2) V_{IN} + C_1 b V_{REF} &= (C_1 + C_2 + C_{in}) V_x - C_2 V_{OUT}
       = -V_{OUT}\left(C_2 + \frac{C_1 + C_2 + C_{in}}{A}\right) \\
       V_{OUT} &= \frac{(C_1 + C_2) V_{IN} - C_1 b V_{REF}}{C_2\left(1 + \frac{C_1 + C_2 + C_{in}}{A C_2}\right)}
-      = \left[\left(1 + \frac{C_1}{C_2}\right) V_{IN} - \frac{C_1}{C_2} b V_{REF}\right] \frac{1}{1 + \frac{1}{AF}}
+      = \left[\left(1 + \frac{C_1}{C_2}\right) V_{IN} - \frac{C_1}{C_2} b V_{REF}\right] \frac{1}{1 + \frac{1}{AF}} \tag{2}
     \end{align*}
     with feedback factor \(F = \frac{C_2}{C_1 + C_2 + C_{in}}\): the residue is
     scaled by \(\frac{1}{1 + \frac{1}{AF}} = \frac{AF}{1 + AF}\) (Section~\ref{sec:devices_opamp}).
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}: in phase 2 the MDAC is a
+    non-inverting amplifier with feedback factor \(F\) (Section~\ref{sec:amp_noninverting}); with
+    \(A(s) = \frac{A_0 p_1}{s + p_1}\) in (2):
+    \begin{align*}
+      H(s) &= \left(1 + \frac{C_1}{C_2}\right)\frac{A F}{1 + AF} = \left(1 + \frac{C_1}{C_2}\right)\frac{A_0 F p_1}{s + p_1(1 + A_0 F)} \tag{3}
+    \end{align*}
 \end{enumerate}
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \textbf{Mismatch}: as the binary current DAC (Section~\ref{sec:dac_current}), at mid scale
+  \item \textbf{Poles (\(D(s) = 0\))}: the array alone has no resistor (switch resistance \(R_{sw}\) gives
+    \(\frac{1}{R_{sw} 2^n C_u}\)); the MDAC from (3): \(s_p = -p_1(1 + A_0 F) \approx -2\pi F \cdot GB\).
+  \item \textbf{Zeroes (\(N(s) = 0\))}: \(N(s) \neq 0\) in (3): no finite zero.
+  \item \textbf{DC Gain (\(H(0)\))}: array, from (1), \(\frac{V_x}{D} = \frac{V_{REF}}{2^n}\cdot\frac{1}{1 + \frac{C_p}{2^n C_u}}\) (\(C_p\) is a
+    gain error only); MDAC, from (3), \(H(0) = \left(1 + \frac{C_1}{C_2}\right)\frac{A_0 F}{1 + A_0 F}\), gain error \(\frac{1}{1 + A_0 F}\).
+  \item \textbf{Settling} (Small Signal, Time Domain, AC Input Analysis (Q2)): MDAC step error
+    \(e^{-2\pi F GB\, t}\) to \(\frac{1}{2^{n+1}}\): \(t = \frac{(n + 1)\ln 2}{2\pi F \cdot GB}\).
+  \item \textbf{Differential Non-Linearity (DNL)} from mismatch: as the binary current DAC (Section~\ref{sec:dac_current}), at mid scale
     the MSB (\(2^{n-1}\) units) replaces the other \(2^{n-1} - 1\) switched units
     (the terminating \(C_u\) never switches):
     \(Var(DNL_{N/2}) = (2^{n-1} + 2^{n-1} - 1) S_C^2\),
     \(SD(DNL_{N/2}) = \sqrt{2^n - 1}\, S_C\).
-  \item \textbf{Area}: \(2^n C_u\) grows fast; a bridge (split) capacitor
+  \item \textbf{Area (Split Array)}: \(2^n C_u\) grows fast; a bridge (split) capacitor
     \(C_b\) between an \(m\)-bit LSB array (total \(2^m C_u\) with its
     terminating \(C_u\)) and the MSB array must make the whole LSB array look
     like one unit \(C_u\) from the MSB side (series combination):
     \begin{align*}
       \frac{C_b \cdot 2^m C_u}{C_b + 2^m C_u} &= C_u \\
-      C_b \cdot 2^m C_u &= C_u (C_b + 2^m C_u) \hspace{1cm} [\times (C_b + 2^m C_u)] \\
-      2^m C_b &= C_b + 2^m C_u \hspace{1cm} [\div C_u] \\
+      2^m C_b &= C_b + 2^m C_u \\
       C_b (2^m - 1) &= 2^m C_u \\
       C_b &= \frac{2^{m}}{2^{m} - 1} C_u
     \end{align*}
     The MSB array (\(2^{n-m} - 1\) units plus the bridged unit) and the LSB
     array then total \(\approx 2^{n-m} C_u + 2^m C_u + C_b \approx (2^{n-m} + 2^m) C_u\).
-  \item \textbf{kT/C}: sampling on \(C_{tot}\) adds noise
+  \item \textbf{Sampling Noise (\(\frac{kT}{C}\))}: sampling on \(C_{tot}\) adds noise
     \(\frac{kT}{C_{tot}}\) (Section~\ref{sec:theory_general_noise}); it must stay
     below \(\frac{X_{LSB}^2}{12}\) with \(X_{LSB} = \frac{V_{REF}}{2^n}\):
     \[
@@ -93,6 +105,20 @@ Pipeline MDAC stage: phase \(\phi_1\) samples \(V_{IN}\) on both capacitors, pha
       \hspace{0.5cm} \Rightarrow \hspace{0.5cm}
       C_{tot} > \frac{12 kT 2^{2n}}{V_{REF}^2}
     \]
+  \item \textbf{Impedances}:
+    \paragraph{At Reference:} purely capacitive, \(Z_{REF} = \frac{1}{s C_{on}}\) with \(C_{on} = D C_u\): a code dependent
+    charge \(\propto D\) drawn at every switching (reference must settle).
+    \paragraph{At Output:} array: high impedance (top plate, no static path); MDAC: op-amp output.
+  \item \textbf{Advantages \& Limitations}: best matching integrated element, no static current, the
+    sampling switch and the DAC share one array (SAR, pipeline); but \(2^n C_u\) area (split arrays),
+    \(C_p\) gain error, \(\frac{kT}{C}\) noise floor, and a switched capacitive reference load.
+\end{enumerate}
+
+\subsubsection{Design}
+\begin{enumerate}
+  \item \(C_{tot} > \frac{12 kT 2^{2n}}{V_{REF}^2}\) and \(S_C < \frac{1}{2\sqrt{2^n - 1}}\) (\(|DNL| < \frac{1}{2}\), \(1\sigma\)) set \(C_u\).
+  \item Split with \(C_b = \frac{2^m}{2^m - 1} C_u\), \(m \approx \frac{n}{2}\), to reduce area.
+  \item MDAC: \(GB \geq \frac{(n + 1)\ln 2}{2\pi F\, t_{settle}}\), \(A_0 F \geq 2^{n+1}\).
 \end{enumerate}
 
 \subsubsection{Question}
