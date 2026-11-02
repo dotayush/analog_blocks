@@ -96,6 +96,9 @@ cycle must be zero; with a minimum reset pulse \(t_{on}\) on both outputs,
   \theta_e &= 2\pi e \frac{t_{on}}{T_{ref}}
 \end{align*}
     a static phase offset and a reference spur.
+  \item \textbf{Dead Zone}: without the reset pulse \(t_{on}\), for \(|\theta_e|\) so small that \(\frac{|\theta_e|}{2\pi}T_{ref}\) is shorter than the
+    time the switches need to turn on, no charge is delivered: \(K_{pd} = 0\) there and the loop wanders (jitter). The
+    pulse \(t_{on}\) on both outputs keeps both switches active and removes it.
   \item \textbf{Advantages \& Limitations}: phase and frequency detection, \(4\pi\) linear range, zero
     ripple in lock (ideally), current output (integrates on the loop filter); but \(I_{cp}\) mismatch and
     the reset pulse give a static phase offset and spurs, and a dead zone without the \(t_{on}\) pulse.

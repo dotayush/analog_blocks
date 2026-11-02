@@ -57,6 +57,9 @@ a Q6 effect). A VCO adds a control \(V_c\) with gain
   K_{vco} = \frac{df_0}{dV_c} = \frac{1}{N C V_{dd}} \frac{dI}{dV_c} = \frac{g_m}{N C V_{dd}}
 \end{align*}
 with \(g_m\) the transconductance of the starving device.
+  \item \textbf{Supply Sensitivity}: with \(I\) fixed, \(f_0 = \frac{I}{NCV_{dd}}\) gives
+    \(\frac{\partial f_0}{\partial V_{dd}} = -\frac{I}{NCV_{dd}^2} = -\frac{f_0}{V_{dd}}\): a \(1\%\) supply change moves \(f_0\) by \(1\%\) (a supply ripple is
+    a frequency modulation), so ring VCOs need a regulated supply.
   \item \textbf{Advantages \& Limitations}: small area, wide tuning, \(N\) phases for free (multiphase
     clocks); but poor phase noise (every stage adds noise, no resonator), and \(f_0\) depends on
     \(V_{dd}\) (supply sensitivity).
@@ -137,6 +140,9 @@ The differential tank (\(2L\), \(\frac{C}{2}\), \(2R_p\)) in parallel with
 \[
   L(f_m) = 10\log_{10}\left[\frac{2 F_n k T}{P_s}\left(1 + \left(\frac{f_0}{2Q_L f_m}\right)^2\right)\left(1 + \frac{f_c}{f_m}\right)\right] \ \text{[dBc/Hz]}
 \]
+  \item \textbf{Tuning Range}: \(f_0 = \frac{1}{2\pi\sqrt{LC}}\) with \(C\) from \(C_{\min}\) to \(C_{\max}\):
+    \(\frac{f_{\max}}{f_{\min}} = \sqrt{\frac{C_{\max}}{C_{\min}}}\); a \(2:1\) capacitance range gives only \(\sqrt{2} = 1.41\) (\(\pm 17\%\) about the centre),
+    and fixed parasitics in \(C_{fix}\) reduce it further.
   \item \textbf{Advantages \& Limitations}: best phase noise (resonator \(Q_L\)), \(f_0 = \frac{1}{2\pi\sqrt{LC}}\) set by
     passives (supply insensitive), high frequency; but inductors cost area, tuning range is narrow
     (\(\propto \frac{\Delta C}{2C}\)), and \(K_{vco}\) varies across the range.
@@ -193,6 +199,9 @@ of a Schmitt trigger (\(dV = V_H - V_L\)).
 \subsubsection{Analysis}
 \begin{enumerate}
   \item \textbf{Tuning Gain (\(K_{vco}\))}: from (5), \(K_{vco} = \frac{df_0}{dV_c} = \frac{g_c}{2 C\, dV}\), constant (linear in \(V_c\)).
+  \item \textbf{Comparator Delay}: each ramp overshoots by the delay \(t_d\) of the Schmitt trigger and switches:
+    \(T = 2\left(\frac{C\,dV}{I} + t_d\right)\), \(f_0 = \frac{1}{2\left(\frac{C\,dV}{I} + t_d\right)}\); the tuning law bends below \(\frac{I}{2C\,dV}\) once
+    \(t_d\) is comparable with \(\frac{C\,dV}{I}\).
   \item \textbf{Advantages \& Limitations}: very linear and wide tuning (\(f_0 \propto V_c\)), no inductor;
     but threshold noise of the comparator makes its phase noise the worst of the three, and
     comparator delay limits \(f_0\).
