@@ -572,3 +572,30 @@ Compute their input and output impedances at \(f_0\).
     inductor bounds \(Z_{in}\) in practice.
 \end{enumerate}
 
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms s f Vout V1 V2 G1 L1 C1 w0 Q positive
+  % parallel: G1 from V1, L1 and C1 from Vout to V2
+  vout = solve((Vout - V1)*G1 + (Vout - V2)*(1/(s*L1) + s*C1) == 0, Vout);
+  H1 = simplify(subs(vout, V2, 0)/V1); H2 = simplify(subs(vout, V1, 0)/V2);
+  printf('=== parallel H1 (band pass), H2 (band stop) ===\n'); pretty(H1); pretty(H2)
+  % series: L1 and C1 in series from V1, G1 from Vout to V2
+  Y = s*C1/(1 + s^2*L1*C1);
+  vout = solve((Vout - V1)*Y + (Vout - V2)*G1 == 0, Vout);
+  printf('=== series H3, H4 ===\n'); pretty(simplify(subs(vout, V2, 0)/V1)); pretty(simplify(subs(vout, V1, 0)/V2))
+  % noise bandwidth of the band pass (peak 1)
+  w = 2*sym(pi)*f;
+  Hsq = (w*w0/Q)^2/((w0^2 - w^2)^2 + (w*w0/Q)^2);
+  printf('=== integral of |H|^2 df (w0 = 2 pi, Q = 5) ===\n'); pretty(simplify(int(subs(Hsq, [w0 Q], [2*sym(pi) 5]), f, 0, inf)))
+
+  % Questions: f0 = 1 kHz, Q = 10, C1 = 1 uF (parallel and series), then C1 = 0.1 uF
+  Qn = 10;
+  for c = [1e-6 0.1e-6]
+    L = 1/((2*pi*1e3)^2*c);
+    printf('C1 = %.1f uF: L1 = %.2f mH, R1 parallel = %.2f Ohm, R1 series = %.3f Ohm\n', ...
+           c*1e6, L*1e3, Qn*sqrt(L/c), sqrt(L/c)/Qn);
+  end
+\end{lstlisting}

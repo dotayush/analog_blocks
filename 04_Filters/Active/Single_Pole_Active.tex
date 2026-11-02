@@ -72,3 +72,19 @@ Applying KCL at \(V_-\):
   f_p &= \frac{1}{2\pi R_2 C} = \frac{1}{2\pi \cdot 10^4\,\Omega \cdot 15.9 \times 10^{-9}\,F}
        = \frac{1}{9.990 \times 10^{-4}\,s} = 1.001\,kHz
 \end{align*}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms s t Vin Vout G1 G2 C R1 R2 Vs
+  % ideal op-amp, V- = 0, KCL at V-
+  vout = solve((0 - Vin)*G1 + (0 - Vout)*(G2 + s*C) == 0, Vout);
+  H = simplify(subs(vout/Vin, [G1 G2], [1/R1 1/R2]));
+  printf('=== H(s), equation (1) ===\n'); pretty(H)
+  printf('=== step response ===\n'); pretty(simplify(ilaplace(Vs/s*H, s, t)))
+
+  % Question: R1 = 1k, R2 = 10k, C = 15.9 nF
+  printf('H(0) = %.0f, f_p = %.3f kHz, GBW = %.2f kHz\n', -10, 1/(2*pi*10e3*15.9e-9)/1e3, 1/(2*pi*1e3*15.9e-9)/1e3);
+\end{lstlisting}

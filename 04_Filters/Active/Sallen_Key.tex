@@ -150,3 +150,29 @@ Equal resistors so \(C_1 = 2C_2\); then
        = \frac{1}{8.886 \times 10^7\,\Omega/s} = 11.25\,nF \\
   C_1 &= 2 \cdot 11.25\,nF = 22.5\,nF
 \end{align*}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms s Vin Vx Vy
+  syms G1 G2 C1 C2 R1 R2 positive
+  % low pass: buffer Vout = Vy, KCL at Vy and Vx
+  [x, y] = solve((Vy - Vx)*G2 + Vy*s*C2 == 0, (Vx - Vin)*G1 + (Vx - Vy)*G2 + (Vx - Vy)*s*C1 == 0, Vx, Vy);
+  printf('=== H_LP ===\n'); pretty(simplify(y/Vin))
+  % high pass
+  [x, y] = solve((Vy - Vx)*s*C2 + Vy*G2 == 0, (Vx - Vin)*s*C1 + (Vx - Vy)*s*C2 + (Vx - Vy)*G1 == 0, Vx, Vy);
+  printf('=== H_HP ===\n'); pretty(simplify(y/Vin))
+  % Q and its sensitivities (low pass)
+  Q = sqrt(R1*R2)/(R1 + R2)*sqrt(C1/C2);
+  vars = {R1, R2, C1, C2};
+  for k = 1:4
+    v = vars{k};
+    printf('S_%s^Q = %s\n', char(v), char(simplify(diff(Q, v)*v/Q)));
+  end
+
+  % Question: Butterworth, f0 = 1 kHz, R1 = R2 = 10k
+  c2 = 1/(2*pi*1e3*1e4*sqrt(2));
+  printf('C2 = %.2f nF, C1 = %.2f nF, overshoot = %.1f %%\n', c2*1e9, 2*c2*1e9, 100*exp(-pi));
+\end{lstlisting}

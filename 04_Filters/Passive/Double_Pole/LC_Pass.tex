@@ -248,3 +248,18 @@ and \(C_1\).
     Close to desired pole frequency.
 \end{enumerate}
 
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms s t Vout V1 V2 L1 C1 Vs w0 positive
+  vout = solve((Vout - V1)/(s*L1) + (Vout - V2)*s*C1 == 0, Vout);
+  H1 = simplify(subs(vout, V2, 0)/V1); H2 = simplify(subs(vout, V1, 0)/V2);
+  printf('=== H1, H2 ===\n'); pretty(H1); pretty(H2)
+  printf('=== step response of H1 (L1 C1 = 1/w0^2) ===\n');
+  pretty(simplify(ilaplace(Vs/s*subs(H1, L1, 1/(w0^2*C1)), s, t)))
+
+  printf('f_p (1 uF, 22 mH) = %.1f Hz, f_p (10 nF, 27 mH) = %.1f Hz\n', ...
+         1/(2*pi*sqrt(1e-6*22e-3)), 1/(2*pi*sqrt(0.01e-6*27e-3)));
+\end{lstlisting}

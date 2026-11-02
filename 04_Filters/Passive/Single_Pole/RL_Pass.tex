@@ -230,3 +230,20 @@ Also compute the input and output impedance at \(f = 10kHz\).
       \end{align*}
 \end{enumerate}
 
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms s t Vout V1 V2 G1 L1 R1 Vs
+  % KCL at Vout: L1 to V1, G1 to V2 (low pass for V1)
+  vout = solve((Vout - V1)/(s*L1) + (Vout - V2)*G1 == 0, Vout);
+  H1 = simplify(subs(vout, V2, 0)/V1); H2 = simplify(subs(vout, V1, 0)/V2);
+  printf('=== H1, H2 ===\n'); pretty(H1); pretty(H2)
+  printf('=== step response of H1 ===\n'); pretty(simplify(subs(ilaplace(Vs/s*H1, s, t), G1, 1/R1)))
+
+  % Questions: (1k, 1 kHz) and (330, 45 kHz); Zin at 10 kHz
+  printf('L1 = %.1f mH, L1 = %.3f mH\n', 1e3/(2*pi*1e3)*1e3, 330/(2*pi*45e3)*1e3);
+  L = 330/(2*pi*45e3); w = 2*pi*1e4;
+  printf('Zin = 330 %+.1fj Ohm\n', w*L);
+\end{lstlisting}
