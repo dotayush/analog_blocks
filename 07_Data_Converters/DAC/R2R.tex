@@ -101,6 +101,8 @@ two resistor values for any \(n\), and a constant output resistance \(R\).
     \paragraph{At Output:} \(Z_{out} = R\) for every code (step 2 of Q5).
     \paragraph{At Reference:} code dependent (each leg goes to \(V_{REF}\) or ground) in voltage
     mode; constant in current mode (legs always at 0\,V).
+  \item \textbf{Reference Current (Current Mode)}: \(V_{REF}\) drives the MSB node, which sees its \(2R\) leg in parallel
+    with \(R + R = 2R\) towards the LSB end: \(R_{REF} = 2R \parallel 2R = R\), \(I_{REF} = \frac{V_{REF}}{R}\) for every code.
   \item \textbf{Advantages \& Limitations}: only two resistor values for any \(n\), constant
     \(R_{out} = R\), \(n\) legs (not \(2^n\)); but the MSB must match the rest to \(\frac{1}{2^n}\) (not inherently
     monotonic), switch resistance adds to \(2R\) (scale the switches), and the voltage mode reference

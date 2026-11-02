@@ -109,6 +109,9 @@ Pipeline MDAC stage: phase \(\phi_1\) samples \(V_{IN}\) on both capacitors, pha
     \paragraph{At Reference:} purely capacitive, \(Z_{REF} = \frac{1}{s C_{on}}\) with \(C_{on} = D C_u\): a code dependent
     charge \(\propto D\) drawn at every switching (reference must settle).
     \paragraph{At Output:} array: high impedance (top plate, no static path); MDAC: op-amp output.
+  \item \textbf{Reference Energy}: charging a capacitance \(C\) from 0 to \(V_{REF}\) draws \(Q = CV_{REF}\) from the reference,
+    i.e.\ energy \(QV_{REF} = CV_{REF}^2\) (half stored, half lost in the switch); switching the whole array once costs
+    up to \(2^n C_u V_{REF}^2\) per conversion.
   \item \textbf{Advantages \& Limitations}: best matching integrated element, no static current, the
     sampling switch and the DAC share one array (SAR, pipeline); but \(2^n C_u\) area (split arrays),
     \(C_p\) gain error, \(\frac{kT}{C}\) noise floor, and a switched capacitive reference load.

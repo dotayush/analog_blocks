@@ -100,6 +100,17 @@ Binary weighted steering DAC (\(n = 3\)): each unit current is steered to \(I_{O
     traded against the \(2^m - 1\) output thermometer decoder.
   \item \textbf{Impedances}:
     \paragraph{At Output:} \(Z_{out} = R_L \parallel \frac{1}{D g_u}\) (code dependent through \(D g_u\), the source of the INL bow).
+  \item \textbf{Distortion from Output Impedance}: the Q5 bow \(V_{OUT} \propto D - aD^2\) with a full scale sine
+    \(D = \frac{N}{2}(1 + \sin\omega t)\):
+    \begin{align*}
+      D - aD^2 &= \frac{N}{2}(1 + \sin\omega t) - a\frac{N^2}{4}\left(1 + 2\sin\omega t + \frac{1 - \cos 2\omega t}{2}\right) \hspace{0.5cm} [\sin^2 x = \tfrac{1 - \cos 2x}{2}] \\
+      HD_2 &= \frac{a\frac{N^2}{8}}{\frac{N}{2} - a\frac{N^2}{2}} = \frac{aN}{4(1 - aN)} \approx \frac{aN}{4}
+    \end{align*}
+    a differential output (\(I_{OUT+} - I_{OUT-}\)) cancels this even order term.
+  \item \textbf{Output Compliance}: each unit (cascoded PMOS source) needs \(|V_{DS}| \geq |V_{ov}|\) on both devices:
+    \begin{align*}
+      V_{OUT,\max} &= V_{dd} - |V_{ov,src}| - |V_{ov,cas}| - |V_{sw}| \geq V_{FS} = (2^n - 1) I_u R_L
+    \end{align*}
   \item \textbf{Advantages \& Limitations}: fastest DAC (one pole \(\frac{1}{R_L C_L}\)), no turn on transients
     (steering), differential output, unary segment monotonic; but needs very high unit output
     impedance (\(g_u R_L < \frac{2}{2^{2n}}\), cascodes), binary \(SD(DNL) = \sqrt{2^n - 1}\,S_I\), and static power

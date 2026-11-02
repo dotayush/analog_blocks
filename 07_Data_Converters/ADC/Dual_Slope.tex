@@ -68,6 +68,12 @@ Phase 2 ends when the comparator sees \(V_x = 0\):
     \(|V_x(T_1)| = \frac{V_{REF} T_1}{RC} \leq |V_{OL}|\), sets \(RC \geq \frac{V_{REF} T_1}{|V_{OL}|}\).
   \item \textbf{Impedances}:
     \paragraph{At Input:} \(Z_{in} = R\) (virtual ground, Section~\ref{sec:amp_integrator}).
+  \item \textbf{Offset}: an integrator offset \(V_{OS}\) (at \(V_+\)) makes the capacitor current \(\frac{V - V_{OS}}{R}\); with the
+    comparator threshold at the reset level, phase 1 integrates \(V_{IN} - V_{OS}\) and phase 2 integrates \(-V_{REF} - V_{OS}\):
+    \begin{align*}
+      (\overline{V_{IN}} - V_{OS})T_1 &= (V_{REF} + V_{OS})T_2 \hspace{1cm} \Rightarrow \hspace{1cm} N_2 = N_1\frac{\overline{V_{IN}} - V_{OS}}{V_{REF} + V_{OS}}
+    \end{align*}
+    an offset and a gain error; an auto-zero phase stores \(V_{OS}\) on a capacitor and subtracts it.
   \item \textbf{Advantages \& Limitations}: \(R\), \(C\), \(T_{clk}\) cancel (high accuracy), mains rejection by
     choice of \(T_1\), inherently monotonic (a counter); but slow (\(2^{n+1} T_{clk}\)), integrator and
     comparator offsets need an auto-zero phase, and dielectric absorption of \(C\) limits linearity.

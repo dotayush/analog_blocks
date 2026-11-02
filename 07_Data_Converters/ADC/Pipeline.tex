@@ -85,6 +85,19 @@ resolves \(V_{IN}\) to \(\frac{V_{REF}}{2^m}\), plus a final flash on \(V_{RES,m
     are scaled down in capacitance and power.
   \item \textbf{Impedances}:
     \paragraph{At Input:} the first stage sampling capacitance \(C_1 + C_2\) (switched, \(\frac{kT}{C}\) sized).
+  \item \textbf{Capacitor Mismatch}: \(C_1 = C(1 + e)\), \(C_2 = C\) in \(V_{RES} = \left(1 + \frac{C_1}{C_2}\right)V_{IN} - \frac{C_1}{C_2}bV_{REF}\):
+    \begin{align*}
+      V_{RES} &= (2 + e)V_{IN} - (1 + e)bV_{REF} = (2V_{IN} - bV_{REF}) + e(V_{IN} - bV_{REF})
+    \end{align*}
+    the error \(e(V_{IN} - bV_{REF})\), with \(|V_{IN} - bV_{REF}| \leq V_{REF}\) [from the regions of Q5], must stay below
+    \(\frac{V_{REF}}{2^{n-1}}\) (as the Gain Error): \(|e| < 2^{-(n-1)}\); \(12\) bits need \(|e| < 0.05\%\) (or calibration).
+  \item \textbf{Aperture Jitter}: full scale sine at \(f_{in}\), rms jitter \(t_j\) (Section~\ref{sec:dc_char}), kept
+    below the quantisation noise:
+    \begin{align*}
+      SNR_{jitter,dB} = -20\log_{10}(2\pi f_{in} t_j) &> SQNR_{dB} = 6.02n + 1.76 \\
+      t_j &< \frac{10^{-\frac{6.02n + 1.76}{20}}}{2\pi f_{in}}
+    \end{align*}
+    e.g.\ \(n = 12\), \(f_{in} = 50\,\)MHz: \(10^{-74.0/20} = 2.0 \times 10^{-4}\), \(t_j < \frac{2.0 \times 10^{-4}}{3.14 \times 10^{8}} = 0.63\,\)ps.
   \item \textbf{Advantages \& Limitations}: one sample per clock at high resolution (10--14 bits),
     redundancy relaxes comparators to \(\pm\frac{V_{REF}}{4}\), later stages scaled down; but latency \(m\)
     clocks, op-amps with \(A > 2^n\) and fast settling in every stage (power), and the first

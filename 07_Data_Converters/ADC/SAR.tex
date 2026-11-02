@@ -76,6 +76,9 @@ sampling, DAC and subtraction share one capacitor array.
   \item \textbf{Impedances}:
     \paragraph{At Input:} the sampling array \(2^n C_u\) through \(R_{sw}\) (switched capacitive load).
     \paragraph{At Reference:} code dependent switched capacitance (charge drawn every trial).
+  \item \textbf{Figure of Merit}: \(FOM = \frac{P}{2^{ENOB} f_s}\) [J/conversion step] (power per effective level per
+    sample, \(ENOB\) from Section~\ref{sec:dc_char}) compares converters; SAR converters reach the lowest values because only the comparator and logic
+    draw dynamic power, plus the array energy \(\lesssim 2^n C_u V_{REF}^2\) per conversion (Section~\ref{sec:dac_mdac}).
   \item \textbf{Advantages \& Limitations}: very low power (only a comparator and switches, no
     op-amp), sampling, DAC and subtraction in one array, a single comparator (offset only);
     but \(n + 1\) cycles per sample (moderate speed), linearity set by capacitor matching, and a

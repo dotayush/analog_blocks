@@ -51,6 +51,8 @@ returns to the input range. Unrolling as for the pipeline
     \(\frac{f_{clk}}{n/2} = \frac{2 f_{clk}}{n}\).
   \item \textbf{Impedances}:
     \paragraph{At Input:} the S/H sampling capacitance (switched).
+  \item \textbf{Capacitor Mismatch}: \(C_1 = C(1 + e)\) gives \(V^{(k)} = (2 + e)V^{(k-1)} - (1 + e)b_kV_{REF}\), the same as
+    the pipeline stage (Section~\ref{sec:adc_pipeline}) but applied in every cycle: \(|e| < 2^{-(n-1)}\) at least.
   \item \textbf{Advantages \& Limitations}: one stage for any \(n\) (minimal area and power); but \(n\)
     cycles per conversion (\(\frac{f_{clk}}{n}\)), and the same gain error \(e\) compounds over every cycle
     (\(n e\)), so \(|e| < \frac{1}{n 2^{n}}\) roughly (the stage must be accurate to the full \(n\) bits).

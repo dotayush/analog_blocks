@@ -83,6 +83,9 @@ simplest DAC, inherently monotonic.
   \item \textbf{Monotonicity (DNL)}: tap \(D + 1\) adds \(R_D\) to \(X\):
     \(V_{D+1} - V_D = V_{REF}\frac{X + R_D}{\sum R} - V_{REF}\frac{X}{\sum R} = R_D \cdot \frac{V_{REF}}{\sum R} > 0\) for any
     positive resistors.
+  \item \textbf{DNL}: step \(k\) is the voltage across one resistor \(R_k = R(1 + e_k)\):
+    \(DNL_k = \frac{R_k I_{STR}}{X_{LSB}} - 1 \approx e_k\) [\(I_{STR} R = X_{LSB}\), total string error neglected], so \(SD(DNL) = S_R\), independent of \(n\).
+  \item \textbf{Power}: \(P = \frac{V_{REF}^2}{NR}\) static, every code; a larger \(R\) saves power but slows settling (\(\frac{N}{4}R\,C_L\)).
   \item \textbf{Advantages \& Limitations}: inherently monotonic, simple, code independent reference
     load; but \(2^n\) resistors and \(2^n\) switches (practical to 8--10 bits), code dependent output
     impedance (\(\frac{N}{4}R\) at mid scale) and \(INL\) growing as \(\frac{\sqrt{2^n}}{2} S_R\).

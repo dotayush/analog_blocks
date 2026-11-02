@@ -92,6 +92,12 @@ where a digital decimation filter removes it.
   \item \textbf{Impedances}:
     \paragraph{At Input:} discrete time: switched sampling capacitance at \(f_s\); continuous time:
     the first integrator input resistance (Section~\ref{sec:amp_integrator}).
+  \item \textbf{Finite Op-Amp Gain}: the integrator leaks, \(H(z) = \frac{z^{-1}}{1 - \alpha z^{-1}}\) with \(\alpha \approx 1 - \frac{1}{A_0}\):
+    \begin{align*}
+      NTF(z) &= \frac{1}{1 + H(z)} = \frac{1 - \alpha z^{-1}}{1 - \alpha z^{-1} + z^{-1}} \hspace{1cm}
+      NTF(1) = \frac{1 - \alpha}{2 - \alpha} = \frac{1/A_0}{1 + 1/A_0} = \frac{1}{A_0 + 1}
+    \end{align*}
+    the DC null fills to \(\frac{1}{A_0 + 1}\); it stays below \(|NTF(f_B)| \approx \frac{2\pi f_B}{f_s} = \frac{\pi}{OSR}\) when \(A_0 \gtrsim \frac{OSR}{\pi}\).
   \item \textbf{Advantages \& Limitations}: resolution from \(OSR\) and \(L\) with a coarse (even 1-bit,
     inherently linear) quantiser, relaxed anti-alias filter; but \(f_s = 2\,OSR\,f_B\) limits bandwidth,
     needs a digital decimation filter, high order loops are only conditionally stable, and
