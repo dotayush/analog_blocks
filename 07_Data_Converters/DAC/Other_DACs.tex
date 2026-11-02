@@ -29,9 +29,10 @@ with an equal \(C_2\) holding the running result, LSB first.
 \paragraph{Analysis:}
 \begin{enumerate}
   \item \textbf{DC Gain}: \(\frac{V^{(n-1)}}{D} = \frac{V_{REF}}{2^n} = 1\,\text{LSB}\).
-  \item \textbf{Speed}: \(n\) charge/share cycles per conversion, each settled to
-    \(\frac{1}{2^{n+1}}\):
-    \(t_{share} = \tau \ln(2^{n+1}) = (n + 1)\ln(2)\, \frac{R_{sw} C}{2}\).
+  \item \textbf{Speed}: \(n\) charge/share cycles per conversion, each settled to \(\frac{1}{2^{n+1}}\):
+    \begin{align*}
+      t_{share} &= \tau \ln(2^{n+1}) = (n + 1)\ln(2)\, \frac{R_{sw} C}{2}
+    \end{align*}
   \item \textbf{Mismatch}: \(C_1 = C(1 + e)\), \(C_2 = C\): the weight of each new bit is
     \begin{align*}
       \frac{C_1}{C_1 + C_2} &= \frac{1 + e}{2 + e} \approx \frac{1}{2}\left(1 + \frac{e}{2}\right) \hspace{1cm} [\tfrac{1}{1 + x} \approx 1 - x,\ e^2 \to 0]
