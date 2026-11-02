@@ -1,8 +1,9 @@
 \subsection{Differentiator}\label{sec:amp_differentiator}
 
 \subsubsection{Overview}
-An inverting amplifier with a capacitor \(C\) at the input and \(G_2\) in
-feedback. The output is the negative time derivative of the input.
+An inverting amplifier (Section~\ref{sec:amp_inverting}) with a capacitor \(C\) at the
+input and \(G_2\) in feedback. Op-amp model: \(V_{out} = A(V_+ - V_-)\), \(A = A_0\) in Q5,
+\(A = A(s) = \frac{A_0 p_1}{s + p_1}\) in Q4.
 
 \subsubsection{Schematic}
 \begin{circuitfig}
@@ -14,62 +15,98 @@ feedback. The output is the negative time derivative of the input.
 \end{circuitfig}
 
 \subsubsection{Transfer Function}
-\textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}, \(A = A(s)\),
-\(G_s \to \infty\): \(V_- = -\frac{V_{out}}{A}\). Applying KCL at \(V_-\):
-\begin{align*}
-  (V_- - V_{in}) sC + (V_- - V_{out}) G_2 &= 0 \\
-  V_- (sC + G_2) - V_{out} G_2 &= V_{in} sC \\
-  -\frac{V_{out}}{A}(sC + G_2) - V_{out} G_2 &= V_{in} sC \hspace{1cm} \text{(Substituting \(V_- = -\frac{V_{out}}{A}\))} \\
-  -V_{out}\left(\frac{sC + G_2}{A} + G_2\right) &= V_{in} sC \\
-  H(s) &= -\frac{sC}{G_2 + \frac{sC + G_2}{A}} \xrightarrow{A \to \infty} -\frac{sC}{G_2} = -s R_2 C
-\end{align*}
-\textbf{Small Signal, Time Domain, AC Input Analysis (Q2)}: multiplication by
-\(s\) is differentiation (zero initial conditions):
-\[
-  V_{out}(t) = -R_2 C \frac{dV_{in}}{dt}
-\]
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}: \(A = A_0\),
+    \(G_s \to \infty\), \(V_- = -\frac{V_{OUT}}{A_0}\). Applying KCL at \(V_-\):
+    \begin{align*}
+      C\frac{d(V_- - V_{IN})}{dt} + (V_- - V_{OUT}) G_2 &= 0
+    \end{align*}
+    Constant \(V_{IN}\) in steady state: \(\frac{d}{dt} = 0\) [capacitor open], so
+    \begin{align*}
+      (V_- - V_{OUT}) G_2 &= 0 \hspace{1cm} \Rightarrow \hspace{1cm} V_{OUT} = V_- = -\frac{V_{OUT}}{A_0} \hspace{1cm} \Rightarrow \hspace{1cm} V_{OUT} = 0
+    \end{align*}
+    A DC input gives no output; only a changing \(V_{IN}\) does.
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}: KCL at \(V_-\) with
+    \(V_- = -\frac{V_{out}}{A(s)}\):
+    \begin{align*}
+      (V_- - V_{in}) sC + (V_- - V_{out}) G_2 &= 0 \\
+      -\frac{V_{out}}{A(s)}(sC + G_2) - V_{out} G_2 &= V_{in} sC \\
+      H(s) = \frac{V_{out}}{V_{in}} &= -\frac{sC}{G_2 + \frac{(sC + G_2)(s + p_1)}{A_0 p_1}} \hspace{1cm} \left[\tfrac{1}{A(s)} = \tfrac{s + p_1}{A_0 p_1}\right] \\
+      &= -\frac{sC A_0 p_1}{G_2 A_0 p_1 + (sC + G_2)(s + p_1)} \\
+      &= -\frac{sC A_0 p_1}{C s^2 + s(C p_1 + G_2) + G_2 p_1(1 + A_0)} \\
+      H(s) &= -\frac{A_0 p_1\, s}{s^2 + s\left(p_1 + \frac{1}{R_2 C}\right) + \frac{p_1(1 + A_0)}{R_2 C}} \tag{1}
+    \end{align*}
+    \(A_0 \to \infty\) (\(\frac{(sC + G_2)(s + p_1)}{A_0 p_1} \to 0\)):
+    \begin{align*}
+      H(s) &\to -\frac{sC}{G_2} = -s R_2 C \\
+      V_{out}(t) &= -R_2 C \frac{dV_{in}}{dt} \hspace{1cm} [\text{Inverse Laplace}, s \leftrightarrow \tfrac{d}{dt}, \text{zero initial conditions}]
+    \end{align*}
+\end{enumerate}
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \textbf{Stability}: with \(V_{in} = 0\), KCL at \(V_-\):
-    \begin{align*}
-      V_- sC + (V_- - V_{out}) G_2 &= 0 \\
-      V_- &= \frac{G_2}{G_2 + sC} V_{out} \hspace{1cm} \Rightarrow \hspace{1cm}
-      F(s) = \frac{G_2}{G_2 + sC} = \frac{1}{1 + s R_2 C} \hspace{0.5cm} [\div G_2]
-    \end{align*}
-    The feedback factor carries a pole. With \(A(s) = \frac{A_0 p_1}{s + p_1}\)
-    the closed loop poles are the roots of \(1 + A F = 0\):
-    \begin{align*}
-      1 + \frac{A_0 p_1}{(s + p_1)(1 + s R_2 C)} &= 0 \\
-      (s + p_1)(1 + s R_2 C) + A_0 p_1 &= 0 \hspace{1cm} [\times (s + p_1)(1 + s R_2 C)] \\
-      s + s^2 R_2 C + p_1 + p_1 R_2 C s + A_0 p_1 &= 0 \\
-      R_2 C s^2 + (1 + p_1 R_2 C) s + p_1 (1 + A_0) &= 0 \\
-      s^2 + \frac{1 + p_1 R_2 C}{R_2 C} s + \frac{p_1 (1 + A_0)}{R_2 C} &= 0 \hspace{1cm} [\div R_2 C]
-    \end{align*}
-    Comparing with \(s^2 + \frac{\omega_n}{Q} s + \omega_n^2\)
-    (Section~\ref{sec:theory_cs_second_order}), with \(p_1 (1 + A_0) \approx p_1 A_0 = 2\pi GB\):
+  \item \textbf{Poles (\(D(s) = 0\))}: comparing (1) with \(s^2 + s\frac{\omega_n}{Q} + \omega_n^2\)
+    (Section~\ref{sec:theory_cs_second_order}), \(p_1(1 + A_0) \approx A_0 p_1 = 2\pi GB\):
     \begin{align*}
       \omega_n^2 &= \frac{p_1 (1 + A_0)}{R_2 C} \approx \frac{2\pi GB}{R_2 C} \hspace{1cm} \Rightarrow \hspace{1cm} \omega_n = \sqrt{\frac{2\pi GB}{R_2 C}} \\
-      \frac{\omega_n}{Q} &= \frac{1 + p_1 R_2 C}{R_2 C} \hspace{1cm} \Rightarrow \hspace{1cm}
-      Q = \frac{\omega_n R_2 C}{1 + p_1 R_2 C} = \frac{\sqrt{\frac{2\pi GB}{R_2 C}} R_2 C}{1 + p_1 R_2 C} = \frac{\sqrt{2\pi GB R_2 C}}{1 + p_1 R_2 C}
+      \frac{\omega_n}{Q} &= p_1 + \frac{1}{R_2 C} = \frac{1 + p_1 R_2 C}{R_2 C} \\
+      Q &= \frac{\omega_n R_2 C}{1 + p_1 R_2 C} = \frac{\sqrt{\frac{2\pi GB}{R_2 C}}\, R_2 C}{1 + p_1 R_2 C} = \frac{\sqrt{2\pi GB R_2 C}}{1 + p_1 R_2 C}
     \end{align*}
-    E.g. \(GB = 1\,\)MHz, \(R_2 C = 1\,\)ms, \(p_1 = 2\pi \cdot 10\,\)rad/s:
+    \(2\pi GB R_2 C \gg 1\) makes \(Q \gg \frac{1}{2}\): complex poles
+    \(s_p = -\frac{\omega_n}{2Q} \pm j\omega_n\sqrt{1 - \frac{1}{4Q^2}}\), the circuit rings at \(f_n = \frac{\omega_n}{2\pi}\).
+  \item \textbf{Zeroes (\(N(s) = 0\))}: \(-A_0 p_1 s_z = 0 \Rightarrow s_z = 0\): a zero at the origin.
+  \item \textbf{DC Gain (\(H(0)\))}: \(H(0) = \frac{0}{\frac{p_1(1 + A_0)}{R_2 C}} = 0\), as in Q5.
+  \item \textbf{Gain-Bandwidth Product (\(GBW\))}: \(H(0) = 0\), so \(GBW = 0\). The useful
+    range is \(f \ll f_n\), where \(|H(j\omega)| \approx \omega R_2 C\); the peak at \(\omega_n\)
+    (\(s = j\omega_n\), \(D = j\omega_n\frac{\omega_n}{Q}\)):
     \begin{align*}
-      2\pi GB R_2 C &= 2\pi \cdot 10^6 \cdot 10^{-3} = 6283 \hspace{1cm} \sqrt{6283} = 79.27 \\
-      p_1 R_2 C &= 2\pi \cdot 10 \cdot 10^{-3} = 0.0628 \hspace{1cm}
-      Q = \frac{79.27}{1 + 0.0628} = \frac{79.27}{1.0628} = 74.6 \\
-      \omega_n &= \sqrt{\frac{2\pi \cdot 10^6}{10^{-3}}} = \sqrt{6.283 \times 10^{9}} = 7.927 \times 10^{4}\,rad/s \hspace{1cm}
-      f_n = \frac{\omega_n}{2\pi} = 12.6\,kHz
+      |H(j\omega_n)| &= \frac{A_0 p_1 \omega_n}{\omega_n\frac{\omega_n}{Q}} = \frac{A_0 p_1 Q}{\omega_n} \approx \frac{\omega_n^2 R_2 C\, Q}{\omega_n} = Q\,\omega_n R_2 C \hspace{1cm} [A_0 p_1 \approx \omega_n^2 R_2 C]
     \end{align*}
-    The circuit rings at \(12.6\,\)kHz. It also amplifies high frequency
-    noise (\(|H(j\omega)| = \omega R_2 C \propto f\)).
-  \item \textbf{Practical Form}: a series \(G_s\) with \(C\) has admittance
-    \(\frac{1}{\frac{1}{sC} + \frac{1}{G_s}} = \frac{sC G_s}{sC + G_s}\); with the ideal op-amp
-    (\(V_- = 0\)):
+    \(Q\) times the ideal \(\omega_n R_2 C\).
+  \item \textbf{Feedback Factor (\(F\))}: \(V_{in} = 0\), KCL at \(V_-\):
+    \begin{align*}
+      V_- sC + (V_- - V_{out}) G_2 &= 0 \hspace{1cm} \Rightarrow \hspace{1cm}
+      F(s) = \frac{G_2}{G_2 + sC} = \frac{1}{1 + s R_2 C}
+    \end{align*}
+    a pole in the loop: with the op-amp pole, two poles give the ringing above.
+  \item \textbf{Practical Form}: series \(G_s\) with \(C\), admittance
+    \(\frac{1}{\frac{1}{sC} + \frac{1}{G_s}} = \frac{sC G_s}{sC + G_s}\); with \(V_- = 0\):
     \begin{align*}
       (0 - V_{in}) \frac{sC G_s}{sC + G_s} + (0 - V_{out}) G_2 &= 0 \\
-      H(s) &= -\frac{\frac{sC G_s}{sC + G_s}}{G_2} = -\frac{sC G_s R_2}{sC + G_s} = -\frac{s R_2 C}{1 + s R_s C} \hspace{1cm} [\div G_s]
+      H(s) &= -\frac{sC G_s R_2}{sC + G_s} = -\frac{s R_2 C}{1 + s R_s C} \hspace{1cm} [\times \tfrac{R_s}{R_s}]
     \end{align*}
-    For \(f \ll \frac{1}{2\pi R_s C}\), \(H \approx -s R_2 C\) (differentiates); for
-    \(f \gg \frac{1}{2\pi R_s C}\), \(H \approx -\frac{s R_2 C}{s R_s C} = -\frac{R_2}{R_s}\) (flat).
+    \(f \ll \frac{1}{2\pi R_s C}\): \(H \approx -s R_2 C\) (differentiates);
+    \(f \gg \frac{1}{2\pi R_s C}\): \(H \approx -\frac{R_2}{R_s}\) (flat), which caps the noise gain and
+    lowers \(Q\).
+  \item \textbf{Impedances}:
+    \paragraph{At Input:} \(V_- \to 0\), \(Z_{in} = \frac{1}{sC}\) (\(R_s + \frac{1}{sC}\) with \(G_s\)): falls
+    with frequency, so the source must drive a capacitor.
+    \paragraph{At Output:} as Section~\ref{sec:amp_inverting}, \(Z_{out} = \frac{R_o}{1 + A F(s)}\).
+  \item \textbf{Output Swing (Max)}: \(V_{OL} \leq -R_2 C \frac{dV_{IN}}{dt} \leq V_{OH}\); a sine
+    \(V_p\sin(2\pi f t)\) needs \(2\pi f R_2 C V_p \leq V_{OH}\).
+  \item \textbf{Slew Rate (Large Signal, Time Domain, AC Input Analysis (Q6))}:
+    \begin{align*}
+      V_{OUT} &= -2\pi f R_2 C V_p \cos(2\pi f t) \hspace{1cm} \left|\frac{dV_{OUT}}{dt}\right|_{\max} = (2\pi f)^2 R_2 C V_p \leq SR
+    \end{align*}
+  \item \textbf{Advantages \& Limitations}: exact derivative (\(-s R_2 C\)) for \(f \ll f_n\);
+    but the gain rises with frequency (amplifies noise), the loop is close to unstable
+    (high \(Q\) ringing) without \(R_s\), and \(Z_{in}\) is capacitive.
 \end{enumerate}
+
+\subsubsection{Design}
+\begin{enumerate}
+  \item \(R_2 C\) for the required slope gain.
+  \item \(R_s\) so \(\frac{1}{2\pi R_s C}\) is above the highest signal frequency and below \(f_n\).
+\end{enumerate}
+
+\subsubsection{Question}
+\(GB = 1\,\)MHz, \(R_2 C = 1\,\)ms, \(p_1 = 2\pi \cdot 10\,\)rad/s, no \(R_s\). Find \(f_n\) and \(Q\).
+\paragraph{Solution:}
+\begin{align*}
+  2\pi GB R_2 C &= 2\pi \cdot 10^6 \cdot 10^{-3} = 6283 \hspace{1cm} \sqrt{6283} = 79.27 \\
+  p_1 R_2 C &= 2\pi \cdot 10 \cdot 10^{-3} = 0.0628 \hspace{1cm}
+  Q = \frac{79.27}{1 + 0.0628} = \frac{79.27}{1.0628} = 74.6 \\
+  \omega_n &= \sqrt{\frac{2\pi \cdot 10^6}{10^{-3}}} = \sqrt{6.283 \times 10^{9}} = 7.927 \times 10^{4}\,rad/s \hspace{1cm}
+  f_n = \frac{\omega_n}{2\pi} = 12.6\,kHz
+\end{align*}
+The circuit rings at \(12.6\,\)kHz.
