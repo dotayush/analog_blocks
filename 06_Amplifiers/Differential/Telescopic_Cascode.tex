@@ -22,7 +22,7 @@ speed per unit power of single stage op-amps, at the cost of swing.
   \draw (M3.D) -- (M5.D);
   \draw (M5.S) -- (M7.D);
   \draw (M7.S) node[vcc]{$V_{dd}$};
-  \draw (0,3.15) node[circ]{} -- (1.8,3.15) node[circ]{} node[right]{$V_{o1}$};
+  \draw (0,3.15) node[circ]{} -- (1.8,3.15) node[circ]{} node[right]{$V_{o1}$} to[capacitor, l={$C_L$}] (1.8,1.15) node[ground]{};
 \end{circuitfig}
 
 \subsubsection{Transfer Function}
@@ -56,23 +56,33 @@ speed per unit power of single stage op-amps, at the cost of swing.
     \begin{align*}
       A_d &= \frac{V_{o1} - V_{o2}}{V_{id}} = \frac{2 V_{o1}}{V_{id}} = -g_{m1}(Z_{dn} \parallel Z_{up}) \approx -g_{m1}\left[(g_{m3} r_{o3} r_{o1}) \parallel (g_{m5} r_{o5} r_{o7})\right]
     \end{align*}
+    With \(C_L\) at each output, applying KCL at \(V_{o1}\):
+    \begin{align*}
+      V_{o1}\left(\frac{1}{Z_{dn} \parallel Z_{up}} + sC_L\right) &= -g_{m1}\frac{V_{id}}{2} \hspace{1cm} \Rightarrow \hspace{1cm}
+      A_d(s) = -\frac{g_{m1}}{\frac{1}{Z_{dn} \parallel Z_{up}} + sC_L} \tag{1}
+    \end{align*}
 \end{enumerate}
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \textbf{Gain}: all devices alike (\(g_m\), \(r_o\)),
-    \(Z_{dn} \approx Z_{up} \approx g_m r_o^2\), so
-    \(Z_{dn} \parallel Z_{up} \approx \frac{g_m r_o^2}{2}\) and
-    \(A_d \approx -g_m \cdot \frac{g_m r_o^2}{2} = -\frac{(g_m r_o)^2}{2}\).
-  \item \textbf{Bandwidth}: \(C_L\) at each output,
-    \(V_{o1}(\frac{1}{Z_{dn} \parallel Z_{up}} + sC_L) = -g_{m1}\frac{V_{id}}{2}\) gives
-    \(p_1 = \frac{1}{(Z_{dn} \parallel Z_{up}) C_L}\) and
-    \(GB = \frac{|A_d|\, p_1}{2\pi} = \frac{g_{m1}(Z_{dn} \parallel Z_{up})}{2\pi (Z_{dn} \parallel Z_{up}) C_L} = \frac{g_{m1}}{2\pi C_L}\);
-    the non-dominant pole is at the cascode node \(V_x\), where (once \(C_L\)
-    shorts the output) the source of \(M_3\) presents \(\approx \frac{1}{g_{m3}}\):
-    \(p_2 \approx \frac{g_{m3}}{C_x}\), which is high because \(M_3\) is an NMOS
-    common gate.
-  \item \textbf{Slew, Large Signal, Time Domain, AC Input Analysis (Q6)}: with all of \(I_T\) in \(M_1\), side 1 has \(I_T\)
+  \item \textbf{Poles (\(D(s) = 0\))}: from (1),
+    \begin{align*}
+      s_{p1} &= -\frac{1}{(Z_{dn} \parallel Z_{up}) C_L} \hspace{1cm} f_{p1} = \frac{1}{2\pi (Z_{dn} \parallel Z_{up}) C_L} \hspace{0.5cm} \text{(dominant)}
+    \end{align*}
+    non-dominant at the cascode node \(V_x\), where (once \(C_L\) shorts the output) the source
+    of \(M_3\) presents \(\approx \frac{1}{g_{m3}}\): \(s_{p2} \approx -\frac{g_{m3}}{C_x}\), high because \(M_3\) is an
+    NMOS common gate.
+  \item \textbf{Zeroes (\(N(s) = 0\))}: \(N(s) = -g_{m1} \neq 0\): no finite zero.
+  \item \textbf{DC Gain (\(A_d(0)\))}: all devices alike (\(g_m\), \(r_o\)):
+    \begin{align*}
+      Z_{dn} \approx Z_{up} \approx g_m r_o^2 \hspace{1cm} Z_{dn} \parallel Z_{up} \approx \frac{g_m r_o^2}{2} \hspace{1cm}
+      A_d \approx -g_m \cdot \frac{g_m r_o^2}{2} = -\frac{(g_m r_o)^2}{2}
+    \end{align*}
+  \item \textbf{Gain-Bandwidth Product (\(GB\))}:
+    \begin{align*}
+      GB &= |A_d| f_{p1} = g_{m1}(Z_{dn} \parallel Z_{up})\cdot\frac{1}{2\pi (Z_{dn} \parallel Z_{up}) C_L} = \frac{g_{m1}}{2\pi C_L}
+    \end{align*}
+  \item \textbf{Slew Rate (Large Signal, Time Domain, AC Input Analysis (Q6))}: with all of \(I_T\) in \(M_1\), side 1 has \(I_T\)
     pulled down and \(\frac{I_T}{2}\) supplied by the load, a net \(\frac{I_T}{2}\)
     out of \(C_L\); side 2 has \(M_2\) off and \(\frac{I_T}{2}\) into \(C_L\):
     \[
@@ -81,8 +91,23 @@ speed per unit power of single stage op-amps, at the cost of swing.
       SR = \left|\frac{d(V_{O1} - V_{O2})}{dt}\right| = \frac{I_T}{C_L}
     \]
     i.e. \(\frac{I_T}{2 C_L}\) per side and \(\frac{I_T}{C_L}\) differentially.
-  \item \textbf{Common mode feedback}: both outputs are high impedance nodes, so
+  \item \textbf{Common Mode Feedback (CMFB)}: both outputs are high impedance nodes, so
     the output common mode is set by a CMFB loop adjusting \(V_{B7}\) or the tail.
+  \item \textbf{Impedances}:
+    \paragraph{At Input:} \(I_G = 0\): \(Z_{in} \to \infty\) at DC.
+    \paragraph{At Output:} \(Z_{out} = Z_{dn} \parallel Z_{up} \approx \frac{g_m r_o^2}{2}\) per side.
+  \item \textbf{Output Swing (Max)}: from Q5, \(V_{ov9} + V_{ov1} + V_{ov3} \leq V_{O} \leq V_{dd} - |V_{ov7}| - |V_{ov5}|\).
+  \item \textbf{Advantages \& Limitations}: gain \(\approx \frac{(g_m r_o)^2}{2}\) and \(GB = \frac{g_{m1}}{2\pi C_L}\)
+    from a single current path (lowest power), high \(p_2\) (NMOS cascode); but five \(V_{ov}\)
+    of headroom, input common mode tied to \(V_{B3}\), and unity gain buffering needs
+    \(V_{IC} = V_O\), which the stack rarely allows.
+\end{enumerate}
+
+\subsubsection{Design}
+\begin{enumerate}
+  \item \(I_T = SR \cdot C_L\); \(g_{m1} = 2\pi GB\, C_L\), \(V_{ov1} = \frac{I_T}{g_{m1}}\).
+  \item Split the remaining headroom \(V_{dd} - \text{swing}\) among \(V_{ov3}\), \(V_{ov5}\), \(V_{ov7}\), \(V_{ov9}\).
+  \item \(V_{B3}\), \(V_{B5}\), \(V_{B7}\) set each device at the edge of saturation plus margin; CMFB on \(V_{B7}\).
 \end{enumerate}
 
 \subsubsection{Question}
