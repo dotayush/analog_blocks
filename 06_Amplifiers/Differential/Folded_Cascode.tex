@@ -168,3 +168,24 @@ Find \(A_d\), \(GB\), \(SR\) and \(I_{dd}\).
   SR = \frac{I_T}{C_L} = \frac{200\,\mu A}{2\,pF} = 100\,V/\mu s \\
   I_{dd} &= 2 I_B = 400\,\mu A
 \end{align*}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms Iin vf Vt It gm3 go1 go3 goB Rf
+  % short circuit current: KCL at the fold node
+  x = solve(Iin - (gm3 + go3)*vf == (go1 + goB)*vf, vf);
+  printf('=== |Isc|/Iin ===\n'); pretty(simplify((gm3 + go3)*x/Iin))
+  % output impedance down: It through M3 and Rf
+  vt = solve(It == gm3*(-It*Rf) + go3*(Vt - It*Rf), Vt);
+  printf('=== Zdn ===\n'); pretty(expand(simplify(subs(vt/It, go3, 1/sym('ro3')))))
+
+  % Question: IT = IB = 200u, Vov = 0.2, Kclm = 0.1, CL = 2p
+  g_m = 1e-3; ro = 1e5; roB = 5e4;
+  Rfn = ro*roB/(ro + roB); Zdn = ro + g_m*ro*Rfn + Rfn; Zup = 2*ro + g_m*ro^2;
+  Zp = Zdn*Zup/(Zdn + Zup); frac = 1.01/1.04;
+  printf('Rf = %.1f k, Zdn = %.3f M, Zup = %.1f M, Ad = %.0f (%.0f dB), GB = %.1f MHz\n', ...
+         Rfn/1e3, Zdn/1e6, Zup/1e6, g_m*frac*Zp, 20*log10(g_m*frac*Zp), g_m/(2*pi*2e-12)/1e6);
+\end{lstlisting}

@@ -128,3 +128,28 @@ Find the CMRR, approximate and exact.
   a &= \frac{R_4 (R_1 + R_2)}{R_1 (R_3 + R_4)} = \frac{10.1 \cdot 20}{10 \cdot 20.1} = \frac{202}{201} = 1.004975 \hspace{1cm} b = 1 \\
   CMRR &= \frac{a + b}{2|a - b|} = \frac{2.004975}{2 \cdot 0.004975} = \frac{2.004975}{0.009950} = 201.5
 \end{align*}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms s V1 V2 Vout Vm G1 G2 G3 G4 A0 p1
+  A = A0*p1/(s + p1);
+  Vp = G3/(G3 + G4)*V2;                     % equation (1)
+
+  [vout, vm] = solve((Vm - V1)*G1 + (Vm - Vout)*G2 == 0, Vout == A*(Vp - Vm), Vout, Vm);
+  printf('=== Vout(s), equation (5) ===\n'); pretty(simplify(vout))
+  v0 = limit(subs(vout, s, 0), A0, inf);
+  printf('=== Vout, A0 -> oo ===\n'); pretty(simplify(v0))
+
+  % matched ratios R4/R3 = R2/R1 = k
+  syms R1 R3 k e
+  a = simplify(subs(diff(v0, V2), [G1 G2 G3 G4], [1/R1 1/(k*R1) 1/R3 1/(k*(1 + e)*R3)]));
+  printf('=== a (R4 off by e) ===\n'); pretty(a)
+  printf('=== a to first order in e ===\n'); pretty(simplify(taylor(a, e, 0, 'order', 2)))
+
+  % Question: k = 1, R4 = 10.1k
+  an = 10.1*20/(10*20.1);
+  printf('a = %.6f, CMRR approx = %.0f, exact = %.1f\n', an, (1 + 1)/0.01, (an + 1)/(2*abs(an - 1)));
+\end{lstlisting}

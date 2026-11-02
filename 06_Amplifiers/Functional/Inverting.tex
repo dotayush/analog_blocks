@@ -128,3 +128,27 @@ the bandwidth and \(GBW\).
   f_p &\approx F \cdot GB = \frac{1\,MHz}{11} = 90.9\,kHz \\
   GBW &= (1 - F)\, GB = \frac{10}{11} \cdot 1\,MHz = 909\,kHz \hspace{1cm} [= 9.9989 \cdot 90.9\,kHz]
 \end{align*}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms s Vin Vout Vm G1 G2 A0 p1
+  A = A0*p1/(s + p1);                       % single pole op-amp
+
+  % KCL at V- with Vout = A(0 - V-)
+  [vout, vm] = solve((Vm - Vin)*G1 + (Vm - Vout)*G2 == 0, Vout == -A*Vm, Vout, Vm);
+  H = simplify(vout/Vin);
+  printf('=== H(s) ===\n'); pretty(H)
+  printf('=== H(0) ===\n'); pretty(simplify(subs(H, s, 0)))
+  [n, d] = numden(H);
+  printf('=== pole s_p ===\n'); pretty(solve(d == 0, s))
+  printf('=== H(0), A0 -> oo ===\n'); pretty(limit(subs(H, s, 0), A0, inf))
+
+  % Question: R1 = 1k, R2 = 10k, A0 = 1e5, GB = 1 MHz
+  R1 = 1e3; R2 = 10e3; a0 = 1e5; GB = 1e6;
+  F = R1/(R1 + R2);
+  printf('F = %.4f, H(0) = %.5f, f_p = %.1f kHz, GBW = %.1f kHz\n', ...
+         F, -(R2/R1)*a0*F/(1 + a0*F), F*GB/1e3, (1 - F)*GB/1e3);
+\end{lstlisting}

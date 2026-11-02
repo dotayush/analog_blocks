@@ -149,3 +149,28 @@ with an ideal current source load, and \(A_V\) with \(R_L = 100\,k\Omega\).
   A_V &= -G_m (Z_{dn} \parallel R_L) = -0.990\,mS \cdot \frac{10.2\,M \cdot 0.1\,M}{10.2\,M + 0.1\,M} = -0.990\,mS \cdot 99.0\,k\Omega = -98.1 \hspace{0.5cm} [\text{check}]
 \end{align*}
 The \(100\,k\Omega\) load throws away almost all of the \(10100\): \(A_V \approx -g_{m1} R_L\).
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms s vin vx vo gm1 gm2 go1 go2 GL CL In
+  % KCL at Vx and Vout (body effect folded into gm2)
+  id1 = gm1*vin + go1*vx; id2 = -gm2*vx + go2*(vo - vx);
+  [x, o] = solve(id1 == id2, vo*GL + id2 == 0, vx, vo);
+  Av = simplify(o/vin);
+  printf('=== Av, equation (5) ===\n'); pretty(Av)
+  % output impedance: Vin = 0, GL removed, It into the drain of M2
+  syms It
+  [x, o] = solve(go1*vx == -gm2*vx + go2*(vo - vx), It == -gm2*vx + go2*(vo - vx), vx, vo);
+  printf('=== Zdn ===\n'); pretty(expand(simplify(subs(o/It, [go1 go2], [1/sym('ro1') 1/sym('ro2')]))))
+  % cascode device noise reaching the output (output shorted)
+  x = solve(go1*vx == -gm2*vx - go2*vx + In, vx);
+  printf('=== Iout/In (M2 noise) ===\n'); pretty(simplify(go1*x/In))
+
+  % Question
+  g_m = 1e-3; g_o = 1e-5;
+  printf('Zdn = %.1f M, Av0 = %.0f, Av(100k) = %.1f\n', (1/g_o + 1/g_o + g_m/g_o^2)/1e6, ...
+         -g_m*(g_m + g_o)/g_o^2, -g_m*(g_m + g_o)/((g_m + 2*g_o)*1e-5 + g_o^2));
+\end{lstlisting}

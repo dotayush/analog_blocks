@@ -94,3 +94,24 @@ voltage gain.
   g_m + g_{be} &= 38.46\,mS + 0.385\,mS = 38.85\,mS \hspace{1cm} Z_{in} = \frac{1}{38.85\,mS} = 25.7\,\Omega \\
   A_V &= \frac{(38.46\,mS)(5\,k\Omega)(20\,mS)}{20\,mS + 38.85\,mS} = 192.3 \cdot \frac{20}{58.85} = 65.4
 \end{align*}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms s Vin Vout Ve gm gbe GS GC CL It
+
+  % KCL at Ve and Vout (Ic = -gm Ve, Ib = -gbe Ve)
+  [ve, vout] = solve((Ve - Vin)*GS == -(gm + gbe)*Ve, Vout*(GC + s*CL) - gm*Ve == 0, Ve, Vout);
+  H = simplify(vout/Vin);
+  printf('=== H(s), equation (1) ===\n'); pretty(H)
+  printf('=== DC gain, GS -> oo ===\n'); pretty(simplify(limit(subs(H, s, 0), GS, inf)))
+  ve = solve(It + (-(gm + gbe)*Ve) == 0, Ve);      % It + Ib + Ic = 0
+  printf('=== Zin ===\n'); pretty(simplify(ve/It))
+
+  % Question: IC = 1 mA, BF = 100, RC = 5k, RS = 50
+  g_m = 1e-3/26e-3; g_be = g_m/100; gs = 1/50;
+  printf('Zin = %.1f Ohm, Av = %.1f\n', 1/(g_m + g_be), g_m*5e3*gs/(gs + g_m + g_be));
+  printf('IC for Zin = 50 Ohm: %.0f uA\n', 0.99*26e-3/50*1e6);
+\end{lstlisting}

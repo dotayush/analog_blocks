@@ -132,3 +132,23 @@ devices, body effect neglected, \(C_L = 1\,\)pF per output, \(V_{dd} = 1.8\,\)V.
   SR = \frac{I_T}{C_L} = \frac{200\,\mu A}{1\,pF} = 200\,V/\mu s \\
   \text{swing} &= V_{dd} - V_{ov9} - V_{ov1} - V_{ov3} - |V_{ov5}| - |V_{ov7}| = 1.8 - 5 \cdot 0.2 = 0.8\,V
 \end{align*}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms s Vo1 Vid gm1 Zdn Zup CL
+  % half circuit: KCL at Vo1 with Zdn || Zup and CL
+  vo1 = solve(Vo1*(1/Zdn + 1/Zup + s*CL) == -gm1*Vid/2, Vo1);
+  Ad = simplify(2*vo1/Vid);
+  printf('=== Ad(s), equation (1) ===\n'); pretty(Ad)
+  [n, d] = numden(Ad);
+  printf('=== pole ===\n'); pretty(solve(d == 0, s))
+
+  % Question: IT = 200u, Vov = 0.2, Kclm = 0.1, CL = 1p, Vdd = 1.8
+  g_m = 1e-3; ro = 1/(0.1*100e-6);
+  Z = ro + ro + g_m*ro^2; Zp = Z/2;
+  printf('Zdn = %.1f M, Ad = %.0f (%.1f dB), GB = %.0f MHz, SR = %.0f V/us, swing = %.1f V\n', ...
+         Z/1e6, g_m*Zp, 20*log10(g_m*Zp), g_m/(2*pi*1e-12)/1e6, 200e-6/1e-12/1e6, 1.8 - 5*0.2);
+\end{lstlisting}

@@ -115,3 +115,27 @@ multiplied by \(B_F + 1\), output impedance divided by \(B_F + 1\).
   Z_{in} &= r_{be} + (B_F + 1) R_E = 2.6\,k + 101\,k = 103.6\,k\Omega \\
   Z_{out} &= \frac{R_S + r_{be}}{B_F + 1} = \frac{10\,k + 2.6\,k}{101} = \frac{12.6\,k}{101} = 125\,\Omega
 \end{align*}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms Vin Vout Vb gm gbe GS YE It
+
+  % KCL at Vb (1) and Vout (2)
+  [vb, vout] = solve((Vb - Vin)*GS + gbe*(Vb - Vout) == 0, Vout*YE == (gbe + gm)*(Vb - Vout), Vb, Vout);
+  H = simplify(vout/Vin);
+  printf('=== H(s), equation (4) ===\n'); pretty(H)
+  syms RS RE rbe BF
+  printf('=== H(0) in resistances ===\n');
+  pretty(simplify(subs(H, [GS YE gbe gm], [1/RS 1/RE 1/rbe BF/rbe])))
+  % output impedance: Vin = 0, YE removed
+  [vb, vout] = solve(Vb*GS + gbe*(Vb - Vout) == 0, It + (gm + gbe)*(Vb - Vout) == 0, Vb, Vout);
+  printf('=== Zout ===\n'); pretty(simplify(subs(vout/It, [GS gbe gm], [1/RS 1/rbe BF/rbe])))
+
+  % Question: IC = 1 mA, BF = 100, RE = 1k, RS = 10k
+  r_be = 100*26e-3/1e-3;
+  printf('Av0 = %.3f, H = %.3f, Zin = %.1f k, Zout = %.0f Ohm\n', ...
+         101e3/(101e3 + r_be), 101e3/(10e3 + r_be + 101e3), (r_be + 101e3)/1e3, (10e3 + r_be)/101);
+\end{lstlisting}

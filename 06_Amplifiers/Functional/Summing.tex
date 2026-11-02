@@ -96,3 +96,22 @@ through \(G_k\) into \(V_-\) and feedback \(G_F\). Op-amp model:
   F &= \frac{G_F}{G_F + G_1 + G_2} = \frac{\frac{1}{10\,k}}{\frac{3}{10\,k}} = \frac{1}{3} \hspace{1cm}
   f_p = F \cdot GB = \frac{1\,MHz}{3} = 333\,kHz
 \end{align*}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms s V1 V2 Vout Vm G1 G2 GF A0 p1
+  A = A0*p1/(s + p1);
+
+  % two inputs, KCL at V-, Vout = -A V-
+  [vout, vm] = solve((Vm - V1)*G1 + (Vm - V2)*G2 + (Vm - Vout)*GF == 0, Vout == -A*Vm, Vout, Vm);
+  H1 = simplify(subs(vout, V2, 0)/V1);
+  printf('=== H_1(s) ===\n'); pretty(H1)
+  printf('=== Vout(0), A0 -> oo ===\n'); pretty(simplify(limit(subs(vout, s, 0), A0, inf)))
+
+  % Question: R1 = R2 = RF = 10k, V1 = 0.5, V2 = -0.2, GB = 1 MHz
+  g = 1/10e3;
+  printf('Vout = %.2f V, F = %.4f, f_p = %.0f kHz\n', -(0.5 - 0.2), g/(3*g), 1e6/3/1e3);
+\end{lstlisting}

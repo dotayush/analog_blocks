@@ -203,3 +203,34 @@ outside the symbol.
   f_{p1} &= \frac{p_1}{2\pi} = \frac{135\,\mu S}{2\pi \cdot 1\,pF} = 21.5\,MHz \hspace{1cm}
   GB = \frac{1\,mS}{2\pi \cdot 1\,pF} = 159\,MHz
 \end{align*}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms s Vin Vout Vg gm go GD GS Cgs Cgd CL
+
+  % Q4: KCL at Vg (2) and Vout (3)
+  [vg, vout] = solve((Vg - Vin)*GS + Vg*s*Cgs + (Vg - Vout)*s*Cgd == 0, ...
+                     Vout*(GD + go) + gm*Vg + Vout*s*CL + (Vout - Vg)*s*Cgd == 0, Vg, Vout);
+  H = simplify(vout/Vin);
+  printf('=== H(s), equation (4) ===\n'); pretty(H)
+  [n, d] = numden(H);
+  printf('=== zero ===\n'); pretty(solve(n == 0, s))
+  printf('=== DC gain ===\n'); pretty(simplify(subs(H, s, 0)))
+  printf('=== ideal source (GS -> oo), equation (5) ===\n'); pretty(simplify(limit(H, GS, inf)))
+
+  % Q5: saturation with CLM, equation for VOUT
+  syms VOUT VIN Vth kn K Vdd
+  printf('=== VOUT in saturation ===\n');
+  pretty(solve(VOUT == Vdd - kn*(VIN - Vth)^2*(1 + K*VOUT)/GD, VOUT))
+
+  % Question
+  Kp = 200e-6; ID = 100e-6; Vov = 0.2; Kclm = 0.1; VOUTq = 1; vdd = 1.8; cl = 1e-12;
+  WL = 2*ID/(Kp*Vov^2); RD = (vdd - VOUTq)/ID; g_m = 2*ID/Vov; g_o = Kclm*ID;
+  Av = -g_m/(1/RD + g_o);
+  printf('W/L = %.0f, RD = %.0f k, Av0 = %.2f, f_p1 = %.1f MHz, GB = %.0f MHz\n', ...
+         WL, RD/1e3, Av, (1/RD + g_o)/(2*pi*cl)/1e6, g_m/(2*pi*cl)/1e6);
+  printf('HD2 at Vp = 8 mV: %.1f %%\n', 100*8e-3/(4*Vov));
+\end{lstlisting}

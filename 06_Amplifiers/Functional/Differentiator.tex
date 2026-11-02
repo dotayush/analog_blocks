@@ -123,3 +123,28 @@ input and \(G_2\) in feedback. Op-amp model: \(V_{out} = A(V_+ - V_-)\), \(A = A
   f_n = \frac{\omega_n}{2\pi} = 12.6\,kHz
 \end{align*}
 The circuit rings at \(12.6\,\)kHz.
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms s Vin Vout Vm G2 C A0 p1 R2 Rs
+  A = A0*p1/(s + p1);
+
+  % Q4: KCL at V-, capacitor input
+  [vout, vm] = solve((Vm - Vin)*s*C + (Vm - Vout)*G2 == 0, Vout == -A*Vm, Vout, Vm);
+  H = simplify(subs(vout/Vin, G2, 1/R2));
+  printf('=== H(s), equation (1) ===\n'); pretty(H)
+
+  % loop with Rs: 1 + A F = 0
+  F = (1 + s*Rs*C)/(1 + s*(R2 + Rs)*C);
+  [n, d] = numden(simplify(1 + A*F));
+  printf('=== characteristic polynomial with Rs ===\n'); c = coeffs(expand(n), s, 'all'); pretty(c.')   % [s^2; s; 1]
+
+  % Question: GB = 1 MHz, R2 C = 1 ms, p1 = 2 pi 10
+  wgb = 2*pi*1e6; RC = 1e-3; p = 2*pi*10;
+  wn = sqrt(wgb/RC); Q = sqrt(wgb*RC)/(1 + p*RC);
+  printf('Q = %.1f, f_n = %.1f kHz\n', Q, wn/(2*pi)/1e3);
+  printf('Rs for Q = 0.707 (R2 = 100k, C = 10n): %.0f Ohm\n', (sqrt(2*wgb*RC) - 1)/(wgb*10e-9));
+\end{lstlisting}

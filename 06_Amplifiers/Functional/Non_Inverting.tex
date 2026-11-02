@@ -115,3 +115,29 @@ Find the exact DC gain and the bandwidth.
   H(0) &= \frac{A_0}{1 + A_0 F} = \frac{10^5}{1 + 10^4} = \frac{10^5}{10001} = 9.9990 \\
   f_p &\approx F \cdot GB = 0.1 \cdot 1\,MHz = 100\,kHz
 \end{align*}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms s Vin Vout Vm G1 G2 A0 p1
+  A = A0*p1/(s + p1);
+
+  % KCL at V-, Vout = A(Vin - V-)
+  [vout, vm] = solve(Vm*G1 + (Vm - Vout)*G2 == 0, Vout == A*(Vin - Vm), Vout, Vm);
+  H = simplify(vout/Vin);
+  printf('=== H(s), equation (3) ===\n'); pretty(H)
+  printf('=== H(0) ===\n'); pretty(simplify(subs(H, s, 0)))
+  printf('=== H(0), A0 -> oo ===\n'); pretty(limit(subs(H, s, 0), A0, inf))
+
+  % offset: Vout = (1 + R2/R1)(VOS - IBp Rp) + IBm R2, bias cancellation
+  syms R1 R2 VOS IB
+  Rp = R1*R2/(R1 + R2);
+  printf('=== output error with Rp = R1||R2, IB+ = IB- ===\n');
+  pretty(simplify((1 + R2/R1)*(VOS - IB*Rp) + IB*R2))
+
+  % Question: R1 = 1k, R2 = 9k, A0 = 1e5, GB = 1 MHz
+  F = 1e3/(1e3 + 9e3); a0 = 1e5;
+  printf('F = %.2f, H(0) = %.4f, f_p = %.0f kHz\n', F, a0/(1 + a0*F), F*1e6/1e3);
+\end{lstlisting}

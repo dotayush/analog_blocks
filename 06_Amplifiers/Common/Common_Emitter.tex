@@ -126,3 +126,26 @@ Find \(A_{V0}\) and \(Z_{in}\) for \(R_E = 0\) and \(R_E = 500\,\Omega\).
   R_E = 500 &: \hspace{0.5cm} (g_m + g_{be}) R_E = 38.85\,m \cdot 500 = 19.42 \\
   &\hspace{0.5cm} A_{V0} = -\frac{192.3}{1 + 19.42} = -\frac{192.3}{20.42} = -9.42 \hspace{1cm} Z_{in} = 2.6\,k + 101 \cdot 500 = 2.6\,k + 50.5\,k = 53.1\,k\Omega
 \end{align*}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms s Vin Vout Ve Vc gm gbe go GE GC CL It
+
+  % Q4: KCL at Ve (3) and Vout (4)
+  [ve, vout] = solve(Ve*GE == (gbe + gm)*(Vin - Ve), Vout*(GC + s*CL) + gm*(Vin - Ve) == 0, Ve, Vout);
+  H = simplify(vout/Vin);
+  printf('=== H(s), equation (5) ===\n'); pretty(H)
+  printf('=== Zin = Vin/Ib ===\n'); pretty(simplify(Vin/(gbe*(Vin - ve))))
+  % output impedance with go: Vin = 0, GC removed
+  [ve, vc] = solve(Ve*GE == It - gbe*Ve, It == gm*(0 - Ve) + go*(Vc - Ve), Ve, Vc);
+  printf('=== Zout prime ===\n'); pretty(simplify(vc/It))
+
+  % Question: IC = 1 mA, BF = 100, RC = 5k, VT = 26 mV
+  g_m = 1e-3/26e-3; g_be = g_m/100;
+  for RE = [0 500]
+    printf('RE = %3d: Av0 = %7.2f, Zin = %.1f k\n', RE, -g_m*5e3/(1 + (g_m + g_be)*RE), (1/g_be + 101*RE)/1e3);
+  end
+\end{lstlisting}

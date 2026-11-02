@@ -199,3 +199,30 @@ written as differential and common mode parts,
   V_{IC,\min} &= V_{GS} + V_{ov,T} = (0.5 + 0.2) + 0.2 = 0.9\,V \\
   V_{IC,\max} &= V_{dd} - \frac{I_D}{G_D} + V_{th} = 1.8 - 100\,\mu A \cdot 8\,k\Omega + 0.5 = 1.8 - 0.8 + 0.5 = 1.5\,V
 \end{align*}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  % Q5: large signal transfer, equation (3)
+  syms VID kn IT Vov positive
+  dI = sqrt(kn)*VID*sqrt(2*IT - kn*VID^2);
+  printf('=== d(ID1 - ID2)/dVID at 0 ===\n'); pretty(simplify(subs(diff(dI, VID), VID, 0)))
+  ratio = simplify(subs(dI/(sqrt(2*kn*IT)*VID), kn, IT/(2*Vov^2)));
+  printf('=== (ID1 - ID2)/(gm VID) ===\n'); pretty(ratio)
+
+  % Q4: half circuit with CL, common mode gain
+  syms s Vo1 Vid gm go GD CL got Vic Vs
+  vo1 = solve(Vo1*(GD + s*CL) + gm*Vid/2 + go*Vo1 == 0, Vo1);
+  printf('=== Ad(s), equation (5) ===\n'); pretty(simplify(2*vo1/Vid))
+  vs = solve(got/2*Vs == gm*(Vic - Vs), Vs);
+  Ac = simplify(-(got/2*vs)/GD/Vic);
+  printf('=== Ac ===\n'); pretty(Ac)
+
+  % Question
+  g_m = 1e-3; g_o = 10e-6; gD = 125e-6; g_ot = 20e-6;
+  printf('Ad = %.2f, Ac = %.4f, CMRR = %.1f (%.1f dB), V_ID(1%%) = %.1f mV\n', -g_m/(gD + g_o), ...
+         -g_m*g_ot/(gD*(2*g_m + g_ot)), g_m/g_ot + 0.5, 20*log10(g_m/g_ot + 0.5), 0.282*0.2e3);
+  printf('HD3 at Vp = 0.1 V, Vov = 0.2 V: %.2f %%\n', 100*0.1^2/(32*0.2^2));
+\end{lstlisting}

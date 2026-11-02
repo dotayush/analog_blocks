@@ -102,3 +102,25 @@ multiplied by \(1 + A_b\) without stacking more devices (no swing cost).
   \frac{Z_{out}}{Z_{out,plain}} = \frac{510.2}{10.2} = 50.0 \approx 1 + A_b \\
   A_{V0} &\approx -g_{m1}\frac{Z_{out}}{2} = -10^{-3} \cdot \frac{510.2 \times 10^{6}}{2} = -255100 \hspace{1cm} (20\log_{10} 255100 = 108\,dB)
 \end{align*}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms s vo It gm1 gm2 go1 go2 Ab Rc pb Ab0 CL
+  % output impedance: Vx = It/go1, Vg2 = -Ab Vx
+  vx = It/go1;
+  vout = solve(It == gm2*(-Ab*vx - vx) + go2*(vo - vx), vo);
+  printf('=== Zout, equation (1) ===\n'); pretty(expand(simplify(vout/It)))
+  % gain with Ab(s) = Ab0/(1 + s/pb)
+  Z = Rc*(1 + Ab0 + s/pb)/(1 + s/pb);
+  A = simplify(-gm1/(1/Z + s*CL));
+  printf('=== A(s), equation (2) ===\n'); pretty(A)
+  printf('=== A(0) ===\n'); pretty(simplify(subs(A, s, 0)))
+
+  % Question: gm = 1 mS, ro = 100k, Ab = 50
+  Zo = 1e5 + 1e5 + 1e-3*51*1e10; Zc = 0.2e6 + 1e7;
+  printf('Zout = %.1f M, plain = %.1f M, ratio = %.1f, Av0 = %.0f (%.0f dB)\n', ...
+         Zo/1e6, Zc/1e6, Zo/Zc, 1e-3*Zo/2, 20*log10(1e-3*Zo/2));
+\end{lstlisting}

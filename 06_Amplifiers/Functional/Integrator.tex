@@ -137,3 +137,28 @@ frequency.
   t_{-10V} &= \frac{10\,V}{10^4\,V/s} = 1\,ms \\
   f_u &= \frac{1}{2\pi R_1 C} = \frac{1}{2\pi \cdot 10^{-4}\,s} = 1.59\,kHz
 \end{align*}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms s Vin Vout Vm G1 C A0 p1 t
+  A = A0*p1/(s + p1);
+
+  % Q4: KCL at V-, capacitor feedback
+  [vout, vm] = solve((Vm - Vin)*G1 + (Vm - Vout)*s*C == 0, Vout == -A*Vm, Vout, Vm);
+  H = simplify(vout/Vin);
+  printf('=== H(s), equation (3) ===\n'); pretty(H)
+  printf('=== H(0) ===\n'); pretty(simplify(subs(H, s, 0)))
+
+  % Q5: step VIN, finite A0, ODE dVout/dt = -G1/(C(1+A0)) (Vout + A0 VIN)
+  syms V(t) VIN
+  ode = diff(V, t) == -G1/(C*(1 + A0))*(V + A0*VIN);
+  sol = dsolve(ode, V(0) == 0);
+  printf('=== Vout(t), equation (2) ===\n'); pretty(simplify(sol))
+
+  % Question: R1 = 10k, C = 10n, 1 V step
+  R1 = 10e3; c = 10e-9;
+  printf('slope = %.0f V/s, t(-10 V) = %.2f ms, f_u = %.0f Hz\n', -1/(R1*c), 10/(1/(R1*c))*1e3, 1/(2*pi*R1*c));
+\end{lstlisting}

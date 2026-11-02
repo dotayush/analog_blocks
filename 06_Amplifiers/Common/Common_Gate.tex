@@ -167,3 +167,29 @@ The DC path for the drain current goes through \(G_S\) and the source
   Z'_{out} &= 100\,k + 1\,k + (1.2\,m)(100\,k)(1\,k) = 100\,k + 1\,k + 120\,k = 221\,k\Omega \\
   Z_{out} &= 8\,k \parallel 221\,k = \frac{8\,k \cdot 221\,k}{8\,k + 221\,k} = \frac{1768}{229}\,k\Omega = 7.72\,k\Omega
 \end{align*}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms Vin Vout Vs gm gmb go GD GS It
+
+  Id = -(gm + gmb + go)*Vs + go*Vout;                 % equation (4)
+  % gain: KCL at Vout (5) and Vs (6)
+  [vs, vout] = solve(Vout*GD + Id == 0, (Vs - Vin)*GS == Id, Vs, Vout);
+  printf('=== H, equation (9) ===\n'); pretty(simplify(vout/Vin))
+  % input impedance: GS removed, It into source
+  [vs, vout] = solve(It + Id == 0, Vout*GD + Id == 0, Vs, Vout);
+  printf('=== Zin ===\n'); pretty(simplify(subs(vs/It, [GD go], [1/sym('RD') 1/sym('ro')])))
+  % output impedance: GD removed, It into drain, Vin = 0
+  [vs, vout] = solve(It == Id, Vs*GS == Id, Vs, Vout);
+  printf('=== Zout prime ===\n'); pretty(simplify(subs(vout/It, [GS go], [1/sym('RS') 1/sym('ro')])))
+
+  % Question
+  g_m = 1e-3; g_mb = 0.2e-3; g_o = 10e-6; gD = 125e-6; gS = 1e-3;
+  A = gS*(g_m + g_mb + g_o)/(gS*(gD + g_o) + gD*(g_m + g_mb + g_o));
+  Zin = (gD + g_o)/(gD*(g_m + g_mb + g_o));
+  Zp = 1/g_o + 1/gS + (g_m + g_mb)/(g_o*gS);
+  printf('Av = %.2f, Zin = %.0f Ohm, Zout = %.2f k\n', A, Zin, 1/(gD + 1/Zp)/1e3);
+\end{lstlisting}

@@ -122,3 +122,19 @@ range, regulation recovers (and exceeds) the telescopic gain.
   f_{p1} &= \frac{1}{2\pi \cdot 2.5 \times 10^{8}\,\Omega \cdot 10^{-12}\,F} = \frac{1}{1.571 \times 10^{-3}\,s} = 637\,Hz \\
   GB &= \frac{g_m}{2\pi C_L} = \frac{10^{-3}}{2\pi \cdot 10^{-12}}\,Hz = 159\,MHz \hspace{1cm} [= 250000 \cdot 637\,Hz]
 \end{align*}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms vt It vf gm3 go3 Abn Rf
+  % output impedance down with gain boosted M3: Vg3 = -Abn Vf, Vf = It Rf
+  vtt = solve(It == gm3*(-Abn*It*Rf - It*Rf) + go3*(vt - It*Rf), vt);
+  printf('=== Zdn ===\n'); pretty(expand(simplify(subs(vtt/It, go3, 1/sym('ro3')))))
+
+  % Question: gm = 1 mS, ro = 100k, Rf ~ ro, Ab = 50, CL = 1p
+  Z = 1e-3*1e5*50*1e5; Zp = Z/2; Ad = 1e-3*Zp;
+  printf('Zdn = %.0f M, Ad = %.0f (%.0f dB), f_p1 = %.0f Hz, GB = %.0f MHz\n', ...
+         Z/1e6, Ad, 20*log10(Ad), 1/(2*pi*Zp*1e-12), 1e-3/(2*pi*1e-12)/1e6);
+\end{lstlisting}

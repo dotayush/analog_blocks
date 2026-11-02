@@ -118,3 +118,25 @@ A follower biased by a \(100\,\mu\)A sink (\(G_L = 2\,\mu\)S) has
   f_{p1} &= \frac{1.212\,mS}{2\pi \cdot 5\,pF} = 38.6\,MHz \\
   V_{OUT} &= 1.2 - 0.5 - 0.2 = 0.5\,V \hspace{1cm} [\text{ignoring the body effect shift of } V_{th}]
 \end{align*}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms s Vin Vout gm gmb go GL CL It
+
+  % KCL at Vout (source node)
+  vout = solve(Vout*(GL + s*CL) == gm*(Vin - Vout) + gmb*(0 - Vout) + go*(0 - Vout), Vout);
+  H = simplify(vout/Vin);
+  printf('=== H(s), equation (1) ===\n'); pretty(H)
+  printf('=== DC gain ===\n'); pretty(simplify(subs(H, s, 0)))
+  % output impedance: Vin = 0, GL removed
+  vout = solve(It - gm*Vout - gmb*Vout - go*Vout == 0, Vout);
+  printf('=== Zout ===\n'); pretty(simplify(vout/It))
+
+  % Question: 100 uA sink (GL = 2 uS), Vov = 0.2, gmb = 0.2 gm, CL = 5 pF
+  g_m = 1e-3; g_mb = 0.2e-3; g_o = 10e-6; gl = 2e-6; cl = 5e-12;
+  printf('Av0 = %.3f, Zout = %.0f Ohm, f_p1 = %.1f MHz, SR(fall) = %.0f V/us\n', ...
+         g_m/(g_m + g_mb + g_o + gl), 1/(g_m + g_mb + g_o), (g_m + g_mb + g_o + gl)/(2*pi*cl)/1e6, 100e-6/cl/1e6);
+\end{lstlisting}

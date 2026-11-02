@@ -110,3 +110,30 @@ the largest step that does not slew.
   \frac{1}{1 + A_0} &= \frac{1}{1 + 10^5} = 9.9999 \times 10^{-6} \approx 0.001\,\% \\
   V_{s,\max} &= \frac{SR}{2\pi GB} = \frac{10^6\,V/s}{2\pi \cdot 10^6\,Hz} = \frac{1}{6.283}\,V = 0.159\,V
 \end{align*}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms s Vin Vout A0 p1 t Vs
+  A = A0*p1/(s + p1);
+
+  % V+ = Vin, V- = Vout, Vout = A(V+ - V-)
+  vout = solve(Vout == A*(Vin - Vout), Vout);
+  H = simplify(vout/Vin);
+  printf('=== H(s), equation (2) ===\n'); pretty(H)
+  printf('=== H(0) ===\n'); pretty(simplify(subs(H, s, 0)))
+  [n, d] = numden(H);
+  printf('=== pole ===\n'); pretty(solve(d == 0, s))
+
+  % step response with wp = p1(1 + A0)
+  syms wp positive
+  Vo = ilaplace(Vs/s*wp/(s + wp), s, t);
+  printf('=== step response Vout(t) ===\n'); pretty(simplify(Vo))
+
+  % Question: A0 = 1e5, GB = 1 MHz, SR = 1 V/us
+  a0 = 1e5; GB = 1e6; SR = 1e6;
+  printf('gain error = %.4g, largest unslewed step = %.3f V\n', 1/(1 + a0), SR/(2*pi*GB));
+  printf('PM with Ro = 100, CL = 1n: %.1f deg\n', 90 - atand(2*pi*GB*100*1e-9));
+\end{lstlisting}
