@@ -25,6 +25,10 @@ chooses or a device exhibits is written with english letters.
     \(\boldsymbol{\mu}, \boldsymbol{\mu}_r\) & \(\mathbf{K}_M, \mathbf{K}_{MR}\) & permeability, relative permeability (\(\mu_0\) kept, a constant) \\ \hline
     \(\boldsymbol{\chi}_e, \boldsymbol{\chi}_m\) & \(\mathbf{X}_E, \mathbf{X}_M\) & electric, magnetic susceptibility \\ \hline
     \(\lambda, \Phi\) (flux) & \(\psi\) & flux linkage of an inductor \\ \hline
+    \(\alpha\) (leaky integrator) & \(a_l\) & integrator leakage coefficient \\ \hline
+    \(\Sigma G_k\) & \(G_T\) & sum of input conductances (summing amplifier) \\ \hline
+    \(FOM\) & \(F_W\) & converter figure of merit \\ \hline
+    \(1\sigma\) & one \(SD\) & one standard deviation design margin \\ \hline
   \end{tabular}
 \end{table}
 \noindent Other conventions:
@@ -39,6 +43,18 @@ chooses or a device exhibits is written with english letters.
   \item Conductances \(G = 1/R\), \(g_m\), \(g_o = 1/r_o\) are preferred
     over resistances since KCL is written in conductances.
   \item \(A \parallel B = \dfrac{AB}{A + B}\).
+  \item A bracket after a line, \([\ \cdot\ ]\), names what was used to get there (a substitution
+    \([\text{from (2)}]\), an approximation \([g_o \ll g_m]\), an identity, \([\text{Integrating both sides}]\),
+    \([\text{Inverse Laplace}]\)); plain algebra (multiplying or dividing both sides) is not annotated.
+  \item Every block is written in the same order: Overview, Schematic, Transfer Function
+    (numbered octant items, Q5 first), Analysis (Poles, Zeroes, DC Gain, Gain-Bandwidth Product,
+    block specific items, Impedances, Output Swing, Advantages \& Limitations), Design, Question
+    and Code.
+  \item The Code of a block is an Octave script (symbolic package, \texttt{pkg load symbolic}) that
+    writes the block's KCL equations, solves them and evaluates its Question; every script runs
+    as printed.
+  \item \(S_x^y = \frac{x}{y}\frac{\partial y}{\partial x}\) is the sensitivity of \(y\) to \(x\); \(HD_k\) is the \(k\)-th harmonic over the
+    fundamental.
 \end{enumerate}
 
 \section{Symbols and Labels}\label{sec:symbols}
@@ -50,8 +66,11 @@ members, and three rules cover the rest without repeating entries:
   \item a symbol with upper case subscripts is the large signal (bias) value of
     the listed small signal symbol (\(V_{O1}\) of \(V_{o1}\), \(V_G\) of \(V_g\)), and a
     \((Q)\) subscript marks the bias point;
-  \item \(d\) in front of a symbol is a small change of it (\(dV_{OUT}\), \(dR_{out}\));
-  \item letters written side by side are a product (\(sC_L\), \(aD\), \(kTR\)).
+  \item \(d\) in front of a symbol is a small change of it (\(dV_{OUT}\), \(dR_{out}\)), or the
+    mismatch between two nominally equal devices (\(dk\), \(dV_{th}\), \(dR\));
+  \item letters written side by side are a product (\(sC_L\), \(aD\), \(kTR\));
+  \item a \(dB\) subscript is the same quantity in decibels (\(SQNR_{dB}\), \(SNR_{jitter,dB}\)), and a \(\min\) or \(\max\)
+    subscript its smallest or largest allowed value (\(V_{F,\min}\), \(V_{DSB,\min}\)).
 \end{enumerate}
 \begin{symtable}
 \multicolumn{3}{|l|}{\textbf{Letters With More Than One Meaning (meaning depends on the chapter)}} \\ \hline
@@ -186,6 +205,8 @@ members, and three rules cover the rest without repeating entries:
 \(\omega_{GB}\), \(\omega_l\), \(\phi_{err}\) & \(2\pi GB\); integrator low frequency corner; integrator phase error & rad/s, rad/s, rad \\ \hline
 \(R_s\) (differentiator) & series input resistor & \(\Omega\) \\ \hline
 \(\overline{V_n^2}\), \(\overline{V_o^2}\), \(\overline{V_{n,in}^2}\), \(\overline{I_{out}^2}\) & noise density: op-amp input, output, input referred, mirror output current & V\(^2\)/Hz, A\(^2\)/Hz \\ \hline
+\(H_d\), \(H_{ideal}\), \(w_k\), \(f_u\), \(t_{sat}\) & differential transfer; ideal integrator \(-\frac{1}{sR_1C}\); summing weight; unity gain frequency; time to the rail & -, -, -, Hz, s \\ \hline
+\(V_{ICM,\min}\), \(V_{ICM,\max}\), \(V_{OUT,error}\), \(p_L\) & op-amp input common mode range; output error from offset; load pole \(\frac{1}{R_o C_L}\) & V, V, V, rad/s \\ \hline
 \multicolumn{3}{|l|}{\textbf{Filters and Dividers}} \\ \hline
 \(H_{LP}\), \(H_{HP}\), \(H_0\) & low pass and high pass transfer function; band pass centre gain & - \\ \hline
 \(\omega_1\), \(\omega_2\), \(\omega_{1,2}\), \(f_1\), \(f_2\) & lower and upper \(-3\,dB\) frequencies & rad/s, Hz \\ \hline
@@ -194,6 +215,7 @@ members, and three rules cover the rest without repeating entries:
 \(I_{G_k}\), \(I_{C_k}\), \(I_{L_k}\) & branch current through \(G_k, C_k, L_k\) & A \\ \hline
 \(S_x^Q\), \(S_x^{\omega_0}\) & sensitivity \(\frac{x}{Q}\frac{\partial Q}{\partial x}\), \(\frac{x}{\omega_0}\frac{\partial \omega_0}{\partial x}\) & - \\ \hline
 \(\omega_{1,2}\), \(C_{\max}\), \(C_{\min}\) & band edges; tuning capacitance limits (VCO) & rad/s, F \\ \hline
+\(A_{DC_1}\), \(A_{DC_2}\) & DC gain of \(H_1\), \(H_2\) & - \\ \hline
 \multicolumn{3}{|l|}{\textbf{Current Mirrors}} \\ \hline
 \(G_2 \ldots G_5\), \(R_2 \ldots R_4\) & input resistor and analysis load of each mirror (stated per mirror) & S, \(\Omega\) \\ \hline
 \(I_{G_k}\) & gate current into node \(k\) (zero for MOS) & A \\ \hline
@@ -224,6 +246,9 @@ members, and three rules cover the rest without repeating entries:
 \(G_1\), \(G_2\text{ (two stage)}\), \(R_z\), \(I_5\), \(I_7\) & stage output conductances, nulling resistor, tail and sink currents & S, \(\Omega\), A \\ \hline
 \(t_{-10V}\) & time to reach \(-10\,V\) & s \\ \hline
 \(I_{bias}\), \(R_0\), \(r_b\), \(I_n\) (cascode) & follower bias current; line impedance; base resistance; noise current & A, \(\Omega\), \(\Omega\), A \\ \hline
+\(G_o\), \(Y_E\), \(I_x\) & CS output node conductance \(G_D + g_o\); emitter admittance \(G_E + sC_L\); test current & S, S, A \\ \hline
+\(s_{p,in}\), \(s_{p,out}\), \(V_{ID,1\%}\), \(K_f\) & input and output node poles (CG); input for \(1\%\) gain error; flicker noise coefficient & rad/s, V, V\(^2\)F \\ \hline
+\(V_{ov,L}\), \(V_{ov,cas}\), \(V_{ov,src}\), \(V_{ov,sink}\) & overdrive of the load, cascode, source and sink devices & V \\ \hline
 \multicolumn{3}{|l|}{\textbf{Data Converters}} \\ \hline
 \(b_k\), \(b_{n-1}\), \(b\) & bit \(k\), the MSB, a pipeline decision & - \\ \hline
 \(X_{REF}\), \(X_{LSB}\), \(X_{IN}\), \(X_{OUT}\), \(X_k\) & reference, LSB step, input, output, level or transition \(k\) & V or A \\ \hline
@@ -256,6 +281,11 @@ members, and three rules cover the rest without repeating entries:
 \(\Sigma\) & summing node in block diagrams & - \\ \hline
 \(V_{FS}\), \(R_{REF}\), \(I_{REF}\), \(F_W\) & full scale output; ladder reference resistance and current; figure of merit & V, \(\Omega\), A, J \\ \hline
 \(a_l\) & leaky integrator coefficient \(\approx 1 - \frac{1}{A_0}\) & - \\ \hline
+\(V_{th,k}\), \(R_{th,k}\), \(V_k\) & Thevenin voltage and resistance at R-2R node \(k\) (not a threshold); node voltage & V, \(\Omega\), V \\ \hline
+\(V_{T,k}\), \(V_{os,k}\), \(V_{in,comp}\) & flash threshold \(k\) (not \(V_T\)); comparator or preamp offset; comparator input & V \\ \hline
+\(D_c\), \(D_f\), \(f_{p,fold}\) & coarse and fine codes; folder bandwidth (folding ADC) & -, -, Hz \\ \hline
+\(V_{C1}\), \(V_{C2}\), \(C_{on}\), \(Z_{REF}\), \(e_k\) & capacitor voltages (serial DAC); switched on array capacitance; reference impedance; relative error of element \(k\) & V, F, \(\Omega\), - \\ \hline
+\(V_{sw}\), \(t_{comp}\), \(t_{enc}\), \(t_{conv}\), \(t_{settle}\), \(t_{share}\), \(f_{mains}\) & switch drop; comparator, encoder, conversion, settling, sharing times; mains frequency & V, s, Hz \\ \hline
 \multicolumn{3}{|l|}{\textbf{PLL and VCO}} \\ \hline
 \(\theta\), \(\theta_{ref}\), \(\theta_{div}\), \(\theta_{out}\), \(\theta_{vco}\), \(\theta_e\) & excess phase of each signal; phase error & rad \\ \hline
 \(K_{vco}\), \(K_v\), \(V_c\) & VCO gain in Hz/V and rad/s/V, control voltage & Hz/V, rad/s/V, V \\ \hline
@@ -266,6 +296,7 @@ members, and three rules cover the rest without repeating entries:
 \(\omega_p\), \(t_d\), \(g_c\) & ring stage pole, stage delay, relaxation charging transconductance & rad/s, s, S \\ \hline
 \(R_p\), \(Q_L\), \(R_{neg}\), \(V_{amp,diff}\), \(I_a\) & tank loss resistance, inductor Q, negative resistance, amplitude, square wave current & \(\Omega\), -, \(\Omega\), V, A \\ \hline
 \(C_{fix}\), \(C_{var}\), \(F_n\), \(f_m\), \(f_c\), \(V_H\), \(V_L\) & fixed and varactor capacitance, noise factor, offset, flicker corner, Schmitt thresholds & F, -, Hz, Hz, V \\ \hline
+\(f_{\max}\), \(f_{\min}\) & tuning range limits & Hz \\ \hline
 \multicolumn{3}{|l|}{\textbf{Theory: Loading, Parasitics, Probability, Noise, Second Order}} \\ \hline
 \(Box_k\) & circuit stage \(k\) & - \\ \hline
 \(R_o + jX_o\), \(R_i + jX_i\), \(Z_0\), \(Z^*\) & source and load impedance, line impedance, complex conjugate & \(\Omega\) \\ \hline
