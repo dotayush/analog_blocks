@@ -1,16 +1,18 @@
 \subsection{SAR, Pipeline and Delta-Sigma DACs}\label{sec:dac_other}
 
 \subsubsection{SAR (Serial) DAC}
-A small DAC is reused once per bit. Charge sharing serial DAC: a capacitor
-\(C_1\) is charged to \(b_k V_{REF}\) and shared with an equal \(C_2\) holding
-the running result, LSB first.
+\paragraph{Overview:} a small DAC reused once per bit: \(C_1\) is charged to \(b_k V_{REF}\) and shared
+with an equal \(C_2\) holding the running result, LSB first.
+\noindent\textbf{Schematic:}\par
 \begin{circuitfig}
   \draw (0,2) node[circ]{} node[left]{$b_k V_{REF}$} to[nos, l={charge}] (2,2) node[circ]{} to[nos, l={share}] (4.5,2) node[circ]{} -- (6,2) node[circ]{} node[right]{$V^{(k)}$};
   \draw (2,2) to[capacitor, l_={$C_1$}] (2,0) node[ground]{};
   \draw (4.5,2) to[capacitor, l={$C_2$}] (4.5,0) node[ground]{};
 \end{circuitfig}
- \textbf{Large Signal, Time Domain, DC Input
-Analysis (Q5)}, charge conservation when \(C_1\) and \(C_2\) are joined:
+\paragraph{Transfer Function:}
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}: charge conservation when \(C_1\)
+    and \(C_2\) are joined:
 \begin{align*}
   C_1 b_k V_{REF} + C_2 V^{(k-1)} &= (C_1 + C_2) V^{(k)} \\
   V^{(k)} &= \frac{C_1 b_k V_{REF} + C_2 V^{(k-1)}}{C_1 + C_2} = \frac{b_k V_{REF} + V^{(k-1)}}{2} \hspace{1cm} [C_1 = C_2,\ V^{(-1)} = 0] \\
@@ -19,16 +21,29 @@ Analysis (Q5)}, charge conservation when \(C_1\) and \(C_2\) are joined:
   V^{(k)} = V_{REF} \sum_{j=0}^{k} b_j 2^{j-(k+1)} \\
   V^{(n-1)} &= V_{REF} \sum_{k=0}^{n-1} b_k 2^{k-n}
 \end{align*}
-the same recursion as the R-2R ladder (Section~\ref{sec:dac_r2r}), in time
-instead of space. \(n\) cycles per conversion.
+    the same recursion as the R-2R ladder (Section~\ref{sec:dac_r2r}), in time instead of space.
+  \item \textbf{Small Signal, Time Domain, AC Input Analysis (Q2)}: the share switch \(R_{sw}\) between
+    \(C_1\) and \(C_2\) (series \(\frac{C_1 C_2}{C_1 + C_2} = \frac{C}{2}\)): the difference \(V_{C1} - V_{C2}\) decays as
+    \(e^{-t/\tau}\), \(\tau = \frac{R_{sw} C}{2}\).
+\end{enumerate}
+\paragraph{Analysis:}
+\begin{enumerate}
+  \item \textbf{DC Gain}: \(\frac{V^{(n-1)}}{D} = \frac{V_{REF}}{2^n} = 1\,\text{LSB}\).
+  \item \textbf{Speed}: \(n\) charge/share cycles per conversion, each settled to
+    \(\frac{1}{2^{n+1}}\):
+    \(t_{share} = \tau \ln(2^{n+1}) = (n + 1)\ln(2)\, \frac{R_{sw} C}{2}\).
+  \item \textbf{Mismatch}: \(C_1 = C(1 + e)\), \(C_2 = C\): the weight of each new bit is
+    \begin{align*}
+      \frac{C_1}{C_1 + C_2} &= \frac{1 + e}{2 + e} \approx \frac{1}{2}\left(1 + \frac{e}{2}\right) \hspace{1cm} [\tfrac{1}{1 + x} \approx 1 - x,\ e^2 \to 0]
+    \end{align*}
+    the ratio error \(\frac{e}{2}\) compounds over \(n\) bits: \(|e| \lesssim 2^{-n}\) for \(n\)-bit linearity.
+  \item \textbf{Advantages \& Limitations}: two capacitors for any \(n\) (smallest area); but \(n\)
+    cycles per conversion and a matching requirement of \(2^{-n}\).
+\end{enumerate}
 
 \subsubsection{Pipeline DAC}
-Each stage \(k\) (one per bit, MSB last) computes
-\(V^{(k)} = \frac{V^{(k-1)} + b_k V_{REF}}{2}\) and passes it on: the same
-recursion (Large Signal, Time Domain, DC Input Analysis, Q5) as the serial DAC, so \(V^{(n-1)} = V_{REF} \sum_{k} b_k 2^{k-n}\), but
-unrolled over \(n\) stages, so a new code (its bits delayed by one cycle per
-stage) enters every cycle with latency \(n\) cycles.
-
+\paragraph{Overview:} the serial recursion unrolled over \(n\) stages (one per bit, MSB last).
+\noindent\textbf{Schematic:}\par
 \begin{circuitfig}
   \foreach \i/\lab in {0/{$b_0$}, 3/{$b_1$}, 6.5/{$b_{n-1}$}} {
     \draw (\i,0) rectangle ++(2,1.2) node[midway, align=center]{$\frac{V + b V_{REF}}{2}$};
@@ -38,7 +53,24 @@ stage) enters every cycle with latency \(n\) cycles.
   \draw[->] (2,0.6) -- (3,0.6); \draw[->] (5,0.6) -- (5.5,0.6); \node at (5.95,0.6) {$\ldots$}; \draw[->] (6.1,0.6) -- (6.5,0.6);
   \draw[->] (8.5,0.6) -- (9.5,0.6) node[right]{$V^{(n-1)}$};
 \end{circuitfig}
+\paragraph{Transfer Function:}
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}: stage \(k\):
+    \begin{align*}
+      V^{(k)} &= \frac{V^{(k-1)} + b_k V_{REF}}{2} \hspace{1cm} \Rightarrow \hspace{1cm} V^{(n-1)} = V_{REF} \sum_{k} b_k 2^{k-n} \hspace{1cm} [\text{as the serial DAC}, V^{(-1)} = 0]
+    \end{align*}
+\end{enumerate}
+\paragraph{Analysis:}
+\begin{enumerate}
+  \item \textbf{Speed}: a new code (its bits delayed one cycle per stage) enters every cycle:
+    throughput \(f_s\), latency \(n\) cycles.
+  \item \textbf{Advantages \& Limitations}: one conversion per cycle with simple stages; but \(n\)
+    stages (area, power), latency \(n\), and each stage's \(\frac{1}{2}\) weight must match to \(2^{-n}\).
+\end{enumerate}
+
 \subsubsection{Delta-Sigma DAC}
+\paragraph{Overview:} a digital modulator, a 1-bit DAC and an analog low pass.
+\noindent\textbf{Schematic:}\par
 
 \begin{circuitfig}
   \draw[->] (-1.2,0.6) node[left]{$D$ ($n$ bits)} -- (0,0.6);
@@ -48,13 +80,21 @@ stage) enters every cycle with latency \(n\) cycles.
   \draw[->] (5.6,0.6) -- (6.6,0.6);
   \draw (6.6,0) rectangle (8.6,1.2) node[midway, align=center]{analog\\low pass};
   \draw[->] (8.6,0.6) -- (9.6,0.6) node[right]{$V_{OUT}$};
-\end{circuitfig}A digital modulator (Section~\ref{sec:adc_ds}) maps the \(n\)-bit code at
-\(f_s = 2\, OSR\, f_B\) onto a 1-bit (or few-bit) stream whose quantisation
-noise is pushed above \(f_B\); a 1-bit DAC is perfectly linear (two levels
-define a line) and an analog low pass filter removes the shaped noise:
-\[
-  SQNR_{dB} = 6.02\, n_q + 1.76 - 10\log_{10}\frac{\pi^{2L}}{2L + 1} + (2L + 1)\, 10\log_{10}(OSR)
-\]
-for an \(L\)-th order modulator with an \(n_q\)-bit quantiser (derived for
-the Delta-Sigma ADC in Section~\ref{sec:adc_ds}; the digital loop has the same
-\(NTF = (1 - z^{-1})^L\)).
+\end{circuitfig}
+\paragraph{Transfer Function:}
+\begin{enumerate}
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}: the digital loop of
+    Section~\ref{sec:adc_ds} at \(f_s = 2\, OSR\, f_B\), \(Y = X + NTF\cdot E\) with \(NTF = (1 - z^{-1})^L\): the
+    quantisation noise \(E\) is pushed above \(f_B\) and the analog low pass removes it.
+\end{enumerate}
+\paragraph{Analysis:}
+\begin{enumerate}
+  \item \textbf{Resolution}: for an \(L\)-th order modulator with an \(n_q\)-bit quantiser (derived for
+    the Delta-Sigma ADC, Section~\ref{sec:adc_ds}):
+    \[
+      SQNR_{dB} = 6.02\, n_q + 1.76 - 10\log_{10}\frac{\pi^{2L}}{2L + 1} + (2L + 1)\, 10\log_{10}(OSR)
+    \]
+  \item \textbf{Advantages \& Limitations}: a 1-bit DAC is perfectly linear (two levels define a
+    line), resolution from \(OSR\) and \(L\) (digital); but \(f_s = 2\,OSR\,f_B\) (low bandwidth), out of band
+    noise the analog filter must remove, and clock jitter sensitivity at the 1-bit output.
+\end{enumerate}
