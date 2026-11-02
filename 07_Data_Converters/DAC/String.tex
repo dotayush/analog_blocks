@@ -108,3 +108,29 @@ simplest DAC, inherently monotonic.
   t &= T_c \ln(2^{11}) = 51.2\,ns \cdot \ln(2048) = 51.2\,ns \cdot 7.62 = 390\,ns \\
   SD(INL) &= \frac{\sqrt{2^{10}}}{2} S_R = \frac{32}{2} \cdot 0.002 = 0.032\,\text{LSB}
 \end{align*}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms D N R Rsw CL s
+  Rout = simplify(D*R*(N - D)*R/(D*R + (N - D)*R));
+  printf('=== Rout(D) ===\n'); pretty(Rout)
+  Dm = solve(diff(Rout, D) == 0, D);
+  printf('=== worst code, Rout max ===\n'); pretty(Dm); pretty(simplify(subs(Rout, D, Dm)))
+
+  % ideal transfer of a 3 bit string, numerically
+  n = 3; Nn = 2^n; Vref = 1;
+  printf('V_D for D = 0..%d: %s\n', Nn - 1, mat2str((0:Nn - 1)/Nn*Vref, 4));
+
+  % Question: n = 10, R = 100, SR = 0.2 %, CL = 2 pF
+  Nn = 1024; Tc = Nn/4*100*2e-12;
+  printf('Rout max = %.1f k, Tc = %.1f ns, t = %.0f ns, SD(INL) = %.3f LSB\n', ...
+         Nn/4*100/1e3, Tc*1e9, Tc*log(2^11)*1e9, sqrt(Nn)/2*0.002);
+  % Monte Carlo check of SD(INL) at mid scale
+  randn("seed", 1); r = randn(2000, Nn)*0.002 + 1;
+  X = sum(r(:, 1:Nn/2), 2); Y = sum(r(:, Nn/2 + 1:end), 2);
+  inl = (X./(X + Y) - 0.5)*Nn;
+  printf('Monte Carlo SD(INL) = %.3f LSB\n', std(inl));
+\end{lstlisting}

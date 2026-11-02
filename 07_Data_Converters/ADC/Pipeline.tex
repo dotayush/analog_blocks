@@ -118,3 +118,21 @@ gain of the first stage.
 \begin{align*}
   A &> 2^{n} = 2^{12} = 4096 \hspace{1cm} (20\log_{10} 4096 = 72.2\,dB)
 \end{align*}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+
+  % 1.5 bit stages, input range +/- Vref, comparator offsets up to Vref/4 tolerated
+  Vref = 1; m = 10; rand("seed", 2);
+  Vin = 0.3141; V = Vin; D = 0;
+  for k = 1:m
+    os = 0.2*Vref*(2*rand - 1);                    % comparator offset < Vref/4
+    if V > Vref/4 + os, b = 1; elseif V < -Vref/4 - os, b = -1; else b = 0; end
+    V = 2*V - b*Vref;
+    D = 2*D + b;
+  end
+  printf('Vin = %.4f, D = %d, D/2^m*Vref = %.4f, residue/2^m = %.2e\n', Vin, D, D/2^m*Vref, V/2^m);
+  printf('A > 2^12 = %d (%.1f dB)\n', 2^12, 20*log10(2^12));
+  printf('cap mismatch limit (12 bit): %.3f %%, jitter (12 bit, 50 MHz): %.2f ps\n', 100*2^-11, 10^(-(6.02*12 + 1.76)/20)/(2*pi*50e6)*1e12);
+\end{lstlisting}

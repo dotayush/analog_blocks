@@ -134,3 +134,24 @@ binary version with \(S_I = 0.1\%\).
   r_u = \frac{1}{g_u} > 419\,M\Omega \\
   SD(DNL) &= \sqrt{2^{12} - 1}\, S_I = \sqrt{4095} \cdot 0.001 = 64.0 \cdot 0.001 = 0.064\,\text{LSB}
 \end{align*}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms D Iu RL gu a N positive
+  Vout = D*Iu/(1/RL + D*gu);
+  printf('=== Vout(D) with unit conductance gu ===\n'); pretty(simplify(Vout))
+  inl = a*D*(N - D);
+  Dm = solve(diff(inl, D) == 0, D);
+  printf('=== INL max ===\n'); pretty(simplify(subs(inl, D, Dm)))
+  % HD2 of the bow D - a D^2 with a full scale sine
+  syms th
+  y = N/2*(1 + sin(th)) - a*(N/2*(1 + sin(th)))^2;
+  c1 = int(y*sin(th), th, 0, 2*sym(pi))/sym(pi); c2 = int(y*cos(2*th), th, 0, 2*sym(pi))/sym(pi);
+  printf('=== HD2 ===\n'); pretty(simplify(abs(c2/c1)))
+
+  % Question: 12 bit, RL = 50, SI = 0.1 %
+  printf('gu < %.3g S (ru > %.0f M), SD(DNL) binary = %.3f LSB\n', 2/(2^24*50), 2^24*50/2/1e6, sqrt(2^12 - 1)*1e-3);
+\end{lstlisting}

@@ -47,6 +47,18 @@ threshold; resistive dividers between neighbouring preamp outputs make the rest.
     thresholds (\(|V_{IN} - V_T| < M X_{LSB}\)), and comparators remain \(2^n - 1\).
 \end{enumerate}
 
+\paragraph{Code:}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms Vin VTa VTb Ap j
+  syms M positive
+  Vj = ((M - j)*Ap*(Vin - VTa) + j*Ap*(Vin - VTb))/M;
+  printf('=== zero crossing of tap j ===\n'); pretty(simplify(solve(Vj == 0, Vin)))
+  printf('=== offset SD factor at j = M/2 ===\n'); pretty(simplify(sqrt((M - M/2)^2 + (M/2)^2)/M))
+\end{lstlisting}
+
 \subsubsection{Folding}
 \paragraph{Overview:} the input range mapped onto \(F\) folds; a coarse ADC finds the fold and a fine
 ADC digitises the folded signal.\par
@@ -85,3 +97,15 @@ ADC digitises the folded signal.\par
     folder runs at \(F\) times the input frequency (bandwidth), fold corners are rounded (non-linear
     near the folds), and coarse/fine timing must align.
 \end{enumerate}
+
+\paragraph{Code:}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms F n positive
+  N = (F - 1) + (2^n/F - 1);
+  Fopt = solve(diff(N, F) == 0, F);
+  printf('=== optimum folds and comparators ===\n'); pretty(simplify(Fopt)); pretty(simplify(subs(N, F, Fopt)))
+  printf('n = 8: F = %d, comparators = %d (flash %d)\n', 2^4, 2*16 - 2, 2^8 - 1);
+\end{lstlisting}

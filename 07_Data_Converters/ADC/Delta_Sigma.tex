@@ -121,3 +121,29 @@ Audio, \(f_B = 20\,\)kHz, 16 bit (\(SQNR \geq 98\,\)dB), 1-bit quantiser. Find t
   L = 2&: \ 98 = 7.78 - 12.9 + 50\log_{10}OSR \Rightarrow 50\log_{10}OSR = 98 + 5.12 = 103.12 \\
   &\phantom{:}\ OSR = 10^{103.12/50} = 10^{2.062} = 115 \hspace{1cm} f_s = 2 \cdot 115 \cdot 20\,kHz = 4.6\,MHz
 \end{align*}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms z U E V al A0
+  v = solve(V == z^-1/(1 - z^-1)*(U - V) + E, V);
+  printf('=== V = STF U + NTF E ===\n'); pretty(simplify(diff(v, U))); pretty(simplify(diff(v, E)))
+  NTF = simplify(1/(1 + z^-1/(1 - al*z^-1)));
+  printf('=== leaky NTF(1), al = 1 - 1/A0 ===\n'); pretty(simplify(subs(subs(NTF, z, 1), al, 1 - 1/A0)))
+
+  % simulate a first order 1 bit loop with a -6 dBFS sine in bin 37, measure in band SQNR
+  N = 2^16; OSR = 64; ks = 37; u = 0.5*sin(2*pi*ks/N*(0:N - 1)); y = 0; v = zeros(1, N);
+  for k = 1:N
+    v(k) = 2*(y >= 0) - 1; y = y + u(k) - v(k);
+  end
+  w = 0.5 - 0.5*cos(2*pi*(0:N - 1)/N);                 % Hann window
+  S = abs(fft(v.*w)).^2; kb = N/(2*OSR);
+  sig = sum(S(ks - 1:ks + 3)); noi = sum(S(3:kb + 1)) - sig;
+  printf('simulated SQNR (OSR = 64, -6 dBFS) = %.1f dB; linear model at -6 dBFS = %.1f dB\n', ...
+         10*log10(sig/noi), 7.78 - 6.02 - 5.17 + 30*log10(OSR));
+  % the 1 bit first order loop falls a few dB short of the linear (white E) model: its
+  % quantisation error is correlated with the input (idle tones), so the linear model is optimistic here
+  printf('OSR for 98 dB: L = 1: %.0f, L = 2: %.0f\n', 10^((98 - 7.78 + 5.17)/30), 10^((98 - 7.78 + 12.9)/50));
+\end{lstlisting}

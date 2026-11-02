@@ -93,3 +93,21 @@ the smallest \(RC\).
   t_{conv} &= 2^{n+1} T_{clk} = 2^{17} \cdot 1\,\mu s = 131072\,\mu s = 131\,ms \\
   T_1 &= 2^{16} \cdot 1\,\mu s = 65.5\,ms \hspace{1cm} RC \geq \frac{2\,V \cdot 65.5\,ms}{10\,V} = 13.1\,ms
 \end{align*}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms f T1 positive
+  H = int(exp(1i*2*sym(pi)*f*sym('t')), sym('t'), 0, T1)/T1;
+  printf('=== |H(f)| ===\n'); pretty(simplify(abs(rewrite(simplify(H), 'sin'))))
+
+  % conversion with T1 = 100 ms (N1 = 1e5 counts at 1 MHz): 50 Hz ripple rejected
+  Vref = 2; N1 = 1e5; t = (0:N1 - 1)*1e-6;
+  Vin = 0.75 + 0.1*sin(2*pi*50*t + 0.3);   % 0.75 V plus 50 Hz ripple
+  x = -sum(Vin)*1e-6;                       % phase 1 (RC = 1 normalised)
+  N2 = round(-x/(Vref*1e-6));               % phase 2 counts to zero
+  printf('N2 = %d, N1*0.75/Vref = %.0f (ripple averaged out)\n', N2, N1*0.75/Vref);
+  printf('16 bit: worst conversion time = %.0f ms, RC >= %.1f ms\n', 2^17*1e-3, 2*65.536/10);
+\end{lstlisting}

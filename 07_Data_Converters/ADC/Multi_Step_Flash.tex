@@ -96,3 +96,19 @@ with error below \(\frac{1}{2^{n_1}}\cdot\frac{V_{REF}}{2^{n_2}} = \frac{V_{REF}
   D_2 &= \lfloor 0.8 \cdot 16 \rfloor = \lfloor 12.8 \rfloor = 12 \\
   D &= 4 \cdot 16 + 12 = 76 \hspace{1cm} \left(\lfloor 0.3 \cdot 256 \rfloor = \lfloor 76.8 \rfloor = 76\ \checkmark\right)
 \end{align*}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+
+  % two step conversion, n1 = n2 = 4
+  n1 = 4; n2 = 4; Vref = 1;
+  for Vin = [0.3 0.77 0.999]
+    D1 = floor(Vin/Vref*2^n1);
+    Vres = 2^n1*(Vin - D1/2^n1*Vref);
+    D2 = floor(Vres/Vref*2^n2);
+    D = D1*2^n2 + D2;
+    printf('Vin = %.3f: D1 = %2d, Vres = %.4f, D2 = %2d, D = %3d (direct %3d)\n', Vin, D1, Vres, D2, D, floor(Vin*2^(n1 + n2)));
+  end
+  printf('comparators: two step %d, flash %d\n', (2^n1 - 1) + (2^n2 - 1), 2^(n1 + n2) - 1);
+\end{lstlisting}

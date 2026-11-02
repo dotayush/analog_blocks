@@ -103,3 +103,24 @@ sampling, DAC and subtraction share one capacitor array.
 \end{align*}
 \(D = 0100\ldots\); the final code is
 \(\lfloor 0.3 \cdot 1024 \rfloor = \lfloor 307.2 \rfloor = 307 = 256 + 32 + 16 + 2 + 1 = 0100110011_2\).
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms Vx Cu Vin Vref D n
+  % charge conservation of the sampling array
+  vx = solve(2^n*Cu*Vx - Cu*Vref*D == -2^n*Cu*Vin, Vx);
+  printf('=== Vx ===\n'); pretty(simplify(vx))
+
+  % binary search, n = 10, Vin = 0.3 V
+  nn = 10; vref = 1; vin = 0.3; b = zeros(1, nn);
+  for k = nn:-1:1
+    b(k) = 1;
+    Vdac = vref*sum(b.*2.^((0:nn - 1) - nn));
+    if vin < Vdac, b(k) = 0; end
+    if k > nn - 4, printf('trial %d: Vdac = %.4f, b = %d\n', k - 1, Vdac, b(k)); end
+  end
+  printf('D = %d (floor(0.3*1024) = %d), binary %s\n', b*2.^(0:nn - 1)', floor(vin*1024), dec2bin(b*2.^(0:nn - 1)', nn));
+\end{lstlisting}

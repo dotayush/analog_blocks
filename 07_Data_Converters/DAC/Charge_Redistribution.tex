@@ -138,3 +138,26 @@ Pipeline MDAC stage: phase \(\phi_1\) samples \(V_{IN}\) on both capacitors, pha
   C_b &= \frac{2^5}{2^5 - 1} C_u = \frac{32}{31} \cdot 20\,fF = 20.65\,fF \hspace{1cm}
   C_{tot,split} \approx (2^5 + 2^5) C_u = 64 \cdot 20\,fF = 1.28\,pF
 \end{align*}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms Vx Vref Cu Cp D n VIN b C1 C2 A Cin VOUT Cb m
+  % DAC array: charge conservation after reset
+  vx = solve(2^n*Cu*Vx - Vref*Cu*D + Cp*Vx == 0, Vx);
+  printf('=== Vx ===\n'); pretty(simplify(vx))
+  % MDAC with finite gain: top plate Vx = -VOUT/A
+  vo = solve(-(C1 + C2)*VIN == C1*(-VOUT/A - b*Vref) + C2*(-VOUT/A - VOUT) + Cin*(-VOUT/A), VOUT);
+  printf('=== MDAC VOUT ===\n'); pretty(simplify(vo))
+  printf('=== VOUT, A -> oo, C1 = C2 ===\n'); pretty(simplify(subs(limit(vo, A, inf), C1, C2)))
+  % bridge capacitor
+  cb = solve(Cb*2^m*Cu/(Cb + 2^m*Cu) == Cu, Cb);
+  printf('=== bridge capacitor ===\n'); pretty(simplify(cb))
+
+  % Question: n = 10, Cu = 20 fF, Cp = 1 pF, SC = 0.1 %, T = 300 K
+  kT = 1.380649e-23*300; Ct = 1024*20e-15;
+  printf('Vx(512) = %.3f V, SD(DNL) = %.3f LSB, Ctot > %.1f fF, Cb = %.2f fF\n', ...
+         0.5/(1 + 1e-12/Ct), sqrt(1023)*1e-3, 12*kT*2^20*1e15, 32/31*20);
+\end{lstlisting}

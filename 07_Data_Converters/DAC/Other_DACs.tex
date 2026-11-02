@@ -42,6 +42,23 @@ with an equal \(C_2\) holding the running result, LSB first.
     cycles per conversion and a matching requirement of \(2^{-n}\).
 \end{enumerate}
 
+\paragraph{Code:}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms C1 C2 b Vref Vprev
+  v = solve(C1*b*Vref + C2*Vprev == (C1 + C2)*sym('Vk'), sym('Vk'));
+  printf('=== V(k) by charge sharing ===\n'); pretty(simplify(v)); pretty(simplify(subs(v, C1, C2)))
+
+  % run the serial recursion for D = 179, n = 8 (LSB first)
+  n = 8; bits = fliplr(dec2bin(179, n) - '0'); V = 0;
+  for k = 1:n
+    V = (bits(k)*1 + V)/2;
+  end
+  printf('serial DAC: V = %.4f (179/256 = %.4f)\n', V, 179/256);
+\end{lstlisting}
+
 \subsubsection{Pipeline DAC}
 \paragraph{Overview:} the serial recursion unrolled over \(n\) stages (one per bit, MSB last).
 \noindent\textbf{Schematic:}\par
@@ -68,6 +85,19 @@ with an equal \(C_2\) holding the running result, LSB first.
   \item \textbf{Advantages \& Limitations}: one conversion per cycle with simple stages; but \(n\)
     stages (area, power), latency \(n\), and each stage's \(\frac{1}{2}\) weight must match to \(2^{-n}\).
 \end{enumerate}
+
+\paragraph{Code:}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+
+  % unrolled recursion: one stage per bit, LSB stage first
+  n = 8; D = 179; bits = fliplr(dec2bin(D, n) - '0'); V = zeros(1, n + 1);
+  for k = 1:n
+    V(k + 1) = (V(k) + bits(k)*1)/2;              % stage k
+  end
+  printf('stage outputs: %s\n', mat2str(V(2:end), 4));
+  printf('final = %.4f, D/2^n = %.4f, latency = %d cycles\n', V(end), D/2^n, n);
+\end{lstlisting}
 
 \subsubsection{Delta-Sigma DAC}
 \paragraph{Overview:} a digital modulator, a 1-bit DAC and an analog low pass.
@@ -99,3 +129,19 @@ with an equal \(C_2\) holding the running result, LSB first.
     line), resolution from \(OSR\) and \(L\) (digital); but \(f_s = 2\,OSR\,f_B\) (low bandwidth), out of band
     noise the analog filter must remove, and clock jitter sensitivity at the 1-bit output.
 \end{enumerate}
+
+\paragraph{Code:}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+
+  % first order digital modulator driving a 1 bit DAC, DC input
+  u = 0.3; N = 4096; y = 0; v = zeros(1, N);
+  for k = 1:N
+    v(k) = 2*(y >= 0) - 1;                 % 1 bit quantiser (+/-1)
+    y = y + u - v(k);                      % integrator
+  end
+  printf('average of the 1 bit stream = %.4f (input %.1f)\n', mean(v), u);
+  for L = 1:2
+    printf('L = %d, nq = 1, OSR = 64: SQNR = %.1f dB\n', L, 6.02 + 1.76 - 10*log10(pi^(2*L)/(2*L + 1)) + (2*L + 1)*10*log10(64));
+  end
+\end{lstlisting}

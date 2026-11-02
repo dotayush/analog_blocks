@@ -113,3 +113,25 @@ the offset SD for no missing codes.
   X_{LSB} &= \frac{V_{REF}}{2^6} = \frac{1\,V}{64} = 15.625\,mV, \hspace{1cm} 2^6 - 1 = 64 - 1 = 63 \text{ comparators} \\
   SD(V_{os}) &< \frac{15.625\,mV}{3\sqrt{2}} = \frac{15.625\,mV}{3 \cdot 1.4142} = \frac{15.625\,mV}{4.243} = 3.68\,mV
 \end{align*}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+
+  % thresholds of the string (R/2 bottom, 3R/2 top) and a conversion
+  n = 3; Vref = 1; N = 2^n; R = 1;
+  Rs = [R/2, R*ones(1, N - 2), 3*R/2];            % bottom to top
+  VT = cumsum(Rs(1:end - 1))/sum(Rs)*Vref;        % taps k = 1 .. N-1
+  printf('thresholds / X_LSB: %s\n', mat2str(VT*N/Vref, 3));
+  Vin = 0.6; T = Vin > VT; D = sum(T);
+  printf('Vin = %.2f V: thermometer %s, D = %d (round(Vin/X_LSB) = %d)\n', Vin, mat2str(double(T)), D, round(Vin*N/Vref));
+
+  % Question: 6 bit, Vref = 1 V
+  X = 1/64;
+  printf('X_LSB = %.3f mV, %d comparators, SD(Vos) < %.2f mV\n', X*1e3, 63, X/(3*sqrt(2))*1e3);
+  printf('jitter limit (6 bit, 500 MHz): %.1f ps\n', 10^(-(6.02*6 + 1.76)/20)/(2*pi*500e6)*1e12);
+  % Monte Carlo of DNL from comparator offsets (SD = X/(3 sqrt 2))
+  randn("seed", 1); Vos = randn(5000, 63)*X/(3*sqrt(2));
+  dnl = diff(Vos, 1, 2)/X;
+  printf('Monte Carlo SD(DNL) = %.3f (expected %.3f)\n', std(dnl(:)), sqrt(2)/(3*sqrt(2)));
+\end{lstlisting}
