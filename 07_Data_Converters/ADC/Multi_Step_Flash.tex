@@ -23,7 +23,8 @@ Comparators drop from \(2^n - 1\) to \((2^{n_1} - 1) + (2^{n_2} - 1)\).
 \end{circuitfig}
 
 \subsubsection{Transfer Function}
-\textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}, input
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}, input
 \(V_{IN} \in [0, V_{REF})\), truncating quantisers:
 \begin{align*}
   D_1 &= \left\lfloor \frac{V_{IN}}{V_{REF}} 2^{n_1} \right\rfloor \hspace{1cm} \Rightarrow \hspace{1cm}
@@ -40,9 +41,21 @@ Check (\(n = n_1 + n_2\)):
   \frac{D}{2^n} V_{REF} &\approx \frac{D_1}{2^{n_1}} V_{REF} + \frac{V_{RES}}{2^{n_1}} = \frac{D_1}{2^{n_1}} V_{REF} + V_{IN} - \frac{D_1}{2^{n_1}} V_{REF} = V_{IN}
 \end{align*}
 with error below \(\frac{1}{2^{n_1}}\cdot\frac{V_{REF}}{2^{n_2}} = \frac{V_{REF}}{2^n} = X_{LSB}\).
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}: the \(\times 2^{n_1}\) residue
+    amplifier is a closed loop op-amp (Section~\ref{sec:amp_noninverting}) with \(F = 2^{-n_1}\):
+    \begin{align*}
+      H(s) &= \frac{V_{res}}{V_{in} - V_{dac}} = \frac{A_0 p_1}{s + p_1(1 + A_0 F)} \hspace{1cm} H(0) = \frac{A_0}{1 + A_0 2^{-n_1}} \xrightarrow{A_0 \to \infty} 2^{n_1} \tag{1}
+    \end{align*}
+\end{enumerate}
 
 \subsubsection{Analysis}
 \begin{enumerate}
+  \item \textbf{Poles (\(D(s) = 0\))}: from (1), \(s_p = -p_1(1 + A_0 F) \approx -2\pi\frac{GB}{2^{n_1}}\).
+  \item \textbf{Zeroes (\(N(s) = 0\))}: \(N(s) = A_0 p_1 \neq 0\): no finite zero.
+  \item \textbf{DC Gain (\(H(0)\))}: residue gain \(2^{n_1}\frac{A_0 F}{1 + A_0 F}\); its error
+    \(\frac{1}{1 + A_0 F}\) must stay below \(\frac{1}{2^{n_2 + 1}}\) (half a fine LSB), \(A_0 > 2^{n_1 + n_2 + 1} = 2^{n+1}\).
+  \item \textbf{Speed}: coarse compare, DAC, residue settling to \(\frac{1}{2^{n_2+1}}\)
+    (\(t = \frac{(n_2 + 1)\ln 2}{2\pi GB / 2^{n_1}}\) [Q2]), fine compare: two (or \(m\)) sequential steps per sample.
   \item \textbf{Accuracy}: the coarse DAC and the residue amplifier must be
     accurate to the full \(n\) bits (\(V_{RES}\) is \(2^{n_1}\) times the input
     difference). A coarse comparator error that returns \(D_1 + 1\) for an
@@ -55,12 +68,21 @@ with error below \(\frac{1}{2^{n_1}}\cdot\frac{V_{REF}}{2^{n_2}} = \frac{V_{REF}
     \(2^{n_1 - 1} e\), which stays inside \([0, V_{REF})\) while
     \(2^{n_1 - 1}|e| < \frac{V_{REF}}{4}\), i.e. \(|e| < \frac{V_{REF}}{2^{n_1 + 1}}\) (half a coarse
     LSB); digital correction adds the fine code with the overlap.
-  \item \textbf{Count}: \(n = 8\), \(n_1 = n_2 = 4\):
+  \item \textbf{Comparator Count}: \(n = 8\), \(n_1 = n_2 = 4\):
     \((2^4 - 1) + (2^4 - 1) = 15 + 15 = 30\) comparators instead of
     \(2^8 - 1 = 255\). Multi-step with \(m\) steps of \(\frac{n}{m}\) bits:
     \(m(2^{n/m} - 1)\).
-  \item \textbf{Speed}: two (or \(m\)) sequential comparisons plus DAC and
-    amplifier settling per sample.
+  \item \textbf{Impedances}:
+    \paragraph{At Input:} the S/H input capacitance only (one coarse flash, \(2^{n_1} - 1\) comparators).
+  \item \textbf{Advantages \& Limitations}: \((2^{n_1} - 1) + (2^{n_2} - 1)\) comparators instead of \(2^n - 1\),
+    redundancy tolerates coarse errors; but needs a S/H, a DAC and a residue amplifier accurate to
+    \(n\) bits, and two sequential steps per sample.
+\end{enumerate}
+
+\subsubsection{Design}
+\begin{enumerate}
+  \item \(n_1 \approx n_2 \approx \frac{n}{2}\) (fewest comparators), one redundant fine bit.
+  \item Residue amplifier \(A_0 > 2^{n+1}\), \(GB > \frac{2^{n_1} (n_2 + 1)\ln 2}{2\pi t_{settle}}\).
 \end{enumerate}
 
 \subsubsection{Question}
