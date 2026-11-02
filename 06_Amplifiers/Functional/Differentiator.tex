@@ -73,7 +73,7 @@ input and \(G_2\) in feedback. Op-amp model: \(V_{out} = A(V_+ - V_-)\), \(A = A
     \(\frac{1}{\frac{1}{sC} + \frac{1}{G_s}} = \frac{sC G_s}{sC + G_s}\); with \(V_- = 0\):
     \begin{align*}
       (0 - V_{in}) \frac{sC G_s}{sC + G_s} + (0 - V_{out}) G_2 &= 0 \\
-      H(s) &= -\frac{sC G_s R_2}{sC + G_s} = -\frac{s R_2 C}{1 + s R_s C} \hspace{1cm} [\times \tfrac{R_s}{R_s}]
+      H(s) &= -\frac{sC G_s R_2}{sC + G_s} = -\frac{s R_2 C}{1 + s R_s C}
     \end{align*}
     \(f \ll \frac{1}{2\pi R_s C}\): \(H \approx -s R_2 C\) (differentiates);
     \(f \gg \frac{1}{2\pi R_s C}\): \(H \approx -\frac{R_2}{R_s}\) (flat), which caps the noise gain and

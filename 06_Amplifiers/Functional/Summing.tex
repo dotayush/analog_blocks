@@ -29,7 +29,7 @@ through \(G_k\) into \(V_-\) and feedback \(G_F\). Op-amp model:
       V_-(G_\Sigma + G_F) - V_{OUT} G_F &= \sum_{k} G_k V_k \\
       -\frac{V_{OUT}}{A_0}(G_\Sigma + G_F) - V_{OUT} G_F &= \sum_{k} G_k V_k \hspace{1cm} [\text{from (1)}] \\
       V_{OUT} &= -\frac{\sum_{k} G_k V_k}{G_F + \frac{G_\Sigma + G_F}{A_0}} \\
-      V_{OUT} &= -\frac{\sum_{k} G_k V_k}{G_\Sigma + G_F}\cdot\frac{A_0}{1 + A_0\frac{G_F}{G_\Sigma + G_F}} \hspace{1cm} \left[\times \tfrac{A_0/(G_\Sigma + G_F)}{A_0/(G_\Sigma + G_F)}\right] \\
+      V_{OUT} &= -\frac{\sum_{k} G_k V_k}{G_\Sigma + G_F}\cdot\frac{A_0}{1 + A_0\frac{G_F}{G_\Sigma + G_F}} \\
       V_{OUT} &= -\sum_{k} \frac{G_k}{G_\Sigma + G_F}\cdot\frac{A_0}{1 + A_0 F}\, V_k \hspace{1cm} \left[F = \tfrac{G_F}{G_\Sigma + G_F}\right] \tag{2}
     \end{align*}
     valid while \(V_{OL} \leq V_{OUT} \leq V_{OH}\).

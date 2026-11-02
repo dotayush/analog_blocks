@@ -72,7 +72,7 @@ The DC path for the drain current goes through \(G_S\) and the source
       V_{out}(G_D + g_o) &= (g_m + g_{mb} + g_o)\left(V_{in} - \frac{G_D}{G_S} V_{out}\right) \\
       V_{out}(G_D + g_o) &= (g_m + g_{mb} + g_o) V_{in} - \frac{G_D (g_m + g_{mb} + g_o)}{G_S} V_{out} \\
       V_{out}\left(G_D + g_o + \frac{G_D (g_m + g_{mb} + g_o)}{G_S}\right) &= (g_m + g_{mb} + g_o) V_{in} \\
-      V_{out}\left(G_S (G_D + g_o) + G_D (g_m + g_{mb} + g_o)\right) &= G_S (g_m + g_{mb} + g_o) V_{in} \hspace{1cm} [\times G_S] \\
+      V_{out}\left(G_S (G_D + g_o) + G_D (g_m + g_{mb} + g_o)\right) &= G_S (g_m + g_{mb} + g_o) V_{in} \\
       H = \frac{V_{out}}{V_{in}} &= \frac{G_S (g_m + g_{mb} + g_o)}{G_S (G_D + g_o) + G_D (g_m + g_{mb} + g_o)} \tag{9}
     \end{align*}
 \end{enumerate}
@@ -119,7 +119,7 @@ The DC path for the drain current goes through \(G_S\) and the source
     \begin{align*}
       I_{test} &= \frac{G_D (g_m + g_{mb} + g_o)}{G_D + g_o} V_s \\
       Z_{in} &= \frac{V_s}{I_{test}} = \frac{G_D + g_o}{G_D (g_m + g_{mb} + g_o)}
-              = \frac{(G_D + g_o) R_D r_o}{G_D (g_m + g_{mb} + g_o) R_D r_o} \hspace{1cm} [\times \tfrac{R_D r_o}{R_D r_o}] \\
+              = \frac{(G_D + g_o) R_D r_o}{G_D (g_m + g_{mb} + g_o) R_D r_o} \\
       Z_{in} &= \frac{r_o + R_D}{(g_m + g_{mb}) r_o + g_o r_o} = \frac{r_o + R_D}{1 + (g_m + g_{mb}) r_o} \hspace{1cm} [g_o r_o = 1]
     \end{align*}
     \(Z_{in} \approx \frac{1}{g_m + g_{mb}}\) for \(R_D \ll r_o\), rising to \(\approx \frac{R_D}{g_m r_o}\) for large loads.

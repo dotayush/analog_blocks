@@ -35,7 +35,7 @@ outside the symbol.
           V_{OUT} &= V_{dd} - \frac{k_n (V_{IN} - V_{th})^2 (1 + K_{CLM} V_{OUT})}{G_D} \quad [V_{DS} = V_{OUT}] \\
           V_{OUT} &= V_{dd} - \frac{k_n (V_{IN} - V_{th})^2}{G_D} - \frac{k_n K_{CLM} (V_{IN} - V_{th})^2}{G_D} V_{OUT} \\
           V_{OUT}\left(1 + \frac{k_n K_{CLM} (V_{IN} - V_{th})^2}{G_D}\right) &= V_{dd} - \frac{k_n (V_{IN} - V_{th})^2}{G_D} \\
-          V_{OUT}\left(G_D + k_n K_{CLM} (V_{IN} - V_{th})^2\right) &= V_{dd} G_D - k_n (V_{IN} - V_{th})^2 \quad [\times G_D] \\
+          V_{OUT}\left(G_D + k_n K_{CLM} (V_{IN} - V_{th})^2\right) &= V_{dd} G_D - k_n (V_{IN} - V_{th})^2 \\
           V_{OUT} &= \frac{V_{dd} G_D - k_n (V_{IN} - V_{th})^2}{G_D + k_n K_{CLM} (V_{IN} - V_{th})^2}
         \end{align*}
       \item Edge of saturation (\(K_{CLM} = 0\)), \(V_{OUT} = V_{IN} - V_{th} = V_{ov}\):
@@ -52,7 +52,7 @@ outside the symbol.
           V_{OUT} &= V_{dd} - \frac{2 k_n}{G_D}\left[ V_X V_{OUT} - \frac{V_{OUT}^2}{2} \right] \\
           V_{OUT} &= V_{dd} - \frac{2 k_n V_X}{G_D} V_{OUT} + \frac{k_n}{G_D} V_{OUT}^2 \\
           \frac{k_n}{G_D} V_{OUT}^2 - \left(1 + \frac{2 k_n V_X}{G_D}\right) V_{OUT} + V_{dd} &= 0 \\
-          k_n V_{OUT}^2 - \left(G_D + 2 k_n V_X\right) V_{OUT} + G_D V_{dd} &= 0 \hspace{1cm} [\times G_D] \\
+          k_n V_{OUT}^2 - \left(G_D + 2 k_n V_X\right) V_{OUT} + G_D V_{dd} &= 0 \\
           V_{OUT} &= \frac{G_D + 2 k_n V_X - \sqrt{(G_D + 2 k_n V_X)^2 - 4 k_n G_D V_{dd}}}{2 k_n}
         \end{align*}
         taking the smaller root (the larger one gives \(V_{OUT} > V_X\), outside triode).
@@ -103,7 +103,7 @@ outside the symbol.
     \(p_1 + p_2 = \frac{a_1}{a_2}\), \(p_2 \gg p_1\)):
     \begin{align*}
       p_1 &\approx \frac{a_0}{a_1} = \frac{G_o G_S}{G_o (C_{gs} + C_{gd}) + G_S (C_L + C_{gd}) + g_m C_{gd}} \\
-      p_1 &\approx \frac{1}{R_S (C_{gs} + C_{gd}) + R_o (C_L + C_{gd}) + g_m R_o R_S C_{gd}} \hspace{1cm} \left[\div G_o G_S,\ R_o = \tfrac{1}{G_o}\right] \\
+      p_1 &\approx \frac{1}{R_S (C_{gs} + C_{gd}) + R_o (C_L + C_{gd}) + g_m R_o R_S C_{gd}} \hspace{1cm} \left[R_o = \tfrac{1}{G_o}\right] \\
       p_1 &\approx \frac{1}{R_S\left[C_{gs} + C_{gd}\left(1 + g_m R_o\right)\right] + R_o (C_L + C_{gd})} \\
       p_2 &\approx \frac{a_1}{a_2} = \frac{G_o (C_{gs} + C_{gd}) + G_S (C_L + C_{gd}) + g_m C_{gd}}{C_L C_{gs} + C_L C_{gd} + C_{gs} C_{gd}}
     \end{align*}
@@ -164,7 +164,7 @@ outside the symbol.
     \begin{align*}
       A_{V0} = -\frac{g_m}{G_D + g_o} &= -\frac{2 I_D}{V_{ov}} \cdot \frac{1}{\frac{I_D}{V_{dd} - V_{OUT}} + K_{CLM} I_D}
               = -\frac{2}{V_{ov}} \cdot \frac{1}{\frac{1}{V_{dd} - V_{OUT}} + K_{CLM}} \\
-             &= -\frac{2 (V_{dd} - V_{OUT})}{V_{ov}\left(1 + K_{CLM}(V_{dd} - V_{OUT})\right)} \hspace{1cm} [\times \tfrac{V_{dd} - V_{OUT}}{V_{dd} - V_{OUT}}]
+             &= -\frac{2 (V_{dd} - V_{OUT})}{V_{ov}\left(1 + K_{CLM}(V_{dd} - V_{OUT})\right)}
     \end{align*}
 \end{enumerate}
 
