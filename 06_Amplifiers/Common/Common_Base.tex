@@ -12,7 +12,7 @@ voltage gain.
   \node[right] at (5.4,0) {$Q_1$};
   \draw (Q.B) -- (3.6,0) node[left]{$V_B$};
   \draw (Q.C) -- (5,1.4) node[circ]{} to[european resistor, l_={$G_C$}] (5,3.4) node[vcc]{$V_{cc}$};
-  \draw (5,1.4) -- (7,1.4) node[circ]{} node[above]{$V_{out}$};
+  \draw (5,1.4) -- (7,1.4) node[circ]{} node[above]{$V_{out}$} to[capacitor, l={$C_L$}] (7,-0.6) node[ground]{};
   \draw (Q.E) -- (5,-1.2) node[circ]{} node[right]{$V_e$} to[european resistor, l_={$G_S$}] (5,-3.2) to[sinusoidal voltage source, l_={$V_{in}$}] (5,-5.2) node[ground]{};
 \end{circuitfig}
 
@@ -36,34 +36,49 @@ voltage gain.
     \end{align*}
     Applying KCL at \(V_{out}\):
     \begin{align*}
-      V_{out} G_C + I_c &= 0 \hspace{0.5cm} \Rightarrow \hspace{0.5cm} V_{out} G_C - g_m V_e = 0 \hspace{0.5cm} \Rightarrow \hspace{0.5cm} V_{out} = \frac{g_m}{G_C} V_e \\
-      V_{out} &= g_m R_C \cdot \frac{G_S}{G_S + g_m + g_{be}} V_{in} \\
-      H = \frac{V_{out}}{V_{in}} &= \frac{g_m R_C\, G_S}{G_S + g_m + g_{be}}
+      V_{out} (G_C + sC_L) + I_c &= 0 \hspace{0.5cm} \Rightarrow \hspace{0.5cm} V_{out} = \frac{g_m}{G_C + sC_L} V_e \hspace{0.5cm} [I_c = -g_m V_e] \\
+      H(s) = \frac{V_{out}}{V_{in}} &= \frac{g_m}{G_C + sC_L}\cdot\frac{G_S}{G_S + g_m + g_{be}} \tag{1}
     \end{align*}
 \end{enumerate}
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \textbf{Gain}: \(G_S \to \infty\):
-    \(A_{V0} = \lim_{G_S \to \infty} \frac{g_m R_C}{1 + \frac{g_m + g_{be}}{G_S}} = g_m R_C\). Current gain
-    (\(I_c = -g_m V_e\), the current into the emitter from outside is \(-I_e = (g_m + g_{be}) V_e\)):
-    \[
-      \frac{I_c}{-I_e} = \frac{-g_m V_e}{-(g_m + g_{be}) V_e} = \frac{g_m}{g_m + g_{be}} = \frac{g_m}{g_m + \frac{g_m}{B_F}} = \frac{B_F}{B_F + 1} = A_F
-    \]
+  \item \textbf{Poles (\(D(s) = 0\))}: \(G_C + s_p C_L = 0 \Rightarrow s_p = -\frac{G_C}{C_L}\),
+    \(f_p = \frac{1}{2\pi R_C C_L}\). \(C_\mu\) goes to AC ground (base), so there is no Miller
+    effect; the emitter pole \(\frac{G_S + g_m + g_{be}}{C_\pi}\) is far higher.
+  \item \textbf{Zeroes (\(N(s) = 0\))}: \(N(s) = g_m G_S \neq 0\): no finite zero.
+  \item \textbf{DC Gain (\(H(0)\))}: \(s = 0\) in (1), \(G_S \to \infty\) (top and bottom divided by \(G_S\)):
+    \begin{align*}
+      A_{V0} &= \lim_{G_S \to \infty} \frac{g_m R_C}{1 + \frac{g_m + g_{be}}{G_S}} = g_m R_C
+    \end{align*}
+    Current gain (\(I_c = -g_m V_e\); current into the emitter from outside \(-I_e = (g_m + g_{be}) V_e\)):
+    \begin{align*}
+      \frac{I_c}{-I_e} &= \frac{-g_m V_e}{-(g_m + g_{be}) V_e} = \frac{g_m}{g_m + \frac{g_m}{B_F}} = \frac{B_F}{B_F + 1} = A_F \hspace{1cm} [g_{be} = \tfrac{g_m}{B_F}]
+    \end{align*}
+  \item \textbf{Gain-Bandwidth Product (\(GBW\))}: \(G_S \to \infty\),
+    \(GBW = g_m R_C \cdot \frac{1}{2\pi R_C C_L} = \frac{g_m}{2\pi C_L}\).
   \item \textbf{Impedances}:
-    \paragraph{At Input:} \(G_S\) removed, \(I_{test}\) into the emitter:
-      \(I_{test} + I_b + I_c = 0\), so \(I_{test} = (g_m + g_{be}) V_e\) and
-      \[
-        Z_{in} = \frac{V_e}{I_{test}} = \frac{1}{g_m + g_{be}} = \frac{1}{g_m}\cdot\frac{g_m}{g_m + g_{be}} = \frac{A_F}{g_m}
-      \]
-    \paragraph{At Output:} this is the CE output test with \(R_E\) replaced by the
-      source resistance \(R_S\) (\(V_{in} = 0\) and the base at AC ground):
-      \[
-        Z_{out} = R_C \parallel r_o\left(1 + (g_m + g_o)(R_S \parallel r_{be})\right) \approx R_C \parallel r_o\left(1 + g_m (R_S \parallel r_{be})\right)
-      \]
-  \item \textbf{Bandwidth}: as for the CG stage, no capacitance couples
-    input to output (\(C_{bc}\) goes to AC ground), so there is no Miller
-    effect.
+    \paragraph{At Input:} \(G_S\) removed, \(I_{test}\) into the emitter: \(I_{test} + I_b + I_c = 0\),
+    so \(I_{test} = (g_m + g_{be}) V_e\):
+    \begin{align*}
+      Z_{in} &= \frac{V_e}{I_{test}} = \frac{1}{g_m + g_{be}} = \frac{1}{g_m}\cdot\frac{g_m}{g_m + g_{be}} = \frac{A_F}{g_m}
+    \end{align*}
+    \paragraph{At Output:} the CE output test (Section~\ref{sec:amp_ce}) with \(R_E\) replaced
+    by \(R_S\) (\(V_{in} = 0\), base at AC ground):
+    \begin{align*}
+      Z_{out} &= R_C \parallel r_o\left(1 + (g_m + g_o)(R_S \parallel r_{be})\right) \approx R_C \parallel r_o\left(1 + g_m (R_S \parallel r_{be})\right)
+    \end{align*}
+  \item \textbf{Output Swing (Max)}: forward active \(V_{CB} \gtrsim -0.4\,\)V:
+    \(V_B - 0.4\,V \lesssim V_{OUT} \leq V_{cc}\).
+  \item \textbf{Advantages \& Limitations}: low \(Z_{in} = \frac{A_F}{g_m}\) (current buffer,
+    gain \(A_F\)), high \(Z_{out}\), no Miller effect; but a voltage source with \(R_S\) is
+    attenuated by \(\frac{G_S}{G_S + g_m + g_{be}}\), and the emitter carries the full signal current.
+\end{enumerate}
+
+\subsubsection{Design}
+\begin{enumerate}
+  \item Choose \(I_C\): \(Z_{in} = \frac{A_F V_T}{I_C}\).
+  \item \(R_C = \frac{V_{cc} - V_{OUT}}{I_C}\), \(V_B = V_E + V_T\ln\frac{I_C}{I_S}\).
 \end{enumerate}
 
 \subsubsection{Question}
