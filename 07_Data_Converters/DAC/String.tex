@@ -34,13 +34,18 @@ simplest DAC, inherently monotonic.
     \begin{align*}
       R_{out}(D) &= \frac{D R \cdot (N - D) R}{D R + (N - D) R} = \frac{D (N - D) R^2}{N R} = \frac{D (N - D)}{N} R \\
       H(s) &= \frac{V_{out}}{V_D} = \frac{\frac{1}{s C_L}}{R_{out}(D) + R_{sw} + \frac{1}{s C_L}}
-      = \frac{1}{1 + s (R_{out}(D) + R_{sw}) C_L}
+      = \frac{1}{1 + s (R_{out}(D) + R_{sw}) C_L} \tag{1}
     \end{align*}
 \end{enumerate}
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \textbf{Settling} (\textbf{Small Signal, Time Domain, AC Input Analysis (Q2)}):
+  \item \textbf{Poles (\(D(s) = 0\))}: from (1),
+    \(s_p = -\frac{1}{(R_{out}(D) + R_{sw}) C_L}\), code dependent (slowest at mid scale, below).
+  \item \textbf{Zeroes (\(N(s) = 0\))}: \(N(s) = 1 \neq 0\): no finite zero.
+  \item \textbf{DC Gain (\(H(0)\))}: \(H(0) = 1\); the static gain from code to output is
+    \(\frac{V_{OUT}}{D} = \frac{V_{REF}}{2^n} = 1\,\text{LSB}\).
+  \item \textbf{Settling (Small Signal, Time Domain, AC Input Analysis (Q2))}:
     \(R_{out}\) peaks at \(D = \frac{N}{2}\):
     \begin{align*}
       R_{out}(D) &= \frac{(N D - D^2) R}{N} \hspace{1cm}
@@ -55,7 +60,11 @@ simplest DAC, inherently monotonic.
       e^{t/T_c} = 2^{n+1} \hspace{0.5cm} \Rightarrow \hspace{0.5cm}
       t = T_c \ln(2^{n+1}) = (n + 1) \ln(2)\, T_c
     \end{align*}
-  \item \textbf{INL from mismatch}: let \(X = \sum_{j < D} R_j\),
+  \item \textbf{Impedances}:
+    \paragraph{At Output:} \(Z_{out}(D) = R_{out}(D) + R_{sw} = \frac{D(N - D)}{N} R + R_{sw}\), up to \(\frac{N}{4} R + R_{sw}\);
+    a resistive load draws current from the string (buffer it).
+    \paragraph{At Reference:} \(Z_{REF} = N R\) (constant, code independent).
+  \item \textbf{Integral Non-Linearity (INL)} from mismatch: let \(X = \sum_{j < D} R_j\),
     \(Y = \sum_{j \geq D} R_j\), \(V_D = V_{REF}\frac{X}{X + Y}\).
     \begin{align*}
       dV_D &= V_{REF}\frac{Y\, dX - X\, dY}{(X + Y)^2} \\
@@ -71,10 +80,18 @@ simplest DAC, inherently monotonic.
       SD(dV_D) &= \frac{V_{REF}\sqrt{N} S_R R}{2 N R} = \frac{V_{REF} S_R}{2\sqrt{N}} \\
       SD(INL_{N/2}) &= \frac{SD(dV_D)}{V_{REF}/N} = \frac{V_{REF} S_R}{2\sqrt{N}} \cdot \frac{N}{V_{REF}} = \frac{\sqrt{N}}{2} S_R = \frac{\sqrt{2^n}}{2} S_R \ \text{LSB}
     \end{align*}
-  \item \textbf{Monotonic}: tap \(D + 1\) adds \(R_D\) to \(X\):
+  \item \textbf{Monotonicity (DNL)}: tap \(D + 1\) adds \(R_D\) to \(X\):
     \(V_{D+1} - V_D = V_{REF}\frac{X + R_D}{\sum R} - V_{REF}\frac{X}{\sum R} = R_D \cdot \frac{V_{REF}}{\sum R} > 0\) for any
     positive resistors.
-  \item \textbf{Cost}: \(2^n\) resistors and \(2^n\) switches; practical to 8--10 bits.
+  \item \textbf{Advantages \& Limitations}: inherently monotonic, simple, code independent reference
+    load; but \(2^n\) resistors and \(2^n\) switches (practical to 8--10 bits), code dependent output
+    impedance (\(\frac{N}{4}R\) at mid scale) and \(INL\) growing as \(\frac{\sqrt{2^n}}{2} S_R\).
+\end{enumerate}
+
+\subsubsection{Design}
+\begin{enumerate}
+  \item \(n\) from resolution, \(S_R \leq \frac{2 \cdot INL_{\max}}{\sqrt{2^n}}\) (\(1\sigma\)).
+  \item \(R \leq \frac{4 T_c}{N C_L}\) for the settling time \(t = (n + 1)\ln(2)\, T_c\).
 \end{enumerate}
 
 \subsubsection{Question}
