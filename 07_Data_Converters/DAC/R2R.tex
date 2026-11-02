@@ -60,7 +60,7 @@ two resistor values for any \(n\), and a constant output resistance \(R\).
   \item \textbf{Poles (\(D(s) = 0\))}: from (2), \(s_p = -\frac{1}{R C_L}\), code independent (\(R_{out} = R\) for every \(D\)).
   \item \textbf{Zeroes (\(N(s) = 0\))}: \(N(s) = 1 \neq 0\): no finite zero.
   \item \textbf{DC Gain (\(H(0)\))}: \(H(0) = 1\); code to output gain \(\frac{V_{REF}}{2^n} = 1\,\text{LSB}\) [from (1)].
-  \item \textbf{Settling (Small Signal, Time Domain, AC Input Analysis (Q2))}: full scale step, error
+  \item \textbf{Settling} (Small Signal, Time Domain, AC Input Analysis (Q2)): full scale step, error
     \(V_{REF}e^{-t/(RC_L)}\) to \(\frac{1}{2}\) LSB:
     \begin{align*}
       V_{REF} e^{-\frac{t}{RC_L}} &= \frac{V_{REF}}{2^{n+1}} \hspace{1cm} \Rightarrow \hspace{1cm} t = (n + 1)\ln(2)\, R C_L
