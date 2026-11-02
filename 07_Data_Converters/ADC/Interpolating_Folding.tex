@@ -1,7 +1,9 @@
 \subsection{Interpolating and Folding ADCs}\label{sec:adc_interp_fold}
 
 \subsubsection{Interpolating}
-
+\paragraph{Overview:} flash preamplifiers (gain \(A_p\) around their threshold) at only every \(M\)-th
+threshold; resistive dividers between neighbouring preamp outputs make the rest.\par
+\noindent\textbf{Schematic:}\par
 \begin{circuitfig}
   \draw (0,2) node[op amp, scale=0.7](Pa){}; \draw (0,-1) node[op amp, scale=0.7](Pb){};
   \node at (0,2.8) {$A_p$}; \node at (0,-1.8) {$A_p$};
@@ -13,23 +15,36 @@
   \draw (j) -- ++(1.2,0) node[right]{$V_j \to$ comparator};
   \draw (a) -- ++(1.2,0) node[right]{$\to$ comparator};
   \draw (b) -- ++(1.2,0) node[right]{$\to$ comparator};
-\end{circuitfig}Flash preamplifiers (gain \(A_p\) around their threshold) are placed at only
-every \(M\)-th threshold. Between two adjacent preamp outputs
-\(V_a = A_p(V_{IN} - V_{T,a})\) and \(V_b = A_p(V_{IN} - V_{T,b})\) a resistive divider
-creates (\textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}, \(M\)
-equal resistors, tap \(j\) from \(V_a\))
+\end{circuitfig}
+\paragraph{Transfer Function:}
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}: preamp outputs
+    \(V_a = A_p(V_{IN} - V_{T,a})\), \(V_b = A_p(V_{IN} - V_{T,b})\); \(M\) equal resistors, tap \(j\) from \(V_a\)
+    (superposition of the two ends):
 \begin{align*}
   V_j &= \frac{(M - j) V_a + j V_b}{M} = \frac{(M - j) A_p(V_{IN} - V_{T,a}) + j A_p(V_{IN} - V_{T,b})}{M} \\
-  V_j &= A_p\frac{(M - j + j) V_{IN} - (M - j) V_{T,a} - j V_{T,b}}{M}
-       = A_p\left(V_{IN} - \frac{(M - j) V_{T,a} + j V_{T,b}}{M}\right), \hspace{1cm} j = 1 \ldots M - 1
+  V_j &= A_p\frac{(M - j + j) V_{IN} - (M - j) V_{T,a} - j V_{T,b}}{M} \\
+  V_j &= A_p\left(V_{IN} - \frac{(M - j) V_{T,a} + j V_{T,b}}{M}\right), \hspace{1cm} j = 1 \ldots M - 1
 \end{align*}
-whose zero crossing \(V_{IN} = V_{T,a} + \frac{j}{M}(V_{T,b} - V_{T,a})\) lies at the linearly
-interpolated threshold. Preamps drop from \(2^n - 1\) to \(\approx\frac{2^n}{M}\);
-comparators remain \(2^n - 1\). Valid while the preamps are linear between
-neighbouring thresholds.
+    zero crossing \(V_j = 0 \Rightarrow V_{IN} = V_{T,a} + \frac{j}{M}(V_{T,b} - V_{T,a})\): the linearly interpolated threshold.
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}: each preamp a single pole
+    \(\omega_{pa}\), \(A_p(s) = \frac{A_p}{1 + s/\omega_{pa}}\); the divider is resistive, so every tap has the same pole.
+\end{enumerate}
+\paragraph{Analysis:}
+\begin{enumerate}
+  \item \textbf{Poles}: \(s_p = -\omega_{pa}\) at every tap (no extra delay mismatch between taps).
+  \item \textbf{DC Gain}: \(\frac{dV_j}{dV_{IN}} = A_p\) at every tap (the \(\frac{M - j + j}{M} = 1\) of Q5).
+  \item \textbf{Count}: preamps drop from \(2^n - 1\) to \(\approx \frac{2^n}{M}\); comparators remain \(2^n - 1\).
+  \item \textbf{Impedances}: input capacitance falls by \(M\) (\(\frac{2^n}{M}\) preamps on \(V_{IN}\)).
+  \item \textbf{Advantages \& Limitations}: \(M\) times fewer preamps (input capacitance, power),
+    averaging of preamp offsets; but valid only while the preamps are linear between neighbouring
+    thresholds (\(|V_{IN} - V_T| < M X_{LSB}\)), and comparators remain \(2^n - 1\).
+\end{enumerate}
 
 \subsubsection{Folding}
-
+\paragraph{Overview:} the input range mapped onto \(F\) folds; a coarse ADC finds the fold and a fine
+ADC digitises the folded signal.\par
+\noindent\textbf{Schematic:}\par
 \begin{circuitfig}
   \draw[->] (-1,1) node[left]{$V_{IN}$} -- (0,1);
   \draw (0,1) node[circ]{} -- (0,2.2) -- (0.8,2.2); \draw (0,1) -- (0,-0.2) -- (0.8,-0.2);
@@ -41,14 +56,26 @@ neighbouring thresholds.
   \draw[->] (7,-0.2) -- (7.8,-0.2) |- (8,1);
   \draw (8,0.4) rectangle (9.4,1.6) node[midway]{encode};
   \draw[->] (9.4,1) -- (10,1) node[right]{$D$};
-\end{circuitfig}A folding circuit maps the input range onto \(F\) folds,
-\(V_{fold} = \pm\left(V_{IN} - k\frac{V_{REF}}{F}\right)\) in fold \(k\). A coarse
-\(\log_2 F\)-bit ADC finds the fold, a fine ADC of \(\frac{2^n}{F} - 1\)
-comparators digitises \(V_{fold}\):
+\end{circuitfig}
+\paragraph{Transfer Function:}
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}: in fold \(k\)
+    \(V_{fold} = \pm\left(V_{IN} - k\frac{V_{REF}}{F}\right)\); coarse \(D_c = k\) (\(\log_2 F\) bits), fine
+    \(D_f = \left\lfloor \frac{V_{fold}}{V_{REF}/F}\cdot\frac{2^n}{F} \right\rfloor\), \(D = D_c \frac{2^n}{F} + D_f\) (fine code reversed in odd folds).
+  \item \textbf{Large Signal, Time Domain, AC Input Analysis (Q6)}: a full scale sine at \(f_{in}\) crosses
+    all \(F\) folds every half period, so \(V_{fold}\) contains \(\approx F f_{in}\).
+\end{enumerate}
+\paragraph{Analysis:}
+\begin{enumerate}
+  \item \textbf{Comparator Count}: \(F - 1\) coarse plus \(\frac{2^n}{F} - 1\) fine,
 \begin{align*}
   N(F) &= (F - 1) + \left(\frac{2^n}{F} - 1\right) \\
   \frac{dN}{dF} &= 1 - \frac{2^n}{F^2} = 0 \hspace{1cm} \Rightarrow \hspace{1cm} F = 2^{n/2} \\
   N_{\min} &= 2^{n/2} - 1 + \frac{2^n}{2^{n/2}} - 1 = 2 \cdot 2^{n/2} - 2
 \end{align*}
-e.g. \(n = 8\): \(F = 2^4 = 16\), \(N = 2 \cdot 16 - 2 = 30\) instead of \(2^8 - 1 = 255\). The folding stage runs at \(F\) times the
-input frequency, which bounds the bandwidth.
+    e.g. \(n = 8\): \(F = 2^4 = 16\), \(N = 2 \cdot 16 - 2 = 30\) instead of \(2^8 - 1 = 255\).
+  \item \textbf{Bandwidth}: the folder must pass \(F f_{in}\) (Q6): \(f_{p,fold} > F f_{in,\max}\).
+  \item \textbf{Advantages \& Limitations}: \(\approx 2 \cdot 2^{n/2}\) comparators at flash like speed; but the
+    folder runs at \(F\) times the input frequency (bandwidth), fold corners are rounded (non-linear
+    near the folds), and coarse/fine timing must align.
+\end{enumerate}
