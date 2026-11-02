@@ -92,6 +92,13 @@ we only need its terminal behaviour to use it inside blocks
           f_{-3dB,CL} &= F \cdot \frac{A_0 p_1}{2\pi} = F \cdot GB \\
           \frac{A_0}{1 + A_0 F} \cdot f_{-3dB,CL} &= \frac{A_0}{1 + A_0 F} \cdot \frac{p_1 (1 + A_0 F)}{2\pi} = \frac{A_0 p_1}{2\pi} = GB
         \end{align*}
+      \item \textbf{Second Pole (Phase Margin)}: \(A(s) = \frac{A_0}{(1 + s/p_1)(1 + s/p_2)}\), \(p_2 \gg p_1\). The loop gain
+        \(AF\) crosses 1 at \(\omega_c \approx F\cdot 2\pi GB\) (\(\omega_c \ll p_2\)); its phase there is
+        \(-\tan^{-1}\frac{\omega_c}{p_1} - \tan^{-1}\frac{\omega_c}{p_2} \approx -90^\circ - \tan^{-1}\frac{\omega_c}{p_2}\):
+        \[
+          PM = 180^\circ + \angle AF \approx 90^\circ - \tan^{-1}\frac{F\cdot 2\pi GB}{p_2}
+        \]
+        unity gain (\(F = 1\)) is the worst case; \(PM = 60^\circ\) needs \(p_2 = \frac{2\pi GB}{\tan 30^\circ} = 1.73 \cdot 2\pi GB\).
     \end{itemize}
   \item \textbf{Effects}:
     \begin{itemize}

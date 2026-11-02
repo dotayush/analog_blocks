@@ -182,6 +182,9 @@ The behaviour of a MOSFET can be approximated well by the below equations.
       \item \textbf{Amplification}: biased in \textbf{saturation} for the whole signal swing,
         \(V_{DS} \geq V_{ov}\); size \(\frac{W}{L} = \frac{2 I_D}{K_P V_{ov}^2}\) for the chosen \(I_D\), \(V_{ov}\),
         then \(g_m = \frac{2 I_D}{V_{ov}}\) (Section~\ref{sec:amp_cs}).
+      \item \textbf{Sizing by \(g_m/I_D\)}: from \(g_m = \sqrt{2K_P\frac{W}{L}I_D}\) and \(g_m = \frac{2I_D}{V_{ov}}\):
+        \(\frac{W}{L} = \frac{g_m^2}{2K_PI_D}\) and \(\frac{g_m}{I_D} = \frac{2}{V_{ov}}\): choose \(\frac{g_m}{I_D}\) (efficiency, small \(V_{ov}\)) against
+        \(f_T \propto V_{ov}\) (speed, large \(V_{ov}\)).
     \end{itemize}
   \item \textbf{Effects}:
     \begin{itemize}

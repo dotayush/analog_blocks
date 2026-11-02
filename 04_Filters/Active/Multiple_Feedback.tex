@@ -86,6 +86,14 @@ Substituting (1) into (2):
       Z_{in}(j\omega_0) &= \frac{G_2 (C_1 + C_2)}{G_1 \left(j\omega_0 C_1 C_2 + G_2 (C_1 + C_2)\right)} = \frac{\frac{\omega_0 C_1 C_2}{Q}}{G_1 \omega_0 C_1 C_2 \left(j + \frac{1}{Q}\right)} = \frac{R_1}{1 + jQ}
     \end{align*}
     \paragraph{At Output:} the op-amp output, \(Z_{out} = \frac{R_o}{1 + AF} \approx 0\) (Section~\ref{sec:amp_inverting}).
+  \item \textbf{Band Edges}: \(|H(j\omega)| = \frac{|H(j\omega_0)|}{\sqrt{2}}\) when, in (4), \(\left(\omega\frac{\omega_0}{Q}\right)^2 \cdot 2 = (\omega_0^2 - \omega^2)^2 + \left(\omega\frac{\omega_0}{Q}\right)^2\),
+    i.e.\ \(\omega_0^2 - \omega^2 = \pm\omega\frac{\omega_0}{Q}\); the positive roots of both quadratics:
+    \begin{align*}
+      \omega_{1,2} &= \omega_0\left(\sqrt{1 + \frac{1}{4Q^2}} \mp \frac{1}{2Q}\right) \hspace{1cm} \omega_2 - \omega_1 = \frac{\omega_0}{Q} \hspace{1cm} \omega_1\omega_2 = \omega_0^2
+    \end{align*}
+    the edges are geometrically symmetric about \(\omega_0\).
+  \item \textbf{Sensitivity}: from \(Q = \frac{\sqrt{C_1C_2}}{C_1 + C_2}\sqrt{\frac{R_2}{R_1}}\): \(S_{R_2}^Q = \frac{1}{2}\), \(S_{R_1}^Q = -\frac{1}{2}\),
+    \(S_{C_1}^Q = \frac{C_2 - C_1}{2(C_1 + C_2)}\) (\(= 0\) for equal capacitors), \(S_x^{\omega_0} = -\frac{1}{2}\).
   \item \textbf{Advantages \& Limitations}: band pass from one op-amp, low \(Z_{out}\), \(Q\) set by
     \(\sqrt{\frac{R_2}{R_1}}\) (insensitive to op-amp gain at low \(Q\)); but centre gain is tied to \(Q\)
     (\(-2Q^2\) for equal \(C\)), high \(Q\) needs a large resistor spread (\(4Q^2\)), and the op-amp needs

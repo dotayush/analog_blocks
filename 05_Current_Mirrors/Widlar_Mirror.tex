@@ -129,6 +129,14 @@ As in Section~\ref{sec:mirror_basic}, \(G_3\) exists only for analysis
       \end{align*}
       The degeneration multiplies the basic mirror output impedance by
       \(1 + g_{m_1} R_S\).
+  \item \textbf{Mismatch}: a threshold error \(\Delta V_{th}\) on \(M_1\) adds to its \(V_{GS}\) in (4):
+    \(\frac{I_{OUT}}{G_S} + \Delta V_{th} + \sqrt{\frac{I_{OUT}}{k_{n_1}}} - \sqrt{\frac{I_{IN}}{k_{n_0}}} = 0\). Differentiating with respect to \(\Delta V_{th}\)
+    (\(\frac{d}{dI}\sqrt{\frac{I}{k}} = \frac{1}{2\sqrt{kI}} = \frac{1}{g_m}\)):
+    \begin{align*}
+      \frac{dI_{OUT}}{G_S} + d\Delta V_{th} + \frac{dI_{OUT}}{g_{m_1}} &= 0 \hspace{1cm} \Rightarrow \hspace{1cm}
+      \frac{dI_{OUT}}{d\Delta V_{th}} = -\frac{g_{m_1}}{1 + g_{m_1} R_S}
+    \end{align*}
+    \(1 + g_{m_1}R_S\) times less sensitive than the basic mirror (\(-g_{m_1}\)).
   \item \textbf{Advantages \& Limitations}: small \(I_{OUT}\) from a large \(I_{IN}\) without an extreme
     \(\frac{W}{L}\) ratio, \(Z_{out}\) raised by \(1 + g_{m_1} R_S\); but \(I_{OUT}\) is a non-linear function of
     \(I_{IN}\) (4), \(V_{OUT,\min}\) rises by \(I_{OUT} R_S\), and a small \(V_{ov_1}\) approaches weak inversion.

@@ -71,6 +71,16 @@ other two:
     \paragraph{At Input:} \(s \to 0\): \(Z_{in} \to \infty\) (no DC path to ground); \(s \to \infty\): \(C_1\), \(C_2\)
     short \(V_x\) to \(V_{out}\) and \(V_y\) to ground, \(Z_{in} \to R_1\).
     \paragraph{At Output:} the buffer output, \(Z_{out} = \frac{R_o}{1 + A} \approx 0\) (Section~\ref{sec:amp_buffer}).
+  \item \textbf{Sensitivity}: \(S_x^Q = \frac{x}{Q}\frac{\partial Q}{\partial x}\) (relative change of \(Q\) per relative change of \(x\)),
+    from \(Q = \frac{\sqrt{R_1R_2}}{R_1 + R_2}\sqrt{\frac{C_1}{C_2}}\):
+    \begin{align*}
+      S_{C_1}^Q &= \frac{1}{2} \hspace{1cm} S_{C_2}^Q = -\frac{1}{2} \hspace{1cm} S_{R_1}^Q = \frac{R_2 - R_1}{2(R_1 + R_2)} \hspace{1cm} S_{R_2}^Q = \frac{R_1 - R_2}{2(R_1 + R_2)} \\
+      S_x^{\omega_0} &= -\frac{1}{2} \hspace{1cm} [x = R_1, R_2, C_1, C_2,\ \omega_0 = (R_1R_2C_1C_2)^{-1/2}]
+    \end{align*}
+    equal resistors make \(Q\) insensitive to them; a \(1\%\) capacitor error moves \(Q\) by \(0.5\%\).
+  \item \textbf{Step Response (Small Signal, Time Domain, AC Input Analysis (Q2))}: second order with damping
+    \(\frac{1}{2Q}\) (Section~\ref{sec:theory_cs_second_order}); overshoot \(e^{-\pi\frac{1/(2Q)}{\sqrt{1 - 1/(4Q^2)}}}\), Butterworth
+    (\(Q = \frac{1}{\sqrt{2}}\), damping \(\frac{1}{\sqrt{2}}\)): \(e^{-\pi} = 4.3\%\).
   \item \textbf{Advantages \& Limitations}: two poles from one unity gain buffer (\(F = 1\), widest
     op-amp bandwidth), \(Q\) set by component ratios, unity DC gain exact; but no gain, \(Q\) is
     sensitive to \(\frac{C_1}{C_2}\), and above \(GB\) the op-amp output impedance lets the signal through

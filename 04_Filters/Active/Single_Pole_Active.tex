@@ -43,6 +43,15 @@ Applying KCL at \(V_-\):
     \paragraph{At Output:} the op-amp output, \(Z_{out} = \frac{R_o}{1 + AF} \approx 0\)
     (Section~\ref{sec:amp_inverting}): unlike the passive RC (Section~\ref{sec:theory_general_loading})
     the next stage does not load it.
+  \item \textbf{Step Response (Small Signal, Time Domain, AC Input Analysis (Q2))}: \(V_{in}(s) = \frac{V_s}{s}\) in (1):
+    \begin{align*}
+      V_{out}(s) &= -\frac{R_2}{R_1}V_s\cdot\frac{1}{s(1 + sR_2C)} = -\frac{R_2}{R_1}V_s\left(\frac{1}{s} - \frac{R_2C}{1 + sR_2C}\right) \hspace{1cm} [\text{Partial fractions}] \\
+      V_{out}(t) &= -\frac{R_2}{R_1}V_s\left(1 - e^{-\frac{t}{R_2C}}\right) \hspace{1cm} [\text{Inverse Laplace}]
+    \end{align*}
+    \(10\%\) to \(90\%\) rise time \(R_2C\ln 9 = 2.2\,R_2C\).
+  \item \textbf{Op-Amp Requirement}: the feedback factor (\(V_{in} = 0\)) is
+    \(F(s) = \frac{G_2 + sC}{G_1 + G_2 + sC}\), rising from \(\frac{R_1}{R_1 + R_2}\) to 1 above \(f_p\): the op-amp must be stable at
+    \(F = 1\) (unity gain stable), and its own closed loop pole \(\approx F \cdot GB\) must stay far above \(f_p\).
   \item \textbf{Advantages \& Limitations}: gain and pole set independently
     (\(\frac{R_2}{R_1}\), \(\frac{1}{2\pi R_2 C}\)), buffered output; but inverting, \(Z_{in} = R_1\), only
     \(-20\,\)dB/decade, and an op-amp (power, \(GB\), swing).
