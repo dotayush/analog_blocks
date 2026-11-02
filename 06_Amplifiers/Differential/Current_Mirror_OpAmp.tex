@@ -79,7 +79,7 @@ its direction. The mirrors multiply the transconductance by \(B\) (a
       V_{out}(g_{o6} + g_{o8} + sC_L) &= -g_{m6} V_b - g_{m8} V_c \\
       V_{out}(g_{o6} + g_{o8} + sC_L) &= B g_{m4}\frac{g_m}{g_{m4}} V_{i2} - g_{m7}\frac{B g_m}{g_{m7}} V_{i1} \hspace{1cm} \text{(Substituting (2), (3))} \\
       V_{out}(g_{o6} + g_{o8} + sC_L) &= B g_m (V_{i2} - V_{i1}) = B g_m \left(\frac{V_{id}}{2} + \frac{V_{id}}{2}\right) = B g_m V_{id} \\
-      A(s) = \frac{V_{out}}{V_{id}} &= \frac{B g_{m1}}{g_{o6} + g_{o8} + sC_L}
+      A(s) = \frac{V_{out}}{V_{id}} &= \frac{B g_{m1}}{g_{o6} + g_{o8} + sC_L} \tag{4}
     \end{align*}
     \(V_{i2}\) (the side mirrored once) is the non-inverting input. The output
     current \(B g_{m1} V_{id}\) is the 5T OTA's \(g_{m1} V_{id}\) times \(B\).
@@ -87,23 +87,9 @@ its direction. The mirrors multiply the transconductance by \(B\) (a
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \textbf{DC Gain}: \(s = 0\), with \(g_{m1} = \frac{2 I_{D1}}{V_{ov1}} = \frac{2 \frac{I_T}{2}}{V_{ov1}} = \frac{I_T}{V_{ov1}}\),
-    \(g_{o6} = K_{CLM,p} I_{D6}\), \(g_{o8} = K_{CLM,n} I_{D8}\) and \(I_{D6} = I_{D8} = B\frac{I_T}{2}\):
-    \begin{align*}
-      A_{V0} &= \frac{B g_{m1}}{g_{o6} + g_{o8}} = \frac{B \cdot \frac{I_T}{V_{ov1}}}{(K_{CLM,n} + K_{CLM,p}) \frac{B I_T}{2}} \\
-             &= \frac{B I_T}{V_{ov1}}\cdot\frac{2}{(K_{CLM,n} + K_{CLM,p}) B I_T} = \frac{2}{V_{ov1}(K_{CLM,n} + K_{CLM,p})}
-    \end{align*}
-    the same as the 5T OTA (Section~\ref{sec:amp_5t}): \(B\) cancels.
-  \item \textbf{Gain-Bandwidth}: dominant pole \(p_1 = \frac{g_{o6} + g_{o8}}{C_L}\), so
-    \begin{align*}
-      GB &= \frac{A_{V0}\, p_1}{2\pi} = \frac{1}{2\pi}\cdot\frac{B g_{m1}}{g_{o6} + g_{o8}}\cdot\frac{g_{o6} + g_{o8}}{C_L} = \frac{B g_{m1}}{2\pi C_L}
-    \end{align*}
-  \item \textbf{Slew Rate, Large Signal, Time Domain, AC Input Analysis (Q6)}:
-    for a large \(V_{ID} > 0\), \(M_2\) takes all of \(I_T\), so \(M_6\) sources
-    \(B I_T\) and \(M_8\) is off; for \(V_{ID} < 0\), \(M_1\) takes \(I_T\) and \(M_8\)
-    sinks \(B I_T\) with \(M_6\) off. Either way \(SR = \frac{B I_T}{C_L}\). Both
-    \(GB\) and \(SR\) are \(B\) times larger than the 5T OTA at the same \(I_T\).
-  \item \textbf{Mirror Poles}: \(V_a\) carries \(C_{gs3} + C_{gs5} = C_{gs3} + B C_{gs3} = (1 + B) C_{gs3}\)
+  \item \textbf{Poles (\(D(s) = 0\))}: from (4),
+    \(g_{o6} + g_{o8} + s_p C_L = 0 \Rightarrow s_{p1} = -\frac{g_{o6} + g_{o8}}{C_L}\), \(p_1 = |s_{p1}|\) (dominant).
+    Non-dominant (mirror) poles: \(V_a\) carries \(C_{gs3} + C_{gs5} = C_{gs3} + B C_{gs3} = (1 + B) C_{gs3}\)
     (\(M_5\) is \(B\) times wider), driven by \(\frac{1}{g_{m3}}\); \(V_c\) carries
     \(C_{gs7} + C_{gs8} = 2 C_{gs7}\), driven by \(\frac{1}{g_{m7}}\):
     \begin{align*}
@@ -111,6 +97,39 @@ its direction. The mirrors multiply the transconductance by \(B\) (a
     \end{align*}
     \(p_a\) falls with \(B\) while \(GB\) rises with it, so \(B\) is limited to a few
     (2--5) by phase margin.
+  \item \textbf{Zeroes (\(N(s) = 0\))}: \(N(s) = B g_{m1} \neq 0\): no finite zero (the mirror paths add
+    left half plane zeros near \(p_a\), \(p_c\), as in Section~\ref{sec:amp_5t}).
+  \item \textbf{DC Gain (\(A(0)\))}: \(s = 0\) in (4), with \(g_{m1} = \frac{2 I_{D1}}{V_{ov1}} = \frac{2 \frac{I_T}{2}}{V_{ov1}} = \frac{I_T}{V_{ov1}}\),
+    \(g_{o6} = K_{CLM,p} I_{D6}\), \(g_{o8} = K_{CLM,n} I_{D8}\) and \(I_{D6} = I_{D8} = B\frac{I_T}{2}\):
+    \begin{align*}
+      A_{V0} &= \frac{B g_{m1}}{g_{o6} + g_{o8}} = \frac{B \cdot \frac{I_T}{V_{ov1}}}{(K_{CLM,n} + K_{CLM,p}) \frac{B I_T}{2}} \\
+             &= \frac{B I_T}{V_{ov1}}\cdot\frac{2}{(K_{CLM,n} + K_{CLM,p}) B I_T} = \frac{2}{V_{ov1}(K_{CLM,n} + K_{CLM,p})}
+    \end{align*}
+    the same as the 5T OTA (Section~\ref{sec:amp_5t}): \(B\) cancels.
+  \item \textbf{Gain-Bandwidth Product (\(GB\))}:
+    \begin{align*}
+      GB &= A_{V0}\frac{p_1}{2\pi} = \frac{B g_{m1}}{g_{o6} + g_{o8}}\cdot\frac{g_{o6} + g_{o8}}{2\pi C_L} = \frac{B g_{m1}}{2\pi C_L}
+    \end{align*}
+  \item \textbf{Slew Rate (Large Signal, Time Domain, AC Input Analysis (Q6))}:
+    for a large \(V_{ID} > 0\), \(M_2\) takes all of \(I_T\), so \(M_6\) sources
+    \(B I_T\) and \(M_8\) is off; for \(V_{ID} < 0\), \(M_1\) takes \(I_T\) and \(M_8\)
+    sinks \(B I_T\) with \(M_6\) off. Either way \(SR = \frac{B I_T}{C_L}\). Both
+    \(GB\) and \(SR\) are \(B\) times larger than the 5T OTA at the same \(I_T\).
+  \item \textbf{Impedances}:
+    \paragraph{At Input:} \(I_G = 0\): \(Z_{in} \to \infty\) at DC.
+    \paragraph{At Output:} \(V_{id} = 0\) holds \(V_b = V_c = 0\): \(Z_{out} = \frac{1}{g_{o6} + g_{o8}} = r_{o6} \parallel r_{o8}\).
+  \item \textbf{Output Swing (Max)}: \(M_8\) and \(M_6\) saturated:
+    \(V_{ov8} \leq V_{OUT} \leq V_{dd} - |V_{ov6}|\), close to rail to rail.
+  \item \textbf{Advantages \& Limitations}: \(GB\) and \(SR\) multiplied by \(B\), output swing close to
+    the rails, internal nodes low impedance; but \(I_{dd} = (1 + B) I_T\), \(A_{V0}\) no higher than the 5T
+    OTA, and \(p_a\) falls with \(B\) (phase margin limits \(B\) to 2--5).
+\end{enumerate}
+
+\subsubsection{Design}
+\begin{enumerate}
+  \item \(B I_T = SR \cdot C_L\); \(B g_{m1} = 2\pi GB\, C_L\).
+  \item Choose \(B\) (2--5) from \(p_a = \frac{g_{m3}}{(1 + B) C_{gs3}} > 2\pi \cdot 3\,GB\).
+  \item \(V_{ov1} = \frac{I_T}{g_{m1}}\), check \(A_{V0} = \frac{2}{V_{ov1}(K_{CLM,n} + K_{CLM,p})}\).
 \end{enumerate}
 
 \subsubsection{Question}
