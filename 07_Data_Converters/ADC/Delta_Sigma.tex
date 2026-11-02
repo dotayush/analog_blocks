@@ -22,21 +22,32 @@ where a digital decimation filter removes it.
 \end{circuitfig}
 
 \subsubsection{Transfer Function}
-\textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)} in the
-\(z\) domain (\(z = e^{sT}\), \(T = \frac{1}{f_s}\)), the quantiser modelled as
-\(V = Y + E\):
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}: constant \(U\), the integrator
+    \(Y[k] = Y[k-1] + U - V[k-1]\) stays bounded only if the average of \(V\) equals \(U\):
+    \begin{align*}
+      Y[K] - Y[0] &= \sum_{k=1}^{K}(U - V[k-1]) = K U - \sum_{k=0}^{K-1} V[k] \hspace{1cm} [\text{summing the recursion}] \\
+      \frac{1}{K}\sum_{k=0}^{K-1} V[k] &= U - \frac{Y[K] - Y[0]}{K} \xrightarrow{K \to \infty} U \hspace{1cm} [Y \text{ bounded}]
+    \end{align*}
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)} in the \(z\) domain
+    (\(z = e^{sT}\), \(T = \frac{1}{f_s}\)), the quantiser modelled as \(V = Y + E\):
 \begin{align*}
   Y &= \frac{z^{-1}}{1 - z^{-1}}(U - V) \\
   V &= \frac{z^{-1}}{1 - z^{-1}}(U - V) + E \\
   V\left(1 + \frac{z^{-1}}{1 - z^{-1}}\right) &= \frac{z^{-1}}{1 - z^{-1}} U + E \\
   V \cdot \frac{1 - z^{-1} + z^{-1}}{1 - z^{-1}} = V \cdot \frac{1}{1 - z^{-1}} &= \frac{z^{-1}}{1 - z^{-1}} U + E \\
-  V &= \underbrace{z^{-1}}_{STF} U + \underbrace{(1 - z^{-1})}_{NTF} E \hspace{1cm} [\times (1 - z^{-1})]
+  V &= \underbrace{z^{-1}}_{STF} U + \underbrace{(1 - z^{-1})}_{NTF} E \tag{1}
 \end{align*}
-The signal is only delayed; the noise is differentiated (first order high
-pass). An \(L\)-th order loop gives \(NTF = (1 - z^{-1})^L\).
+    The signal is only delayed; the noise is differentiated (first order high pass). An \(L\)-th
+    order loop gives \(NTF = (1 - z^{-1})^L\).
+\end{enumerate}
 
 \subsubsection{Analysis}
 \begin{enumerate}
+  \item \textbf{Poles}: \(STF = z^{-1}\) and \(NTF = \frac{z - 1}{z}\) [from (1)]: a single pole at \(z = 0\) (pure delay,
+    inside the unit circle, stable for the linear model).
+  \item \textbf{Zeroes}: \(NTF = 0\) at \(z = 1\), i.e. \(f = 0\) (\(L\)-fold for order \(L\)): the noise is nulled at DC.
+  \item \textbf{DC Gain}: \(STF(z = 1) = 1\) (Q5: \(\overline{V} = U\)), \(NTF(z = 1) = 0\).
   \item \textbf{Noise Shaping}: on \(z = e^{j2\pi f/f_s}\),
     \begin{align*}
       1 - e^{-j2\pi f/f_s} &= e^{-j\pi f/f_s}\left(e^{j\pi f/f_s} - e^{-j\pi f/f_s}\right) = e^{-j\pi f/f_s} \cdot 2j\sin\left(\frac{\pi f}{f_s}\right) \\
@@ -78,6 +89,19 @@ pass). An \(L\)-th order loop gives \(NTF = (1 - z^{-1})^L\).
     \(\frac{z^{-1}}{1 - z^{-1}}\). The continuous filter is an implicit
     anti-alias filter and needs no settling op-amps, but is sensitive to
     clock jitter (Section~\ref{sec:dc_char}) and to RC spread.
+  \item \textbf{Impedances}:
+    \paragraph{At Input:} discrete time: switched sampling capacitance at \(f_s\); continuous time:
+    the first integrator input resistance (Section~\ref{sec:amp_integrator}).
+  \item \textbf{Advantages \& Limitations}: resolution from \(OSR\) and \(L\) with a coarse (even 1-bit,
+    inherently linear) quantiser, relaxed anti-alias filter; but \(f_s = 2\,OSR\,f_B\) limits bandwidth,
+    needs a digital decimation filter, high order loops are only conditionally stable, and
+    multi-bit feedback DACs need mismatch shaping.
+\end{enumerate}
+
+\subsubsection{Design}
+\begin{enumerate}
+  \item Choose \(L\), \(n_q\); solve the \(SQNR_{dB}\) expression for \(OSR\); \(f_s = 2\,OSR\,f_B\).
+  \item Scale integrator coefficients for stability (\(|U| \lesssim 0.7\) full scale for high order 1-bit loops).
 \end{enumerate}
 
 \subsubsection{Question}
