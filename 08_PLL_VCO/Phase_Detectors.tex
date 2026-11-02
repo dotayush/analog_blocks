@@ -44,6 +44,20 @@ edges, so the XOR output is high for a fraction \(\frac{\theta_e}{\pi}\) of each
     frequency acquisition), needs \(50\%\) duty cycles, and ripple at \(2f_{ref}\).
 \end{enumerate}
 
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+
+  % average XOR output of two 50% square waves versus phase error
+  Vdd = 1.8; N = 1000; t = (0:N - 1)/N;
+  th = linspace(0, pi, 7);
+  for k = 1:numel(th)
+    a = mod(t, 1) < 0.5; b = mod(t - th(k)/(2*pi), 1) < 0.5;
+    printf('theta = %.3f rad: mean Vpd = %.3f V, Vdd theta/pi = %.3f V\n', th(k), Vdd*mean(xor(a, b)), Vdd*th(k)/pi);
+  end
+  printf('Kpd = %.3f V/rad\n', Vdd/pi);
+\end{lstlisting}
+
 \subsection{Phase Frequency Detector (PFD) and Charge Pump}
 \subsubsection{Overview}
 Two flip-flops: a reference edge sets \(UP\), a divided edge sets \(DN\), and when both are high both
@@ -103,6 +117,19 @@ cycle must be zero; with a minimum reset pulse \(t_{on}\) on both outputs,
     ripple in lock (ideally), current output (integrates on the loop filter); but \(I_{cp}\) mismatch and
     the reset pulse give a static phase offset and spurs, and a dead zone without the \(t_{on}\) pulse.
 \end{enumerate}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+
+  % average pump current versus phase error (UP for theta > 0, DN for theta < 0)
+  Icp = 100e-6; th = linspace(-1.9*pi, 1.9*pi, 5);
+  printf('theta = %6.3f rad: Iavg = %7.3f uA\n', [th; Icp*th/(2*pi)*1e6]);
+  printf('Kpd = %.2f uA/rad\n', Icp/(2*pi)*1e6);
+  % static phase offset from sink mismatch
+  e = 0.05; ton = 100e-12; Tref = 100e-9;
+  printf('static phase offset = %.3g rad (%.3f deg)\n', 2*pi*e*ton/Tref, 360*e*ton/Tref);
+\end{lstlisting}
 
 \subsection{Question}
 An XOR detector on \(V_{dd} = 1.8\,V\), and a PFD with \(I_{cp} = 100\,\mu A\),

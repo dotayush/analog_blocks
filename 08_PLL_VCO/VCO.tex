@@ -71,6 +71,25 @@ with \(g_m\) the transconductance of the starving device.
   \item \(g_m\) of the starving device from \(K_{vco} = \frac{g_m}{N C V_{dd}}\).
 \end{enumerate}
 
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms w wp A0 N positive
+  % Barkhausen: phase pi - N atan(w/wp) = 0, |A| = 1
+  w0 = solve(N*atan(w/wp) == sym(pi), w);
+  printf('=== oscillation frequency ===\n'); pretty(simplify(w0))
+  printf('=== minimum stage gain ===\n'); pretty(simplify(sqrt(1 + tan(sym(pi)/N)^2)))
+  for n = [3 5 7]
+    printf('N = %d: w0/wp = %.3f, A0 >= %.3f\n', n, tan(pi/n), 1/cos(pi/n));
+  end
+  % current starved tuning
+  syms I C Vdd gm
+  f0 = I/(N*C*Vdd);
+  printf('=== df0/dVdd ===\n'); pretty(simplify(diff(f0, Vdd)))
+\end{lstlisting}
+
 \subsection{LC VCO}\label{sec:vco_lc}
 \subsubsection{Overview}
 A tank \(L \parallel C\) whose losses are lumped in \(R_p = Q_L \omega_0 L\)
@@ -167,6 +186,28 @@ minimum \(g_m\) and the amplitude.
   V_{amp,diff} &= \frac{4}{\pi} I_T R_p = \frac{4}{\pi}\cdot 2\,mA \cdot 628 = 1.273 \cdot 1.257 = 1.6\,V
 \end{align*}
 
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms s
+  syms L C Rp gm positive
+  % differential tank (2L, C/2, 2Rp) in parallel with -2/gm
+  Y = 1/(2*Rp) - gm/2 + s*C/2 + 1/(2*s*L);
+  n = expand(Y*2*s*L);
+  printf('=== Y(s) 2sL ===\n'); pretty(n)
+  printf('=== roots at gm Rp = 1 ===\n'); pretty(solve(subs(n, gm, 1/Rp) == 0, s))
+  syms Cv Vc dCdV
+  f0 = 1/(2*sym(pi)*sqrt(L*C));
+  printf('=== Kvco = df0/dC * dC/dVc ===\n'); pretty(simplify(diff(f0, C)*dCdV))
+
+  % Question: L = 2 nH, QL = 10, f0 = 5 GHz, IT = 2 mA
+  w = 2*pi*5e9; Cn = 1/(w^2*2e-9); Rpn = 10*w*2e-9;
+  printf('C = %.0f fF, Rp = %.0f Ohm, gm >= %.2f mS, Vamp = %.2f V\n', Cn*1e15, Rpn, 1/Rpn*1e3, 4/pi*2e-3*Rpn);
+  printf('tuning range for Cmax/Cmin = 2: %.3f\n', sqrt(2));
+\end{lstlisting}
+
 \subsection{Relaxation VCO}\label{sec:vco_relax}
 \subsubsection{Overview}
 A current \(I = g_c V_c\) charges and then discharges \(C\) between the two thresholds \(V_H\), \(V_L\)
@@ -211,3 +252,23 @@ of a Schmitt trigger (\(dV = V_H - V_L\)).
 \begin{enumerate}
   \item \(g_c = 2 C\, dV\, K_{vco}\); \(C\) and \(dV\) from \(f_0 = \frac{g_c V_c}{2 C\, dV}\) at mid range.
 \end{enumerate}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms C dV I t td gc Vc positive
+  tr = solve(C*dV == I*t, t);                          % one ramp
+  f0 = 1/(2*tr);
+  printf('=== f0, Kvco ===\n'); pretty(subs(f0, I, gc*Vc)); pretty(diff(subs(f0, I, gc*Vc), Vc))
+  printf('=== f0 with comparator delay ===\n'); pretty(simplify(1/(2*(tr + td))))
+
+  % simulate the ramp: C = 1 pF, dV = 1 V, I = 10 uA
+  c = 1e-12; dv = 1; i = 10e-6; dt = 1e-10; v = 0; dir = 1; tsw = [];
+  for k = 1:20000
+    v = v + dir*i/c*dt;
+    if v >= dv, dir = -1; tsw(end + 1) = k*dt; elseif v <= 0, dir = 1; tsw(end + 1) = k*dt; end
+  end
+  printf('simulated f0 = %.2f MHz, formula = %.2f MHz\n', 1/(2*mean(diff(tsw)))/1e6, i/(2*c*dv)/1e6);
+\end{lstlisting}
