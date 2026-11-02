@@ -104,6 +104,16 @@ feedback element. Op-amp model: \(V_{out} = A(V_+ - V_-)\), \(A = A_0\) in Q5,
     \(V_{OL}\) (for \(V_{IN} > 0\)) at \(t_{sat} = \frac{R_1 C |V_{OL}|}{V_{IN}}\).
   \item \textbf{Slew Rate (Large Signal, Time Domain, AC Input Analysis (Q6))}: the output
     slope \(\frac{|V_{IN}|}{R_1 C} \leq SR\), i.e.\ \(|V_{IN}| \leq SR \cdot R_1 C\).
+  \item \textbf{Phase Error}: the ideal integrator has \(-90^\circ\) (\(-\frac{1}{j\omega R_1 C}\)). (3) divided by the
+    ideal \(-\frac{G_1}{sC}\), with \(\omega_{GB} = p_1(1 + A_0) + \frac{G_1}{C} \approx A_0 p_1 = 2\pi GB\):
+    \begin{align*}
+      \frac{H(s)}{H_{ideal}(s)} &= \frac{A_0 p_1\, s}{s^2 + s\,\omega_{GB} + \frac{G_1}{C} p_1}
+       \approx \frac{1}{1 + \frac{s}{\omega_{GB}} + \frac{G_1 p_1}{C\omega_{GB} s}} \hspace{1cm} [A_0 p_1 \approx \omega_{GB}] \\
+      \frac{H(j\omega)}{H_{ideal}(j\omega)} &\approx \frac{1}{1 + j\left(\frac{\omega}{\omega_{GB}} - \frac{\omega_{l}}{\omega}\right)} \hspace{1cm} \left[\omega_l = \frac{G_1 p_1}{C\omega_{GB}} \approx \frac{1}{A_0 R_1 C}\right] \\
+      \phi_{err} &= -\tan^{-1}\left(\frac{\omega}{\omega_{GB}} - \frac{\omega_l}{\omega}\right)
+    \end{align*}
+    finite \(GB\) adds lag at high frequency, finite \(A_0\) adds lead at low frequency; the error is
+    smallest at \(\omega = \sqrt{\omega_l \omega_{GB}}\).
   \item \textbf{Advantages \& Limitations}: exact integration (\(-\frac{1}{s R_1 C}\)) between
     \(f_{p1}\) and \(GB\); but no DC feedback, so offset and bias currents ramp the output
     to a rail (needs \(G_F\) or a reset switch), and the output is inverted.

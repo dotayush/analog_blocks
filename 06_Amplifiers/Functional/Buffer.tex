@@ -80,6 +80,15 @@ Op-amp model as in Section~\ref{sec:amp_inverting}: \(V_{out} = A(V_+ - V_-)\),
     above it the output ramps at \(SR\), reaching \(V_s\) after \(\approx \frac{V_s}{SR}\).
   \item \textbf{Output Swing (Max)}: \(V_{OUT} \approx V_{IN}\), so
     \(\max(V_{OL}, V_{ICM,\min}) \leq V_{IN} \leq \min(V_{OH}, V_{ICM,\max})\).
+  \item \textbf{Capacitive Load (Phase Margin)}: \(C_L\) on the output with the op-amp output resistance
+    \(R_o\) adds a pole \(p_L = \frac{1}{R_o C_L}\) inside the loop (\(F = 1\)):
+    \begin{align*}
+      A(s)F &= \frac{A_0 p_1}{s + p_1}\cdot\frac{1}{1 + \frac{s}{p_L}} \hspace{1cm} |AF| = 1 \text{ at } \omega \approx 2\pi GB \hspace{0.5cm} [p_1 \ll 2\pi GB \ll p_L] \\
+      PM &= 180^\circ - 90^\circ - \tan^{-1}\frac{2\pi GB}{p_L} = 90^\circ - \tan^{-1}(2\pi GB\, R_o C_L)
+    \end{align*}
+    e.g.\ \(GB = 1\,\)MHz, \(R_o = 100\,\Omega\), \(C_L = 1\,\)nF: \(2\pi \cdot 10^6 \cdot 100 \cdot 10^{-9} = 0.628\), \(PM = 90^\circ - 32.1^\circ = 57.9^\circ\).
+    An isolation resistor in series with \(C_L\) restores it.
+  \item \textbf{Offset}: \(V_{OUT} = \frac{A_0}{1 + A_0}(V_{IN} + V_{OS}) \approx V_{IN} + V_{OS}\) (\(V_{OS}\) in series with \(V_+\), noise gain 1).
   \item \textbf{Advantages \& Limitations}: \(Z_{in} \to \infty\), \(Z_{out} \to 0\),
     bandwidth \(GB\) (the widest of any configuration), so it stops loading
     (Section~\ref{sec:theory_general_loading}); but no gain, both inputs follow

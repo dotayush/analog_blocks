@@ -88,6 +88,19 @@ input and \(G_2\) in feedback. Op-amp model: \(V_{out} = A(V_+ - V_-)\), \(A = A
     \begin{align*}
       V_{OUT} &= -2\pi f R_2 C V_p \cos(2\pi f t) \hspace{1cm} \left|\frac{dV_{OUT}}{dt}\right|_{\max} = (2\pi f)^2 R_2 C V_p \leq SR
     \end{align*}
+  \item \textbf{Choosing \(R_s\)}: the loop with \(R_s\) (input admittance \(\frac{sC}{1 + sR_sC}\), \(F(s) = \frac{1 + sR_sC}{1 + s(R_2 + R_s)C}\))
+    has the characteristic polynomial (\(1 + A F = 0\), times \((s + p_1)(1 + s(R_2 + R_s)C)\)):
+    \begin{align*}
+      C(R_2 + R_s) s^2 + \left(1 + p_1 C(R_2 + R_s) + A_0 p_1 C R_s\right) s + p_1(1 + A_0) &= 0 \\
+      \omega_n^2 = \frac{p_1(1 + A_0)}{C(R_2 + R_s)} \hspace{1cm}
+      Q &= \frac{\omega_n C (R_2 + R_s)}{1 + p_1 C(R_2 + R_s) + A_0 p_1 C R_s}
+    \end{align*}
+    with \(A_0 p_1 = \omega_{GB}\), \(R_s \ll R_2\), \(p_1 C R_2 \ll 1\): \(Q \approx \frac{\sqrt{\omega_{GB} R_2 C}}{1 + \omega_{GB} R_s C}\). For \(Q = \frac{1}{\sqrt{2}}\):
+    \begin{align*}
+      1 + \omega_{GB} R_s C &= \sqrt{2\omega_{GB} R_2 C} \hspace{1cm} \Rightarrow \hspace{1cm} R_s = \frac{\sqrt{2\omega_{GB} R_2 C} - 1}{\omega_{GB} C}
+    \end{align*}
+    e.g.\ \(GB = 1\,\)MHz, \(R_2 = 100\,k\Omega\), \(C = 10\,nF\): \(\sqrt{2 \cdot 6.283 \times 10^6 \cdot 10^{-3}} = 112.1\),
+    \(R_s = \frac{111.1}{6.283 \times 10^6 \cdot 10^{-8}} = 1.77\,k\Omega\).
   \item \textbf{Advantages \& Limitations}: exact derivative (\(-s R_2 C\)) for \(f \ll f_n\);
     but the gain rises with frequency (amplifies noise), the loop is close to unstable
     (high \(Q\) ringing) without \(R_s\), and \(Z_{in}\) is capacitive.

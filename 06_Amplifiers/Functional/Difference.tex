@@ -100,6 +100,12 @@ Section~\ref{sec:amp_inverting}: \(V_{out} = A(V_+ - V_-)\), \(A = A_0\) in Q5,
     \paragraph{At Output:} as Section~\ref{sec:amp_inverting}, \(Z_{out} = \frac{R_o}{1 + AF}\).
   \item \textbf{Output Swing (Max)}: \(V_{OL} \leq k(V_2 - V_1) \leq V_{OH}\) and
     \(V_{ICM,\min} \leq \frac{k}{1 + k} V_2 \leq V_{ICM,\max}\).
+  \item \textbf{Source Resistance}: a source resistance \(R_s\) driving \(V_1\) adds to \(R_1\),
+    \(R_1 \to R_1 + R_s\), i.e.\ a ratio error \(\frac{R_2}{R_1 + R_s} = \frac{R_2}{R_1}\cdot\frac{1}{1 + R_s/R_1} \approx k\left(1 - \frac{R_s}{R_1}\right)\)
+    [\(\frac{1}{1 + x} \approx 1 - x\)]: the same as a mismatch \(|e| = \frac{R_s}{R_1}\), so
+    \(CMRR \approx \frac{(1 + k) R_1}{R_s}\); e.g.\ \(k = 1\), \(R_1 = 10\,k\Omega\), \(R_s = 100\,\Omega\): \(CMRR \approx \frac{2 \cdot 10^4}{100} = 200\).
+  \item \textbf{Offset}: \(V_{OS}\) in series with \(V_+\) sees the noise gain \(\frac{1}{F} = 1 + k\):
+    \(V_{OUT,error} = (1 + k) V_{OS}\).
   \item \textbf{Advantages \& Limitations}: single op-amp subtraction with common mode
     rejection; but \(CMRR\) is set by resistor matching (\(\frac{1 + k}{|e|}\)) and the two
     input impedances are low and unequal (the instrumentation amplifier buffers both

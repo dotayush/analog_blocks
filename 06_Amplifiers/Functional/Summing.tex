@@ -72,6 +72,10 @@ through \(G_k\) into \(V_-\) and feedback \(G_F\). Op-amp model:
   \item \textbf{Output Swing (Max)}: \(V_{OL} \leq -\sum_k \frac{R_F}{R_k} V_k \leq V_{OH}\).
   \item \textbf{Binary Weights}: \(R_k = 2^{k-1} R\) gives \(\frac{R_F}{R_k} = \frac{R_F}{R}2^{-(k-1)}\),
     halving weights: a binary weighted DAC (Chapter~\ref{ch:data_converters}).
+  \item \textbf{Offset and Noise Gain}: \(V_{OS}\) in series with \(V_+\) sees the noise gain
+    \(\frac{1}{F} = 1 + \frac{G_\Sigma}{G_F} = 1 + \sum_k \frac{R_F}{R_k}\): \(V_{OUT,error} = V_{OS}\left(1 + \sum_k \frac{R_F}{R_k}\right)\), larger than
+    any single signal weight; bias currents cancel with \(R_p = R_F \parallel R_1 \parallel \cdots \parallel R_N\)
+    (Section~\ref{sec:amp_inverting}).
   \item \textbf{Advantages \& Limitations}: independent, non-interacting weights
     (virtual ground); but inverted output, each input loads its source with \(R_k\), and
     \(F\) (bandwidth) falls as inputs are added.

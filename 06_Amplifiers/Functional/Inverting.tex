@@ -89,6 +89,22 @@ Section~\ref{sec:devices_opamp}: \(V_{out} = A(V_+ - V_-)\), with \(A = A_0\) in
   \item \textbf{Slew Rate (Large Signal, Time Domain, AC Input Analysis (Q6))}: a sine output
     \(V_p \sin(2\pi f t)\) has the largest slope \(2\pi f V_p\), so it is undistorted while
     \(2\pi f V_p \leq SR\), i.e. \(f \leq \frac{SR}{2\pi V_p}\).
+  \item \textbf{Offset and Bias Currents (Large Signal, Time Domain, DC Input Analysis (Q5))}: \(V_{IN} = 0\),
+    offset \(V_{OS}\) in series with \(V_+\), bias currents \(I_{B+}\), \(I_{B-}\) into the inputs, a resistor \(R_p\) from
+    \(V_+\) to ground. Ideal op-amp, \(V_- = V_+ = V_{OS} - I_{B+} R_p\); applying KCL at \(V_-\):
+    \begin{align*}
+      \frac{V_-}{R_1} + \frac{V_- - V_{OUT}}{R_2} + I_{B-} &= 0 \\
+      V_{OUT} &= V_-\left(1 + \frac{R_2}{R_1}\right) + I_{B-} R_2 = \left(1 + \frac{R_2}{R_1}\right)(V_{OS} - I_{B+} R_p) + I_{B-} R_2
+    \end{align*}
+    \(V_{OS}\) is amplified by the noise gain \(\frac{1}{F} = 1 + \frac{R_2}{R_1}\), not by \(\frac{R_2}{R_1}\). With
+    \(I_{B+} = I_{B-} = I_B\) and \(R_p = R_1 \parallel R_2 = \frac{R_1 R_2}{R_1 + R_2}\):
+    \begin{align*}
+      \left(1 + \frac{R_2}{R_1}\right) I_B \frac{R_1 R_2}{R_1 + R_2} &= \frac{R_1 + R_2}{R_1}\cdot\frac{R_1 R_2}{R_1 + R_2} I_B = I_B R_2 \hspace{1cm} \Rightarrow \hspace{1cm} V_{OUT} = \frac{V_{OS}}{F} \pm I_{OS} R_2
+    \end{align*}
+    the bias currents cancel, leaving only the offset current \(I_{OS} = |I_{B+} - I_{B-}|\).
+  \item \textbf{Noise}: an input referred op-amp noise density \(\overline{V_n^2}\) appears at the output times
+    \(\frac{1}{F^2}\); each resistor's \(4kTR\) adds: \(\overline{V_{o}^2} = \frac{\overline{V_n^2}}{F^2} + 4kTR_1\left(\frac{R_2}{R_1}\right)^2 + 4kTR_2\) (per Hz,
+    Section~\ref{sec:theory_general_noise}).
   \item \textbf{Advantages \& Limitations}: gain set by a resistor ratio, input
     common mode fixed at 0 (no common mode error); but \(Z_{in} = R_1\) loads the source,
     the output is inverted, and \(GBW = (1 - F) GB\).
