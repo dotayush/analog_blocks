@@ -71,7 +71,7 @@ CS stage of Section~\ref{sec:amp_cs} with \(C_c\) in the place of \(C_{gd}\).
     \end{align*}
     so
     \begin{align*}
-      A(s) = \frac{V_{out}}{V_{id}} &= \frac{-g_{m1}(g_{m6} - sC_c)}{D(s)} = \frac{-g_{m1}(g_{m6} - sC_c)}{a_0 + a_1 s + a_2 s^2}
+      A(s) = \frac{V_{out}}{V_{id}} &= \frac{-g_{m1}(g_{m6} - sC_c)}{D(s)} = \frac{-g_{m1}(g_{m6} - sC_c)}{a_0 + a_1 s + a_2 s^2} \tag{3}
     \end{align*}
     (the sign is that of the inverting second stage; swapping \(V_{i1}\),
     \(V_{i2}\) restores a positive gain).
@@ -79,20 +79,32 @@ CS stage of Section~\ref{sec:amp_cs} with \(C_c\) in the place of \(C_{gd}\).
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \textbf{DC Gain}: \(s = 0\),
-    \(|A_{V0}| = \frac{g_{m1} g_{m6}}{G_1 G_2} = \frac{g_{m1}}{g_{o2} + g_{o4}} \cdot \frac{g_{m6}}{g_{o6} + g_{o7}}\).
-  \item \textbf{Poles}: \(D(s) = a_0\left(1 + \frac{s}{p_1}\right)\left(1 + \frac{s}{p_2}\right) = a_0 + a_0\left(\frac{1}{p_1} + \frac{1}{p_2}\right)s + \frac{a_0}{p_1 p_2}s^2\).
+  \item \textbf{Poles (\(D(s) = 0\))}: \(D(s) = a_0\left(1 + \frac{s}{p_1}\right)\left(1 + \frac{s}{p_2}\right) = a_0 + a_0\left(\frac{1}{p_1} + \frac{1}{p_2}\right)s + \frac{a_0}{p_1 p_2}s^2\).
     Matching coefficients with \(p_1 \ll p_2\) (\(\frac{1}{p_1} + \frac{1}{p_2} \approx \frac{1}{p_1}\)):
     \begin{align*}
       p_1 &\approx \frac{a_0}{a_1} \approx \frac{G_1 G_2}{g_{m6} C_c} \hspace{1cm} [g_{m6} C_c \text{ dominates } a_1;\ C_c \text{ Miller multiplied by } \tfrac{g_{m6}}{G_2}] \\
       p_2 &= \frac{a_0}{a_2 p_1} \approx \frac{a_1}{a_2} \approx \frac{g_{m6} C_c}{C_1 C_L + C_1 C_c + C_L C_c} \xrightarrow{C_c \gg C_1} \frac{g_{m6} C_c}{C_c (C_L + C_1)} = \frac{g_{m6}}{C_L + C_1} \approx \frac{g_{m6}}{C_L}
     \end{align*}
-  \item \textbf{Zero}: \(g_{m6} - sC_c = 0 \Rightarrow s = +\frac{g_{m6}}{C_c}\), \(z = \frac{g_{m6}}{C_c}\) in
+  \item \textbf{Zeroes (\(N(s) = 0\))}: \(g_{m6} - sC_c = 0 \Rightarrow s = +\frac{g_{m6}}{C_c}\), \(z = \frac{g_{m6}}{C_c}\) in
     the right half plane: its magnitude rises like a left half plane zero but
     its phase lags.
-  \item \textbf{Gain-Bandwidth}:
+    \textbf{Nulling Resistor}: \(R_z\) in series with \(C_c\) replaces \(sC_c\) by the
+    series admittance \(\frac{1}{R_z + \frac{1}{sC_c}} = \frac{sC_c}{1 + sR_z C_c}\). The numerator of \(A\)
+    becomes \(g_{m6} - \frac{sC_c}{1 + sR_z C_c}\); its root:
+    \begin{align*}
+      g_{m6}(1 + sR_z C_c) - sC_c &= 0 \hspace{1cm} [\times (1 + sR_z C_c)] \\
+      g_{m6} + s g_{m6} R_z C_c - s C_c &= 0 \\
+      s(C_c - g_{m6} R_z C_c) &= g_{m6} \\
+      s &= \frac{g_{m6}}{C_c(1 - g_{m6} R_z)} = \frac{1}{C_c\left(\frac{1}{g_{m6}} - R_z\right)} \hspace{1cm} [\div g_{m6} \text{ top and bottom}]
+    \end{align*}
+    For \(R_z < \frac{1}{g_{m6}}\) the root is positive (RHP zero), \(R_z = \frac{1}{g_{m6}}\) sends
+    it to infinity, and \(R_z > \frac{1}{g_{m6}}\) puts it in the left half plane where
+    it can cancel \(p_2\).
+  \item \textbf{DC Gain (\(A(0)\))}: \(s = 0\) in (3),
+    \(|A_{V0}| = \frac{g_{m1} g_{m6}}{G_1 G_2} = \frac{g_{m1}}{g_{o2} + g_{o4}} \cdot \frac{g_{m6}}{g_{o6} + g_{o7}}\).
+  \item \textbf{Gain-Bandwidth Product (\(GB\))}:
     \(2\pi GB = |A_{V0}|\, p_1 = \frac{g_{m1} g_{m6}}{G_1 G_2} \cdot \frac{G_1 G_2}{g_{m6} C_c} = \frac{g_{m1}}{C_c}\).
-  \item \textbf{Compensation}: unity feedback (\(F = 1\)). For
+  \item \textbf{Compensation (Phase Margin)}: unity feedback (\(F = 1\)). For
     \(s \gg p_1\) and \(z \to \infty\), \(A(s) \approx \frac{|A_{V0}| p_1 p_2}{(s + p_1)(s + p_2)} \approx \frac{2\pi GB \cdot p_2}{s(s + p_2)}\):
     \begin{align*}
       \frac{A}{1 + A} &= \frac{\frac{2\pi GB\, p_2}{s(s + p_2)}}{1 + \frac{2\pi GB\, p_2}{s(s + p_2)}} = \frac{2\pi GB\, p_2}{s^2 + p_2 s + 2\pi GB\, p_2} \hspace{1cm} [\times s(s + p_2)] \\
@@ -112,24 +124,30 @@ CS stage of Section~\ref{sec:amp_cs} with \(C_c\) in the place of \(C_{gd}\).
       \frac{2\pi GB}{p_2} &= \tan 24.29^\circ = 0.451 \hspace{1cm} \Rightarrow \hspace{1cm} p_2 = 2.2 \cdot 2\pi GB \\
       \frac{p_2}{2\pi GB} &= \frac{g_{m6}/C_L}{g_{m1}/C_c} = \frac{10 g_{m1} C_c}{g_{m1} C_L} = \frac{10 C_c}{C_L} \geq 2.2 \hspace{1cm} \Rightarrow \hspace{1cm} C_c \geq 0.22 C_L
     \end{align*}
-  \item \textbf{Nulling Resistor}: \(R_z\) in series with \(C_c\) replaces \(sC_c\) by the
-    series admittance \(\frac{1}{R_z + \frac{1}{sC_c}} = \frac{sC_c}{1 + sR_z C_c}\). The numerator of \(A\)
-    becomes \(g_{m6} - \frac{sC_c}{1 + sR_z C_c}\); its root:
-    \begin{align*}
-      g_{m6}(1 + sR_z C_c) - sC_c &= 0 \hspace{1cm} [\times (1 + sR_z C_c)] \\
-      g_{m6} + s g_{m6} R_z C_c - s C_c &= 0 \\
-      s(C_c - g_{m6} R_z C_c) &= g_{m6} \\
-      s &= \frac{g_{m6}}{C_c(1 - g_{m6} R_z)} = \frac{1}{C_c\left(\frac{1}{g_{m6}} - R_z\right)} \hspace{1cm} [\div g_{m6} \text{ top and bottom}]
-    \end{align*}
-    For \(R_z < \frac{1}{g_{m6}}\) the root is positive (RHP zero), \(R_z = \frac{1}{g_{m6}}\) sends
-    it to infinity, and \(R_z > \frac{1}{g_{m6}}\) puts it in the left half plane where
-    it can cancel \(p_2\).
-  \item \textbf{Slew Rate, Large Signal, Time Domain, AC Input Analysis (Q6)}:
+  \item \textbf{Slew Rate (Large Signal, Time Domain, AC Input Analysis (Q6))}:
     the first stage can deliver at most \(I_5\) into \(C_c\), whose right plate is
     held by the second stage, so \(\frac{dV_{OUT}}{dt} \leq \frac{I_5}{C_c}\); the output
     can be pulled down by at most \(I_7\) less the \(I_5\) going into \(C_c\), so
     \(\frac{dV_{OUT}}{dt} \leq \frac{I_7 - I_5}{C_L}\):
     \(SR = \min\left(\frac{I_5}{C_c}, \frac{I_7 - I_5}{C_L}\right)\).
+  \item \textbf{Impedances}:
+    \paragraph{At Input:} \(I_G = 0\): \(Z_{in} \to \infty\) at DC.
+    \paragraph{At Output:} open loop, \(V_1\) held: \(Z_{out} = \frac{1}{G_2} = r_{o6} \parallel r_{o7}\) (low frequency);
+    above \(p_1\), \(C_c\) closes a shunt loop around \(M_6\) and \(Z_{out}\) falls toward \(\frac{1}{g_{m6}}\).
+  \item \textbf{Output Swing (Max)}: \(M_7\), \(M_6\) saturated: \(V_{ov7} \leq V_{OUT} \leq V_{dd} - |V_{ov6}|\).
+  \item \textbf{Advantages \& Limitations}: two stages of gain
+    (\(\frac{g_{m1}}{G_1}\cdot\frac{g_{m6}}{G_2} \approx (g_m r_o)^2\)), near rail to rail output, gain and
+    swing decoupled; but needs compensation (\(C_c\), \(PM\)), a right half plane zero (needs
+    \(R_z\)), \(GB = \frac{g_{m1}}{2\pi C_c}\) is lower than one stage driving \(C_c\), and \(SR\) is
+    limited by \(C_c\).
+\end{enumerate}
+
+\subsubsection{Design}
+\begin{enumerate}
+  \item \(C_c \geq 0.22\,C_L\) (\(PM = 60^\circ\), \(g_{m6} = 10 g_{m1}\)).
+  \item \(I_5 = SR \cdot C_c\); \(g_{m1} = 2\pi GB\, C_c\), \(V_{ov1} = \frac{I_5}{g_{m1}}\).
+  \item \(g_{m6} = 10 g_{m1}\); \(I_7 \geq I_5 + SR \cdot C_L\).
+  \item \(\frac{(W/L)_6}{(W/L)_4} = 2\frac{(W/L)_7}{(W/L)_5}\) (zero systematic offset, Q5); \(R_z \geq \frac{1}{g_{m6}}\).
 \end{enumerate}
 
 \subsubsection{Question}
