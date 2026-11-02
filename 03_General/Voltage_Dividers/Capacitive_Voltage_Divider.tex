@@ -132,3 +132,19 @@ and output impedance of the divider.
       Z_{out} &= \frac{1}{j 2 \pi f (200nF)} = -j \frac{1}{2 \pi f (200nF)} \hspace{1cm} \text{(substituting \(s = j \omega = j 2 \pi f\) and \(\frac{1}{j} = -j\))}
     \end{align*}
 \end{enumerate}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms s Vout Vcc Vee C1 C2
+  % KCL at Vout (C1 to Vcc, C2 to Vee)
+  vout = solve((Vout - Vcc)*s*C1 + (Vout - Vee)*s*C2 == 0, Vout);
+  printf('=== Vout ===\n'); pretty(simplify(vout))
+  printf('=== Zin, Zout ===\n'); pretty(simplify(1/(s*C1) + 1/(s*C2))); pretty(simplify(1/(s*C1 + s*C2)))
+
+  % Question: 100 V -> 5 V, C1 = 10 nF
+  c1 = 10e-9; c2 = 19*c1;
+  printf('C2 = %.0f nF, Vout = %.1f V\n', c2*1e9, 100*c1/(c1 + c2));
+\end{lstlisting}

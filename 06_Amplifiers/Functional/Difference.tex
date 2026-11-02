@@ -2,8 +2,9 @@
 
 \subsubsection{Overview}
 Inverting path \(V_1 \to G_1 \to V_-\) with feedback \(G_2\), non-inverting
-path \(V_2 \to G_3 \to V_+\) with \(G_4\) to ground. With matched ratios it
-amplifies \(V_2 - V_1\) and rejects the common mode.
+path \(V_2 \to G_3 \to V_+\) with \(G_4\) to ground. Op-amp model as in
+Section~\ref{sec:amp_inverting}: \(V_{out} = A(V_+ - V_-)\), \(A = A_0\) in Q5,
+\(A = A(s) = \frac{A_0 p_1}{s + p_1}\) in Q4.
 
 \subsubsection{Schematic}
 \begin{circuitfig}
@@ -16,67 +17,106 @@ amplifies \(V_2 - V_1\) and rejects the common mode.
 \end{circuitfig}
 
 \subsubsection{Transfer Function}
-Only linear elements with an ideal op-amp, so the \textbf{Large Signal, Time
-Domain, DC Input Analysis (Q5)} and the \textbf{Small Signal, Frequency
-Domain, AC Input Analysis (Q4)} give the same result. Applying KCL at \(V_+\):
-\begin{align*}
-  (V_+ - V_2) G_3 + (V_+ - 0) G_4 &= 0 \\
-  V_+ (G_3 + G_4) &= V_2 G_3 \\
-  V_+ &= \frac{G_3}{G_3 + G_4} V_2
-\end{align*}
-Applying KCL at \(V_-\):
-\begin{align*}
-  (V_- - V_1) G_1 + (V_- - V_{out}) G_2 &= 0 \\
-  V_- (G_1 + G_2) &= G_1 V_1 + G_2 V_{out} \\
-  V_- &= \frac{G_1 V_1 + G_2 V_{out}}{G_1 + G_2}
-\end{align*}
-Ideal op-amp, \(V_+ = V_-\):
-\begin{align*}
-  \frac{G_1 V_1 + G_2 V_{out}}{G_1 + G_2} &= \frac{G_3}{G_3 + G_4} V_2 \\
-  G_1 V_1 + G_2 V_{out} &= \frac{G_3 (G_1 + G_2)}{G_3 + G_4} V_2 \hspace{1cm} [\times (G_1 + G_2)] \\
-  V_{out} &= \underbrace{\frac{G_3 (G_1 + G_2)}{G_2 (G_3 + G_4)}}_{a} V_2 - \underbrace{\frac{G_1}{G_2}}_{b} V_1 \hspace{1cm} [-G_1 V_1, \ \div G_2]
-\end{align*}
-In resistances (\(G_k = \frac{1}{R_k}\)):
-\begin{align*}
-  a &= \frac{\frac{1}{R_3}\cdot\frac{R_1 + R_2}{R_1 R_2}}{\frac{1}{R_2}\cdot\frac{R_3 + R_4}{R_3 R_4}}
-     = \frac{R_1 + R_2}{R_1 R_2 R_3}\cdot\frac{R_2 R_3 R_4}{R_3 + R_4} = \frac{R_4 (R_1 + R_2)}{R_1 (R_3 + R_4)} \\
-  b &= \frac{\frac{1}{R_1}}{\frac{1}{R_2}} = \frac{R_2}{R_1} \\
-  V_{out} &= \frac{R_4 (R_1 + R_2)}{R_1 (R_3 + R_4)} V_2 - \frac{R_2}{R_1} V_1
-\end{align*}
-With \(\frac{R_4}{R_3} = \frac{R_2}{R_1}\), substitute \(R_4 = \frac{R_2 R_3}{R_1}\):
-\begin{align*}
-  R_3 + R_4 &= R_3 + \frac{R_2 R_3}{R_1} = \frac{R_3 (R_1 + R_2)}{R_1} \\
-  a &= \frac{\frac{R_2 R_3}{R_1}(R_1 + R_2)}{R_1 \cdot \frac{R_3(R_1 + R_2)}{R_1}} = \frac{\frac{R_2 R_3}{R_1}(R_1 + R_2)}{R_3(R_1 + R_2)} = \frac{R_2}{R_1} = b \\
-  V_{out} &= \frac{R_2}{R_1} V_2 - \frac{R_2}{R_1} V_1 = \frac{R_2}{R_1}(V_2 - V_1)
-\end{align*}
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}: \(A = A_0\), no
+    current into the op-amp inputs. Applying KCL at \(V_+\):
+    \begin{align*}
+      (V_+ - V_2) G_3 + (V_+ - 0) G_4 &= 0 \hspace{1cm} \Rightarrow \hspace{1cm}
+      V_+ = \frac{G_3}{G_3 + G_4} V_2 = F_+ V_2 \hspace{1cm} \left[F_+ = \tfrac{G_3}{G_3 + G_4}\right] \tag{1}
+    \end{align*}
+    Applying KCL at \(V_-\):
+    \begin{align*}
+      (V_- - V_1) G_1 + (V_- - V_{OUT}) G_2 &= 0 \\
+      V_- &= \frac{G_1}{G_1 + G_2} V_1 + \frac{G_2}{G_1 + G_2} V_{OUT} \\
+      V_- &= (1 - F) V_1 + F V_{OUT} \hspace{1cm} \left[F = \tfrac{G_2}{G_1 + G_2}\right] \tag{2}
+    \end{align*}
+    \begin{align*}
+      V_{OUT} &= A_0\left(F_+ V_2 - (1 - F) V_1 - F V_{OUT}\right) \hspace{1cm} [\text{from (1), (2)}] \\
+      V_{OUT}(1 + A_0 F) &= A_0\left(F_+ V_2 - (1 - F) V_1\right) \\
+      V_{OUT} &= \frac{A_0}{1 + A_0 F}\left(F_+ V_2 - (1 - F) V_1\right) \tag{3}
+    \end{align*}
+    \(A_0 \to \infty\) (\(\frac{A_0}{1 + A_0 F} \to \frac{1}{F}\)):
+    \begin{align*}
+      V_{OUT} &= \underbrace{\frac{F_+}{F}}_{a} V_2 - \underbrace{\frac{1 - F}{F}}_{b} V_1 \\
+      a &= \frac{G_3}{G_3 + G_4}\cdot\frac{G_1 + G_2}{G_2} = \frac{\frac{1}{R_3}\cdot\frac{R_1 + R_2}{R_1 R_2}}{\frac{R_3 + R_4}{R_3 R_4}\cdot\frac{1}{R_2}} = \frac{R_4 (R_1 + R_2)}{R_1 (R_3 + R_4)} \\
+      b &= \frac{G_1}{G_1 + G_2}\cdot\frac{G_1 + G_2}{G_2} = \frac{G_1}{G_2} = \frac{R_2}{R_1}
+    \end{align*}
+    Matched ratios \(\frac{R_4}{R_3} = \frac{R_2}{R_1} = k\), i.e.\ \(R_4 = k R_3\), \(R_2 = k R_1\):
+    \begin{align*}
+      a &= \frac{k R_3 (R_1 + k R_1)}{R_1 (R_3 + k R_3)} = \frac{k R_1 R_3 (1 + k)}{R_1 R_3 (1 + k)} = k = b \\
+      V_{OUT} &= k (V_2 - V_1) = \frac{R_2}{R_1}(V_2 - V_1) \tag{4}
+    \end{align*}
+    valid while \(V_{OL} \leq V_{OUT} \leq V_{OH}\) and \(V_+ = F_+ V_2\) is inside the input common mode range.
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}: (3) with
+    \(A_0 \to A(s)\):
+    \begin{align*}
+      V_{out} &= \frac{\frac{A_0 p_1}{s + p_1}}{1 + \frac{A_0 p_1 F}{s + p_1}}\left(F_+ V_2 - (1 - F) V_1\right) \hspace{1cm} \left[A(s) = \tfrac{A_0 p_1}{s + p_1}\right] \\
+      V_{out} &= \frac{A_0 p_1}{s + p_1(1 + A_0 F)}\left(F_+ V_2 - (1 - F) V_1\right) \tag{5}
+    \end{align*}
+    Matched (\(F_+ = \frac{R_4}{R_3 + R_4} = \frac{k R_3}{R_3(1 + k)} = \frac{k}{1 + k}\),
+    \(1 - F = \frac{R_2}{R_1 + R_2} = \frac{k}{1 + k}\), so \(F_+ = 1 - F\)):
+    \begin{align*}
+      H_d(s) = \frac{V_{out}}{V_2 - V_1} &= (1 - F)\frac{A_0 p_1}{s + p_1(1 + A_0 F)} \tag{6}
+    \end{align*}
+\end{enumerate}
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \textbf{Common Mode Rejection}: write the inputs as a common mode
-    \(V_{ic}\) and a differential \(V_{id}\), \(V_1 = V_{ic} - \frac{V_{id}}{2}\),
-    \(V_2 = V_{ic} + \frac{V_{id}}{2}\):
+  \item \textbf{Poles (\(D(s) = 0\))}: \(s_p = -p_1(1 + A_0 F)\), \(f_p \approx F \cdot GB = \frac{GB}{1 + k}\) [\(A_0 F \gg 1\)].
+  \item \textbf{Zeroes (\(N(s) = 0\))}: \(N(s) = (1 - F) A_0 p_1 \neq 0\): no finite zero.
+  \item \textbf{DC Gain (\(H_d(0)\))}: \(s = 0\) in (6),
     \begin{align*}
-      V_{out} &= a\left(V_{ic} + \frac{V_{id}}{2}\right) - b\left(V_{ic} - \frac{V_{id}}{2}\right)
+      H_d(0) &= (1 - F)\frac{A_0}{1 + A_0 F} = \frac{1 - F}{F}\cdot\frac{A_0 F}{1 + A_0 F} \xrightarrow{A_0 \to \infty} \frac{1 - F}{F} = k
+    \end{align*}
+  \item \textbf{Gain-Bandwidth Product (\(GBW\))}:
+    \begin{align*}
+      GBW &= |H_d(0)| \cdot f_p = (1 - F)\frac{A_0}{1 + A_0 F}\cdot\frac{p_1(1 + A_0 F)}{2\pi} = (1 - F)\, GB = \frac{k}{1 + k} GB
+    \end{align*}
+  \item \textbf{Feedback Factor (\(F\))}: from (2) with \(V_1 = 0\),
+    \(F = \frac{G_2}{G_1 + G_2} = \frac{R_1}{R_1 + R_2} = \frac{1}{1 + k}\).
+  \item \textbf{Common Mode Rejection (\(CMRR\))}: \(V_1 = V_{ic} - \frac{V_{id}}{2}\),
+    \(V_2 = V_{ic} + \frac{V_{id}}{2}\) in \(V_{OUT} = a V_2 - b V_1\):
+    \begin{align*}
+      V_{OUT} &= a\left(V_{ic} + \frac{V_{id}}{2}\right) - b\left(V_{ic} - \frac{V_{id}}{2}\right)
                = (a - b) V_{ic} + \frac{a + b}{2} V_{id} \\
       A_c &= a - b \hspace{1cm} A_d = \frac{a + b}{2} \hspace{1cm}
       CMRR = \frac{|A_d|}{|A_c|} = \frac{a + b}{2|a - b|}
     \end{align*}
-    Let the nominal ratio be \(k = \frac{R_2}{R_1} = \frac{R_4}{R_3}\) (so \(b = k\)) and
-    let \(R_4\) be off by a fraction \(e\), \(R_4 \to R_4(1 + e)\), i.e.
-    \(\frac{R_4}{R_3} \to k(1 + e)\). Dividing the top and bottom of \(a\) by \(R_1 R_3\):
+    \(R_4\) off by a fraction \(e\): \(\frac{R_4}{R_3} \to k(1 + e)\), \(b = k\);
+    \(a\) with top and bottom divided by \(R_1 R_3\):
     \begin{align*}
       a &= \frac{\frac{R_1 + R_2}{R_1}\cdot\frac{R_4}{R_3}}{\frac{R_3 + R_4}{R_3}} = \frac{(1 + k)\, k(1 + e)}{1 + k(1 + e)} \\
-      1 + k(1 + e) &= (1 + k) + ke = (1 + k)\left(1 + \frac{ke}{1 + k}\right) \\
-      a &= \frac{k(1 + e)}{1 + \frac{ke}{1 + k}} \approx k(1 + e)\left(1 - \frac{ke}{1 + k}\right) \hspace{1cm} [\tfrac{1}{1 + x} \approx 1 - x, \ |x| \ll 1] \\
-      a &\approx k\left(1 + e - \frac{ke}{1 + k}\right) = k\left(1 + e\frac{1 + k - k}{1 + k}\right) = k\left(1 + \frac{e}{1 + k}\right) \hspace{1cm} [e^2 \to 0] \\
-      a - b &\approx \frac{k e}{1 + k} \hspace{1cm} \frac{a + b}{2} \approx k \\
-      CMRR &\approx \frac{k}{\frac{k|e|}{1 + k}} = \frac{1 + k}{|e|}
+      1 + k(1 + e) &= (1 + k)\left(1 + \frac{ke}{1 + k}\right) \hspace{1cm} \Rightarrow \hspace{1cm} a = \frac{k(1 + e)}{1 + \frac{ke}{1 + k}} \\
+      a &\approx k(1 + e)\left(1 - \frac{ke}{1 + k}\right) \hspace{1cm} [\tfrac{1}{1 + x} \approx 1 - x, \ |x| \ll 1] \\
+      a &\approx k\left(1 + e - \frac{ke}{1 + k}\right) = k\left(1 + \frac{e}{1 + k}\right) \hspace{1cm} [e^2 \to 0] \\
+      a - b &\approx \frac{k e}{1 + k} \hspace{1cm} \frac{a + b}{2} \approx k \hspace{1cm} \Rightarrow \hspace{1cm}
+      CMRR \approx \frac{k}{\frac{k|e|}{1 + k}} = \frac{1 + k}{|e|}
     \end{align*}
-  \item \textbf{Impedances}: \(V_- = V_+\) is not a virtual ground here, but with
-    \(V_2 = 0\) it is, so \(Z_{in,1} = R_1\). Into \(V_2\), no current enters
-    \(V_+\), so \(G_3\) and \(G_4\) are in series: \(Z_{in,2} = R_3 + R_4\). They are
-    unequal, which is why the instrumentation amplifier buffers both inputs
-    first.
+  \item \textbf{Impedances}:
+    \paragraph{At Input:} into \(V_1\) with \(V_2 = 0\): \(V_+ = 0\), so \(V_- \to 0\) and
+    \(Z_{in,1} = R_1\). Into \(V_2\): no current enters \(V_+\), \(G_3\) and \(G_4\) in series,
+    \(Z_{in,2} = R_3 + R_4\). Unequal, so a source impedance on either input unbalances
+    the ratios (lowers \(CMRR\)).
+    \paragraph{At Output:} as Section~\ref{sec:amp_inverting}, \(Z_{out} = \frac{R_o}{1 + AF}\).
+  \item \textbf{Output Swing (Max)}: \(V_{OL} \leq k(V_2 - V_1) \leq V_{OH}\) and
+    \(V_{ICM,\min} \leq \frac{k}{1 + k} V_2 \leq V_{ICM,\max}\).
+  \item \textbf{Source Resistance}: a source resistance \(R_s\) driving \(V_1\) adds to \(R_1\),
+    \(R_1 \to R_1 + R_s\), i.e.\ a ratio error \(\frac{R_2}{R_1 + R_s} = \frac{R_2}{R_1}\cdot\frac{1}{1 + R_s/R_1} \approx k\left(1 - \frac{R_s}{R_1}\right)\)
+    [\(\frac{1}{1 + x} \approx 1 - x\)]: the same as a mismatch \(|e| = \frac{R_s}{R_1}\), so
+    \(CMRR \approx \frac{(1 + k) R_1}{R_s}\); e.g.\ \(k = 1\), \(R_1 = 10\,k\Omega\), \(R_s = 100\,\Omega\): \(CMRR \approx \frac{2 \cdot 10^4}{100} = 200\).
+  \item \textbf{Offset}: \(V_{OS}\) in series with \(V_+\) sees the noise gain \(\frac{1}{F} = 1 + k\):
+    \(V_{OUT,error} = (1 + k) V_{OS}\).
+  \item \textbf{Advantages \& Limitations}: single op-amp subtraction with common mode
+    rejection; but \(CMRR\) is set by resistor matching (\(\frac{1 + k}{|e|}\)) and the two
+    input impedances are low and unequal (the instrumentation amplifier buffers both
+    inputs first).
+\end{enumerate}
+
+\subsubsection{Design}
+\begin{enumerate}
+  \item \(k = \frac{R_2}{R_1} = \frac{R_4}{R_3}\) for the differential gain.
+  \item Resistor mismatch \(|e| \leq \frac{1 + k}{CMRR}\).
+  \item Source impedances \(\ll R_1\), \(R_3 + R_4\), or buffer the inputs.
 \end{enumerate}
 
 \subsubsection{Question}
@@ -88,3 +128,28 @@ Find the CMRR, approximate and exact.
   a &= \frac{R_4 (R_1 + R_2)}{R_1 (R_3 + R_4)} = \frac{10.1 \cdot 20}{10 \cdot 20.1} = \frac{202}{201} = 1.004975 \hspace{1cm} b = 1 \\
   CMRR &= \frac{a + b}{2|a - b|} = \frac{2.004975}{2 \cdot 0.004975} = \frac{2.004975}{0.009950} = 201.5
 \end{align*}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms s V1 V2 Vout Vm G1 G2 G3 G4 A0 p1
+  A = A0*p1/(s + p1);
+  Vp = G3/(G3 + G4)*V2;                     % equation (1)
+
+  [vout, vm] = solve((Vm - V1)*G1 + (Vm - Vout)*G2 == 0, Vout == A*(Vp - Vm), Vout, Vm);
+  printf('=== Vout(s), equation (5) ===\n'); pretty(simplify(vout))
+  v0 = limit(subs(vout, s, 0), A0, inf);
+  printf('=== Vout, A0 -> oo ===\n'); pretty(simplify(v0))
+
+  % matched ratios R4/R3 = R2/R1 = k
+  syms R1 R3 k e
+  a = simplify(subs(diff(v0, V2), [G1 G2 G3 G4], [1/R1 1/(k*R1) 1/R3 1/(k*(1 + e)*R3)]));
+  printf('=== a (R4 off by e) ===\n'); pretty(a)
+  printf('=== a to first order in e ===\n'); pretty(simplify(taylor(a, e, 0, 'order', 2)))
+
+  % Question: k = 1, R4 = 10.1k
+  an = 10.1*20/(10*20.1);
+  printf('a = %.6f, CMRR approx = %.0f, exact = %.1f\n', an, (1 + 1)/0.01, (an + 1)/(2*abs(an - 1)));
+\end{lstlisting}

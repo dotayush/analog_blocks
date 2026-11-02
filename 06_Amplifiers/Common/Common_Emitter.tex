@@ -12,7 +12,7 @@ at the collector, emitter shared. An emitter resistor \(G_E\)
   \node[right] at (5.4,0) {$Q_1$};
   \draw (2.5,-2.6) node[ground]{} to[sinusoidal voltage source, l={$V_{in}$}] (2.5,0) -- (Q.B);
   \draw (Q.C) -- (5,1.4) node[circ]{} to[european resistor, l_={$G_C$}] (5,3.4) node[vcc]{$V_{cc}$};
-  \draw (5,1.4) -- (7,1.4) node[circ]{} node[above]{$V_{out}$};
+  \draw (5,1.4) -- (7,1.4) node[circ]{} node[above]{$V_{out}$} to[capacitor, l={$C_L$}] (7,-0.6) node[ground]{};
   \draw (Q.E) -- (5,-1) node[circ]{} node[right]{$V_e$} to[european resistor, l_={$G_E$}] (5,-2.6) node[ground]{};
 \end{circuitfig}
 
@@ -42,45 +42,78 @@ at the collector, emitter shared. An emitter resistor \(G_E\)
     \end{align*}
     Applying KCL at \(V_{out}\):
     \begin{align*}
-      V_{out} G_C + g_m (V_{in} - V_e) &= 0 \tag{4}
+      V_{out} (G_C + sC_L) + g_m (V_{in} - V_e) &= 0 \tag{4}
     \end{align*}
     Substituting (3) into (4):
     \begin{align*}
       V_{in} - V_e &= \left(1 - \frac{g_m + g_{be}}{G_E + g_m + g_{be}}\right) V_{in} = \frac{G_E}{G_E + g_m + g_{be}} V_{in} \\
-      V_{out} &= -\frac{g_m}{G_C} \cdot \frac{G_E}{G_E + g_m + g_{be}} V_{in} \\
-      V_{out} &= -g_m R_C \cdot \frac{1}{1 + (g_m + g_{be}) R_E} V_{in} \hspace{1cm} [\tfrac{1}{G_C} = R_C,\ \text{divide by } G_E] \\
-      H = \frac{V_{out}}{V_{in}} &= -\frac{g_m R_C}{1 + (g_m + g_{be}) R_E}
+      V_{out} &= -\frac{g_m}{G_C + sC_L} \cdot \frac{G_E}{G_E + g_m + g_{be}} V_{in} \\
+      H(s) = \frac{V_{out}}{V_{in}} &= -\frac{g_m}{G_C + sC_L} \cdot \frac{1}{1 + (g_m + g_{be}) R_E} \hspace{1cm} \left[\tfrac{1}{G_E} = R_E\right] \tag{5}
     \end{align*}
 \end{enumerate}
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \textbf{Gain}: \(R_E = 0\): \(A_{V0} = -g_m R_C = -\frac{I_C R_C}{V_T}\)
-    (with \(g_o\): \(-g_m (R_C \parallel r_o)\)). Large \(g_m R_E\)
-    (\((g_m + g_{be}) R_E \gg 1\)), with \(g_{be} = \frac{g_m}{B_F}\):
-    \[
-      A_{V0} \approx -\frac{g_m R_C}{(g_m + g_{be}) R_E} = -\frac{g_m}{g_m + \frac{g_m}{B_F}}\cdot\frac{R_C}{R_E} = -\frac{B_F}{B_F + 1}\cdot\frac{R_C}{R_E} = -A_F \frac{R_C}{R_E}
-    \]
+  \item \textbf{Poles (\(D(s) = 0\))}: \(G_C + s_p C_L = 0 \Rightarrow s_p = -\frac{G_C}{C_L}\),
+    \(f_p = \frac{1}{2\pi R_C C_L}\) (\(C_\pi\), \(C_\mu\) neglected).
+  \item \textbf{Zeroes (\(N(s) = 0\))}: \(N(s) = -g_m \neq 0\): no finite zero.
+  \item \textbf{DC Gain (\(H(0)\))}: \(s = 0\) in (5),
+    \begin{align*}
+      A_{V0} &= -\frac{g_m R_C}{1 + (g_m + g_{be}) R_E} \\
+      R_E = 0 &: \hspace{0.5cm} A_{V0} = -g_m R_C = -\frac{I_C R_C}{V_T} \hspace{1cm} [g_m = \tfrac{I_C}{V_T};\ \text{with } g_o: -g_m (R_C \parallel r_o)] \\
+      (g_m + g_{be}) R_E \gg 1 &: \hspace{0.5cm} A_{V0} \approx -\frac{g_m}{g_m + \frac{g_m}{B_F}}\cdot\frac{R_C}{R_E} = -\frac{B_F}{B_F + 1}\cdot\frac{R_C}{R_E} = -A_F \frac{R_C}{R_E} \hspace{0.5cm} [g_{be} = \tfrac{g_m}{B_F}]
+    \end{align*}
+  \item \textbf{Gain-Bandwidth Product (\(GBW\))}:
+    \begin{align*}
+      GBW &= |A_{V0}| f_p = \frac{g_m R_C}{1 + (g_m + g_{be}) R_E}\cdot\frac{1}{2\pi R_C C_L} = \frac{g_m}{2\pi C_L\left(1 + (g_m + g_{be}) R_E\right)}
+    \end{align*}
+    degeneration lowers the gain, not the bandwidth: \(GBW\) falls by the same factor.
   \item \textbf{Impedances}:
-    \paragraph{At Input:} \(I_b = g_{be}(V_{in} - V_e) = \frac{g_{be} G_E}{G_E + g_m + g_{be}} V_{in}\):
-      \[
-        Z_{in} = \frac{V_{in}}{I_b} = \frac{G_E + g_m + g_{be}}{g_{be} G_E} = \frac{G_E}{g_{be} G_E} + \frac{g_m + g_{be}}{g_{be} G_E} = \frac{1}{g_{be}} + \left(\frac{g_m}{g_{be}} + 1\right) R_E = r_{be} + (B_F + 1) R_E
-      \]
-    \paragraph{At Output:} \(g_o\) kept, \(V_{in} = 0\) (\(V_{be} = -V_e\)),
-      \(G_C\) removed, \(I_{test}\) into the collector. KCL at \(V_e\) and at the collector \(V_c\):
-      \begin{align*}
-        V_e G_E &= I_{test} + I_b = I_{test} - g_{be} V_e
-        \hspace{0.5cm} \Rightarrow \hspace{0.5cm} V_e = \frac{I_{test}}{G_E + g_{be}} = I_{test}(R_E \parallel r_{be}) \\
-        I_{test} &= g_m V_{be} + g_o (V_c - V_e) = -(g_m + g_o) V_e + g_o V_c \\
-        g_o V_c &= I_{test} + (g_m + g_o) I_{test} (R_E \parallel r_{be}) \\
-        Z'_{out} &= \frac{V_c}{I_{test}} = r_o\left(1 + (g_m + g_o)(R_E \parallel r_{be})\right) \approx r_o\left(1 + g_m (R_E \parallel r_{be})\right) \hspace{0.5cm} [g_o \ll g_m] \\
-        Z_{out} &= R_C \parallel Z'_{out} \approx R_C
-      \end{align*}
-  \item \textbf{Linearity}: the plain CE obeys the bound
-    \(|V_{be}| \ll 2V_T\) of Section~\ref{sec:analysis_linearization};
-    degeneration divides the input between \(V_{be}\) and \(R_E\); from (3),
-    \(V_{be} = V_{in} - V_e = \frac{G_E}{G_E + g_m + g_{be}} V_{in} = \frac{V_{in}}{1 + (g_m + g_{be})R_E}\) and the input range grows
-    by the same factor the gain falls.
+    \paragraph{At Input:} \(I_b = g_{be}(V_{in} - V_e) = \frac{g_{be} G_E}{G_E + g_m + g_{be}} V_{in}\) [from (3)]:
+    \begin{align*}
+      Z_{in} &= \frac{V_{in}}{I_b} = \frac{G_E + g_m + g_{be}}{g_{be} G_E} = \frac{1}{g_{be}} + \left(\frac{g_m}{g_{be}} + 1\right) R_E = r_{be} + (B_F + 1) R_E
+    \end{align*}
+    \paragraph{At Output:} \(g_o\) kept, \(V_{in} = 0\) (\(V_{be} = -V_e\)), \(G_C\) removed, \(I_{test}\)
+    into the collector. KCL at \(V_e\) and at the collector \(V_c\):
+    \begin{align*}
+      V_e G_E &= I_{test} + I_b = I_{test} - g_{be} V_e
+      \hspace{0.5cm} \Rightarrow \hspace{0.5cm} V_e = \frac{I_{test}}{G_E + g_{be}} = I_{test}(R_E \parallel r_{be}) \\
+      I_{test} &= g_m V_{be} + g_o (V_c - V_e) = -(g_m + g_o) V_e + g_o V_c \\
+      g_o V_c &= I_{test} + (g_m + g_o) I_{test} (R_E \parallel r_{be}) \\
+      Z'_{out} &= \frac{V_c}{I_{test}} = r_o\left(1 + (g_m + g_o)(R_E \parallel r_{be})\right) \approx r_o\left(1 + g_m (R_E \parallel r_{be})\right) \hspace{0.5cm} [g_o \ll g_m] \\
+      Z_{out} &= R_C \parallel Z'_{out} \approx R_C
+    \end{align*}
+  \item \textbf{Linearity}: the plain CE needs \(|V_{be}| \ll 2V_T\)
+    (Section~\ref{sec:analysis_linearization}); from (3),
+    \begin{align*}
+      V_{be} = V_{in} - V_e &= \frac{G_E}{G_E + g_m + g_{be}} V_{in} = \frac{V_{in}}{1 + (g_m + g_{be})R_E}
+    \end{align*}
+    the input range grows by the same factor the gain falls.
+  \item \textbf{Output Swing (Max)}: forward active \(V_{CE} \gtrsim 0.3\,\)V:
+    \(V_E + 0.3\,V \lesssim V_{OUT} \leq V_{cc}\).
+  \item \textbf{Distortion (Large Signal, Time Domain, AC Input Analysis (Q6))}: \(R_E = 0\),
+    \(V_{BE} = V_{BE(Q)} + V_p\sin\omega t\), with \(e^x = 1 + x + \frac{x^2}{2} + \cdots\):
+    \begin{align*}
+      I_C &= I_{C(Q)}e^{\frac{V_p\sin\omega t}{V_T}} \approx I_{C(Q)}\left(1 + \frac{V_p}{V_T}\sin\omega t + \frac{V_p^2}{2V_T^2}\sin^2\omega t\right) \\
+      HD_2 &= \frac{\frac{V_p^2}{2V_T^2}\cdot\frac{1}{2}}{\frac{V_p}{V_T}} = \frac{V_p}{4V_T} \hspace{1cm} [\sin^2 x = \tfrac{1 - \cos 2x}{2}]
+    \end{align*}
+    \(HD_2 < 1\%\) needs \(V_p < 0.04\,V_T \approx 1\,\)mV; degeneration divides \(V_{be}\) by \(1 + (g_m + g_{be})R_E\) (Linearity, above).
+  \item \textbf{Noise}: collector shot noise \(2qI_C\), base resistance \(4kTr_b\) and the load \(4kTG_C\), referred to
+    the base (\(R_E = 0\)):
+    \begin{align*}
+      \overline{V_{n,in}^2} &= \frac{2qI_C}{g_m^2} + 4kTr_b + \frac{4kTG_C}{g_m^2} = \frac{2kT}{g_m} + 4kTr_b + \frac{4kTG_C}{g_m^2} \hspace{1cm} \left[\frac{qI_C}{g_m^2} = \frac{qV_T}{g_m} = \frac{kT}{g_m}\right]
+    \end{align*}
+  \item \textbf{Advantages \& Limitations}: \(g_m = \frac{I_C}{V_T}\) is the largest
+    transconductance per current of any device, degeneration gives a resistor ratio gain
+    \(-A_F\frac{R_C}{R_E}\) and wider linear range; but finite \(Z_{in} = r_{be} + (B_F + 1)R_E\)
+    (base current), inverting, and \(B_F\) varies with process and temperature.
+\end{enumerate}
+
+\subsubsection{Design}
+\begin{enumerate}
+  \item Choose \(I_C\), \(V_{OUT}\): \(R_C = \frac{V_{cc} - V_{OUT}}{I_C}\).
+  \item \(R_E\) from the required gain: \(1 + (g_m + g_{be}) R_E = \frac{g_m R_C}{|A_{V0}|}\).
+  \item Base bias \(V_{IN} = V_T\ln\frac{I_C}{I_S} + \frac{I_C R_E}{A_F}\) [from (1)].
 \end{enumerate}
 
 \subsubsection{Question}
@@ -93,3 +126,26 @@ Find \(A_{V0}\) and \(Z_{in}\) for \(R_E = 0\) and \(R_E = 500\,\Omega\).
   R_E = 500 &: \hspace{0.5cm} (g_m + g_{be}) R_E = 38.85\,m \cdot 500 = 19.42 \\
   &\hspace{0.5cm} A_{V0} = -\frac{192.3}{1 + 19.42} = -\frac{192.3}{20.42} = -9.42 \hspace{1cm} Z_{in} = 2.6\,k + 101 \cdot 500 = 2.6\,k + 50.5\,k = 53.1\,k\Omega
 \end{align*}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms s Vin Vout Ve Vc gm gbe go GE GC CL It
+
+  % Q4: KCL at Ve (3) and Vout (4)
+  [ve, vout] = solve(Ve*GE == (gbe + gm)*(Vin - Ve), Vout*(GC + s*CL) + gm*(Vin - Ve) == 0, Ve, Vout);
+  H = simplify(vout/Vin);
+  printf('=== H(s), equation (5) ===\n'); pretty(H)
+  printf('=== Zin = Vin/Ib ===\n'); pretty(simplify(Vin/(gbe*(Vin - ve))))
+  % output impedance with go: Vin = 0, GC removed
+  [ve, vc] = solve(Ve*GE == It - gbe*Ve, It == gm*(0 - Ve) + go*(Vc - Ve), Ve, Vc);
+  printf('=== Zout prime ===\n'); pretty(simplify(vc/It))
+
+  % Question: IC = 1 mA, BF = 100, RC = 5k, VT = 26 mV
+  g_m = 1e-3/26e-3; g_be = g_m/100;
+  for RE = [0 500]
+    printf('RE = %3d: Av0 = %7.2f, Zin = %.1f k\n', RE, -g_m*5e3/(1 + (g_m + g_be)*RE), (1/g_be + 101*RE)/1e3);
+  end
+\end{lstlisting}

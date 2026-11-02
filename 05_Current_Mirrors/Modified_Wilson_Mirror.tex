@@ -338,6 +338,9 @@ transistors:\\
       V_{OUT,\min} &= V_Z - V_{th} \\
       R_{L,\max} &= \frac{V_{cc} - (V_Z - V_{th})}{I_{OUT}}
     \end{align*}
+  \item \textbf{Mismatch:} the ratio is set by the pair \(M_0\), \(M_1\) at the same \(V_{GS}\) (Q5); the other devices only
+    move drain voltages, whose effect is divided by the high output impedance. So, as the basic mirror
+    (Section~\ref{sec:mirror_basic}): \(\frac{dI_{OUT}}{I_{OUT}} = \frac{dk}{k} - \frac{2dV_{th}}{V_{ov}}\).
 \end{enumerate}
 
 \subsubsection{Design}

@@ -22,21 +22,32 @@ where a digital decimation filter removes it.
 \end{circuitfig}
 
 \subsubsection{Transfer Function}
-\textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)} in the
-\(z\) domain (\(z = e^{sT}\), \(T = \frac{1}{f_s}\)), the quantiser modelled as
-\(V = Y + E\):
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}: constant \(U\), the integrator
+    \(Y[k] = Y[k-1] + U - V[k-1]\) stays bounded only if the average of \(V\) equals \(U\):
+    \begin{align*}
+      Y[K] - Y[0] &= \sum_{k=1}^{K}(U - V[k-1]) = K U - \sum_{k=0}^{K-1} V[k] \hspace{1cm} [\text{summing the recursion}] \\
+      \frac{1}{K}\sum_{k=0}^{K-1} V[k] &= U - \frac{Y[K] - Y[0]}{K} \xrightarrow{K \to \infty} U \hspace{1cm} [Y \text{ bounded}]
+    \end{align*}
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)} in the \(z\) domain
+    (\(z = e^{sT}\), \(T = \frac{1}{f_s}\)), the quantiser modelled as \(V = Y + E\):
 \begin{align*}
   Y &= \frac{z^{-1}}{1 - z^{-1}}(U - V) \\
   V &= \frac{z^{-1}}{1 - z^{-1}}(U - V) + E \\
   V\left(1 + \frac{z^{-1}}{1 - z^{-1}}\right) &= \frac{z^{-1}}{1 - z^{-1}} U + E \\
   V \cdot \frac{1 - z^{-1} + z^{-1}}{1 - z^{-1}} = V \cdot \frac{1}{1 - z^{-1}} &= \frac{z^{-1}}{1 - z^{-1}} U + E \\
-  V &= \underbrace{z^{-1}}_{STF} U + \underbrace{(1 - z^{-1})}_{NTF} E \hspace{1cm} [\times (1 - z^{-1})]
+  V &= \underbrace{z^{-1}}_{STF} U + \underbrace{(1 - z^{-1})}_{NTF} E \tag{1}
 \end{align*}
-The signal is only delayed; the noise is differentiated (first order high
-pass). An \(L\)-th order loop gives \(NTF = (1 - z^{-1})^L\).
+    The signal is only delayed; the noise is differentiated (first order high pass). An \(L\)-th
+    order loop gives \(NTF = (1 - z^{-1})^L\).
+\end{enumerate}
 
 \subsubsection{Analysis}
 \begin{enumerate}
+  \item \textbf{Poles}: \(STF = z^{-1}\) and \(NTF = \frac{z - 1}{z}\) [from (1)]: a single pole at \(z = 0\) (pure delay,
+    inside the unit circle, stable for the linear model).
+  \item \textbf{Zeroes}: \(NTF = 0\) at \(z = 1\), i.e. \(f = 0\) (\(L\)-fold for order \(L\)): the noise is nulled at DC.
+  \item \textbf{DC Gain}: \(STF(z = 1) = 1\) (Q5: \(\overline{V} = U\)), \(NTF(z = 1) = 0\).
   \item \textbf{Noise Shaping}: on \(z = e^{j2\pi f/f_s}\),
     \begin{align*}
       1 - e^{-j2\pi f/f_s} &= e^{-j\pi f/f_s}\left(e^{j\pi f/f_s} - e^{-j\pi f/f_s}\right) = e^{-j\pi f/f_s} \cdot 2j\sin\left(\frac{\pi f}{f_s}\right) \\
@@ -78,6 +89,25 @@ pass). An \(L\)-th order loop gives \(NTF = (1 - z^{-1})^L\).
     \(\frac{z^{-1}}{1 - z^{-1}}\). The continuous filter is an implicit
     anti-alias filter and needs no settling op-amps, but is sensitive to
     clock jitter (Section~\ref{sec:dc_char}) and to RC spread.
+  \item \textbf{Impedances}:
+    \paragraph{At Input:} discrete time: switched sampling capacitance at \(f_s\); continuous time:
+    the first integrator input resistance (Section~\ref{sec:amp_integrator}).
+  \item \textbf{Finite Op-Amp Gain}: the integrator leaks, \(H(z) = \frac{z^{-1}}{1 - a_l z^{-1}}\) with \(a_l \approx 1 - \frac{1}{A_0}\):
+    \begin{align*}
+      NTF(z) &= \frac{1}{1 + H(z)} = \frac{1 - a_l z^{-1}}{1 - a_l z^{-1} + z^{-1}} \hspace{1cm}
+      NTF(1) = \frac{1 - a_l}{2 - a_l} = \frac{1/A_0}{1 + 1/A_0} = \frac{1}{A_0 + 1}
+    \end{align*}
+    the DC null fills to \(\frac{1}{A_0 + 1}\); it stays below \(|NTF(f_B)| \approx \frac{2\pi f_B}{f_s} = \frac{\pi}{OSR}\) when \(A_0 \gtrsim \frac{OSR}{\pi}\).
+  \item \textbf{Advantages \& Limitations}: resolution from \(OSR\) and \(L\) with a coarse (even 1-bit,
+    inherently linear) quantiser, relaxed anti-alias filter; but \(f_s = 2\,OSR\,f_B\) limits bandwidth,
+    needs a digital decimation filter, high order loops are only conditionally stable, and
+    multi-bit feedback DACs need mismatch shaping.
+\end{enumerate}
+
+\subsubsection{Design}
+\begin{enumerate}
+  \item Choose \(L\), \(n_q\); solve the \(SQNR_{dB}\) expression for \(OSR\); \(f_s = 2\,OSR\,f_B\).
+  \item Scale integrator coefficients for stability (\(|U| \lesssim 0.7\) full scale for high order 1-bit loops).
 \end{enumerate}
 
 \subsubsection{Question}
@@ -91,3 +121,29 @@ Audio, \(f_B = 20\,\)kHz, 16 bit (\(SQNR \geq 98\,\)dB), 1-bit quantiser. Find t
   L = 2&: \ 98 = 7.78 - 12.9 + 50\log_{10}OSR \Rightarrow 50\log_{10}OSR = 98 + 5.12 = 103.12 \\
   &\phantom{:}\ OSR = 10^{103.12/50} = 10^{2.062} = 115 \hspace{1cm} f_s = 2 \cdot 115 \cdot 20\,kHz = 4.6\,MHz
 \end{align*}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms z U E V al A0
+  v = solve(V == z^-1/(1 - z^-1)*(U - V) + E, V);
+  printf('=== V = STF U + NTF E ===\n'); pretty(simplify(diff(v, U))); pretty(simplify(diff(v, E)))
+  NTF = simplify(1/(1 + z^-1/(1 - al*z^-1)));
+  printf('=== leaky NTF(1), al = 1 - 1/A0 ===\n'); pretty(simplify(subs(subs(NTF, z, 1), al, 1 - 1/A0)))
+
+  % simulate a first order 1 bit loop with a -6 dBFS sine in bin 37, measure in band SQNR
+  N = 2^16; OSR = 64; ks = 37; u = 0.5*sin(2*pi*ks/N*(0:N - 1)); y = 0; v = zeros(1, N);
+  for k = 1:N
+    v(k) = 2*(y >= 0) - 1; y = y + u(k) - v(k);
+  end
+  w = 0.5 - 0.5*cos(2*pi*(0:N - 1)/N);                 % Hann window
+  S = abs(fft(v.*w)).^2; kb = N/(2*OSR);
+  sig = sum(S(ks - 1:ks + 3)); noi = sum(S(3:kb + 1)) - sig;
+  printf('simulated SQNR (OSR = 64, -6 dBFS) = %.1f dB; linear model at -6 dBFS = %.1f dB\n', ...
+         10*log10(sig/noi), 7.78 - 6.02 - 5.17 + 30*log10(OSR));
+  % the 1 bit first order loop falls a few dB short of the linear (white E) model: its
+  % quantisation error is correlated with the input (idle tones), so the linear model is optimistic here
+  printf('OSR for 98 dB: L = 1: %.0f, L = 2: %.0f\n', 10^((98 - 7.78 + 5.17)/30), 10^((98 - 7.78 + 12.9)/50));
+\end{lstlisting}

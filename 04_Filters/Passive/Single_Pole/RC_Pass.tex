@@ -177,6 +177,19 @@ low-pass and high-pass characteristics.
         Z_{out} &= \frac{R_1 - j \omega R_1^2 C_1}{1 + (\omega R_1 C_1)^2} \hspace{1cm} \text{(\(j^2 = -1\))} \\
         Z_{out} &= \frac{R_1}{1 + (\omega R_1 C_1)^2} - j \frac{\omega R_1^2 C_1}{1 + (\omega R_1 C_1)^2}
       \end{align*}
+  \item \textbf{Step Response (Small Signal, Time Domain, AC Input Analysis (Q2)):}
+    \(V_1 = \frac{V_s}{s}\) into \(H_1(s)\), \(V_2 = 0\):
+    \begin{align*}
+      V_{out}(s) &= \frac{V_s}{s(1 + sR_1C_1)} = V_s\left(\frac{1}{s} - \frac{R_1C_1}{1 + sR_1C_1}\right) \hspace{1cm} \text{[Partial fractions]} \\
+      V_{out}(t) &= V_s\left(1 - e^{-\frac{t}{R_1C_1}}\right) \hspace{1cm} \text{[Inverse Laplace]}
+    \end{align*}
+    \(63\%\) at \(t = R_1C_1\), \(10\%\) to \(90\%\) in \(R_1C_1\ln 9 = 2.2\,R_1C_1\); the high pass gives the complement
+    \(V_s e^{-\frac{t}{R_1C_1}}\).
+  \item \textbf{Noise (\(\frac{kT}{C}\)):} \(R_1\)'s noise \(4kTR_1\) (Section~\ref{sec:theory_general_noise}) reaches \(V_{out}\) through \(H_1\):
+    \begin{align*}
+      \overline{V_{out}^2} &= \int_0^\infty \frac{4kTR_1}{1 + (2\pi fR_1C_1)^2}df = 4kTR_1\cdot\frac{1}{4R_1C_1} = \frac{kT}{C_1} \hspace{1cm} \left[\int_0^\infty \frac{df}{1 + (2\pi fT_c)^2} = \frac{1}{4T_c}\right]
+    \end{align*}
+    independent of \(R_1\): only a larger \(C_1\) lowers it (\(\sqrt{kT/1\,pF} = 64\,\mu\)V rms at \(300\,\)K).
 \end{enumerate}
 
 \subsubsection{Question}
@@ -243,3 +256,26 @@ Also compute the input and output impedance at
               &\approx 158.11 \Omega - j 11.85 \Omega
     \end{align*}
 \end{enumerate}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms s t Vout V1 V2 G1 C1 R1 Vs
+  vout = solve((Vout - V1)*G1 + (Vout - V2)*s*C1 == 0, Vout);
+  H1 = simplify(subs(subs(vout, V2, 0)/V1, G1, 1/R1));
+  H2 = simplify(subs(subs(vout, V1, 0)/V2, G1, 1/R1));
+  printf('=== H1 (low pass), H2 (high pass) ===\n'); pretty(H1); pretty(H2)
+  printf('=== pole ===\n'); [n, d] = numden(H1); pretty(solve(d == 0, s))
+  printf('=== step response of H1 ===\n'); pretty(simplify(ilaplace(Vs/s*H1, s, t)))
+  syms f T positive
+  printf('=== integral of 1/(1 + (2 pi f T)^2) ===\n'); pretty(int(1/(1 + (2*sym(pi)*f*T)^2), f, 0, inf))
+
+  printf('kT/C for 1 pF: %.1f uV rms\n', sqrt(1.380649e-23*300/1e-12)*1e6);
+
+  % Question: f_p = 45 kHz, C1 = 1 uF; impedances at 10 kHz
+  c = 1e-6; R = 1/(2*pi*45e3*c); w = 2*pi*10e3;
+  Zin = R + 1/(1j*w*c); Zout = 1/(1/R + 1j*w*c);
+  printf('R1 = %.2f Ohm, Zin = %.2f %+.2fj Ohm, Zout = %.3f %+.3fj Ohm\n', R, real(Zin), imag(Zin), real(Zout), imag(Zout));
+\end{lstlisting}

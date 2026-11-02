@@ -27,21 +27,8 @@ we only need its terminal behaviour to use it inside blocks
           \hspace{0.5cm} \Rightarrow \hspace{0.5cm} V_+ = V_- \hspace{0.5cm} \text{[virtual short, negative feedback only]} \\
           I_+ &= I_- = \frac{V_{id}}{R_{id}} = 0 \hspace{0.5cm} \text{[no input current]}
         \end{align*}
-      \item \textbf{Single Pole Model}: a dominant pole \(p_1\) and DC gain
-        \(A_0\),
-        \begin{align*}
-          A(s) &= \frac{A_0}{1 + \frac{s}{p_1}} = \frac{A_0 p_1}{s + p_1} \hspace{1cm} [\text{multiply by } \tfrac{p_1}{p_1}] \\
-          A(s) &\approx \frac{A_0 p_1}{s} \hspace{1cm} [|s| \gg p_1] \\
-          |A(j\omega_u)| &= \frac{A_0 p_1}{\omega_u} = 1 \hspace{1cm} \Rightarrow \hspace{1cm} \omega_u = A_0 p_1 \\
-          GB &= \frac{\omega_u}{2\pi} = A_0 \cdot \frac{p_1}{2\pi} \hspace{1cm} \text{[gain-bandwidth product, Hz]} \\
-          A(s) &\approx \frac{2\pi GB}{s} \hspace{1cm} [|s| \gg p_1]
-        \end{align*}
-        For example, \(A_0 = 10^5\) and \(\frac{p_1}{2\pi} = 10\,\text{Hz}\) give
-        \(GB = 10^5 \cdot 10\,\text{Hz} = 1\,\text{MHz}\).
-      \item \textbf{Large Signal Limits} (Large Signal, Time Domain, DC
-        Input Analysis (Q5); Large Signal, Time Domain, AC Input Analysis
-        (Q6)): the output saturates and
-        slews,
+      \item \textbf{Non-linear Model} (Large Signal, Time Domain, DC Input Analysis (Q5); Large
+        Signal, Time Domain, AC Input Analysis (Q6)): the output saturates and slews,
         \begin{align*}
           V_{OL} \leq V_{out} \leq V_{OH} \hspace{1cm}
           \left|\frac{dV_{out}}{dt}\right| \leq SR
@@ -59,32 +46,61 @@ we only need its terminal behaviour to use it inside blocks
         \end{align*}
         For example, \(SR = 0.5\,\text{V}/\mu\text{s}\) and \(V_p = 10\,\text{V}\) give
         \(f_{FP} = \frac{0.5 \cdot 10^6\,\text{V/s}}{2\pi \cdot 10\,\text{V}} \approx 7.96\,\text{kHz}\).
+      \item \textbf{Linear Model} (Small Signal, Frequency Domain, AC Input Analysis (Q4)): single pole, a dominant pole \(p_1\) and DC gain
+        \(A_0\),
+        \begin{align*}
+          A(s) &= \frac{A_0}{1 + \frac{s}{p_1}} = \frac{A_0 p_1}{s + p_1} \\
+          A(s) &\approx \frac{A_0 p_1}{s} \hspace{1cm} [|s| \gg p_1] \\
+          |A(j\omega_u)| &= \frac{A_0 p_1}{\omega_u} = 1 \hspace{1cm} \Rightarrow \hspace{1cm} \omega_u = A_0 p_1 \\
+          GB &= \frac{\omega_u}{2\pi} = A_0 \cdot \frac{p_1}{2\pi} \hspace{1cm} \text{[gain-bandwidth product, Hz]} \\
+          A(s) &\approx \frac{2\pi GB}{s} \hspace{1cm} [|s| \gg p_1]
+        \end{align*}
+        For example, \(A_0 = 10^5\) and \(\frac{p_1}{2\pi} = 10\,\text{Hz}\) give
+        \(GB = 10^5 \cdot 10\,\text{Hz} = 1\,\text{MHz}\).
     \end{itemize}
-  \item \textbf{Negative Feedback}: A network returns a fraction \(F\) of
-    the output to the inverting input, \(V_- = F V_{out}\), \(V_+ = V_{in}\).
-    \begin{align*}
-      V_{out} &= A(V_+ - V_-) = A(V_{in} - F V_{out}) \\
-      V_{out} + AF V_{out} &= A V_{in} \\
-      V_{out}(1 + AF) &= A V_{in} \\
-      A_{CL} &= \frac{V_{out}}{V_{in}} = \frac{A}{1 + AF} = \frac{1}{F} \cdot \frac{AF}{1 + AF} \xrightarrow{AF \to \infty} \frac{1}{F}
-    \end{align*}
-    \(T = AF\) is the loop gain. With the single pole model:
-    \begin{align*}
-      A_{CL}(s) &= \frac{\frac{A_0 p_1}{s + p_1}}{1 + \frac{A_0 p_1 F}{s + p_1}} \\
-      A_{CL}(s) &= \frac{A_0 p_1}{s + p_1 + A_0 p_1 F} \hspace{1cm} [\text{multiply top and bottom by } s + p_1] \\
-      A_{CL}(s) &= \frac{A_0 p_1}{s + p_1(1 + A_0 F)} \\
-      A_{CL}(s) &= \frac{\frac{A_0 p_1}{p_1(1 + A_0 F)}}{\frac{s}{p_1(1 + A_0 F)} + 1} \hspace{1cm} [\text{divide top and bottom by } p_1(1 + A_0 F)] \\
-      A_{CL}(s) &= \frac{\frac{A_0}{1 + A_0 F}}{1 + \frac{s}{p_1(1 + A_0 F)}}
-    \end{align*}
-    The closed loop DC gain falls by \(1 + A_0F\) and the pole rises by
-    \(1 + A_0F\): gain times bandwidth is conserved,
-    \begin{align*}
-      f_{-3dB,CL} &= \frac{p_1 (1 + A_0 F)}{2\pi} \\
-      f_{-3dB,CL} &\approx \frac{p_1 A_0 F}{2\pi} \hspace{1cm} [A_0 F \gg 1] \\
-      f_{-3dB,CL} &= F \cdot \frac{A_0 p_1}{2\pi} = F \cdot GB \\
-      \frac{A_0}{1 + A_0 F} \cdot f_{-3dB,CL} &= \frac{A_0}{1 + A_0 F} \cdot \frac{p_1 (1 + A_0 F)}{2\pi} = \frac{A_0 p_1}{2\pi} = GB
-    \end{align*}
-  \item \textbf{Non-Idealities}:
+  \item \textbf{Voltages \& Relations}: differential and common mode input,
+    \[
+      V_{id} = V_+ - V_- \hspace{1cm} V_{ic} = \frac{V_+ + V_-}{2} \hspace{1cm}
+      GB = \frac{A_0 p_1}{2\pi} \hspace{1cm} f_{FP} = \frac{SR}{2\pi V_p}
+    \]
+  \item \textbf{Modes of Operation}: linear (\(V_{OL} < V_{out} < V_{OH}\), negative feedback holds
+    \(V_{id} \approx 0\)), saturated (\(V_{out} = V_{OL}\) or \(V_{OH}\), \(V_{id}\) free), slewing (\(\left|\frac{dV_{out}}{dt}\right| = SR\)).
+  \item \textbf{Applications}:
+    \begin{itemize}
+      \item \textbf{Switching (Comparator)}: open loop, \(V_{out} = V_{OH}\) for \(V_+ > V_-\) and \(V_{OL}\)
+        for \(V_+ < V_-\) (saturated).
+          \item \textbf{Amplification (Negative Feedback)}: a network returns a fraction \(F\) of
+        the output to the inverting input, \(V_- = F V_{out}\), \(V_+ = V_{in}\).
+        \begin{align*}
+          V_{out} &= A(V_+ - V_-) = A(V_{in} - F V_{out}) \\
+          V_{out} + AF V_{out} &= A V_{in} \\
+          V_{out}(1 + AF) &= A V_{in} \\
+          A_{CL} &= \frac{V_{out}}{V_{in}} = \frac{A}{1 + AF} = \frac{1}{F} \cdot \frac{AF}{1 + AF} \xrightarrow{AF \to \infty} \frac{1}{F}
+        \end{align*}
+        \(T = AF\) is the loop gain. With the single pole model:
+        \begin{align*}
+          A_{CL}(s) &= \frac{\frac{A_0 p_1}{s + p_1}}{1 + \frac{A_0 p_1 F}{s + p_1}} \\
+          A_{CL}(s) &= \frac{A_0 p_1}{s + p_1 + A_0 p_1 F} \\
+          A_{CL}(s) &= \frac{A_0 p_1}{s + p_1(1 + A_0 F)} \\
+          A_{CL}(s) &= \frac{\frac{A_0}{1 + A_0 F}}{1 + \frac{s}{p_1(1 + A_0 F)}}
+        \end{align*}
+        The closed loop DC gain falls by \(1 + A_0F\) and the pole rises by
+        \(1 + A_0F\): gain times bandwidth is conserved,
+        \begin{align*}
+          f_{-3dB,CL} &= \frac{p_1 (1 + A_0 F)}{2\pi} \\
+          f_{-3dB,CL} &\approx \frac{p_1 A_0 F}{2\pi} \hspace{1cm} [A_0 F \gg 1] \\
+          f_{-3dB,CL} &= F \cdot \frac{A_0 p_1}{2\pi} = F \cdot GB \\
+          \frac{A_0}{1 + A_0 F} \cdot f_{-3dB,CL} &= \frac{A_0}{1 + A_0 F} \cdot \frac{p_1 (1 + A_0 F)}{2\pi} = \frac{A_0 p_1}{2\pi} = GB
+        \end{align*}
+      \item \textbf{Second Pole (Phase Margin)}: \(A(s) = \frac{A_0}{(1 + s/p_1)(1 + s/p_2)}\), \(p_2 \gg p_1\). The loop gain
+        \(AF\) crosses 1 at \(\omega_c \approx F\cdot 2\pi GB\) (\(\omega_c \ll p_2\)); its phase there is
+        \(-\tan^{-1}\frac{\omega_c}{p_1} - \tan^{-1}\frac{\omega_c}{p_2} \approx -90^\circ - \tan^{-1}\frac{\omega_c}{p_2}\):
+        \[
+          PM = 180^\circ + \angle AF \approx 90^\circ - \tan^{-1}\frac{F\cdot 2\pi GB}{p_2}
+        \]
+        unity gain (\(F = 1\)) is the worst case; \(PM = 60^\circ\) needs \(p_2 = \frac{2\pi GB}{\tan 30^\circ} = 1.73 \cdot 2\pi GB\).
+    \end{itemize}
+  \item \textbf{Effects}:
     \begin{itemize}
       \item \textbf{Offset} \(V_{OS}\): the \(V_{id}\) needed to bring
         \(V_{out}\) to its intended value. It appears in series with \(V_+\),
@@ -101,6 +117,8 @@ we only need its terminal behaviour to use it inside blocks
         \(PSRR = \frac{A_d}{V_{out}/V_{dd}}\), the gain from the input divided
         by the gain from the supply.
     \end{itemize}
+  \item \textbf{Noise}: input referred voltage and current noise densities \(\overline{V_n^2}\), \(\overline{I_n^2}\)
+    (Section~\ref{sec:theory_general_noise}), amplified like \(V_{OS}\) by \(\frac{1}{F}\).
   \item \textbf{Circuit Analysis}: In the Large Signal, Time Domain, DC
     Input Analysis (Q5) check that \(V_{out}\) is inside
     \(V_{OL} \ldots V_{OH}\) and the input common mode is inside its range.

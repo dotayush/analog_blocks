@@ -17,8 +17,9 @@ through \(C_1\).
 \end{circuitfig}
 
 \subsubsection{Transfer Function}
-\textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)} with an ideal
-op-amp: \(V_+ = 0\) so \(V_- = 0\), and no current enters \(V_-\).\\
+\textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)} (linear elements only; at DC
+\(C_1\), \(C_2\) are open and \(V_{OUT} = 0\)) with an ideal op-amp: \(V_+ = 0\) so \(V_- = 0\), and no
+current enters \(V_-\).\\
 KCL at \(V_-\):
 \begin{align*}
   (V_- - V_x) sC_1 + (V_- - V_{out}) G_2 &= 0 \\
@@ -37,42 +38,72 @@ Substituting (1) into (2):
   -\frac{G_2}{sC_1} V_{out}(G_1 + s(C_1 + C_2)) - V_{out} sC_2 &= V_{in} G_1 \\
   -V_{out}\left(\frac{G_2 (G_1 + s(C_1 + C_2))}{sC_1} + \frac{sC_2 \cdot sC_1}{sC_1}\right) &= V_{in} G_1 \\
   -V_{out}\frac{G_1 G_2 + s G_2 (C_1 + C_2) + s^2 C_1 C_2}{sC_1} &= V_{in} G_1 \\
-  \frac{V_{out}}{V_{in}} &= -\frac{s C_1 G_1}{G_1 G_2 + s G_2 (C_1 + C_2) + s^2 C_1 C_2} \hspace{1cm} [\times \tfrac{-sC_1}{V_{in}(\ldots)}] \\
-  H(s) &= -\frac{s C_1 G_1}{s^2 C_1 C_2 + s G_2 (C_1 + C_2) + G_1 G_2}
+  H(s) = \frac{V_{out}}{V_{in}} &= -\frac{s C_1 G_1}{s^2 C_1 C_2 + s G_2 (C_1 + C_2) + G_1 G_2} \tag{3}
 \end{align*}
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \textbf{Normalising}: dividing numerator and denominator by \(C_1 C_2\),
+  \item \textbf{Poles (\(D(s) = 0\))}: (3) with top and bottom divided by \(C_1 C_2\)
+    (Section~\ref{sec:theory_cs_second_order}),
     \begin{align*}
       H(s) &= -\frac{s\frac{G_1}{C_2}}{s^2 + s\frac{G_2 (C_1 + C_2)}{C_1 C_2} + \frac{G_1 G_2}{C_1 C_2}}
-      \equiv -H_0\frac{s\frac{\omega_0}{Q}}{s^2 + s\frac{\omega_0}{Q} + \omega_0^2}
+      \equiv -H_0\frac{s\frac{\omega_0}{Q}}{s^2 + s\frac{\omega_0}{Q} + \omega_0^2} \tag{4}
     \end{align*}
-    so
+    Matching coefficients:
     \begin{align*}
-      \omega_0^2 &= \frac{G_1 G_2}{C_1 C_2} = \frac{1}{R_1 R_2 C_1 C_2} \\
-      \frac{\omega_0}{Q} &= \frac{G_2 (C_1 + C_2)}{C_1 C_2} \\
+      \omega_0^2 &= \frac{G_1 G_2}{C_1 C_2} = \frac{1}{R_1 R_2 C_1 C_2} \hspace{1cm}
+      \frac{\omega_0}{Q} = \frac{G_2 (C_1 + C_2)}{C_1 C_2} \\
       Q &= \frac{\omega_0 C_1 C_2}{G_2 (C_1 + C_2)} = \frac{C_1 C_2}{G_2 (C_1 + C_2)}\cdot\frac{\sqrt{G_1 G_2}}{\sqrt{C_1 C_2}}
-         = \frac{\sqrt{C_1 C_2}}{C_1 + C_2}\sqrt{\frac{G_1}{G_2}} = \frac{\sqrt{C_1 C_2}}{C_1 + C_2}\sqrt{\frac{R_2}{R_1}}
+         = \frac{\sqrt{C_1 C_2}}{C_1 + C_2}\sqrt{\frac{R_2}{R_1}} \\
+      s_p &= -\frac{\omega_0}{2Q} \pm j\omega_0\sqrt{1 - \frac{1}{4Q^2}} \hspace{1cm} [\text{quadratic formula}, Q > \tfrac{1}{2}]
     \end{align*}
-  \item \textbf{Centre Gain}: at \(s = j\omega_0\), \(s^2 C_1 C_2 = -\omega_0^2 C_1 C_2 = -G_1 G_2\),
-    which cancels the constant term:
+  \item \textbf{Zeroes (\(N(s) = 0\))}: \(s_z C_1 G_1 = 0 \Rightarrow s_z = 0\); first order numerator over
+    second order denominator, so the other zero is at \(s \to \infty\): band pass.
+  \item \textbf{DC Gain (\(H(0)\))}: \(H(0) = \frac{0}{G_1 G_2} = 0\). Centre gain at \(s = j\omega_0\)
+    (\(s^2 C_1 C_2 = -\omega_0^2 C_1 C_2 = -G_1 G_2\) cancels the constant term):
     \begin{align*}
       H(j\omega_0) &= -\frac{j\omega_0 C_1 G_1}{-G_1 G_2 + j\omega_0 G_2 (C_1 + C_2) + G_1 G_2}
-       = -\frac{j\omega_0 C_1 G_1}{j\omega_0 G_2 (C_1 + C_2)} \\
-      H(j\omega_0) &= -\frac{C_1 G_1}{G_2 (C_1 + C_2)} = -\frac{R_2}{R_1}\cdot\frac{C_1}{C_1 + C_2}
+       = -\frac{C_1 G_1}{G_2 (C_1 + C_2)} = -\frac{R_2}{R_1}\cdot\frac{C_1}{C_1 + C_2}
     \end{align*}
+  \item \textbf{Gain-Bandwidth Product (\(GBW\))}: \(H(0) = 0\), so \(GBW = 0\); the band pass figure is
+    the centre gain times the \(-3\,\)dB bandwidth \(BW = \frac{f_0}{Q}\) (as the RLC band filter,
+    Section~\ref{sec:filt_rlc_band}):
+    \(|H(j\omega_0)| \cdot BW = \frac{R_2 C_1}{R_1(C_1 + C_2)}\cdot\frac{f_0}{Q}\).
   \item \textbf{Equal Capacitors} \(C_1 = C_2 = C\):
     \begin{align*}
       Q &= \frac{\sqrt{C \cdot C}}{C + C}\sqrt{\frac{R_2}{R_1}} = \frac{1}{2}\sqrt{\frac{R_2}{R_1}}
       \hspace{1cm} \Rightarrow \hspace{1cm} \frac{R_2}{R_1} = 4Q^2 \\
       H(j\omega_0) &= -\frac{R_2}{R_1}\cdot\frac{C}{2C} = -\frac{R_2}{2R_1} = -\frac{4Q^2}{2} = -2Q^2
     \end{align*}
-    and the \(-3\,\)dB bandwidth is \(\frac{f_0}{Q}\) (as derived for the RLC band
-    filter, Section~\ref{sec:filt_rlc_band}).
-  \item \textbf{Zeros}: the numerator \(sC_1 G_1\) vanishes at \(s = 0\); the numerator
-    is first order and the denominator second, so the other zero is at
-    \(s \to \infty\): band pass.
+  \item \textbf{Impedances}:
+    \paragraph{At Input:} \(I_{in} = (V_{in} - V_x) G_1\), with \(V_x\) from (1) and (3):
+    \begin{align*}
+      Z_{in}(s) &= \frac{s^2 C_1 C_2 + s G_2 (C_1 + C_2) + G_1 G_2}{G_1 s\left(s C_1 C_2 + G_2 (C_1 + C_2)\right)}
+    \end{align*}
+    \(s \to 0\): \(Z_{in} \to \infty\) (no DC path). \(s = j\omega_0\): numerator \(= j\omega_0 G_2 (C_1 + C_2)\) and
+    \(G_2 (C_1 + C_2) = \frac{\omega_0 C_1 C_2}{Q}\) [from \(\frac{\omega_0}{Q}\)]:
+    \begin{align*}
+      Z_{in}(j\omega_0) &= \frac{G_2 (C_1 + C_2)}{G_1 \left(j\omega_0 C_1 C_2 + G_2 (C_1 + C_2)\right)} = \frac{\frac{\omega_0 C_1 C_2}{Q}}{G_1 \omega_0 C_1 C_2 \left(j + \frac{1}{Q}\right)} = \frac{R_1}{1 + jQ}
+    \end{align*}
+    \paragraph{At Output:} the op-amp output, \(Z_{out} = \frac{R_o}{1 + AF} \approx 0\) (Section~\ref{sec:amp_inverting}).
+  \item \textbf{Band Edges}: \(|H(j\omega)| = \frac{|H(j\omega_0)|}{\sqrt{2}}\) when, in (4), \(\left(\omega\frac{\omega_0}{Q}\right)^2 \cdot 2 = (\omega_0^2 - \omega^2)^2 + \left(\omega\frac{\omega_0}{Q}\right)^2\),
+    i.e.\ \(\omega_0^2 - \omega^2 = \pm\omega\frac{\omega_0}{Q}\); the positive roots of both quadratics:
+    \begin{align*}
+      \omega_{1,2} &= \omega_0\left(\sqrt{1 + \frac{1}{4Q^2}} \mp \frac{1}{2Q}\right) \hspace{1cm} \omega_2 - \omega_1 = \frac{\omega_0}{Q} \hspace{1cm} \omega_1\omega_2 = \omega_0^2
+    \end{align*}
+    the edges are geometrically symmetric about \(\omega_0\).
+  \item \textbf{Sensitivity}: from \(Q = \frac{\sqrt{C_1C_2}}{C_1 + C_2}\sqrt{\frac{R_2}{R_1}}\): \(S_{R_2}^Q = \frac{1}{2}\), \(S_{R_1}^Q = -\frac{1}{2}\),
+    \(S_{C_1}^Q = \frac{C_2 - C_1}{2(C_1 + C_2)}\) (\(= 0\) for equal capacitors), \(S_x^{\omega_0} = -\frac{1}{2}\).
+  \item \textbf{Advantages \& Limitations}: band pass from one op-amp, low \(Z_{out}\), \(Q\) set by
+    \(\sqrt{\frac{R_2}{R_1}}\) (insensitive to op-amp gain at low \(Q\)); but centre gain is tied to \(Q\)
+    (\(-2Q^2\) for equal \(C\)), high \(Q\) needs a large resistor spread (\(4Q^2\)), and the op-amp needs
+    \(GB \gg 2Q^2 f_0\).
+\end{enumerate}
+
+\subsubsection{Design}
+\begin{enumerate}
+  \item Choose \(C_1 = C_2 = C\); \(\frac{R_2}{R_1} = 4Q^2\).
+  \item \(R_1 = \frac{1}{2Q\,\omega_0 C}\) [from \(\omega_0 = \frac{1}{\sqrt{R_1 \cdot 4Q^2 R_1}\,C} = \frac{1}{2Q R_1 C}\)], \(R_2 = 4Q^2 R_1\).
 \end{enumerate}
 
 \subsubsection{Question}
@@ -87,3 +118,27 @@ Substituting (1) into (2):
   H(j\omega_0) &= -2Q^2 = -2 \cdot 25 = -50 \\
   BW &= \frac{f_0}{Q} = \frac{1000\,Hz}{5} = 200\,Hz
 \end{align*}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms s Vin Vx Vout
+  syms G1 G2 C1 C2 Q w w0 positive
+  % ideal op-amp, V- = 0, KCL at V- and Vx
+  [x, o] = solve((0 - Vx)*s*C1 + (0 - Vout)*G2 == 0, (Vx - Vin)*G1 + Vx*s*C1 + (Vx - Vout)*s*C2 == 0, Vx, Vout);
+  H = simplify(o/Vin);
+  printf('=== H(s), equation (3) ===\n'); pretty(H)
+  W0 = sqrt(G1*G2/(C1*C2));
+  printf('=== centre gain ===\n'); pretty(simplify(subs(H, s, 1i*W0)))
+  Zin = simplify(1/((1 - x/Vin)*G1));
+  printf('=== Zin(s) ===\n'); pretty(Zin)
+  % band edges
+  e = solve((w*w0/Q)^2*2 == (w0^2 - w^2)^2 + (w*w0/Q)^2, w);
+  printf('=== band edges ===\n'); pretty(simplify(e))
+
+  % Question: f0 = 1 kHz, Q = 5, C = 10 nF
+  R1 = 1/(10*2*pi*1e3*10e-9);
+  printf('R1 = %.2f k, R2 = %.0f k, centre gain = %.0f, BW = %.0f Hz\n', R1/1e3, 100*R1/1e3, -2*25, 1e3/5);
+\end{lstlisting}

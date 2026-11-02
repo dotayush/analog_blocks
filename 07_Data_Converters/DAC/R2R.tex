@@ -10,15 +10,16 @@ two resistor values for any \(n\), and a constant output resistance \(R\).
   \draw (0,0) node[ground]{} to[european resistor, l={$2R$}] (0,2) node[circ]{} node[above left]{$V_0$};
   \draw (0,2) to[european resistor, l={$R$}] (2.5,2) node[circ]{} node[above left]{$V_1$};
   \draw[dashed] (2.5,2) -- (3.5,2);
-  \draw (3.5,2) to[european resistor, l={$R$}] (6,2) node[circ]{} node[above left]{$V_{n-1}$} -- (7,2) node[circ]{} node[right]{$V_{OUT}$};
+  \draw (3.5,2) to[european resistor, l={$R$}] (6,2) node[circ]{} node[above left]{$V_{n-1}$} -- (7,2) node[circ]{} node[right]{$V_{OUT}$} to[capacitor, l={$C_L$}] (7,0) node[ground]{};
   \draw (0,2) to[european resistor, l_={$2R$}] (0,4) node[above]{$b_0 V_{REF}$};
   \draw (2.5,2) to[european resistor, l_={$2R$}] (2.5,4) node[above]{$b_1 V_{REF}$};
   \draw (6,2) to[european resistor, l_={$2R$}] (6,4) node[above]{$b_{n-1} V_{REF}$};
 \end{circuitfig}
 
 \subsubsection{Transfer Function}
-\textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}, by repeated
-Thevenin reduction from the LSB end:
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)} (\(C_L\) open), by repeated
+    Thevenin reduction from the LSB end:
 \begin{enumerate}
   \item Node \(V_0\): the termination \(2R\) to ground in parallel with the leg
     \(2R\) to \(b_0 V_{REF}\):
@@ -44,13 +45,27 @@ Thevenin reduction from the LSB end:
     (unloaded output, \(V_{OUT} = V_{th,n-1}\)):
     \begin{align*}
       V_{th,n-1} &= \frac{b_{n-1}V_{REF}}{2} + \frac{b_{n-2}V_{REF}}{4} + \cdots + \frac{b_0 V_{REF}}{2^n} \\
-      V_{OUT} &= V_{REF} \sum_{k=0}^{n-1} b_k 2^{k - n} = \frac{D}{2^n} V_{REF}, \hspace{1cm} R_{out} = R
+      V_{OUT} &= V_{REF} \sum_{k=0}^{n-1} b_k 2^{k - n} = \frac{D}{2^n} V_{REF}, \hspace{1cm} R_{out} = R \tag{1}
+    \end{align*}
+\end{enumerate}
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}: the Thevenin source
+    \((V_{th,n-1}, R)\) of (1) into \(C_L\) (switch resistance included in each \(2R\)):
+    \begin{align*}
+      H(s) &= \frac{V_{out}}{V_{th,n-1}} = \frac{\frac{1}{sC_L}}{R + \frac{1}{sC_L}} = \frac{1}{1 + sRC_L} \tag{2}
     \end{align*}
 \end{enumerate}
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \textbf{Current mode} (\textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}):
+  \item \textbf{Poles (\(D(s) = 0\))}: from (2), \(s_p = -\frac{1}{R C_L}\), code independent (\(R_{out} = R\) for every \(D\)).
+  \item \textbf{Zeroes (\(N(s) = 0\))}: \(N(s) = 1 \neq 0\): no finite zero.
+  \item \textbf{DC Gain (\(H(0)\))}: \(H(0) = 1\); code to output gain \(\frac{V_{REF}}{2^n} = 1\,\text{LSB}\) [from (1)].
+  \item \textbf{Settling} (Small Signal, Time Domain, AC Input Analysis (Q2)): full scale step, error
+    \(V_{REF}e^{-t/(RC_L)}\) to \(\frac{1}{2}\) LSB:
+    \begin{align*}
+      V_{REF} e^{-\frac{t}{RC_L}} &= \frac{V_{REF}}{2^{n+1}} \hspace{1cm} \Rightarrow \hspace{1cm} t = (n + 1)\ln(2)\, R C_L
+    \end{align*}
+  \item \textbf{Current Mode (Large Signal, Time Domain, DC Input Analysis (Q5))}:
     \(V_{REF}\) drives the MSB node \(V_{n-1}\) and the legs are switched between
     ground and the virtual ground of an op-amp (feedback \(R_F\)); both are at
     0\,V, so every leg carries a constant current and switches never see a
@@ -63,7 +78,7 @@ Thevenin reduction from the LSB end:
       \hspace{1cm} \left[I_{n-1} = \frac{V_{REF}}{2R}, \text{ each next leg half}\right] \\
       V_{OUT} &= -R_F \sum_{k} b_k I_k = -R_F \frac{V_{REF}}{R} \sum_{k} b_k 2^{k-n}
     \end{align*}
-  \item \textbf{Matching}: the MSB leg weighs \(\frac{1}{2}\) of full scale; the
+  \item \textbf{Differential Non-Linearity (DNL)} from matching: the MSB leg weighs \(\frac{1}{2}\) of full scale; the
     midscale transition \(0111\ldots \to 1000\ldots\) needs the MSB leg to match
     the sum of all others to \(\frac{1}{2^n}\). At the output node the leg
     (conductance \(G_M\), relative resistor error \(e_M\)) and the rest of the
@@ -82,6 +97,22 @@ Thevenin reduction from the LSB end:
     \end{align*}
     so \(S_R \lesssim \frac{1}{2^n}\) for \(|DNL| < 1\)
     (switch resistance must be scaled or included in each \(2R\)).
+  \item \textbf{Impedances}:
+    \paragraph{At Output:} \(Z_{out} = R\) for every code (step 2 of Q5).
+    \paragraph{At Reference:} code dependent (each leg goes to \(V_{REF}\) or ground) in voltage
+    mode; constant in current mode (legs always at 0\,V).
+  \item \textbf{Reference Current (Current Mode)}: \(V_{REF}\) drives the MSB node, which sees its \(2R\) leg in parallel
+    with \(R + R = 2R\) towards the LSB end: \(R_{REF} = 2R \parallel 2R = R\), \(I_{REF} = \frac{V_{REF}}{R}\) for every code.
+  \item \textbf{Advantages \& Limitations}: only two resistor values for any \(n\), constant
+    \(R_{out} = R\), \(n\) legs (not \(2^n\)); but the MSB must match the rest to \(\frac{1}{2^n}\) (not inherently
+    monotonic), switch resistance adds to \(2R\) (scale the switches), and the voltage mode reference
+    load is code dependent.
+\end{enumerate}
+
+\subsubsection{Design}
+\begin{enumerate}
+  \item \(S_R < \frac{\sqrt{2}}{2^n}\) for \(|DNL| < 1\) (one \(SD\)).
+  \item \(R \leq \frac{t_{settle}}{(n + 1)\ln(2)\, C_L}\); switch resistance \(\ll 2R\) or scaled into each leg.
 \end{enumerate}
 
 \subsubsection{Question}
@@ -94,3 +125,25 @@ Thevenin reduction from the LSB end:
   S_R &< \frac{\sqrt{2}}{2^n} = \frac{1.414}{256} = 0.0055 = 0.55\%
 \end{align*}
 
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  % Thevenin recursion V_th,k = (V_th,k-1 + b_k Vref)/2 (Large Signal, Q5)
+  n = 8; Vref = 1; b = fliplr(dec2bin(179, n) - '0');   % b(1) = LSB
+  v = 0;
+  for k = 1:n
+    v = (v + b(k)*Vref)/2;
+  end
+  printf('D = 179: Vout = %.4f V (D/2^n = %.4f)\n', v, 179/2^n);
+
+  % midscale weight change with a leg error, symbolic
+  syms G eM er
+  GM = G/(1 + eM); Gr = G/(1 + er);
+  w = GM/(GM + Gr);
+  dw = simplify(taylor(taylor(w, eM, 0, 'order', 2), er, 0, 'order', 2) - sym(1)/2);
+  printf('=== dw to first order ===\n'); pretty(dw)
+
+  printf('S_R for |DNL| < 1: %.4f\n', sqrt(2)/2^n);
+\end{lstlisting}

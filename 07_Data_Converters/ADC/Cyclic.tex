@@ -15,7 +15,8 @@ conversion, minimal area.
 \end{circuitfig}
 
 \subsubsection{Transfer Function}
-\textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}: with the 1-bit
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}: with the 1-bit
 stage over \([0, V_{REF})\), \(V^{(0)} = V_{IN}\):
 \begin{align*}
   b_k &= \begin{cases} 1 & V^{(k-1)} \geq \frac{V_{REF}}{2} \\ 0 & \text{otherwise} \end{cases} \hspace{1cm}
@@ -29,10 +30,15 @@ returns to the input range. Unrolling as for the pipeline
   V^{(n)} &= 2^n V_{IN} - V_{REF}\sum_{k=1}^{n} b_k 2^{n-k} \\
   V_{IN} &= V_{REF}\sum_{k=1}^{n} b_k 2^{-k} + \frac{V^{(n)}}{2^n}
 \end{align*}
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}: the MDAC (\(F = \frac{1}{2}\)) as
+    the pipeline stage, \(H(s) = 2\cdot\frac{A_0 F p_1}{s + p_1(1 + A_0 F)}\) (Section~\ref{sec:adc_pipeline}, (1)).
+\end{enumerate}
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \textbf{Gain Error}: with a loop gain \(2(1 + e)\) the recursion is
+  \item \textbf{Poles (\(D(s) = 0\))}: \(s_p \approx -\pi GB\) (as the pipeline stage, \(F = \frac{1}{2}\)).
+  \item \textbf{Zeroes (\(N(s) = 0\))}: none.
+  \item \textbf{DC Gain (\(H(0)\))}: \(H(0) = 2\frac{A_0 F}{1 + A_0 F} = 2(1 + e)\), \(e \approx -\frac{1}{A_0 F}\); with a loop gain \(2(1 + e)\) the recursion is
     \(V^{(k)} = 2(1 + e) V^{(k-1)} - b_k V_{REF}\); unrolling the \(V_{IN}\) term,
     \begin{align*}
       V^{(n)} &= \left(2(1 + e)\right)^n V_{IN} - \cdots = 2^n (1 + e)^n V_{IN} - \cdots \approx 2^n (1 + n e) V_{IN} - \cdots \hspace{0.5cm} [|ne| \ll 1]
@@ -40,9 +46,22 @@ returns to the input range. Unrolling as for the pipeline
     The same \(e\) is applied every cycle, so the error grows with \(n\)
     through one stage; a pipeline has independent stages whose later errors
     are divided by the earlier gains.
-  \item \textbf{Rate}: one bit per clock gives \(\frac{f_{clk}}{n}\); using both clock
+  \item \textbf{Speed}: one bit per clock gives \(\frac{f_{clk}}{n}\); using both clock
     phases (two half-cycle operations per clock) gives
     \(\frac{f_{clk}}{n/2} = \frac{2 f_{clk}}{n}\).
+  \item \textbf{Impedances}:
+    \paragraph{At Input:} the S/H sampling capacitance (switched).
+  \item \textbf{Capacitor Mismatch}: \(C_1 = C(1 + e)\) gives \(V^{(k)} = (2 + e)V^{(k-1)} - (1 + e)b_k V_{REF}\), the same as
+    the pipeline stage (Section~\ref{sec:adc_pipeline}) but applied in every cycle: \(|e| < 2^{-(n-1)}\) at least.
+  \item \textbf{Advantages \& Limitations}: one stage for any \(n\) (minimal area and power); but \(n\)
+    cycles per conversion (\(\frac{f_{clk}}{n}\)), and the same gain error \(e\) compounds over every cycle
+    (\(n e\)), so \(|e| < \frac{1}{n 2^{n}}\) roughly (the stage must be accurate to the full \(n\) bits).
+\end{enumerate}
+
+\subsubsection{Design}
+\begin{enumerate}
+  \item \(A_0 > 2 n 2^{n}\) (\(|ne| \cdot 2^n < 1\) with \(e = \frac{1}{A_0 F}\), \(F = \frac{1}{2}\)).
+  \item \(f_{clk} = n f_s\) (or \(\frac{n}{2} f_s\) with both phases); settling per cycle as the pipeline.
 \end{enumerate}
 
 \subsubsection{Question}
@@ -55,3 +74,19 @@ returns to the input range. Unrolling as for the pipeline
   V^{(3)} &= 0.4 < 0.5 \Rightarrow b_4 = 0, \hspace{0.3cm} V^{(4)} = 2 \cdot 0.4 - 0 = 0.8 \\
   V_{IN} &= 1 \cdot \left(\frac{0}{2} + \frac{1}{4} + \frac{0}{8} + \frac{0}{16}\right) + \frac{0.8}{16} = 0.25 + 0.05 = 0.3\,V \ \checkmark \hspace{1cm} D = 0100_2 = 4
 \end{align*}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+
+  % 1 bit cyclic recursion over [0, Vref)
+  Vref = 1; n = 4; V = 0.3; b = zeros(1, n);
+  for k = 1:n
+    b(k) = V >= Vref/2;
+    V = 2*V - b(k)*Vref;
+    printf('cycle %d: b = %d, V = %.2f\n', k, b(k), V);
+  end
+  printf('Vin = %.3f, D = %d\n', sum(b.*2.^-(1:n))*Vref + V/2^n, b*2.^(n - 1:-1:0)');
+  % compounding gain error e over n cycles
+  e = 1e-3; printf('(1 + e)^n - 1 = %.4g, n e = %.4g\n', (1 + e)^10 - 1, 10*e);
+\end{lstlisting}

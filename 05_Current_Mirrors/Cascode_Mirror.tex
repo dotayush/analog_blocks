@@ -312,6 +312,9 @@ Here's a table of the voltages at each terminal of the transistors:
                   = V_{out}\frac{G_5 P + g_{o_2}(P - g_{o_2} - g_{m_2})}{P} = V_{out}\frac{G_5 P + g_{o_1} g_{o_2}}{P} \\
         Z_{out} &= \frac{V_{out}}{I_{test}} = \frac{g_{m_2} + g_{o_1} + g_{o_2}}{G_{5}(g_{m_2} + g_{o_1} + g_{o_2}) + g_{o_1} g_{o_2}}
       \end{align*}
+  \item \textbf{Mismatch:} the ratio is set by the pair \(M_0\), \(M_1\) at the same \(V_{GS}\) (Q5); the other devices only
+    move drain voltages, whose effect is divided by the high output impedance. So, as the basic mirror
+    (Section~\ref{sec:mirror_basic}): \(\frac{dI_{OUT}}{I_{OUT}} = \frac{dk}{k} - \frac{2dV_{th}}{V_{ov}}\).
 \end{enumerate}
 
 

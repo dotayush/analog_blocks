@@ -238,6 +238,20 @@ Here's a table of the voltages at each terminal of the transistors:
       \begin{align*}
         Z_{out} &\approx \frac{1}{g_{o_1}} = \frac{1}{K_{CLM} I_{M_1}}
       \end{align*}
+  \item \textbf{Mismatch:} \(M_1\) differs from its ideal copy by \(dk\) and \(dV_{th}\); from
+    \(I = k(V_{GS} - V_{th})^2\) at fixed \(V_{GS}\):
+    \begin{align*}
+      dI &= (V_{GS} - V_{th})^2dk - 2k(V_{GS} - V_{th})dV_{th} \hspace{1cm} \Rightarrow \hspace{1cm}
+      \frac{dI_{OUT}}{I_{OUT}} = \frac{dk}{k} - \frac{2dV_{th}}{V_{ov}} \\
+      SD\left(\frac{dI_{OUT}}{I_{OUT}}\right) &= \sqrt{SD\left(\tfrac{dk}{k}\right)^2 + \frac{4\,SD(dV_{th})^2}{V_{ov}^2}} \hspace{1cm} \text{[independent, variances add]}
+    \end{align*}
+    the opposite of a differential pair: a mirror wants a large \(V_{ov}\).
+  \item \textbf{Noise:} \(M_0\)'s channel noise \(4kT\frac{2}{3}g_{m_0}\) and \(G_2\)'s \(4kTG_2\) flow into the diode node (\(\frac{1}{g_{m_0}}\)) and are copied
+    by \(g_{m_1}\); \(M_1\) adds its own:
+    \begin{align*}
+      \overline{I_{out}^2} &= 4kT\frac{2}{3}g_{m_1}\left(1 + \frac{g_{m_1}}{g_{m_0}}\right) + 4kTG_2\left(\frac{g_{m_1}}{g_{m_0}}\right)^2 \hspace{1cm} [G_2, g_{o_0} \ll g_{m_0}]
+    \end{align*}
+    a smaller \(g_{m_1}\) (larger \(V_{ov}\) for the same current) lowers it.
 \end{enumerate}
 
 \subsubsection{Design}

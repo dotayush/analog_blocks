@@ -149,3 +149,17 @@ and output impedance.
       Z_{out} &\approx 5.01 k\Omega
     \end{align*}
 \end{enumerate}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms Vin Iin G1 G2
+  vin = solve(Iin == Vin*G1 + Vin*G2, Vin);          % KCL at Vin
+  printf('=== I_G1/Iin, I_G2/Iin ===\n'); pretty(simplify(vin*G1/Iin)); pretty(simplify(vin*G2/Iin))
+
+  % Question: 5 A -> 10 mA, R1 = 5k
+  r = 0.01/4.99; R1 = 5e3; R2 = r*R1;
+  printf('R2/R1 = %.6f, R2 = %.2f Ohm, Zin = %.2f Ohm, Vin = %.0f V\n', r, R2, R1*R2/(R1 + R2), 0.01*R1);
+\end{lstlisting}

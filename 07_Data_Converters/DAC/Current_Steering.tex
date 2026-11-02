@@ -35,7 +35,7 @@ Binary weighted steering DAC (\(n = 3\)): each unit current is steered to \(I_{O
       I_{OUT-} = (2^n - 1 - D) I_u \\
       V_{OUT} &= D I_u R_L \hspace{1cm} [\text{ideal sources}]
     \end{align*}
-  \item \textbf{Finite Output Impedance} (\textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}):
+  \item \textbf{Finite Output Impedance (Large Signal, Time Domain, DC Input Analysis (Q5))}:
     each connected unit has conductance \(g_u\); code \(D\) puts \(D g_u\) in
     parallel with \(G_L\). KCL at the output:
     \begin{align*}
@@ -54,11 +54,25 @@ Binary weighted steering DAC (\(n = 3\)): each unit current is steered to \(I_{O
     so \(INL_{\max} < \frac{1}{2}\) LSB requires
     \(a\frac{N^2}{4} < \frac{1}{2} \Rightarrow g_u R_L < \frac{2}{N^2} = \frac{2}{2^{2n}}\): a
     cascoded (Section~\ref{sec:amp_cascode}) unit source.
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}: the steered current
+    \(I_{out}\) into \(R_L \parallel C_L\) (\(D g_u \ll G_L\)):
+    \begin{align*}
+      V_{out}(G_L + sC_L) &= I_{out} \hspace{1cm} \Rightarrow \hspace{1cm}
+      H(s) = \frac{V_{out}}{I_{out}} = \frac{R_L}{1 + sR_L C_L} \tag{1}
+    \end{align*}
 \end{enumerate}
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \textbf{DNL, binary}: at mid scale the MSB (\(2^{n-1}\) units) replaces
+  \item \textbf{Poles (\(D(s) = 0\))}: from (1), \(s_p = -\frac{1}{R_L C_L}\); no internal high impedance
+    node, so this is the only pole.
+  \item \textbf{Zeroes (\(N(s) = 0\))}: \(N(s) = R_L \neq 0\): no finite zero.
+  \item \textbf{DC Gain (\(H(0)\))}: \(H(0) = R_L\); code to output gain \(I_u R_L\) per LSB, with the
+    \(INL = a D (N - D)\) bow of Q5.
+  \item \textbf{Settling} (Small Signal, Time Domain, AC Input Analysis (Q2)): to \(\frac{1}{2}\) LSB,
+    \(t = (n + 1)\ln(2)\, R_L C_L\); with \(R_L = 50\,\Omega\) this makes current steering the architecture
+    of choice above \(\approx 100\,\)MS/s.
+  \item \textbf{Differential Non-Linearity (DNL), Binary}: at mid scale the MSB (\(2^{n-1}\) units) replaces
     \(2^{n-1} - 1\) units; with independent unit errors \(dI_i\) of SD \(S_I I_u\),
     \begin{align*}
       DNL_{N/2-1} &= \frac{I_{OUT}(1000\ldots) - I_{OUT}(0111\ldots)}{I_u} - 1
@@ -66,7 +80,7 @@ Binary weighted steering DAC (\(n = 3\)): each unit current is steered to \(I_{O
       \text{var}(DNL_{N/2-1}) &= \frac{2^{n-1} (S_I I_u)^2 + (2^{n-1} - 1)(S_I I_u)^2}{I_u^2} = (2^{n-1} + 2^{n-1} - 1) S_I^2 = (2^n - 1) S_I^2 \\
       SD(DNL) &= \sqrt{2^n - 1}\, S_I
     \end{align*}
-  \item \textbf{DNL, unary}: each step adds one unit,
+  \item \textbf{DNL and INL, Unary}: each step adds one unit,
     \(DNL_k = \frac{I_u + dI_k}{I_u} - 1 = \frac{dI_k}{I_u}\), \(SD(DNL) = S_I\), and the
     DAC is monotonic by construction. Both have the same mid scale INL: with
     \(X\) the sum of the \(\frac{N}{2}\) units on at mid scale and \(Y\) the sum
@@ -84,9 +98,30 @@ Binary weighted steering DAC (\(n = 3\)): each unit current is steered to \(I_{O
       SD(DNL) = \sqrt{2^{n-m+1} - 1}\, S_I
     \]
     traded against the \(2^m - 1\) output thermometer decoder.
-  \item \textbf{Speed}: no internal high impedance nodes; the output pole is
-    \(\frac{1}{R_L C_L}\), which makes current steering the architecture of
-    choice above \(\approx 100\,\)MS/s.
+  \item \textbf{Impedances}:
+    \paragraph{At Output:} \(Z_{out} = R_L \parallel \frac{1}{D g_u}\) (code dependent through \(D g_u\), the source of the INL bow).
+  \item \textbf{Distortion from Output Impedance}: the Q5 bow \(V_{OUT} \propto D - aD^2\) with a full scale sine
+    \(D = \frac{N}{2}(1 + \sin\omega t)\):
+    \begin{align*}
+      D - aD^2 &= \frac{N}{2}(1 + \sin\omega t) - a\frac{N^2}{4}\left(1 + 2\sin\omega t + \frac{1 - \cos 2\omega t}{2}\right) \hspace{0.5cm} [\sin^2 x = \tfrac{1 - \cos 2x}{2}] \\
+      HD_2 &= \frac{a\frac{N^2}{8}}{\frac{N}{2} - a\frac{N^2}{2}} = \frac{aN}{4(1 - aN)} \approx \frac{aN}{4}
+    \end{align*}
+    a differential output (\(I_{OUT+} - I_{OUT-}\)) cancels this even order term.
+  \item \textbf{Output Compliance}: each unit (cascoded PMOS source) needs \(|V_{DS}| \geq |V_{ov}|\) on both devices:
+    \begin{align*}
+      V_{OUT,\max} &= V_{dd} - |V_{ov,src}| - |V_{ov,cas}| - |V_{sw}| \geq V_{FS} = (2^n - 1) I_u R_L
+    \end{align*}
+  \item \textbf{Advantages \& Limitations}: fastest DAC (one pole \(\frac{1}{R_L C_L}\)), no turn on transients
+    (steering), differential output, unary segment monotonic; but needs very high unit output
+    impedance (\(g_u R_L < \frac{2}{2^{2n}}\), cascodes), binary \(SD(DNL) = \sqrt{2^n - 1}\,S_I\), and static power
+    \((2^n - 1) I_u\) at every code.
+\end{enumerate}
+
+\subsubsection{Design}
+\begin{enumerate}
+  \item \(I_u = \frac{V_{FS}}{(2^n - 1) R_L}\) for full scale \(V_{FS}\).
+  \item \(r_u > \frac{2^{2n} R_L}{2}\) (cascoded unit).
+  \item \(m\) unary MSBs so that \(\sqrt{2^{n-m+1} - 1}\, S_I < \frac{1}{2}\); \(S_I < \frac{1}{\sqrt{2^n}}\) for \(SD(INL) < \frac{1}{2}\).
 \end{enumerate}
 
 \subsubsection{Question}
@@ -99,3 +134,24 @@ binary version with \(S_I = 0.1\%\).
   r_u = \frac{1}{g_u} > 419\,M\Omega \\
   SD(DNL) &= \sqrt{2^{12} - 1}\, S_I = \sqrt{4095} \cdot 0.001 = 64.0 \cdot 0.001 = 0.064\,\text{LSB}
 \end{align*}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms D Iu RL gu a N positive
+  Vout = D*Iu/(1/RL + D*gu);
+  printf('=== Vout(D) with unit conductance gu ===\n'); pretty(simplify(Vout))
+  inl = a*D*(N - D);
+  Dm = solve(diff(inl, D) == 0, D);
+  printf('=== INL max ===\n'); pretty(simplify(subs(inl, D, Dm)))
+  % HD2 of the bow D - a D^2 with a full scale sine
+  syms th
+  y = N/2*(1 + sin(th)) - a*(N/2*(1 + sin(th)))^2;
+  c1 = int(y*sin(th), th, 0, 2*sym(pi))/sym(pi); c2 = int(y*cos(2*th), th, 0, 2*sym(pi))/sym(pi);
+  printf('=== HD2 ===\n'); pretty(simplify(abs(c2/c1)))
+
+  % Question: 12 bit, RL = 50, SI = 0.1 %
+  printf('gu < %.3g S (ru > %.0f M), SD(DNL) binary = %.3f LSB\n', 2/(2^24*50), 2^24*50/2/1e6, sqrt(2^12 - 1)*1e-3);
+\end{lstlisting}

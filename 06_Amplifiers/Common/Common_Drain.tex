@@ -48,39 +48,61 @@ a voltage buffer.
       V_{out}(G_L + sC_L) &= g_m (V_{in} - V_{out}) + g_{mb}(0 - V_{out}) + g_o (0 - V_{out}) \\
       V_{out} G_L + V_{out} sC_L + g_m V_{out} + g_{mb} V_{out} + g_o V_{out} &= g_m V_{in} \\
       V_{out}(G_L + g_m + g_{mb} + g_o + sC_L) &= g_m V_{in} \\
-      H(s) = \frac{V_{out}}{V_{in}} &= \frac{g_m}{g_m + g_{mb} + g_o + G_L + sC_L}
+      H(s) = \frac{V_{out}}{V_{in}} &= \frac{g_m}{g_m + g_{mb} + g_o + G_L + sC_L} \tag{1}
     \end{align*}
 \end{enumerate}
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \textbf{DC Gain}:
-    \[
-      A_{V0} = H(0) = \frac{g_m}{g_m + g_{mb} + g_o + G_L} \xrightarrow{G_L \to 0} \frac{g_m}{g_m + g_{mb} + g_o} \xrightarrow{g_o \ll g_m} \frac{g_m}{g_m + g_{mb}} = \frac{1}{1 + \frac{g_{mb}}{g_m}}
-    \]
-    The body effect limits the gain to about \(0.8\text{--}0.9\) unless the
-    body is tied to the source (separate well).
-  \item \textbf{Pole}: \(N(s) = g_m\) has no root, \(D(s) = g_m + g_{mb} + g_o + G_L + sC_L = 0\) at \(s = -p_1\),
-    \[
-      p_1 = \frac{g_m + g_{mb} + g_o + G_L}{C_L} \hspace{1cm} f_{p1} = \frac{p_1}{2\pi} \approx \frac{g_m}{2\pi C_L} \hspace{0.5cm} [g_{mb}, g_o, G_L \ll g_m]
-    \]
-    which is a very wide bandwidth (the GB of a CS stage driving the same
-    \(C_L\)).
+  \item \textbf{Poles (\(D(s) = 0\))}:
+    \begin{align*}
+      g_m + g_{mb} + g_o + G_L + s_p C_L &= 0 \hspace{1cm} \Rightarrow \hspace{1cm} s_p = -\frac{g_m + g_{mb} + g_o + G_L}{C_L} \\
+      f_p &= \frac{g_m + g_{mb} + g_o + G_L}{2\pi C_L} \approx \frac{g_m}{2\pi C_L} \hspace{1cm} [g_{mb}, g_o, G_L \ll g_m]
+    \end{align*}
+    the \(GBW\) of a CS stage driving the same \(C_L\): a very wide bandwidth.
+  \item \textbf{Zeroes (\(N(s) = 0\))}: \(N(s) = g_m \neq 0\): no finite zero (\(C_{gs}\) neglected).
+  \item \textbf{DC Gain (\(H(0)\))}: \(s = 0\) in (1),
+    \begin{align*}
+      A_{V0} = H(0) &= \frac{g_m}{g_m + g_{mb} + g_o + G_L} \xrightarrow{G_L \to 0} \frac{g_m}{g_m + g_{mb} + g_o} \xrightarrow{g_o \ll g_m} \frac{1}{1 + \frac{g_{mb}}{g_m}}
+    \end{align*}
+    the body effect limits it to \(\approx 0.8\text{--}0.9\) unless the body is tied to the
+    source (separate well).
+  \item \textbf{Gain-Bandwidth Product (\(GBW\))}:
+    \begin{align*}
+      GBW &= A_{V0} f_p = \frac{g_m}{g_m + g_{mb} + g_o + G_L}\cdot\frac{g_m + g_{mb} + g_o + G_L}{2\pi C_L} = \frac{g_m}{2\pi C_L}
+    \end{align*}
   \item \textbf{Impedances}:
-    \paragraph{At Input:} \(I_G = 0\) so \(Z_{in} \to \infty\) at DC.
-      \(C_{gs}\) is bootstrapped (both its ends move together): its current is
-      \(I = (V_{in} - A_{V0} V_{in}) sC_{gs} = V_{in} s C_{gs}(1 - A_{V0})\), so it
-      appears as \(C_{gs}(1 - A_{V0})\).
-    \paragraph{At Output:} \(V_{in} = 0\), \(I_{test}\) into the source node
-      (\(G_L\) removed):
-      \begin{align*}
-        I_{test} + I_d &= 0 \hspace{1cm} [\text{both arrive at the source node}] \\
-        I_{test} - g_m V_{out} - g_{mb} V_{out} - g_o V_{out} &= 0 \hspace{1cm} [V_{gs} = V_{bs} = V_{ds} = -V_{out}] \\
-        I_{test} &= V_{out}(g_m + g_{mb} + g_o) \\
-        Z_{out} &= \frac{1}{g_m + g_{mb} + g_o} \approx \frac{1}{g_m}
-      \end{align*}
-  \item \textbf{Level Shift}: \(V_{OUT} = V_{IN} - V_{th} - V_{ov}\); the stage
-    costs \(V_{GS}\) of headroom.
+    \paragraph{At Input:} \(I_G = 0\), \(Z_{in} \to \infty\) at DC. \(C_{gs}\) is bootstrapped
+    (both ends move):
+    \begin{align*}
+      I &= (V_{in} - A_{V0} V_{in}) sC_{gs} = V_{in} sC_{gs}(1 - A_{V0}) \hspace{1cm} \Rightarrow \hspace{1cm} C_{in} = C_{gs}(1 - A_{V0})
+    \end{align*}
+    \paragraph{At Output:} \(V_{in} = 0\), \(I_{test}\) into the source node (\(G_L\) removed):
+    \begin{align*}
+      I_{test} + I_d &= 0 \hspace{1cm} [\text{both arrive at the source node}] \\
+      I_{test} - g_m V_{out} - g_{mb} V_{out} - g_o V_{out} &= 0 \hspace{1cm} [V_{gs} = V_{bs} = V_{ds} = -V_{out}] \\
+      Z_{out} &= \frac{V_{out}}{I_{test}} = \frac{1}{g_m + g_{mb} + g_o} \approx \frac{1}{g_m}
+    \end{align*}
+  \item \textbf{Output Swing (Max)}: \(V_{OUT} = V_{IN} - V_{th} - V_{ov}\) (a level shift of \(V_{GS}\));
+    the sink needs \(V_{OUT} \geq V_{ov,sink}\) and \(M_1\) needs \(V_{IN} \leq V_{dd} + V_{th}\):
+    \(V_{ov,sink} \leq V_{OUT} \leq V_{dd} - V_{ov}\).
+  \item \textbf{Slew Rate (Large Signal, Time Domain, AC Input Analysis (Q6))}: rising, \(M_1\) can source a large
+    current into \(C_L\) (its \(V_{GS}\) grows); falling, \(M_1\) turns off and only the sink \(I_{bias}\) discharges \(C_L\):
+    \begin{align*}
+      \left.\frac{dV_{OUT}}{dt}\right|_{fall} &= -\frac{I_{bias}}{C_L} \hspace{1cm} \Rightarrow \hspace{1cm} f \leq \frac{I_{bias}}{2\pi C_L V_p}
+    \end{align*}
+    (a sine of amplitude \(V_p\) has slope \(2\pi f V_p\)); e.g.\ \(100\,\mu\)A into \(5\,\)pF: \(20\,\)V/\(\mu\)s.
+  \item \textbf{Distortion}: the gain \(\frac{g_m}{g_m + g_{mb} + G_L}\) changes with \(V_{OUT}\) through \(g_{mb}\) (body effect,
+    \(V_{SB} = V_{OUT}\)); tying the body to the source (separate well) removes it.
+  \item \textbf{Advantages \& Limitations}: \(Z_{in} \to \infty\), \(Z_{out} \approx \frac{1}{g_m}\),
+    bandwidth \(\approx \frac{g_m}{2\pi C_L}\), \(C_{gs}\) bootstrapped; but gain \(< 1\) (body effect),
+    costs \(V_{GS}\) of headroom, and \(V_{th}\) moves with \(V_{OUT}\) (non-linearity).
+\end{enumerate}
+
+\subsubsection{Design}
+\begin{enumerate}
+  \item \(Z_{out} \approx \frac{1}{g_m}\) sets \(g_m\); \(I_D = \frac{g_m V_{ov}}{2}\), \(\frac{W}{L} = \frac{2 I_D}{K_P V_{ov}^2}\).
+  \item Check the level shift \(V_{IN} - V_{OUT} = V_{th} + V_{ov}\) against the swing.
 \end{enumerate}
 
 \subsubsection{Question}
@@ -96,3 +118,25 @@ A follower biased by a \(100\,\mu\)A sink (\(G_L = 2\,\mu\)S) has
   f_{p1} &= \frac{1.212\,mS}{2\pi \cdot 5\,pF} = 38.6\,MHz \\
   V_{OUT} &= 1.2 - 0.5 - 0.2 = 0.5\,V \hspace{1cm} [\text{ignoring the body effect shift of } V_{th}]
 \end{align*}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms s Vin Vout gm gmb go GL CL It
+
+  % KCL at Vout (source node)
+  vout = solve(Vout*(GL + s*CL) == gm*(Vin - Vout) + gmb*(0 - Vout) + go*(0 - Vout), Vout);
+  H = simplify(vout/Vin);
+  printf('=== H(s), equation (1) ===\n'); pretty(H)
+  printf('=== DC gain ===\n'); pretty(simplify(subs(H, s, 0)))
+  % output impedance: Vin = 0, GL removed
+  vout = solve(It - gm*Vout - gmb*Vout - go*Vout == 0, Vout);
+  printf('=== Zout ===\n'); pretty(simplify(vout/It))
+
+  % Question: 100 uA sink (GL = 2 uS), Vov = 0.2, gmb = 0.2 gm, CL = 5 pF
+  g_m = 1e-3; g_mb = 0.2e-3; g_o = 10e-6; gl = 2e-6; cl = 5e-12;
+  printf('Av0 = %.3f, Zout = %.0f Ohm, f_p1 = %.1f MHz, SR(fall) = %.0f V/us\n', ...
+         g_m/(g_m + g_mb + g_o + gl), 1/(g_m + g_mb + g_o), (g_m + g_mb + g_o + gl)/(2*pi*cl)/1e6, 100e-6/cl/1e6);
+\end{lstlisting}

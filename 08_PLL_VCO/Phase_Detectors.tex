@@ -6,28 +6,64 @@ Frequency is the derivative of phase, \(\omega = \frac{d\theta}{dt}\), so in
 Q4 \(\theta(s) = \frac{\omega(s)}{s}\).
 
 \subsection{XOR Phase Detector}
+\subsubsection{Overview}
+An XOR of the reference and the divided signal; its average output is proportional to the
+phase difference.
 
+\subsubsection{Schematic}
 \begin{circuitfig}
   \draw (2,0) node[xor port](X){};
   \draw (X.in 1) -- ++(-0.8,0) node[left]{$\theta_{ref}$};
   \draw (X.in 2) -- ++(-0.8,0) node[left]{$\theta_{div}$};
   \draw (X.out) -- ++(0.8,0) node[circ]{} node[above]{$V_{pd}$} -- ++(0.4,0) node[right]{to loop filter};
-\end{circuitfig}\textbf{Large Signal, Time Domain, AC Input Analysis (Q6)}, averaged over one
-period \(T_{ref}\).
-For two square waves of duty cycle \(\frac{1}{2}\) and phase difference
+\end{circuitfig}
+
+\subsubsection{Transfer Function}
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, AC Input Analysis (Q6)}, averaged over one period \(T_{ref}\).
+    For two square waves of duty cycle \(\frac{1}{2}\) and phase difference
 \(\theta_e = \theta_{ref} - \theta_{div}\), \(0 \leq \theta_e \leq \pi\), the
 edges are shifted by \(t_e = \frac{\theta_e}{2\pi} T_{ref}\). The inputs differ
 (XOR high) for \(t_e\) after the rising edges and \(t_e\) after the falling
 edges, so the XOR output is high for a fraction \(\frac{\theta_e}{\pi}\) of each period:
 \begin{align*}
   \overline{V_{pd}} &= \frac{1}{T_{ref}}\int_0^{T_{ref}} V_{pd}(t)\,dt = \frac{V_{dd}\cdot 2 t_e}{T_{ref}} = \frac{2 V_{dd}}{T_{ref}}\cdot\frac{\theta_e}{2\pi} T_{ref} = V_{dd}\frac{\theta_e}{\pi} \\
-  K_{pd} &= \frac{d\overline{V_{pd}}}{d\theta_e} = \frac{V_{dd}}{\pi} \ \text{[V/rad]}
 \end{align*}
-The characteristic is periodic and folds back beyond \(\pi\); the output
-ripple at \(2 f_{ref}\) (two pulses per period) must be filtered.
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}: linearised about lock,
+    \begin{align*}
+      K_{pd} &= \frac{d\overline{V_{pd}}}{d\theta_e} = \frac{V_{dd}}{\pi} \ \text{[V/rad]} \hspace{1cm} V_{pd}(s) = K_{pd}\,\theta_e(s) \tag{1}
+    \end{align*}
+\end{enumerate}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Gain}: \(K_{pd} = \frac{V_{dd}}{\pi}\), constant over \(0 < \theta_e < \pi\) (lock at \(\theta_e = \frac{\pi}{2}\), mid range).
+  \item \textbf{Range}: the characteristic is periodic and folds back beyond \(\pi\) (slope sign flips).
+  \item \textbf{Ripple}: two pulses per period, ripple at \(2 f_{ref}\) must be filtered.
+  \item \textbf{Advantages \& Limitations}: one gate, linear over \(\pi\); but detects phase only (no
+    frequency acquisition), needs \(50\%\) duty cycles, and ripple at \(2f_{ref}\).
+\end{enumerate}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+
+  % average XOR output of two 50% square waves versus phase error
+  Vdd = 1.8; N = 1000; t = (0:N - 1)/N;
+  th = linspace(0, pi, 7);
+  for k = 1:numel(th)
+    a = mod(t, 1) < 0.5; b = mod(t - th(k)/(2*pi), 1) < 0.5;
+    printf('theta = %.3f rad: mean Vpd = %.3f V, Vdd theta/pi = %.3f V\n', th(k), Vdd*mean(xor(a, b)), Vdd*th(k)/pi);
+  end
+  printf('Kpd = %.3f V/rad\n', Vdd/pi);
+\end{lstlisting}
 
 \subsection{Phase Frequency Detector (PFD) and Charge Pump}
+\subsubsection{Overview}
+Two flip-flops: a reference edge sets \(UP\), a divided edge sets \(DN\), and when both are high both
+reset. The charge pump sources \(I_{cp}\) during \(UP\) and sinks \(I_{cp}\) during \(DN\).
 
+\subsubsection{Schematic}
 \begin{circuitfig}
   \draw (0,2) rectangle (1.6,3.4); \node at (0.8,2.7) {DFF};
   \draw (0,-0.4) rectangle (1.6,1); \node at (0.8,0.3) {DFF};
@@ -42,22 +78,29 @@ ripple at \(2 f_{ref}\) (two pulses per period) must be filtered.
   \draw (c) to[nos, l={$DN$}] (6.5,-0.2) to[american current source, l={$I_{cp}$}] (6.5,-1.6) node[ground]{};
   \draw (c) -- (8,1.5) node[circ]{} node[right]{$V_c$, \(I_f \to Z(s)\)};
   \draw[dashed] (4.5,3) -- (5.8,3) |- (6.2,2.35); \draw[dashed] (4.5,0) -- (5.8,0) |- (6.2,0.65);
-\end{circuitfig}Two flip-flops: a reference edge sets \(UP\), a divided edge sets \(DN\), and
-when both are high both reset. \(UP\) is high for \(\frac{\theta_e}{2\pi} T_{ref}\) each
-cycle when \(\theta_e > 0\) (and \(DN\) for \(\theta_e < 0\)). The charge pump sources
-\(I_{cp}\) during \(UP\) and sinks \(I_{cp}\) during \(DN\).
-\textbf{Large Signal, Time Domain, AC Input Analysis (Q6)}, averaged over one
-period \(T_{ref}\):
+\end{circuitfig}
+
+\subsubsection{Transfer Function}
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, AC Input Analysis (Q6)}: \(UP\) is high for
+    \(\frac{\theta_e}{2\pi} T_{ref}\) each cycle when \(\theta_e > 0\) (\(DN\) for \(\theta_e < 0\)); averaged over \(T_{ref}\):
 \begin{align*}
   \overline{I_{cp}} &= \frac{1}{T_{ref}}\int_0^{T_{ref}} I_{cp}(t)\,dt = \frac{1}{T_{ref}}\cdot I_{cp}\frac{\theta_e}{2\pi}T_{ref} = I_{cp}\frac{\theta_e}{2\pi}, \hspace{1cm} -2\pi < \theta_e < 2\pi \\
-  K_{pd} &= \frac{d\overline{I_{cp}}}{d\theta_e} = \frac{I_{cp}}{2\pi} \ \text{[A/rad]}
 \end{align*}
-For a frequency difference \(\theta_e\) grows without bound and the PFD
-holds \(UP\) (or \(DN\)) most of the time: it detects frequency too, so the loop
-always acquires lock. The averaged (continuous time) model is valid for
-loop bandwidths below \(\approx \frac{f_{ref}}{10}\).
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}: linearised (averaged model,
+    valid for loop bandwidths below \(\approx \frac{f_{ref}}{10}\)):
+    \begin{align*}
+      K_{pd} &= \frac{d\overline{I_{cp}}}{d\theta_e} = \frac{I_{cp}}{2\pi} \ \text{[A/rad]} \hspace{1cm} I_f(s) = K_{pd}\,\theta_e(s) \tag{2}
+    \end{align*}
+\end{enumerate}
 
-\textbf{Mismatch}: if the sink is \(I_{cp}(1 + e)\), in lock the net charge per
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Gain}: \(K_{pd} = \frac{I_{cp}}{2\pi}\), linear over \(-2\pi < \theta_e < 2\pi\).
+  \item \textbf{Frequency Detection}: for a frequency difference \(\theta_e\) grows without bound and the
+    PFD holds \(UP\) (or \(DN\)) most of the time: it detects frequency too, so the loop always
+    acquires lock.
+  \item \textbf{Mismatch}: if the sink is \(I_{cp}(1 + e)\), in lock the net charge per
 cycle must be zero; with a minimum reset pulse \(t_{on}\) on both outputs,
 \(UP\) is high for \(t_{on} + \frac{\theta_e}{2\pi}T_{ref}\) and \(DN\) for \(t_{on}\):
 \begin{align*}
@@ -66,7 +109,27 @@ cycle must be zero; with a minimum reset pulse \(t_{on}\) on both outputs,
   \frac{\theta_e}{2\pi}T_{ref} &= e\, t_{on} \\
   \theta_e &= 2\pi e \frac{t_{on}}{T_{ref}}
 \end{align*}
-a static phase offset and a reference spur.
+    a static phase offset and a reference spur.
+  \item \textbf{Dead Zone}: without the reset pulse \(t_{on}\), for \(|\theta_e|\) so small that \(\frac{|\theta_e|}{2\pi}T_{ref}\) is shorter than the
+    time the switches need to turn on, no charge is delivered: \(K_{pd} = 0\) there and the loop wanders (jitter). The
+    pulse \(t_{on}\) on both outputs keeps both switches active and removes it.
+  \item \textbf{Advantages \& Limitations}: phase and frequency detection, \(4\pi\) linear range, zero
+    ripple in lock (ideally), current output (integrates on the loop filter); but \(I_{cp}\) mismatch and
+    the reset pulse give a static phase offset and spurs, and a dead zone without the \(t_{on}\) pulse.
+\end{enumerate}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+
+  % average pump current versus phase error (UP for theta > 0, DN for theta < 0)
+  Icp = 100e-6; th = linspace(-1.9*pi, 1.9*pi, 5);
+  printf('theta = %6.3f rad: Iavg = %7.3f uA\n', [th; Icp*th/(2*pi)*1e6]);
+  printf('Kpd = %.2f uA/rad\n', Icp/(2*pi)*1e6);
+  % static phase offset from sink mismatch
+  e = 0.05; ton = 100e-12; Tref = 100e-9;
+  printf('static phase offset = %.3g rad (%.3f deg)\n', 2*pi*e*ton/Tref, 360*e*ton/Tref);
+\end{lstlisting}
 
 \subsection{Question}
 An XOR detector on \(V_{dd} = 1.8\,V\), and a PFD with \(I_{cp} = 100\,\mu A\),

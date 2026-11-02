@@ -16,7 +16,7 @@ below.
   \draw (M1.S) node[ground]{};
   \draw (M1.D) -- (M2.S); \draw (0,1) node[circ]{} node[left]{$V_x$};
   \draw (M2.D) -- (0,3.3) node[circ]{} to[american current source, l_={$G_L$}] (0,5.1) node[vcc]{$V_{dd}$};
-  \draw (0,3.3) -- (1.8,3.3) node[circ]{} node[right]{$V_{out}$};
+  \draw (0,3.3) -- (1.8,3.3) node[circ]{} node[right]{$V_{out}$} to[capacitor, l={$C_L$}] (1.8,1.3) node[ground]{};
 \end{circuitfig}
 
 \subsubsection{Transfer Function}
@@ -59,23 +59,32 @@ below.
     \[
       A_V = \frac{V_{out}}{V_{in}} = -\frac{g_{m1}(g_{m2}' + g_{o2})}{(g_{m2}' + g_{o2} + g_{o1}) G_L + g_{o1} g_{o2}} \tag{5}
     \]
-\end{enumerate}
-
-\subsubsection{Analysis}
-\begin{enumerate}
-  \item \textbf{Output Impedance}: dividing numerator and denominator of
-    (5) by \((g_{m2}' + g_{o2} + g_{o1})\):
+    (5) with top and bottom divided by \((g_{m2}' + g_{o2} + g_{o1})\):
     \begin{align*}
-      A_V &= -\frac{\frac{g_{m1}(g_{m2}' + g_{o2})}{g_{m2}' + g_{o2} + g_{o1}}}{G_L + \frac{g_{o1} g_{o2}}{g_{m2}' + g_{o2} + g_{o1}}} = -\frac{G_m}{G_L + \frac{1}{Z_{dn}}} = -G_m (Z_{dn} \parallel R_L) \hspace{1cm} \left[R_L = \tfrac{1}{G_L}\right]
+      A_V &= -\frac{\frac{g_{m1}(g_{m2}' + g_{o2})}{g_{m2}' + g_{o2} + g_{o1}}}{G_L + \frac{g_{o1} g_{o2}}{g_{m2}' + g_{o2} + g_{o1}}} = -\frac{G_m}{G_L + \frac{1}{Z_{dn}}} = -G_m (Z_{dn} \parallel R_L) \hspace{1cm} \left[R_L = \tfrac{1}{G_L}\right] \tag{6}
     \end{align*}
     with
     \begin{align*}
       Z_{dn} &= \frac{g_{m2}' + g_{o2} + g_{o1}}{g_{o1} g_{o2}} = \frac{g_{m2}'}{g_{o1} g_{o2}} + \frac{1}{g_{o1}} + \frac{1}{g_{o2}} = r_{o1} + r_{o2} + g_{m2}' r_{o1} r_{o2} \approx g_{m2} r_{o2} r_{o1} \\
       G_m &= \frac{g_{m1}(g_{m2}' + g_{o2})}{g_{m2}' + g_{o2} + g_{o1}} \approx g_{m1} \hspace{1cm} [g_{o1} \ll g_{m2}']
     \end{align*}
-    \(Z_{dn}\) is the common gate result of Section~\ref{sec:amp_cg} with
-    \(R_S = r_{o1}\).
-  \item \textbf{Gain}: ideal current source load (\(G_L \to 0\)) in (5):
+    \(Z_{out} = Z_{dn} \parallel R_L\); \(Z_{dn}\) is the common gate result of Section~\ref{sec:amp_cg} with
+    \(R_S = r_{o1}\). With \(C_L\) at the output (\(G_L \to G_L + sC_L\) in (6)):
+    \begin{align*}
+      A_V(s) &= -\frac{G_m}{G_L + \frac{1}{Z_{dn}} + sC_L} \tag{7}
+    \end{align*}
+\end{enumerate}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Poles (\(D(s) = 0\))}: from (7),
+    \begin{align*}
+      G_L + \frac{1}{Z_{dn}} + s_p C_L &= 0 \hspace{1cm} \Rightarrow \hspace{1cm} s_p = -\frac{G_L + \frac{1}{Z_{dn}}}{C_L} \hspace{1cm} f_p = \frac{1}{2\pi (Z_{dn} \parallel R_L) C_L}
+    \end{align*}
+    the node \(V_x\) (\(\approx \frac{1}{g_{m2}'}\) to ground) gives a non-dominant pole
+    \(\approx \frac{g_{m2}'}{C_x}\).
+  \item \textbf{Zeroes (\(N(s) = 0\))}: \(N(s) = -G_m \neq 0\): no finite zero (\(C_{gd1}\) neglected).
+  \item \textbf{DC Gain (\(A_V(0)\))}: ideal current source load (\(G_L \to 0\)) in (5):
     \[
       A_{V0} = -\frac{g_{m1}(g_{m2}' + g_{o2})}{g_{o1} g_{o2}} \approx -\frac{g_{m1} g_{m2}}{g_{o1} g_{o2}} = -(g_{m1} r_{o1})(g_{m2} r_{o2}) \approx -(g_m r_o)^2
     \]
@@ -83,6 +92,8 @@ below.
     (\(G_L = g_{oL} \gg \frac{1}{Z_{dn}}\)):
     \(A_V = -\frac{G_m}{g_{oL} + \frac{1}{Z_{dn}}} \approx -\frac{g_{m1}}{g_{oL}} = -g_{m1} r_{oL}\),
     back to a single stage gain: the load must be cascoded too (telescopic cascode).
+  \item \textbf{Gain-Bandwidth Product (\(GBW\))}: from (7),
+    \(GBW = G_m (Z_{dn} \parallel R_L)\cdot\frac{1}{2\pi (Z_{dn} \parallel R_L) C_L} = \frac{G_m}{2\pi C_L} \approx \frac{g_{m1}}{2\pi C_L}\).
   \item \textbf{Miller Effect}: the gain from the gate to the drain of \(M_1\)
     follows from (4) and (5):
     \begin{align*}
@@ -98,6 +109,29 @@ below.
     \(C_L\) acts as a small \(R_L\) and \(\frac{V_x}{V_{in}}\) returns to
     \(\approx -\frac{g_{m1}}{g_{m2}'}\), so at the frequencies where \(C_{gd1}\)
     matters it is still multiplied by \(\approx 2\).
+  \item \textbf{Impedances}:
+    \paragraph{At Input:} \(I_G = 0\): \(Z_{in} \to \infty\) at DC, \(C_{gs1} + 2 C_{gd1}\) (Miller, above).
+    \paragraph{At Output:} \(Z_{out} = Z_{dn} \parallel R_L \approx g_{m2} r_{o2} r_{o1} \parallel R_L\).
+  \item \textbf{Output Swing (Max)}: from Q5, \(V_{ov1} + V_{ov2} \leq V_{OUT} \leq V_{dd} - |V_{ov,L}|\)
+    (\(|V_{ov,L}|\) of the load source).
+  \item \textbf{Cascode Device Noise}: a noise current \(I_n\) across \(M_2\) (drain to source), \(V_{in} = 0\), output shorted;
+    applying KCL at \(V_x\) (\(I_{d1} = g_{o1}V_x\) equals the \(M_2\) current):
+    \begin{align*}
+      g_{o1}V_x &= -(g_{m2}' + g_{o2})V_x + I_n \hspace{1cm} \Rightarrow \hspace{1cm} V_x = \frac{I_n}{g_{o1} + g_{m2}' + g_{o2}} \\
+      \frac{I_{out}}{I_n} &= \frac{g_{o1}}{g_{o1} + g_{m2}' + g_{o2}} \approx \frac{1}{g_{m2}' r_{o1}}
+    \end{align*}
+    the cascode device adds almost no noise: \(M_1\) (and the load) set it.
+  \item \textbf{Advantages \& Limitations}: gain \(\approx (g_m r_o)^2\) with a cascoded load,
+    \(Z_{out} \approx g_m r_o^2\), Miller effect on \(C_{gd1}\) removed, same \(GBW\) as a CS; but one
+    extra \(V_{ov}\) of headroom, an extra bias \(V_{B2}\), and the gain needs an equally high
+    impedance load.
+\end{enumerate}
+
+\subsubsection{Design}
+\begin{enumerate}
+  \item \(g_{m1} = 2\pi GBW\, C_L\), \(V_{ov1}\), \(V_{ov2}\) from the swing \(V_{OUT,\min} = V_{ov1} + V_{ov2}\).
+  \item \(V_{B2} = V_{th} + V_{ov1} + V_{ov2}\) (Q5).
+  \item Load impedance \(\geq Z_{dn}\) (cascoded load) to keep \(A_V \approx -G_m \frac{Z_{dn}}{2}\).
 \end{enumerate}
 
 \subsubsection{Question}
@@ -115,3 +149,28 @@ with an ideal current source load, and \(A_V\) with \(R_L = 100\,k\Omega\).
   A_V &= -G_m (Z_{dn} \parallel R_L) = -0.990\,mS \cdot \frac{10.2\,M \cdot 0.1\,M}{10.2\,M + 0.1\,M} = -0.990\,mS \cdot 99.0\,k\Omega = -98.1 \hspace{0.5cm} [\text{check}]
 \end{align*}
 The \(100\,k\Omega\) load throws away almost all of the \(10100\): \(A_V \approx -g_{m1} R_L\).
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms s vin vx vo gm1 gm2 go1 go2 GL CL In
+  % KCL at Vx and Vout (body effect folded into gm2)
+  id1 = gm1*vin + go1*vx; id2 = -gm2*vx + go2*(vo - vx);
+  [x, o] = solve(id1 == id2, vo*GL + id2 == 0, vx, vo);
+  Av = simplify(o/vin);
+  printf('=== Av, equation (5) ===\n'); pretty(Av)
+  % output impedance: Vin = 0, GL removed, It into the drain of M2
+  syms It
+  [x, o] = solve(go1*vx == -gm2*vx + go2*(vo - vx), It == -gm2*vx + go2*(vo - vx), vx, vo);
+  printf('=== Zdn ===\n'); pretty(expand(simplify(subs(o/It, [go1 go2], [1/sym('ro1') 1/sym('ro2')]))))
+  % cascode device noise reaching the output (output shorted)
+  x = solve(go1*vx == -gm2*vx - go2*vx + In, vx);
+  printf('=== Iout/In (M2 noise) ===\n'); pretty(simplify(go1*x/In))
+
+  % Question
+  g_m = 1e-3; g_o = 1e-5;
+  printf('Zdn = %.1f M, Av0 = %.0f, Av(100k) = %.1f\n', (1/g_o + 1/g_o + g_m/g_o^2)/1e6, ...
+         -g_m*(g_m + g_o)/g_o^2, -g_m*(g_m + g_o)/((g_m + 2*g_o)*1e-5 + g_o^2));
+\end{lstlisting}

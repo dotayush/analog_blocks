@@ -22,7 +22,14 @@ divider by \(N\). In lock \(f_{out} = N f_{ref}\) with zero static phase error.
 \end{circuitfig}
 
 \subsection{Transfer Function}
-\textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}, phase domain.
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)} (in lock): the PFD sees no phase
+    difference, so the net pump charge per cycle is zero and \(V_C\) is constant; the VCO runs at
+    \(f_{out} = f_0(V_C)\) and the divider output equals the reference:
+    \begin{align*}
+      \frac{f_{out}}{N} &= f_{ref} \hspace{1cm} \Rightarrow \hspace{1cm} f_{out} = N f_{ref}, \hspace{1cm} V_C = \frac{2\pi (N f_{ref} - f_0(0))}{K_v} \hspace{0.5cm} [\text{linear VCO}]
+    \end{align*}
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}, phase domain.
 The averaged pump current into the filter is \(I_f = K_{pd}\theta_e = \frac{I_{cp}}{2\pi}\theta_e\)
 (\(I_{cp}\) is the constant pump current).
 Loop filter (KCL at \(V_c\), conductances \(sC_2\) and \(\frac{1}{R + \frac{1}{sC_1}}\)):
@@ -48,7 +55,7 @@ and the closed loop, from \(\theta_e = \theta_{ref} - \theta_{div}\) and \(\thet
 \begin{align*}
   G(s) &= \frac{I_{cp}}{2\pi}\cdot\frac{1 + sRC_1}{sC_1}\cdot\frac{K_v}{sN} = \frac{I_{cp} K_v}{2\pi N C_1}\cdot\frac{1 + sRC_1}{s^2} = \frac{K(1 + sRC_1)}{s^2} \\
   \frac{\theta_{out}}{\theta_{ref}} &= \frac{N\frac{K(1 + sRC_1)}{s^2}}{1 + \frac{K(1 + sRC_1)}{s^2}} \cdot \frac{s^2}{s^2}
-  = \frac{NK(1 + sRC_1)}{s^2 + K + KRC_1 s} = N\frac{K(1 + sRC_1)}{s^2 + K RC_1 s + K}
+  = \frac{NK(1 + sRC_1)}{s^2 + K + KRC_1 s} = N\frac{K(1 + sRC_1)}{s^2 + K RC_1 s + K} \tag{1}
 \end{align*}
 Comparing \(s^2 + KRC_1 s + K\) with \(s^2 + 2D_R\omega_n s + \omega_n^2\)
 (Section~\ref{sec:theory_cs_second_order}):
@@ -57,10 +64,32 @@ Comparing \(s^2 + KRC_1 s + K\) with \(s^2 + 2D_R\omega_n s + \omega_n^2\)
   2D_R\omega_n &= KRC_1 = \omega_n^2 RC_1 \hspace{0.5cm} \Rightarrow \hspace{0.5cm}
   D_R = \frac{RC_1}{2}\omega_n = \frac{RC_1}{2}\sqrt{\frac{I_{cp} K_v}{2\pi N C_1}} = \frac{R}{2}\sqrt{\frac{I_{cp} K_v C_1}{2\pi N}}
 \end{align*}
+\end{enumerate}
 
 \subsection{Analysis}
 \begin{enumerate}
-  \item \textbf{Type II}: two integrators (\(C_1\) and the VCO) in the loop.
+  \item \textbf{Poles (\(D(s) = 0\))}: from (1), \(s^2 + 2D_R\omega_n s + \omega_n^2 = 0\):
+    \begin{align*}
+      s_p &= -D_R\omega_n \pm \omega_n\sqrt{D_R^2 - 1} \hspace{1cm} [\text{quadratic formula}]
+    \end{align*}
+    complex for \(D_R < 1\), real for \(D_R \geq 1\); \(C_2\) adds a third pole (below).
+  \item \textbf{Zeroes (\(N(s) = 0\))}: \(1 + s_z RC_1 = 0 \Rightarrow s_z = -\frac{1}{RC_1} = -\frac{\omega_n}{2D_R}\) (the stabilising zero of \(R\)).
+  \item \textbf{DC Gain (\(H(0)\))}: \(\frac{\theta_{out}}{\theta_{ref}}(0) = N\frac{K}{K} = N\): the output phase (and frequency) tracks
+    \(N\) times the reference.
+  \item \textbf{Loop Bandwidth (Unity Gain \(\omega_c\))}: substitute \(K = \omega_n^2\) and
+    \(RC_1 = \frac{2D_R}{\omega_n}\) into \(G(j\omega)\) and set \(|G(j\omega_c)| = 1\)
+    with \(x = \frac{\omega_c}{\omega_n}\):
+    \begin{align*}
+      G(j\omega) &= \frac{K(1 + j\omega RC_1)}{(j\omega)^2} = -\frac{K(1 + j\omega RC_1)}{\omega^2} \hspace{1cm} [j^2 = -1] \\
+      |G(j\omega)| &= \frac{K\sqrt{1 + (\omega RC_1)^2}}{\omega^2} = \frac{\omega_n^2\sqrt{1 + \left(\frac{2D_R\omega}{\omega_n}\right)^2}}{\omega^2} \\
+      1 &= \frac{\omega_n^2\sqrt{1 + 4D_R^2 \frac{x^2\omega_n^2}{\omega_n^2}}}{x^2\omega_n^2} = \frac{\sqrt{1 + 4D_R^2 x^2}}{x^2} \hspace{1cm} [\omega_c = x\omega_n] \\
+      x^4 &= 1 + 4D_R^2 x^2 \hspace{1cm} [\text{squaring}] \hspace{1cm} \Rightarrow \hspace{1cm} (x^2)^2 - 4D_R^2 (x^2) - 1 = 0 \\
+      x^2 &= \frac{4D_R^2 + \sqrt{(4D_R^2)^2 + 4}}{2} = \frac{4D_R^2 + \sqrt{16D_R^4 + 4}}{2} = 2D_R^2 + \sqrt{4D_R^4 + 1} \hspace{0.5cm} [\text{positive root}] \\
+      \omega_c &= \omega_n\sqrt{2D_R^2 + \sqrt{4D_R^4 + 1}} \hspace{0.5cm} \xrightarrow{D_R^4 \gg 1} \hspace{0.5cm} \omega_n\sqrt{2D_R^2 + 2D_R^2} = 2D_R\omega_n
+    \end{align*}
+    (\(D_R = 1\): \(\omega_c = 2.06\,\omega_n\), so \(\omega_c \approx 2D_R\omega_n\) already holds for
+    \(D_R \gtrsim 1\)); keep \(\omega_c < \frac{2\pi f_{ref}}{10}\).
+  \item \textbf{Static Phase Error (Type II)}: two integrators (\(C_1\) and the VCO) in the loop.
     Phase error for a reference frequency step \(\theta_{ref} = \frac{d\omega}{s^2}\):
     \begin{align*}
       \theta_e &= \theta_{ref} - \theta_{div} = \theta_{ref} - G\theta_e \hspace{0.5cm} \Rightarrow \hspace{0.5cm} \theta_e = \frac{\theta_{ref}}{1 + G} \\
@@ -74,20 +103,7 @@ Comparing \(s^2 + KRC_1 s + K\) with \(s^2 + 2D_R\omega_n s + \omega_n^2\)
       \theta_e(\infty) &= \lim_{s \to 0} s\,\frac{d\omega}{s^2}\cdot\frac{1}{1 + \frac{K_{pd} F(s) K_v}{sN}}
       = \lim_{s \to 0} \frac{d\omega}{s + \frac{K_{pd} F(s) K_v}{N}} = \frac{N\, d\omega}{K_{pd} K_v}
     \end{align*}
-  \item \textbf{Loop Bandwidth}: substitute \(K = \omega_n^2\) and
-    \(RC_1 = \frac{2D_R}{\omega_n}\) into \(G(j\omega)\) and set \(|G(j\omega_c)| = 1\)
-    with \(x = \frac{\omega_c}{\omega_n}\):
-    \begin{align*}
-      G(j\omega) &= \frac{K(1 + j\omega RC_1)}{(j\omega)^2} = -\frac{K(1 + j\omega RC_1)}{\omega^2} \hspace{1cm} [j^2 = -1] \\
-      |G(j\omega)| &= \frac{K\sqrt{1 + (\omega RC_1)^2}}{\omega^2} = \frac{\omega_n^2\sqrt{1 + \left(\frac{2D_R\omega}{\omega_n}\right)^2}}{\omega^2} \\
-      1 &= \frac{\omega_n^2\sqrt{1 + 4D_R^2 \frac{x^2\omega_n^2}{\omega_n^2}}}{x^2\omega_n^2} = \frac{\sqrt{1 + 4D_R^2 x^2}}{x^2} \hspace{1cm} [\omega_c = x\omega_n] \\
-      x^4 &= 1 + 4D_R^2 x^2 \hspace{1cm} [\text{squaring}, \times x^4] \hspace{1cm} \Rightarrow \hspace{1cm} (x^2)^2 - 4D_R^2 (x^2) - 1 = 0 \\
-      x^2 &= \frac{4D_R^2 + \sqrt{(4D_R^2)^2 + 4}}{2} = \frac{4D_R^2 + \sqrt{16D_R^4 + 4}}{2} = 2D_R^2 + \sqrt{4D_R^4 + 1} \hspace{0.5cm} [\text{positive root}] \\
-      \omega_c &= \omega_n\sqrt{2D_R^2 + \sqrt{4D_R^4 + 1}} \hspace{0.5cm} \xrightarrow{D_R^4 \gg 1} \hspace{0.5cm} \omega_n\sqrt{2D_R^2 + 2D_R^2} = 2D_R\omega_n
-    \end{align*}
-    (\(D_R = 1\): \(\omega_c = 2.06\,\omega_n\), so \(\omega_c \approx 2D_R\omega_n\) already holds for
-    \(D_R \gtrsim 1\)); keep \(\omega_c < \frac{2\pi f_{ref}}{10}\).
-  \item \textbf{\(C_2\)}: smooths the charge pump pulses (ripple on \(V_c\) gives
+  \item \textbf{Ripple Capacitor \(C_2\)}: smooths the charge pump pulses (ripple on \(V_c\) gives
     reference spurs). It adds a pole where \(1 + sR\frac{C_1C_2}{C_1 + C_2} = 0\), at
     \(|s| = \frac{C_1 + C_2}{RC_1 C_2}\); with \(C_2 = \frac{C_1}{10}\),
     \(|s| = \frac{1.1 C_1}{RC_1 \cdot 0.1 C_1} = \frac{11}{RC_1}\), eleven times the zero
@@ -102,6 +118,22 @@ Comparing \(s^2 + KRC_1 s + K\) with \(s^2 + 2D_R\omega_n s + \omega_n^2\)
       \hspace{0.5cm} \Rightarrow \hspace{0.5cm} \frac{\theta_{out}}{\theta_{vco}} = \frac{1}{1 + G}
     \end{align*}
     high pass (\(\to 0\) for \(|G| \gg 1\), \(\to 1\) for \(|G| \ll 1\)). The loop bandwidth trades them.
+  \item \textbf{Phase Margin with \(C_2\)}: \(G(s) = \frac{I_{cp}K_v}{2\pi N}\cdot\frac{1 + sRC_1}{s^2(C_1 + C_2)(1 + sRC_s)}\), \(C_s = \frac{C_1C_2}{C_1 + C_2}\); at \(s = j\omega\)
+    the two integrators give \(-180^\circ\), the zero adds \(\tan^{-1}\omega RC_1\), the pole subtracts \(\tan^{-1}\omega RC_s\):
+    \begin{align*}
+      PM &= 180^\circ + \angle G(j\omega_c) = \tan^{-1}(\omega_c RC_1) - \tan^{-1}(\omega_c RC_s)
+    \end{align*}
+    maximal at \(\omega_c = \frac{1}{R\sqrt{C_1C_s}}\) (where \(\frac{d}{d\omega}PM = 0\)); a larger \(\frac{C_1}{C_2}\) raises \(PM\) but filters ripple less.
+  \item \textbf{Advantages \& Limitations}: zero static phase error (type II), always acquires
+    lock (PFD), \(f_{out} = N f_{ref}\) set digitally; but the averaged model needs
+    \(\omega_c < \frac{2\pi f_{ref}}{10}\), reference noise is multiplied by \(N\), charge pump mismatch
+    gives spurs, and the bandwidth trades reference against VCO noise.
+\end{enumerate}
+
+\subsection{Design}
+\begin{enumerate}
+  \item \(\omega_c < \frac{2\pi f_{ref}}{10}\); \(D_R \approx 1\), \(\omega_n = \frac{\omega_c}{2.06}\).
+  \item \(C_1 = \frac{I_{cp} K_v}{2\pi N \omega_n^2}\), \(R = \frac{2 D_R}{\omega_n C_1}\), \(C_2 = \frac{C_1}{10}\).
 \end{enumerate}
 
 \subsection{Question}
@@ -120,3 +152,34 @@ Comparing \(s^2 + KRC_1 s + K\) with \(s^2 + 2D_R\omega_n s + \omega_n^2\)
   \frac{\omega_c}{\omega_n} &= \sqrt{2 D_R^2 + \sqrt{4 D_R^4 + 1}} = \sqrt{2 \cdot 1 + \sqrt{4 \cdot 1 + 1}} = \sqrt{2 + 2.236} = \sqrt{4.236} = 2.058 \\
   \frac{\omega_c}{2\pi} &= 2.058 \cdot 200\,kHz = 412\,kHz < \frac{f_{ref}}{10} = 1\,MHz
 \end{align*}
+With \(C_2\) the crossover moves (\(|G(j\omega_c)| = 1\) solved numerically):
+\begin{align*}
+  \frac{\omega_c}{2\pi} &= 359\,kHz \hspace{1cm} C_s = \frac{63.3 \cdot 6.33}{69.6}\,pF = 5.75\,pF \\
+  \omega_c RC_1 &= 2.253 \times 10^6 \cdot 25.1\,k \cdot 63.3\,p = 3.58 \hspace{1cm} \omega_c RC_s = 2.253 \times 10^6 \cdot 25.1\,k \cdot 5.75\,p = 0.325 \\
+  PM &= \tan^{-1}3.58 - \tan^{-1}0.325 = 74.4^\circ - 18.0^\circ = 56.4^\circ
+\end{align*}
+
+\subsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms s Icp Kv N R C1 C2 K positive
+  Z = (1 + s*R*C1)/(s*(C1 + C2)*(1 + s*R*C1*C2/(C1 + C2)));
+  G = Icp/(2*sym(pi))*Z*Kv/(s*N);
+  printf('=== loop gain G(s) ===\n'); pretty(simplify(G))
+  % second order (C2 = 0)
+  G2 = simplify(subs(G, C2, 0));
+  T = simplify(N*G2/(1 + G2));
+  printf('=== closed loop, C2 = 0 ===\n'); pretty(T)
+  printf('=== phase error for a frequency step dw/s^2 ===\n'); syms dw; pretty(limit(s*dw/s^2/(1 + G2), s, 0))
+
+  % Question: fref = 10 MHz, N = 100, Kv = 2 pi 100 MHz/V, Icp = 100 uA, fn = 200 kHz, DR = 1
+  icp = 100e-6; kv = 2*pi*1e8; n = 100; wn = 2*pi*2e5; DR = 1;
+  c1 = icp*kv/(2*pi*n*wn^2); r = 2*DR/(wn*c1); c2 = c1/10; cs = c1*c2/(c1 + c2);
+  printf('C1 = %.1f pF, R = %.1f k, C2 = %.2f pF\n', c1*1e12, r/1e3, c2*1e12);
+  Gf = @(w) icp/(2*pi)*(1 + 1j*w*r*c1)./(1j*w*(c1 + c2).*(1 + 1j*w*r*cs))*kv./(1j*w*n);
+  wc = fzero(@(w) abs(Gf(w)) - 1, [1e5 1e8]);
+  printf('crossover = %.0f kHz, PM = %.1f deg (second order estimate %.0f kHz)\n', ...
+         wc/(2*pi)/1e3, 180 + angle(Gf(wc))*180/pi, wn*sqrt(2*DR^2 + sqrt(4*DR^4 + 1))/(2*pi)/1e3);
+\end{lstlisting}

@@ -72,54 +72,16 @@ The DC path for the drain current goes through \(G_S\) and the source
       V_{out}(G_D + g_o) &= (g_m + g_{mb} + g_o)\left(V_{in} - \frac{G_D}{G_S} V_{out}\right) \\
       V_{out}(G_D + g_o) &= (g_m + g_{mb} + g_o) V_{in} - \frac{G_D (g_m + g_{mb} + g_o)}{G_S} V_{out} \\
       V_{out}\left(G_D + g_o + \frac{G_D (g_m + g_{mb} + g_o)}{G_S}\right) &= (g_m + g_{mb} + g_o) V_{in} \\
-      V_{out}\left(G_S (G_D + g_o) + G_D (g_m + g_{mb} + g_o)\right) &= G_S (g_m + g_{mb} + g_o) V_{in} \hspace{1cm} [\times G_S] \\
+      V_{out}\left(G_S (G_D + g_o) + G_D (g_m + g_{mb} + g_o)\right) &= G_S (g_m + g_{mb} + g_o) V_{in} \\
       H = \frac{V_{out}}{V_{in}} &= \frac{G_S (g_m + g_{mb} + g_o)}{G_S (G_D + g_o) + G_D (g_m + g_{mb} + g_o)} \tag{9}
     \end{align*}
 \end{enumerate}
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \textbf{Gain}: With an ideal source (\(G_S \to \infty\)), divide
-    numerator and denominator of (9) by \(G_S\):
-    \begin{align*}
-      A_{V0} &= \lim_{G_S \to \infty} \frac{g_m + g_{mb} + g_o}{G_D + g_o + \frac{G_D (g_m + g_{mb} + g_o)}{G_S}}
-              = \frac{g_m + g_{mb} + g_o}{G_D + g_o} \\
-      A_{V0} &\approx \frac{g_m + g_{mb}}{G_D} = (g_m + g_{mb}) R_D \hspace{1cm} [g_o \ll g_m,\ g_o \ll G_D]
-    \end{align*}
-    positive and equal in size to the CS gain (plus body effect).
-  \item \textbf{Current Gain}: With a current input \(I_{in}\) into the
-    source (\(G_S\) removed), KCL at \(V_s\) is \(I_{in} + I_d = 0\), so
-    \(I_d = -I_{in}\): the drain pulls \(-I_d = I_{in}\) out of the load,
-    \(\frac{I_{out}}{I_{in}} = 1\) (current buffer).
-  \item \textbf{Impedances}:
-    \paragraph{At Input:} \(G_S\) removed, test current \(I_{test}\) into the
-      source: \(I_{test} + I_d = 0\). With (5), \(I_{test} = V_{out} G_D\), and
-      with (8), \(V_{out} = \frac{g_m + g_{mb} + g_o}{G_D + g_o} V_s\):
-      \begin{align*}
-        I_{test} &= \frac{G_D (g_m + g_{mb} + g_o)}{G_D + g_o} V_s \\
-        Z_{in} &= \frac{V_s}{I_{test}} = \frac{G_D + g_o}{G_D (g_m + g_{mb} + g_o)}
-                = \frac{(G_D + g_o) R_D r_o}{G_D (g_m + g_{mb} + g_o) R_D r_o} \\
-        Z_{in} &= \frac{r_o + R_D}{(g_m + g_{mb}) r_o + g_o r_o} = \frac{r_o + R_D}{1 + (g_m + g_{mb}) r_o}
-      \end{align*}
-      \(Z_{in} \approx \frac{1}{g_m + g_{mb}}\) for \(R_D \ll r_o\), but rises to
-      \(\approx R_D/(g_m r_o)\) and beyond when the load is large.
-    \paragraph{At Output:} \(V_{in} = 0\), \(G_D\) removed, \(I_{test}\) into
-      the drain: \(I_d = I_{test}\), and (6) gives \(V_s = \frac{I_{test}}{G_S}\).
-      From (4):
-      \begin{align*}
-        I_{test} &= -(g_m + g_{mb} + g_o)\frac{I_{test}}{G_S} + g_o V_{out} \\
-        g_o V_{out} &= I_{test}\left(1 + \frac{g_m + g_{mb} + g_o}{G_S}\right) \\
-        Z'_{out} &= \frac{V_{out}}{I_{test}} = r_o\left(1 + (g_m + g_{mb} + g_o) R_S\right) \hspace{1cm} [\tfrac{1}{g_o} = r_o,\ \tfrac{1}{G_S} = R_S] \\
-        Z'_{out} &= r_o + (g_m + g_{mb}) r_o R_S + g_o r_o R_S \\
-        Z'_{out} &= r_o + R_S + (g_m + g_{mb}) r_o R_S \hspace{1cm} [g_o r_o = 1] \\
-        Z_{out} &= R_D \parallel Z'_{out}
-      \end{align*}
-      This is the cascode impedance boost: a resistance \(R_S\) below a
-      common gate device is multiplied by \(\approx g_m r_o\).
-  \item \textbf{Poles}: with \(C_L\) at the output (it includes \(C_{gd}\),
-    whose gate end is AC ground) and \(C_s = C_{gs} + C_{sb}\) at the
-    source, the two nodes are coupled only through \(g_o\). Neglecting
-    \(g_o\), (4) is \(I_d = -(g_m + g_{mb}) V_s\) and KCL at \(V_s\) and at \(V_{out}\) gives
+  \item \textbf{Poles (\(D(s) = 0\))}: \(C_L\) at the output (includes \(C_{gd}\), whose gate end is
+    AC ground) and \(C_s = C_{gs} + C_{sb}\) at the source; \(g_o\) neglected, so (4) is
+    \(I_d = -(g_m + g_{mb}) V_s\). Applying KCL at \(V_s\) and at \(V_{out}\):
     \begin{align*}
       (V_s - V_{in}) G_S + V_s sC_s &= -(g_m + g_{mb}) V_s
       \hspace{0.5cm} \Rightarrow \hspace{0.5cm}
@@ -127,13 +89,68 @@ The DC path for the drain current goes through \(G_S\) and the source
       V_{out}(G_D + sC_L) - (g_m + g_{mb}) V_s &= 0
       \hspace{0.5cm} \Rightarrow \hspace{0.5cm}
       V_{out} = \frac{g_m + g_{mb}}{G_D + sC_L} V_s \\
-      H(s) &= \frac{G_S (g_m + g_{mb})}{(G_S + g_m + g_{mb} + sC_s)(G_D + sC_L)}
+      H(s) &= \frac{G_S (g_m + g_{mb})}{(G_S + g_m + g_{mb} + sC_s)(G_D + sC_L)} \tag{10}
     \end{align*}
-    two real poles
-    \[
-      p_{out} = \frac{G_D}{C_L} \hspace{1cm} p_{in} = \frac{G_S + g_m + g_{mb}}{C_s}
-    \]
-    and no Miller multiplication (no capacitance from input to output).
+    \begin{align*}
+      s_{p,out} &= -\frac{G_D}{C_L} \hspace{1cm} s_{p,in} = -\frac{G_S + g_m + g_{mb}}{C_s}
+    \end{align*}
+    two real poles, no Miller multiplication (no capacitance from input to output).
+  \item \textbf{Zeroes (\(N(s) = 0\))}: \(N(s) = G_S (g_m + g_{mb}) \neq 0\): no finite zero.
+  \item \textbf{DC Gain (\(H(0)\))}: ideal source (\(G_S \to \infty\)), (9) with top and bottom
+    divided by \(G_S\):
+    \begin{align*}
+      A_{V0} &= \lim_{G_S \to \infty} \frac{g_m + g_{mb} + g_o}{G_D + g_o + \frac{G_D (g_m + g_{mb} + g_o)}{G_S}}
+              = \frac{g_m + g_{mb} + g_o}{G_D + g_o} \\
+      A_{V0} &\approx \frac{g_m + g_{mb}}{G_D} = (g_m + g_{mb}) R_D \hspace{1cm} [g_o \ll g_m,\ g_o \ll G_D]
+    \end{align*}
+    positive and equal in size to the CS gain (plus body effect).
+  \item \textbf{Gain-Bandwidth Product (\(GBW\))}: \(G_S \to \infty\) sends \(s_{p,in} \to -\infty\),
+    leaving \(p_{out} = \frac{G_D}{C_L}\):
+    \begin{align*}
+      GBW &= A_{V0} \cdot \frac{p_{out}}{2\pi} = \frac{g_m + g_{mb}}{G_D}\cdot\frac{G_D}{2\pi C_L} = \frac{g_m + g_{mb}}{2\pi C_L}
+    \end{align*}
+  \item \textbf{Current Gain}: current input \(I_{in}\) into the source (\(G_S\) removed), KCL
+    at \(V_s\): \(I_{in} + I_d = 0 \Rightarrow I_d = -I_{in}\); the drain pulls \(-I_d = I_{in}\) out of
+    the load, \(\frac{I_{out}}{I_{in}} = 1\) (current buffer).
+  \item \textbf{Impedances}:
+    \paragraph{At Input:} \(G_S\) removed, test current \(I_{test}\) into the source:
+    \(I_{test} + I_d = 0\); (5) gives \(I_{test} = V_{out} G_D\), (8) gives
+    \(V_{out} = \frac{g_m + g_{mb} + g_o}{G_D + g_o} V_s\):
+    \begin{align*}
+      I_{test} &= \frac{G_D (g_m + g_{mb} + g_o)}{G_D + g_o} V_s \\
+      Z_{in} &= \frac{V_s}{I_{test}} = \frac{G_D + g_o}{G_D (g_m + g_{mb} + g_o)}
+              = \frac{(G_D + g_o) R_D r_o}{G_D (g_m + g_{mb} + g_o) R_D r_o} \\
+      Z_{in} &= \frac{r_o + R_D}{(g_m + g_{mb}) r_o + g_o r_o} = \frac{r_o + R_D}{1 + (g_m + g_{mb}) r_o} \hspace{1cm} [g_o r_o = 1]
+    \end{align*}
+    \(Z_{in} \approx \frac{1}{g_m + g_{mb}}\) for \(R_D \ll r_o\), rising to \(\approx \frac{R_D}{g_m r_o}\) for large loads.
+    \paragraph{At Output:} \(V_{in} = 0\), \(G_D\) removed, \(I_{test}\) into the drain:
+    \(I_d = I_{test}\), (6) gives \(V_s = \frac{I_{test}}{G_S}\); into (4):
+    \begin{align*}
+      I_{test} &= -(g_m + g_{mb} + g_o)\frac{I_{test}}{G_S} + g_o V_{out} \\
+      g_o V_{out} &= I_{test}\left(1 + \frac{g_m + g_{mb} + g_o}{G_S}\right) \\
+      Z'_{out} &= \frac{V_{out}}{I_{test}} = r_o\left(1 + (g_m + g_{mb} + g_o) R_S\right) \hspace{1cm} [\tfrac{1}{g_o} = r_o,\ \tfrac{1}{G_S} = R_S] \\
+      Z'_{out} &= r_o + (g_m + g_{mb}) r_o R_S + g_o r_o R_S = r_o + R_S + (g_m + g_{mb}) r_o R_S \hspace{1cm} [g_o r_o = 1] \\
+      Z_{out} &= R_D \parallel Z'_{out}
+    \end{align*}
+    the cascode boost: \(R_S\) below a common gate device is multiplied by \(\approx g_m r_o\).
+  \item \textbf{Output Swing (Max)}: from Q5, \(V_B - V_{th} \leq V_{OUT} \leq V_{dd}\).
+  \item \textbf{Noise}: the channel noise \(4kT\frac{2}{3}g_m\) of \(M_1\), referred to the input as a voltage with the
+    source driven by \(V_{in}\) (\(G_S \to \infty\)): \(\overline{V_{n,in}^2} = \frac{4kT\frac{2}{3}g_m + 4kTG_D}{(g_m + g_{mb})^2}\); with a current
+    input (\(G_S \to 0\)) the channel noise circulates inside the device and only \(4kTG_D\) and the bias
+    source noise reach the output.
+  \item \textbf{Input Matching}: \(Z_{in} \approx \frac{1}{g_m + g_{mb}}\) [\(R_D \ll r_o\)] equal to a line impedance \(R_0\)
+    sets \(g_m + g_{mb} = \frac{1}{R_0}\); e.g.\ \(R_0 = 50\,\Omega\) needs \(g_m + g_{mb} = 20\,\)mS.
+  \item \textbf{Advantages \& Limitations}: non-inverting, low \(Z_{in}\) (current buffer),
+    high \(Z_{out}\), no Miller multiplication (wide bandwidth); but the low \(Z_{in}\) loads a
+    voltage source (gain falls with \(R_S\)), and the signal current flows through the
+    bias path.
+\end{enumerate}
+
+\subsubsection{Design}
+\begin{enumerate}
+  \item Choose \(I_D\), \(V_{ov}\): \(\frac{W}{L} = \frac{2 I_D}{K_P V_{ov}^2}\), \(g_m = \frac{2 I_D}{V_{ov}}\).
+  \item \(R_D = \frac{V_{dd} - V_{OUT}}{I_D}\) with \(V_{OUT} \geq V_B - V_{th}\).
+  \item \(V_B = V_S + V_{th} + V_{ov}\) for the source bias \(V_S\) set by the input.
 \end{enumerate}
 
 \subsubsection{Question}
@@ -150,3 +167,29 @@ The DC path for the drain current goes through \(G_S\) and the source
   Z'_{out} &= 100\,k + 1\,k + (1.2\,m)(100\,k)(1\,k) = 100\,k + 1\,k + 120\,k = 221\,k\Omega \\
   Z_{out} &= 8\,k \parallel 221\,k = \frac{8\,k \cdot 221\,k}{8\,k + 221\,k} = \frac{1768}{229}\,k\Omega = 7.72\,k\Omega
 \end{align*}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms Vin Vout Vs gm gmb go GD GS It
+
+  Id = -(gm + gmb + go)*Vs + go*Vout;                 % equation (4)
+  % gain: KCL at Vout (5) and Vs (6)
+  [vs, vout] = solve(Vout*GD + Id == 0, (Vs - Vin)*GS == Id, Vs, Vout);
+  printf('=== H, equation (9) ===\n'); pretty(simplify(vout/Vin))
+  % input impedance: GS removed, It into source
+  [vs, vout] = solve(It + Id == 0, Vout*GD + Id == 0, Vs, Vout);
+  printf('=== Zin ===\n'); pretty(simplify(subs(vs/It, [GD go], [1/sym('RD') 1/sym('ro')])))
+  % output impedance: GD removed, It into drain, Vin = 0
+  [vs, vout] = solve(It == Id, Vs*GS == Id, Vs, Vout);
+  printf('=== Zout prime ===\n'); pretty(simplify(subs(vout/It, [GS go], [1/sym('RS') 1/sym('ro')])))
+
+  % Question
+  g_m = 1e-3; g_mb = 0.2e-3; g_o = 10e-6; gD = 125e-6; gS = 1e-3;
+  A = gS*(g_m + g_mb + g_o)/(gS*(gD + g_o) + gD*(g_m + g_mb + g_o));
+  Zin = (gD + g_o)/(gD*(g_m + g_mb + g_o));
+  Zp = 1/g_o + 1/gS + (g_m + g_mb)/(g_o*gS);
+  printf('Av = %.2f, Zin = %.0f Ohm, Zout = %.2f k\n', A, Zin, 1/(gD + 1/Zp)/1e3);
+\end{lstlisting}

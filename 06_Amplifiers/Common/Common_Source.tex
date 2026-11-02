@@ -35,7 +35,7 @@ outside the symbol.
           V_{OUT} &= V_{dd} - \frac{k_n (V_{IN} - V_{th})^2 (1 + K_{CLM} V_{OUT})}{G_D} \quad [V_{DS} = V_{OUT}] \\
           V_{OUT} &= V_{dd} - \frac{k_n (V_{IN} - V_{th})^2}{G_D} - \frac{k_n K_{CLM} (V_{IN} - V_{th})^2}{G_D} V_{OUT} \\
           V_{OUT}\left(1 + \frac{k_n K_{CLM} (V_{IN} - V_{th})^2}{G_D}\right) &= V_{dd} - \frac{k_n (V_{IN} - V_{th})^2}{G_D} \\
-          V_{OUT}\left(G_D + k_n K_{CLM} (V_{IN} - V_{th})^2\right) &= V_{dd} G_D - k_n (V_{IN} - V_{th})^2 \quad [\times G_D] \\
+          V_{OUT}\left(G_D + k_n K_{CLM} (V_{IN} - V_{th})^2\right) &= V_{dd} G_D - k_n (V_{IN} - V_{th})^2 \\
           V_{OUT} &= \frac{V_{dd} G_D - k_n (V_{IN} - V_{th})^2}{G_D + k_n K_{CLM} (V_{IN} - V_{th})^2}
         \end{align*}
       \item Edge of saturation (\(K_{CLM} = 0\)), \(V_{OUT} = V_{IN} - V_{th} = V_{ov}\):
@@ -52,7 +52,7 @@ outside the symbol.
           V_{OUT} &= V_{dd} - \frac{2 k_n}{G_D}\left[ V_X V_{OUT} - \frac{V_{OUT}^2}{2} \right] \\
           V_{OUT} &= V_{dd} - \frac{2 k_n V_X}{G_D} V_{OUT} + \frac{k_n}{G_D} V_{OUT}^2 \\
           \frac{k_n}{G_D} V_{OUT}^2 - \left(1 + \frac{2 k_n V_X}{G_D}\right) V_{OUT} + V_{dd} &= 0 \\
-          k_n V_{OUT}^2 - \left(G_D + 2 k_n V_X\right) V_{OUT} + G_D V_{dd} &= 0 \hspace{1cm} [\times G_D] \\
+          k_n V_{OUT}^2 - \left(G_D + 2 k_n V_X\right) V_{OUT} + G_D V_{dd} &= 0 \\
           V_{OUT} &= \frac{G_D + 2 k_n V_X - \sqrt{(G_D + 2 k_n V_X)^2 - 4 k_n G_D V_{dd}}}{2 k_n}
         \end{align*}
         taking the smaller root (the larger one gives \(V_{OUT} > V_X\), outside triode).
@@ -98,54 +98,77 @@ outside the symbol.
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \textbf{DC Gain}: \(s = 0\) in (4),
-    \[
-      A_{V0} = H(0) = \frac{G_S (0 - g_m)}{(G_o + 0)(G_S + 0) - 0} = \frac{-g_m G_S}{G_o G_S} = -\frac{g_m}{G_D + g_o} = -g_m (R_D \parallel r_o)
-    \]
-    The largest possible gain (\(G_D \to 0\), current source load) is the
-    intrinsic gain \(-\frac{g_m}{g_o} = -\frac{2 I_D / V_{ov}}{K_{CLM} I_D} = -\frac{2}{K_{CLM} V_{ov}}\).
-  \item \textbf{Zeros}: \(N(s) = G_S(sC_{gd} - g_m) = 0\):
-    \[
-      s_z = +\frac{g_m}{C_{gd}} \hspace{1cm} \text{[right half plane: the input feeds forward through } C_{gd}\text{]}
-    \]
-  \item \textbf{Poles}: Writing \(D(s) = a_0 + a_1 s + a_2 s^2\) and assuming
-    widely spaced real poles (Section~\ref{sec:theory_cs_second_order},
-    \(p_1 p_2 = \frac{a_0}{a_2}\), \(p_1 + p_2 = \frac{a_1}{a_2}\), \(p_2 \gg p_1\)):
+  \item \textbf{Poles (\(D(s) = 0\))}: \(D(s) = a_0 + a_1 s + a_2 s^2\) from (4), widely spaced
+    real poles (Section~\ref{sec:theory_cs_second_order}, \(p_1 p_2 = \frac{a_0}{a_2}\),
+    \(p_1 + p_2 = \frac{a_1}{a_2}\), \(p_2 \gg p_1\)):
     \begin{align*}
       p_1 &\approx \frac{a_0}{a_1} = \frac{G_o G_S}{G_o (C_{gs} + C_{gd}) + G_S (C_L + C_{gd}) + g_m C_{gd}} \\
-      p_1 &\approx \frac{1}{\frac{C_{gs} + C_{gd}}{G_S} + \frac{C_L + C_{gd}}{G_o} + \frac{g_m C_{gd}}{G_o G_S}}
-          = \frac{1}{R_S (C_{gs} + C_{gd}) + R_o (C_L + C_{gd}) + g_m R_o R_S C_{gd}} \\
-      p_1 &\approx \frac{1}{R_S\left[C_{gs} + C_{gd}\left(1 + g_m R_o\right)\right] + R_o (C_L + C_{gd})} \hspace{1cm} \left[\text{divide by } G_o G_S,\ R_o = \tfrac{1}{G_o}\right] \\
+      p_1 &\approx \frac{1}{R_S (C_{gs} + C_{gd}) + R_o (C_L + C_{gd}) + g_m R_o R_S C_{gd}} \hspace{1cm} \left[R_o = \tfrac{1}{G_o}\right] \\
+      p_1 &\approx \frac{1}{R_S\left[C_{gs} + C_{gd}\left(1 + g_m R_o\right)\right] + R_o (C_L + C_{gd})} \\
       p_2 &\approx \frac{a_1}{a_2} = \frac{G_o (C_{gs} + C_{gd}) + G_S (C_L + C_{gd}) + g_m C_{gd}}{C_L C_{gs} + C_L C_{gd} + C_{gs} C_{gd}}
     \end{align*}
-    The term \(C_{gd}(1 + g_m R_o) = C_{gd}(1 + |A_{V0}|)\) is the Miller
-    multiplication of \(C_{gd}\) seen at the gate.
-  \item \textbf{Ideal Source} (\(G_S \to \infty\)): divide numerator and denominator of (4) by \(G_S\):
+    \(C_{gd}(1 + g_m R_o) = C_{gd}(1 + |A_{V0}|)\) is the Miller multiplication of \(C_{gd}\) seen at
+    the gate.\\
+    Ideal source (\(G_S \to \infty\)): (4) with top and bottom divided by \(G_S\),
     \begin{align*}
       H(s) &= \frac{sC_{gd} - g_m}{(G_o + s(C_L + C_{gd}))\left(1 + \frac{s(C_{gs} + C_{gd})}{G_S}\right) - \frac{sC_{gd}(sC_{gd} - g_m)}{G_S}}
-      \xrightarrow{G_S \to \infty} \frac{sC_{gd} - g_m}{G_o + s(C_L + C_{gd})}
+      \xrightarrow{G_S \to \infty} \frac{sC_{gd} - g_m}{G_o + s(C_L + C_{gd})} \tag{5} \\
+      G_o + s_p(C_L + C_{gd}) &= 0 \hspace{1cm} \Rightarrow \hspace{1cm} s_p = -\frac{G_D + g_o}{C_L + C_{gd}} = -p_1 \hspace{1cm} f_{p1} = \frac{G_D + g_o}{2\pi(C_L + C_{gd})}
     \end{align*}
-    The pole is the root of \(G_o + s(C_L + C_{gd}) = 0\), \(s = -p_1\):
+  \item \textbf{Zeroes (\(N(s) = 0\))}: \(G_S(s_z C_{gd} - g_m) = 0\):
     \begin{align*}
-      H(s) &= \frac{sC_{gd} - g_m}{G_o + s(C_L + C_{gd})} \hspace{1cm}
-      p_1 = \frac{G_D + g_o}{C_L + C_{gd}} \\
-      GB &= \frac{|A_{V0}| p_1}{2\pi} = \frac{1}{2\pi} \cdot \frac{g_m}{G_D + g_o} \cdot \frac{G_D + g_o}{C_L + C_{gd}} = \frac{g_m}{2\pi (C_L + C_{gd})}
+      s_z &= +\frac{g_m}{C_{gd}} \hspace{1cm} f_z = \frac{g_m}{2\pi C_{gd}} \hspace{1cm} [\text{right half plane: the input feeds forward through } C_{gd}]
     \end{align*}
+  \item \textbf{DC Gain (\(H(0)\))}: \(s = 0\) in (4),
+    \begin{align*}
+      A_{V0} = H(0) &= \frac{G_S (0 - g_m)}{(G_o + 0)(G_S + 0) - 0} = \frac{-g_m G_S}{G_o G_S} = -\frac{g_m}{G_D + g_o} = -g_m (R_D \parallel r_o)
+    \end{align*}
+    Largest (\(G_D \to 0\), current source load): the intrinsic gain
+    \begin{align*}
+      -\frac{g_m}{g_o} &= -\frac{\frac{2 I_D}{V_{ov}}}{K_{CLM} I_D} = -\frac{2}{K_{CLM} V_{ov}} \hspace{1cm} \left[g_m = \tfrac{2 I_D}{V_{ov}},\ g_o = K_{CLM} I_D\right]
+    \end{align*}
+  \item \textbf{Gain-Bandwidth Product (\(GBW\))}: ideal source, from (5),
+    \begin{align*}
+      GBW &= |A_{V0}| f_{p1} = \frac{g_m}{G_D + g_o} \cdot \frac{G_D + g_o}{2\pi(C_L + C_{gd})} = \frac{g_m}{2\pi (C_L + C_{gd})}
+    \end{align*}
+    independent of the load conductance.
   \item \textbf{Impedances}:
-    \paragraph{At Input:} \(I_G = 0\) at DC, so only capacitances load the gate.
-      With \(V_{out} = A_{V} V_g\) at the other end of \(C_{gd}\), the current
-      drawn from the gate node is
-      \begin{align*}
-        I_{in} &= V_g sC_{gs} + (V_g - A_V V_g) sC_{gd} = V_g s\left[C_{gs} + C_{gd}(1 - A_V)\right] \\
-        Z_{in} &= \frac{V_g}{I_{in}} = \frac{1}{s\left[C_{gs} + C_{gd}(1 - A_V)\right]} \approx \frac{1}{s\left[C_{gs} + C_{gd}(1 + g_m R_o)\right]} \hspace{1cm} [A_V \approx A_{V0} = -g_m R_o]
-      \end{align*}
-    \paragraph{At Output:} \(V_{in} = 0\) and (low frequency) \(V_g = 0\), so
-      \(g_m V_g = 0\). A test voltage \(V_{test}\) at the output draws
-      \begin{align*}
-        I_{test} &= V_{test} G_D + V_{test} g_o + g_m \cdot 0 = V_{test}(G_D + g_o) \\
-        Z_{out} &= \frac{V_{test}}{I_{test}} = \frac{1}{G_D + g_o} = R_D \parallel r_o
-      \end{align*}
-  \item \textbf{Swing}: \(V_{ov} \leq V_{out} \leq V_{dd}\) (saturation to cutoff).
+    \paragraph{At Input:} \(I_G = 0\) at DC, so only capacitances load the gate. With
+    \(V_{out} = A_V V_g\) at the other end of \(C_{gd}\):
+    \begin{align*}
+      I_{in} &= V_g sC_{gs} + (V_g - A_V V_g) sC_{gd} = V_g s\left[C_{gs} + C_{gd}(1 - A_V)\right] \\
+      Z_{in} &= \frac{V_g}{I_{in}} = \frac{1}{s\left[C_{gs} + C_{gd}(1 - A_V)\right]} \approx \frac{1}{s\left[C_{gs} + C_{gd}(1 + g_m R_o)\right]} \hspace{1cm} [A_V \approx A_{V0} = -g_m R_o]
+    \end{align*}
+    \paragraph{At Output:} \(V_{in} = 0\) and (low frequency) \(V_g = 0\), so \(g_m V_g = 0\). Test
+    voltage \(V_{test}\) at the output:
+    \begin{align*}
+      I_{test} &= V_{test} G_D + V_{test} g_o + g_m \cdot 0 = V_{test}(G_D + g_o) \hspace{1cm} \Rightarrow \hspace{1cm}
+      Z_{out} = \frac{1}{G_D + g_o} = R_D \parallel r_o
+    \end{align*}
+  \item \textbf{Output Swing (Max)}: saturation needs \(V_{OUT} \geq V_{IN} - V_{th} = V_{ov}\);
+    cutoff gives \(V_{OUT} = V_{dd}\): \(V_{ov} \leq V_{OUT} \leq V_{dd}\).
+  \item \textbf{Distortion (Large Signal, Time Domain, AC Input Analysis (Q6))}: \(V_{GS} = V_{GS(Q)} + V_p\sin\omega t\)
+    in the square law (\(K_{CLM} = 0\)):
+    \begin{align*}
+      I_D &= k_n (V_{ov} + V_p\sin\omega t)^2 = k_n\left(V_{ov}^2 + 2V_{ov}V_p\sin\omega t + V_p^2\sin^2\omega t\right) \\
+      I_D &= k_n\left(V_{ov}^2 + \frac{V_p^2}{2}\right) + 2k_n V_{ov}V_p\sin\omega t - \frac{k_n V_p^2}{2}\cos 2\omega t \hspace{1cm} [\sin^2 x = \tfrac{1 - \cos 2x}{2}] \\
+      HD_2 &= \frac{\frac{k_n V_p^2}{2}}{2k_n V_{ov}V_p} = \frac{V_p}{4V_{ov}}
+    \end{align*}
+    e.g.\ \(HD_2 < 1\%\) needs \(V_p < 0.04\,V_{ov}\) (\(8\,\)mV at \(V_{ov} = 0.2\,\)V). No third harmonic: the square law is
+    exactly second order.
+  \item \textbf{Noise}: drain current noise \(4kT\frac{2}{3}g_m\) (channel) and \(4kTG_D\) (load), referred to the
+    gate by dividing by \(g_m^2\):
+    \begin{align*}
+      \overline{V_{n,in}^2} &= 4kT\left(\frac{2}{3g_m} + \frac{G_D}{g_m^2}\right) \ \text{[V}^2\text{/Hz]}
+    \end{align*}
+    plus flicker \(\frac{K_f}{C_{ox}WLf}\) (Section~\ref{sec:devices_mosfet}). A larger \(g_m\) lowers both terms.
+  \item \textbf{Supply Rejection}: \(V_{dd}\) couples to \(V_{out}\) through the divider \(G_D\) against \(g_o\)
+    (\(V_g\) held): \(\frac{V_{out}}{V_{dd}} = \frac{G_D}{G_D + g_o} \approx 1\), so \(PSRR = \frac{|A_{V0}|}{G_D/(G_D + g_o)} = \frac{g_m}{G_D}\):
+    resistively loaded stages pass supply noise almost unattenuated.
+  \item \textbf{Advantages \& Limitations}: the highest gain per transistor
+    (\(\frac{g_m}{G_D + g_o}\)), \(Z_{in} \to \infty\) at DC; but inverting, \(Z_{out} = R_D \parallel r_o\)
+    is high (needs a buffer for low impedance loads), Miller multiplied \(C_{gd}\) limits the
+    bandwidth with a resistive source, and the right half plane zero degrades phase.
 \end{enumerate}
 
 \subsubsection{Design}
@@ -159,7 +182,7 @@ outside the symbol.
     \begin{align*}
       A_{V0} = -\frac{g_m}{G_D + g_o} &= -\frac{2 I_D}{V_{ov}} \cdot \frac{1}{\frac{I_D}{V_{dd} - V_{OUT}} + K_{CLM} I_D}
               = -\frac{2}{V_{ov}} \cdot \frac{1}{\frac{1}{V_{dd} - V_{OUT}} + K_{CLM}} \\
-             &= -\frac{2 (V_{dd} - V_{OUT})}{V_{ov}\left(1 + K_{CLM}(V_{dd} - V_{OUT})\right)} \hspace{1cm} [\times \tfrac{V_{dd} - V_{OUT}}{V_{dd} - V_{OUT}}]
+             &= -\frac{2 (V_{dd} - V_{OUT})}{V_{ov}\left(1 + K_{CLM}(V_{dd} - V_{OUT})\right)}
     \end{align*}
 \end{enumerate}
 
@@ -180,3 +203,34 @@ outside the symbol.
   f_{p1} &= \frac{p_1}{2\pi} = \frac{135\,\mu S}{2\pi \cdot 1\,pF} = 21.5\,MHz \hspace{1cm}
   GB = \frac{1\,mS}{2\pi \cdot 1\,pF} = 159\,MHz
 \end{align*}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms s Vin Vout Vg gm go GD GS Cgs Cgd CL
+
+  % Q4: KCL at Vg (2) and Vout (3)
+  [vg, vout] = solve((Vg - Vin)*GS + Vg*s*Cgs + (Vg - Vout)*s*Cgd == 0, ...
+                     Vout*(GD + go) + gm*Vg + Vout*s*CL + (Vout - Vg)*s*Cgd == 0, Vg, Vout);
+  H = simplify(vout/Vin);
+  printf('=== H(s), equation (4) ===\n'); pretty(H)
+  [n, d] = numden(H);
+  printf('=== zero ===\n'); pretty(solve(n == 0, s))
+  printf('=== DC gain ===\n'); pretty(simplify(subs(H, s, 0)))
+  printf('=== ideal source (GS -> oo), equation (5) ===\n'); pretty(simplify(limit(H, GS, inf)))
+
+  % Q5: saturation with CLM, equation for VOUT
+  syms VOUT VIN Vth kn K Vdd
+  printf('=== VOUT in saturation ===\n');
+  pretty(solve(VOUT == Vdd - kn*(VIN - Vth)^2*(1 + K*VOUT)/GD, VOUT))
+
+  % Question
+  Kp = 200e-6; ID = 100e-6; Vov = 0.2; Kclm = 0.1; VOUTq = 1; vdd = 1.8; cl = 1e-12;
+  WL = 2*ID/(Kp*Vov^2); RD = (vdd - VOUTq)/ID; g_m = 2*ID/Vov; g_o = Kclm*ID;
+  Av = -g_m/(1/RD + g_o);
+  printf('W/L = %.0f, RD = %.0f k, Av0 = %.2f, f_p1 = %.1f MHz, GB = %.0f MHz\n', ...
+         WL, RD/1e3, Av, (1/RD + g_o)/(2*pi*cl)/1e6, g_m/(2*pi*cl)/1e6);
+  printf('HD2 at Vp = 8 mV: %.1f %%\n', 100*8e-3/(4*Vov));
+\end{lstlisting}

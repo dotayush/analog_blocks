@@ -1,8 +1,9 @@
 \subsection{Summing Amplifier}\label{sec:amp_summing}
 
 \subsubsection{Overview}
-An inverting amplifier with \(N\) inputs \(V_k\) through \(G_k\) into the
-virtual ground; the output is a weighted sum.
+An inverting amplifier (Section~\ref{sec:amp_inverting}) with \(N\) inputs \(V_k\)
+through \(G_k\) into \(V_-\) and feedback \(G_F\). Op-amp model:
+\(V_{out} = A(V_+ - V_-)\), \(A = A_0\) in Q5, \(A = A(s) = \frac{A_0 p_1}{s + p_1}\) in Q4.
 
 \subsubsection{Schematic}
 \begin{circuitfig}
@@ -16,46 +17,101 @@ virtual ground; the output is a weighted sum.
 \end{circuitfig}
 
 \subsubsection{Transfer Function}
-\textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}, \(A = A(s)\)
-(\(A = A_0\) gives the Large Signal, Time Domain, DC Input Analysis (Q5)):
-\(V_+ = 0\), so \(V_{out} = -A V_- \Rightarrow V_- = -\frac{V_{out}}{A}\). Applying KCL
-at \(V_-\) (no current into the op-amp):
-\begin{align*}
-  \sum_{k=1}^{N} (V_- - V_k) G_k + (V_- - V_{out}) G_F &= 0 \\
-  V_- \sum_{k} G_k - \sum_{k} G_k V_k + V_- G_F - V_{out} G_F &= 0 \\
-  V_- \left(\sum_{k} G_k + G_F\right) - V_{out} G_F &= \sum_{k} G_k V_k \\
-  -\frac{V_{out}}{A} \left(\sum_{k} G_k + G_F\right) - V_{out} G_F &= \sum_{k} G_k V_k \hspace{1cm} \text{(Substituting \(V_- = -\frac{V_{out}}{A}\))} \\
-  -V_{out}\left(G_F + \frac{\sum_{k} G_k + G_F}{A}\right) &= \sum_{k} G_k V_k \\
-  V_{out} &= -\frac{\sum_{k} G_k V_k}{G_F + \frac{\sum_k G_k + G_F}{A}}
-\end{align*}
-With \(F = \frac{G_F}{G_F + \sum_k G_k}\) (below), \(\frac{\sum_k G_k + G_F}{A} = \frac{G_F}{AF}\):
-\begin{align*}
-  V_{out} &= -\frac{\sum_{k} G_k V_k}{G_F\left(1 + \frac{1}{AF}\right)} = -\sum_{k} \frac{G_k}{G_F} V_k \cdot \frac{AF}{1 + AF} \hspace{1cm} [\times \tfrac{AF}{AF}] \\
-  V_{out} &\xrightarrow{A \to \infty} -\sum_{k=1}^{N} \frac{G_k}{G_F} V_k = -\sum_{k=1}^{N} \frac{R_F}{R_k} V_k
-\end{align*}
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}: \(A = A_0\), \(V_+ = 0\),
+    no current into the op-amp inputs.
+    \begin{align*}
+      V_{OUT} &= A_0(0 - V_-) \hspace{1cm} \Rightarrow \hspace{1cm} V_- = -\frac{V_{OUT}}{A_0} \tag{1}
+    \end{align*}
+    Applying KCL at \(V_-\) (\(G_T = \sum_{k=1}^{N} G_k\)):
+    \begin{align*}
+      \sum_{k=1}^{N} (V_- - V_k) G_k + (V_- - V_{OUT}) G_F &= 0 \\
+      V_-(G_T + G_F) - V_{OUT} G_F &= \sum_{k} G_k V_k \\
+      -\frac{V_{OUT}}{A_0}(G_T + G_F) - V_{OUT} G_F &= \sum_{k} G_k V_k \hspace{1cm} [\text{from (1)}] \\
+      V_{OUT} &= -\frac{\sum_{k} G_k V_k}{G_F + \frac{G_T + G_F}{A_0}} \\
+      V_{OUT} &= -\frac{\sum_{k} G_k V_k}{G_T + G_F}\cdot\frac{A_0}{1 + A_0\frac{G_F}{G_T + G_F}} \\
+      V_{OUT} &= -\sum_{k} \frac{G_k}{G_T + G_F}\cdot\frac{A_0}{1 + A_0 F}\, V_k \hspace{1cm} \left[F = \tfrac{G_F}{G_T + G_F}\right] \tag{2}
+    \end{align*}
+    valid while \(V_{OL} \leq V_{OUT} \leq V_{OH}\).
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}: (2) with
+    \(A_0 \to A(s)\), per input \(k\) (others \(= 0\)):
+    \begin{align*}
+      H_k(s) = \frac{V_{out}}{V_k} &= -\frac{G_k}{G_T + G_F}\cdot\frac{\frac{A_0 p_1}{s + p_1}}{1 + \frac{A_0 p_1 F}{s + p_1}} \hspace{1cm} \left[A(s) = \tfrac{A_0 p_1}{s + p_1}\right] \\
+      H_k(s) &= -\frac{G_k}{G_T + G_F}\cdot\frac{A_0 p_1}{s + p_1(1 + A_0 F)} \tag{3}
+    \end{align*}
+    \(V_{out} = \sum_k H_k(s) V_k\) (superposition).
+\end{enumerate}
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \textbf{Feedback Factor}: with every \(V_k = 0\), KCL at \(V_-\) is
+  \item \textbf{Poles (\(D(s) = 0\))}: common to every \(H_k\),
     \begin{align*}
-      V_- \sum_k G_k + (V_- - V_{out}) G_F &= 0 \\
-      V_- &= \frac{G_F}{G_F + \sum_k G_k} V_{out} = F V_{out}
+      s_p &= -p_1(1 + A_0 F) \hspace{1cm} f_p \approx F \cdot GB \hspace{1cm} [A_0 F \gg 1]
     \end{align*}
-    Every added input increases \(\sum_k G_k\), lowering \(F\) and therefore the
-    bandwidth \(F \cdot GB\) (same steps as Section~\ref{sec:amp_inverting}).
-  \item \textbf{Impedances}: \(V_- \to 0\), so input \(k\) sees
-    \(Z_{in,k} = \frac{V_k}{(V_k - 0) G_k} = R_k\); the current \((V_k - 0) G_k\) does
-    not depend on any other input (virtual ground), so inputs do not interact.
-  \item Binary weights \(R_k = 2^{k-1} R\) give \(\frac{R_F}{R_k} = \frac{R_F}{R}2^{-(k-1)}\),
+  \item \textbf{Zeroes (\(N(s) = 0\))}: \(N_k(s) = -\frac{G_k}{G_T + G_F} A_0 p_1 \neq 0\): no finite zero.
+  \item \textbf{DC Gain (\(H_k(0)\))}: \(s = 0\) in (3),
+    \begin{align*}
+      H_k(0) &= -\frac{G_k}{G_T + G_F}\cdot\frac{A_0}{1 + A_0 F} = -\frac{G_k}{G_F}\cdot\frac{A_0 F}{1 + A_0 F} \hspace{1cm} \left[\tfrac{1}{G_T + G_F} = \tfrac{F}{G_F}\right] \\
+      H_k(0) &\xrightarrow{A_0 \to \infty} -\frac{G_k}{G_F} = -\frac{R_F}{R_k}
+      \hspace{1cm} \Rightarrow \hspace{1cm} V_{OUT} = -\sum_{k=1}^{N} \frac{R_F}{R_k} V_k
+    \end{align*}
+  \item \textbf{Gain-Bandwidth Product (\(GBW\))}:
+    \begin{align*}
+      GBW_k &= |H_k(0)| \cdot f_p = \frac{G_k}{G_T + G_F}\cdot\frac{A_0}{1 + A_0 F}\cdot\frac{p_1(1 + A_0 F)}{2\pi} = \frac{G_k}{G_T + G_F}\, GB
+    \end{align*}
+  \item \textbf{Feedback Factor (\(F\))}: every \(V_k = 0\), KCL at \(V_-\):
+    \begin{align*}
+      V_- G_T + (V_- - V_{out}) G_F &= 0 \hspace{1cm} \Rightarrow \hspace{1cm} F = \frac{V_-}{V_{out}} = \frac{G_F}{G_F + G_T}
+    \end{align*}
+    every added input raises \(G_T\), lowering \(F\) and the bandwidth \(F \cdot GB\).
+  \item \textbf{Impedances}:
+    \paragraph{At Input:} \(V_- = -\frac{V_{out}}{A} \to 0\), so
+    \(I_k = (V_k - 0) G_k\) and \(Z_{in,k} = \frac{V_k}{I_k} = R_k\); \(I_k\) does not depend on
+    any other input, so the inputs do not interact.
+    \paragraph{At Output:} as Section~\ref{sec:amp_inverting}, \(Z_{out} = \frac{R_o}{1 + AF}\).
+  \item \textbf{Output Swing (Max)}: \(V_{OL} \leq -\sum_k \frac{R_F}{R_k} V_k \leq V_{OH}\).
+  \item \textbf{Binary Weights}: \(R_k = 2^{k-1} R\) gives \(\frac{R_F}{R_k} = \frac{R_F}{R}2^{-(k-1)}\),
     halving weights: a binary weighted DAC (Chapter~\ref{ch:data_converters}).
+  \item \textbf{Offset and Noise Gain}: \(V_{OS}\) in series with \(V_+\) sees the noise gain
+    \(\frac{1}{F} = 1 + \frac{G_T}{G_F} = 1 + \sum_k \frac{R_F}{R_k}\): \(V_{OUT,error} = V_{OS}\left(1 + \sum_k \frac{R_F}{R_k}\right)\), larger than
+    any single signal weight; bias currents cancel with \(R_p = R_F \parallel R_1 \parallel \cdots \parallel R_N\)
+    (Section~\ref{sec:amp_inverting}).
+  \item \textbf{Advantages \& Limitations}: independent, non-interacting weights
+    (virtual ground); but inverted output, each input loads its source with \(R_k\), and
+    \(F\) (bandwidth) falls as inputs are added.
+\end{enumerate}
+
+\subsubsection{Design}
+\begin{enumerate}
+  \item Choose \(R_F\), then \(R_k = \frac{R_F}{|w_k|}\) for each weight \(w_k\).
+  \item Check \(f_p = \frac{G_F}{G_F + G_T} GB\) and the output swing at the worst case inputs.
 \end{enumerate}
 
 \subsubsection{Question}
 \(R_1 = R_2 = R_F = 10\,k\Omega\), \(V_1 = 0.5\,V\), \(V_2 = -0.2\,V\),
-\(GB = 1\,\)MHz. Find \(V_{out}\) (ideal) and the bandwidth.
+\(GB = 1\,\)MHz. Find \(V_{OUT}\) (\(A_0 \to \infty\)) and the bandwidth.
 \paragraph{Solution:}
 \begin{align*}
-  V_{out} &= -\left(\frac{10\,k}{10\,k} \cdot 0.5\,V + \frac{10\,k}{10\,k} \cdot (-0.2\,V)\right) = -(0.5 - 0.2)\,V = -0.3\,V \\
+  V_{OUT} &= -\left(\frac{10\,k}{10\,k} \cdot 0.5\,V + \frac{10\,k}{10\,k} \cdot (-0.2\,V)\right) = -(0.5 - 0.2)\,V = -0.3\,V \\
   F &= \frac{G_F}{G_F + G_1 + G_2} = \frac{\frac{1}{10\,k}}{\frac{3}{10\,k}} = \frac{1}{3} \hspace{1cm}
-  f_{-3dB} = F \cdot GB = \frac{1\,MHz}{3} = 333\,kHz
+  f_p = F \cdot GB = \frac{1\,MHz}{3} = 333\,kHz
 \end{align*}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms s V1 V2 Vout Vm G1 G2 GF A0 p1
+  A = A0*p1/(s + p1);
+
+  % two inputs, KCL at V-, Vout = -A V-
+  [vout, vm] = solve((Vm - V1)*G1 + (Vm - V2)*G2 + (Vm - Vout)*GF == 0, Vout == -A*Vm, Vout, Vm);
+  H1 = simplify(subs(vout, V2, 0)/V1);
+  printf('=== H_1(s) ===\n'); pretty(H1)
+  printf('=== Vout(0), A0 -> oo ===\n'); pretty(simplify(limit(subs(vout, s, 0), A0, inf)))
+
+  % Question: R1 = R2 = RF = 10k, V1 = 0.5, V2 = -0.2, GB = 1 MHz
+  g = 1/10e3;
+  printf('Vout = %.2f V, F = %.4f, f_p = %.0f kHz\n', -(0.5 - 0.2), g/(3*g), 1e6/3/1e3);
+\end{lstlisting}

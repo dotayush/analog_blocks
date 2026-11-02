@@ -15,38 +15,52 @@ the feedback resistor: an RC low pass with gain and a buffered output.
 \end{circuitfig}
 
 \subsubsection{Transfer Function}
-\textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)} with an ideal
-op-amp: \(V_+ = 0\), so \(V_- = V_+ = 0\) and no current enters \(V_-\). The
-feedback admittance is \(G_2\) in parallel with \(sC\), i.e.\ \(G_2 + sC\).
-KCL at \(V_-\):
+\textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)} with an ideal op-amp (at DC
+\(C\) is open and this is the inverting amplifier, Section~\ref{sec:amp_inverting}): \(V_+ = 0\),
+so \(V_- = 0\) and no current enters \(V_-\); the feedback admittance is \(G_2 + sC\).
+Applying KCL at \(V_-\):
 \begin{align*}
   (V_- - V_{in}) G_1 + (V_- - V_{out})(G_2 + sC) &= 0 \\
-  (0 - V_{in}) G_1 + (0 - V_{out})(G_2 + sC) &= 0 \hspace{1cm} \text{(Substituting \(V_- = 0\))} \\
-  -V_{in} G_1 - V_{out}(G_2 + sC) &= 0 \\
-  -V_{out}(G_2 + sC) &= V_{in} G_1 \\
-  H(s) = \frac{V_{out}}{V_{in}} &= -\frac{G_1}{G_2 + sC} \hspace{1cm} \text{(Dividing both sides by \(-V_{in}(G_2 + sC)\))} \\
-  H(s) &= -\frac{\frac{1}{R_1}}{\frac{1}{R_2} + sC} \hspace{1cm} \text{(Substituting \(G_1 = \frac{1}{R_1}\), \(G_2 = \frac{1}{R_2}\))} \\
-  H(s) &= -\frac{\frac{1}{R_1}}{\frac{1 + sR_2 C}{R_2}} \\
-  H(s) &= -\frac{1}{R_1}\cdot\frac{R_2}{1 + sR_2 C} \\
-  H(s) &= -\frac{R_2}{R_1}\cdot\frac{1}{1 + sR_2 C}
+  -V_{in} G_1 - V_{out}(G_2 + sC) &= 0 \hspace{1cm} [V_- = 0] \\
+  H(s) = \frac{V_{out}}{V_{in}} &= -\frac{G_1}{G_2 + sC} = -\frac{\frac{1}{R_1}}{\frac{1 + sR_2 C}{R_2}} \hspace{1cm} \left[G_k = \tfrac{1}{R_k}\right] \\
+  H(s) &= -\frac{R_2}{R_1}\cdot\frac{1}{1 + sR_2 C} \tag{1}
 \end{align*}
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \textbf{Pole}: the denominator vanishes at
+  \item \textbf{Poles (\(D(s) = 0\))}:
     \begin{align*}
-      1 + s_p R_2 C &= 0 \\
-      s_p &= -\frac{1}{R_2 C} \\
-      f_p &= \frac{|s_p|}{2\pi} = \frac{1}{2\pi R_2 C}
+      1 + s_p R_2 C &= 0 \hspace{1cm} \Rightarrow \hspace{1cm} s_p = -\frac{1}{R_2 C} \hspace{1cm} f_p = \frac{|s_p|}{2\pi} = \frac{1}{2\pi R_2 C}
     \end{align*}
-    The numerator is a constant, so there is no finite zero.
-  \item \textbf{DC Gain}: at \(s = 0\),
-    \(H(0) = -\frac{R_2}{R_1}\cdot\frac{1}{1 + 0} = -\frac{R_2}{R_1}\).
-  \item \textbf{Impedances}: \(V_- = 0\) (virtual ground), so
-    \(Z_{in} = \frac{V_{in}}{(V_{in} - 0) G_1} = \frac{1}{G_1} = R_1\). The output is
-    the op-amp output, \(Z_{out} = \frac{R_o}{1 + AF} \approx 0\)
-    (Section~\ref{sec:amp_inverting}): unlike the passive RC
-    (Section~\ref{sec:theory_general_loading}) the next stage does not load it.
+  \item \textbf{Zeroes (\(N(s) = 0\))}: \(N(s) = -\frac{R_2}{R_1} \neq 0\): no finite zero.
+  \item \textbf{DC Gain (\(H(0)\))}: \(s = 0\) in (1), \(H(0) = -\frac{R_2}{R_1}\cdot\frac{1}{1 + 0} = -\frac{R_2}{R_1}\).
+  \item \textbf{Gain-Bandwidth Product (\(GBW\))}:
+    \(GBW = |H(0)| f_p = \frac{R_2}{R_1}\cdot\frac{1}{2\pi R_2 C} = \frac{1}{2\pi R_1 C}\), set by \(R_1\) and \(C\)
+    only (the op-amp needs \(GB \gg GBW\)).
+  \item \textbf{Impedances}:
+    \paragraph{At Input:} \(V_- = 0\) (virtual ground):
+    \(Z_{in} = \frac{V_{in}}{(V_{in} - 0) G_1} = R_1\).
+    \paragraph{At Output:} the op-amp output, \(Z_{out} = \frac{R_o}{1 + AF} \approx 0\)
+    (Section~\ref{sec:amp_inverting}): unlike the passive RC (Section~\ref{sec:theory_general_loading})
+    the next stage does not load it.
+  \item \textbf{Step Response (Small Signal, Time Domain, AC Input Analysis (Q2))}: \(V_{in}(s) = \frac{V_s}{s}\) in (1):
+    \begin{align*}
+      V_{out}(s) &= -\frac{R_2}{R_1}V_s\cdot\frac{1}{s(1 + sR_2C)} = -\frac{R_2}{R_1}V_s\left(\frac{1}{s} - \frac{R_2C}{1 + sR_2C}\right) \hspace{1cm} [\text{Partial fractions}] \\
+      V_{out}(t) &= -\frac{R_2}{R_1}V_s\left(1 - e^{-\frac{t}{R_2C}}\right) \hspace{1cm} [\text{Inverse Laplace}]
+    \end{align*}
+    \(10\%\) to \(90\%\) rise time \(R_2C\ln 9 = 2.2\,R_2C\).
+  \item \textbf{Op-Amp Requirement}: the feedback factor (\(V_{in} = 0\)) is
+    \(F(s) = \frac{G_2 + sC}{G_1 + G_2 + sC}\), rising from \(\frac{R_1}{R_1 + R_2}\) to 1 above \(f_p\): the op-amp must be stable at
+    \(F = 1\) (unity gain stable), and its own closed loop pole \(\approx F \cdot GB\) must stay far above \(f_p\).
+  \item \textbf{Advantages \& Limitations}: gain and pole set independently
+    (\(\frac{R_2}{R_1}\), \(\frac{1}{2\pi R_2 C}\)), buffered output; but inverting, \(Z_{in} = R_1\), only
+    \(-20\,\)dB/decade, and an op-amp (power, \(GB\), swing).
+\end{enumerate}
+
+\subsubsection{Design}
+\begin{enumerate}
+  \item \(R_1 = Z_{in}\) required; \(R_2 = |H(0)| R_1\).
+  \item \(C = \frac{1}{2\pi R_2 f_p}\).
 \end{enumerate}
 
 \subsubsection{Question}
@@ -58,3 +72,19 @@ KCL at \(V_-\):
   f_p &= \frac{1}{2\pi R_2 C} = \frac{1}{2\pi \cdot 10^4\,\Omega \cdot 15.9 \times 10^{-9}\,F}
        = \frac{1}{9.990 \times 10^{-4}\,s} = 1.001\,kHz
 \end{align*}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms s t Vin Vout G1 G2 C R1 R2 Vs
+  % ideal op-amp, V- = 0, KCL at V-
+  vout = solve((0 - Vin)*G1 + (0 - Vout)*(G2 + s*C) == 0, Vout);
+  H = simplify(subs(vout/Vin, [G1 G2], [1/R1 1/R2]));
+  printf('=== H(s), equation (1) ===\n'); pretty(H)
+  printf('=== step response ===\n'); pretty(simplify(ilaplace(Vs/s*H, s, t)))
+
+  % Question: R1 = 1k, R2 = 10k, C = 15.9 nF
+  printf('H(0) = %.0f, f_p = %.3f kHz, GBW = %.2f kHz\n', -10, 1/(2*pi*10e3*15.9e-9)/1e3, 1/(2*pi*1e3*15.9e-9)/1e3);
+\end{lstlisting}
