@@ -24,14 +24,14 @@ with an equal \(C_2\) holding the running result, LSB first.
     the same recursion as the R-2R ladder (Section~\ref{sec:dac_r2r}), in time instead of space.
   \item \textbf{Small Signal, Time Domain, AC Input Analysis (Q2)}: the share switch \(R_{sw}\) between
     \(C_1\) and \(C_2\) (series \(\frac{C_1 C_2}{C_1 + C_2} = \frac{C}{2}\)): the difference \(V_{C1} - V_{C2}\) decays as
-    \(e^{-t/\tau}\), \(\tau = \frac{R_{sw} C}{2}\).
+    \(e^{-t/T_c}\), \(T_c = \frac{R_{sw} C}{2}\).
 \end{enumerate}
 \paragraph{Analysis:}
 \begin{enumerate}
   \item \textbf{DC Gain}: \(\frac{V^{(n-1)}}{D} = \frac{V_{REF}}{2^n} = 1\,\text{LSB}\).
   \item \textbf{Speed}: \(n\) charge/share cycles per conversion, each settled to \(\frac{1}{2^{n+1}}\):
     \begin{align*}
-      t_{share} &= \tau \ln(2^{n+1}) = (n + 1)\ln(2)\, \frac{R_{sw} C}{2}
+      t_{share} &= T_c \ln(2^{n+1}) = (n + 1)\ln(2)\, \frac{R_{sw} C}{2}
     \end{align*}
   \item \textbf{Mismatch}: \(C_1 = C(1 + e)\), \(C_2 = C\): the weight of each new bit is
     \begin{align*}

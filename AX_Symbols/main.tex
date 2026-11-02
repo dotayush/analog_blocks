@@ -182,12 +182,18 @@ members, and three rules cover the rest without repeating entries:
 \(R_F\), \(G_F\) & feedback resistor and conductance & \(\Omega\), S \\ \hline
 \(R_s\), \(G_s\) & differentiator series resistor & \(\Omega\), S \\ \hline
 \(V_s\), \(V_{s,\max}\) & buffer step height and largest step that does not slew & V \\ \hline
+\(G_T\), \(R_p\) & sum of summing input conductances; bias compensation resistor at \(V_+\) & S, \(\Omega\) \\ \hline
+\(\omega_{GB}\), \(\omega_l\), \(\phi_{err}\) & \(2\pi GB\); integrator low frequency corner; integrator phase error & rad/s, rad/s, rad \\ \hline
+\(R_s\) (differentiator) & series input resistor & \(\Omega\) \\ \hline
+\(\overline{V_n^2}\), \(\overline{V_o^2}\), \(\overline{V_{n,in}^2}\), \(\overline{I_{out}^2}\) & noise density: op-amp input, output, input referred, mirror output current & V\(^2\)/Hz, A\(^2\)/Hz \\ \hline
 \multicolumn{3}{|l|}{\textbf{Filters and Dividers}} \\ \hline
 \(H_{LP}\), \(H_{HP}\), \(H_0\) & low pass and high pass transfer function; band pass centre gain & - \\ \hline
 \(\omega_1\), \(\omega_2\), \(\omega_{1,2}\), \(f_1\), \(f_2\) & lower and upper \(-3\,dB\) frequencies & rad/s, Hz \\ \hline
 \(f_c\) & cutoff frequency & Hz \\ \hline
 \(C_{eq}\) & equivalent capacitance & F \\ \hline
 \(I_{G_k}\), \(I_{C_k}\), \(I_{L_k}\) & branch current through \(G_k, C_k, L_k\) & A \\ \hline
+\(S_x^Q\), \(S_x^{\omega_0}\) & sensitivity \(\frac{x}{Q}\frac{\partial Q}{\partial x}\), \(\frac{x}{\omega_0}\frac{\partial \omega_0}{\partial x}\) & - \\ \hline
+\(\omega_{1,2}\), \(C_{\max}\), \(C_{\min}\) & band edges; tuning capacitance limits (VCO) & rad/s, F \\ \hline
 \multicolumn{3}{|l|}{\textbf{Current Mirrors}} \\ \hline
 \(G_2 \ldots G_5\), \(R_2 \ldots R_4\) & input resistor and analysis load of each mirror (stated per mirror) & S, \(\Omega\) \\ \hline
 \(I_{G_k}\) & gate current into node \(k\) (zero for MOS) & A \\ \hline
@@ -196,6 +202,7 @@ members, and three rules cover the rest without repeating entries:
 \(Z_{out,mirror}\), \(Z_{out,basic}\) & output impedance of the mirror alone; of a basic mirror & \(\Omega\) \\ \hline
 \(I_s\), \(V_s\) & (basic mirror) test source at \(V_x\) and its current & A, V \\ \hline
 \(u\) & \(\sqrt{I_{OUT}}\) in the Widlar solution & A\(^{1/2}\) \\ \hline
+\(dk\), \(dV_{th}\), \(dR\), \(V_e\) & mismatch of \(k_n\), \(V_{th}\), \(R_D\); threshold or DAC error (Widlar, multi-step) & A/V\(^2\), V, \(\Omega\), V \\ \hline
 \multicolumn{3}{|l|}{\textbf{Amplifiers}} \\ \hline
 \(V_{i1}\), \(V_{i2}\), \(V_{o1}\), \(V_{o2}\) & pair inputs and outputs (upper case subscripts when large signal) & V \\ \hline
 \(V_{O,\min}\), \(V_{O,\max}\), \(V_{IC,\min}\), \(V_{IC,\max}\) & output swing and input common mode range & V \\ \hline
@@ -216,6 +223,7 @@ members, and three rules cover the rest without repeating entries:
 \(B\text{ (op-amp)}\) & current mirror op-amp mirror gain & - \\ \hline
 \(G_1\), \(G_2\text{ (two stage)}\), \(R_z\), \(I_5\), \(I_7\) & stage output conductances, nulling resistor, tail and sink currents & S, \(\Omega\), A \\ \hline
 \(t_{-10V}\) & time to reach \(-10\,V\) & s \\ \hline
+\(I_{bias}\), \(R_0\), \(r_b\), \(I_n\) (cascode) & follower bias current; line impedance; base resistance; noise current & A, \(\Omega\), \(\Omega\), A \\ \hline
 \multicolumn{3}{|l|}{\textbf{Data Converters}} \\ \hline
 \(b_k\), \(b_{n-1}\), \(b\) & bit \(k\), the MSB, a pipeline decision & - \\ \hline
 \(X_{REF}\), \(X_{LSB}\), \(X_{IN}\), \(X_{OUT}\), \(X_k\) & reference, LSB step, input, output, level or transition \(k\) & V or A \\ \hline
@@ -246,6 +254,8 @@ members, and three rules cover the rest without repeating entries:
 \(P_n\), \(P_s\) & noise power, signal power & V\(^2\), W \\ \hline
 \(SD(\cdot)\), \(Var(\cdot)\) & standard deviation, variance & - \\ \hline
 \(\Sigma\) & summing node in block diagrams & - \\ \hline
+\(V_{FS}\), \(R_{REF}\), \(I_{REF}\), \(F_W\) & full scale output; ladder reference resistance and current; figure of merit & V, \(\Omega\), A, J \\ \hline
+\(a_l\) & leaky integrator coefficient \(\approx 1 - \frac{1}{A_0}\) & - \\ \hline
 \multicolumn{3}{|l|}{\textbf{PLL and VCO}} \\ \hline
 \(\theta\), \(\theta_{ref}\), \(\theta_{div}\), \(\theta_{out}\), \(\theta_{vco}\), \(\theta_e\) & excess phase of each signal; phase error & rad \\ \hline
 \(K_{vco}\), \(K_v\), \(V_c\) & VCO gain in Hz/V and rad/s/V, control voltage & Hz/V, rad/s/V, V \\ \hline

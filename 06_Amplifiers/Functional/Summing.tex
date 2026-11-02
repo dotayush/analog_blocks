@@ -23,21 +23,21 @@ through \(G_k\) into \(V_-\) and feedback \(G_F\). Op-amp model:
     \begin{align*}
       V_{OUT} &= A_0(0 - V_-) \hspace{1cm} \Rightarrow \hspace{1cm} V_- = -\frac{V_{OUT}}{A_0} \tag{1}
     \end{align*}
-    Applying KCL at \(V_-\) (\(G_\Sigma = \sum_{k=1}^{N} G_k\)):
+    Applying KCL at \(V_-\) (\(G_T = \sum_{k=1}^{N} G_k\)):
     \begin{align*}
       \sum_{k=1}^{N} (V_- - V_k) G_k + (V_- - V_{OUT}) G_F &= 0 \\
-      V_-(G_\Sigma + G_F) - V_{OUT} G_F &= \sum_{k} G_k V_k \\
-      -\frac{V_{OUT}}{A_0}(G_\Sigma + G_F) - V_{OUT} G_F &= \sum_{k} G_k V_k \hspace{1cm} [\text{from (1)}] \\
-      V_{OUT} &= -\frac{\sum_{k} G_k V_k}{G_F + \frac{G_\Sigma + G_F}{A_0}} \\
-      V_{OUT} &= -\frac{\sum_{k} G_k V_k}{G_\Sigma + G_F}\cdot\frac{A_0}{1 + A_0\frac{G_F}{G_\Sigma + G_F}} \\
-      V_{OUT} &= -\sum_{k} \frac{G_k}{G_\Sigma + G_F}\cdot\frac{A_0}{1 + A_0 F}\, V_k \hspace{1cm} \left[F = \tfrac{G_F}{G_\Sigma + G_F}\right] \tag{2}
+      V_-(G_T + G_F) - V_{OUT} G_F &= \sum_{k} G_k V_k \\
+      -\frac{V_{OUT}}{A_0}(G_T + G_F) - V_{OUT} G_F &= \sum_{k} G_k V_k \hspace{1cm} [\text{from (1)}] \\
+      V_{OUT} &= -\frac{\sum_{k} G_k V_k}{G_F + \frac{G_T + G_F}{A_0}} \\
+      V_{OUT} &= -\frac{\sum_{k} G_k V_k}{G_T + G_F}\cdot\frac{A_0}{1 + A_0\frac{G_F}{G_T + G_F}} \\
+      V_{OUT} &= -\sum_{k} \frac{G_k}{G_T + G_F}\cdot\frac{A_0}{1 + A_0 F}\, V_k \hspace{1cm} \left[F = \tfrac{G_F}{G_T + G_F}\right] \tag{2}
     \end{align*}
     valid while \(V_{OL} \leq V_{OUT} \leq V_{OH}\).
   \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}: (2) with
     \(A_0 \to A(s)\), per input \(k\) (others \(= 0\)):
     \begin{align*}
-      H_k(s) = \frac{V_{out}}{V_k} &= -\frac{G_k}{G_\Sigma + G_F}\cdot\frac{\frac{A_0 p_1}{s + p_1}}{1 + \frac{A_0 p_1 F}{s + p_1}} \hspace{1cm} \left[A(s) = \tfrac{A_0 p_1}{s + p_1}\right] \\
-      H_k(s) &= -\frac{G_k}{G_\Sigma + G_F}\cdot\frac{A_0 p_1}{s + p_1(1 + A_0 F)} \tag{3}
+      H_k(s) = \frac{V_{out}}{V_k} &= -\frac{G_k}{G_T + G_F}\cdot\frac{\frac{A_0 p_1}{s + p_1}}{1 + \frac{A_0 p_1 F}{s + p_1}} \hspace{1cm} \left[A(s) = \tfrac{A_0 p_1}{s + p_1}\right] \\
+      H_k(s) &= -\frac{G_k}{G_T + G_F}\cdot\frac{A_0 p_1}{s + p_1(1 + A_0 F)} \tag{3}
     \end{align*}
     \(V_{out} = \sum_k H_k(s) V_k\) (superposition).
 \end{enumerate}
@@ -48,22 +48,22 @@ through \(G_k\) into \(V_-\) and feedback \(G_F\). Op-amp model:
     \begin{align*}
       s_p &= -p_1(1 + A_0 F) \hspace{1cm} f_p \approx F \cdot GB \hspace{1cm} [A_0 F \gg 1]
     \end{align*}
-  \item \textbf{Zeroes (\(N(s) = 0\))}: \(N_k(s) = -\frac{G_k}{G_\Sigma + G_F} A_0 p_1 \neq 0\): no finite zero.
+  \item \textbf{Zeroes (\(N(s) = 0\))}: \(N_k(s) = -\frac{G_k}{G_T + G_F} A_0 p_1 \neq 0\): no finite zero.
   \item \textbf{DC Gain (\(H_k(0)\))}: \(s = 0\) in (3),
     \begin{align*}
-      H_k(0) &= -\frac{G_k}{G_\Sigma + G_F}\cdot\frac{A_0}{1 + A_0 F} = -\frac{G_k}{G_F}\cdot\frac{A_0 F}{1 + A_0 F} \hspace{1cm} \left[\tfrac{1}{G_\Sigma + G_F} = \tfrac{F}{G_F}\right] \\
+      H_k(0) &= -\frac{G_k}{G_T + G_F}\cdot\frac{A_0}{1 + A_0 F} = -\frac{G_k}{G_F}\cdot\frac{A_0 F}{1 + A_0 F} \hspace{1cm} \left[\tfrac{1}{G_T + G_F} = \tfrac{F}{G_F}\right] \\
       H_k(0) &\xrightarrow{A_0 \to \infty} -\frac{G_k}{G_F} = -\frac{R_F}{R_k}
       \hspace{1cm} \Rightarrow \hspace{1cm} V_{OUT} = -\sum_{k=1}^{N} \frac{R_F}{R_k} V_k
     \end{align*}
   \item \textbf{Gain-Bandwidth Product (\(GBW\))}:
     \begin{align*}
-      GBW_k &= |H_k(0)| \cdot f_p = \frac{G_k}{G_\Sigma + G_F}\cdot\frac{A_0}{1 + A_0 F}\cdot\frac{p_1(1 + A_0 F)}{2\pi} = \frac{G_k}{G_\Sigma + G_F}\, GB
+      GBW_k &= |H_k(0)| \cdot f_p = \frac{G_k}{G_T + G_F}\cdot\frac{A_0}{1 + A_0 F}\cdot\frac{p_1(1 + A_0 F)}{2\pi} = \frac{G_k}{G_T + G_F}\, GB
     \end{align*}
   \item \textbf{Feedback Factor (\(F\))}: every \(V_k = 0\), KCL at \(V_-\):
     \begin{align*}
-      V_- G_\Sigma + (V_- - V_{out}) G_F &= 0 \hspace{1cm} \Rightarrow \hspace{1cm} F = \frac{V_-}{V_{out}} = \frac{G_F}{G_F + G_\Sigma}
+      V_- G_T + (V_- - V_{out}) G_F &= 0 \hspace{1cm} \Rightarrow \hspace{1cm} F = \frac{V_-}{V_{out}} = \frac{G_F}{G_F + G_T}
     \end{align*}
-    every added input raises \(G_\Sigma\), lowering \(F\) and the bandwidth \(F \cdot GB\).
+    every added input raises \(G_T\), lowering \(F\) and the bandwidth \(F \cdot GB\).
   \item \textbf{Impedances}:
     \paragraph{At Input:} \(V_- = -\frac{V_{out}}{A} \to 0\), so
     \(I_k = (V_k - 0) G_k\) and \(Z_{in,k} = \frac{V_k}{I_k} = R_k\); \(I_k\) does not depend on
@@ -73,7 +73,7 @@ through \(G_k\) into \(V_-\) and feedback \(G_F\). Op-amp model:
   \item \textbf{Binary Weights}: \(R_k = 2^{k-1} R\) gives \(\frac{R_F}{R_k} = \frac{R_F}{R}2^{-(k-1)}\),
     halving weights: a binary weighted DAC (Chapter~\ref{ch:data_converters}).
   \item \textbf{Offset and Noise Gain}: \(V_{OS}\) in series with \(V_+\) sees the noise gain
-    \(\frac{1}{F} = 1 + \frac{G_\Sigma}{G_F} = 1 + \sum_k \frac{R_F}{R_k}\): \(V_{OUT,error} = V_{OS}\left(1 + \sum_k \frac{R_F}{R_k}\right)\), larger than
+    \(\frac{1}{F} = 1 + \frac{G_T}{G_F} = 1 + \sum_k \frac{R_F}{R_k}\): \(V_{OUT,error} = V_{OS}\left(1 + \sum_k \frac{R_F}{R_k}\right)\), larger than
     any single signal weight; bias currents cancel with \(R_p = R_F \parallel R_1 \parallel \cdots \parallel R_N\)
     (Section~\ref{sec:amp_inverting}).
   \item \textbf{Advantages \& Limitations}: independent, non-interacting weights
@@ -84,7 +84,7 @@ through \(G_k\) into \(V_-\) and feedback \(G_F\). Op-amp model:
 \subsubsection{Design}
 \begin{enumerate}
   \item Choose \(R_F\), then \(R_k = \frac{R_F}{|w_k|}\) for each weight \(w_k\).
-  \item Check \(f_p = \frac{G_F}{G_F + G_\Sigma} GB\) and the output swing at the worst case inputs.
+  \item Check \(f_p = \frac{G_F}{G_F + G_T} GB\) and the output swing at the worst case inputs.
 \end{enumerate}
 
 \subsubsection{Question}

@@ -119,7 +119,7 @@ Pipeline MDAC stage: phase \(\phi_1\) samples \(V_{IN}\) on both capacitors, pha
 
 \subsubsection{Design}
 \begin{enumerate}
-  \item \(C_{tot} > \frac{12 kT 2^{2n}}{V_{REF}^2}\) and \(S_C < \frac{1}{2\sqrt{2^n - 1}}\) (\(|DNL| < \frac{1}{2}\), \(1\sigma\)) set \(C_u\).
+  \item \(C_{tot} > \frac{12 kT 2^{2n}}{V_{REF}^2}\) and \(S_C < \frac{1}{2\sqrt{2^n - 1}}\) (\(|DNL| < \frac{1}{2}\), one \(SD\)) set \(C_u\).
   \item Split with \(C_b = \frac{2^m}{2^m - 1} C_u\), \(m \approx \frac{n}{2}\), to reduce area.
   \item MDAC: \(GB \geq \frac{(n + 1)\ln 2}{2\pi F\, t_{settle}}\), \(A_0 F \geq 2^{n+1}\).
 \end{enumerate}

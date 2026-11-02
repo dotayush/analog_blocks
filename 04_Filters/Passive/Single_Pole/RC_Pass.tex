@@ -187,7 +187,7 @@ low-pass and high-pass characteristics.
     \(V_s e^{-\frac{t}{R_1C_1}}\).
   \item \textbf{Noise (\(\frac{kT}{C}\)):} \(R_1\)'s noise \(4kTR_1\) (Section~\ref{sec:theory_general_noise}) reaches \(V_{out}\) through \(H_1\):
     \begin{align*}
-      \overline{V_{out}^2} &= \int_0^\infty \frac{4kTR_1}{1 + (2\pi fR_1C_1)^2}df = 4kTR_1\cdot\frac{1}{4R_1C_1} = \frac{kT}{C_1} \hspace{1cm} \left[\int_0^\infty \frac{df}{1 + (2\pi f\tau)^2} = \frac{1}{4\tau}\right]
+      \overline{V_{out}^2} &= \int_0^\infty \frac{4kTR_1}{1 + (2\pi fR_1C_1)^2}df = 4kTR_1\cdot\frac{1}{4R_1C_1} = \frac{kT}{C_1} \hspace{1cm} \left[\int_0^\infty \frac{df}{1 + (2\pi fT_c)^2} = \frac{1}{4T_c}\right]
     \end{align*}
     independent of \(R_1\): only a larger \(C_1\) lowers it (\(\sqrt{kT/1\,pF} = 64\,\mu\)V rms at \(300\,\)K).
 \end{enumerate}

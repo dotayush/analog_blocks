@@ -74,8 +74,8 @@ with error below \(\frac{1}{2^{n_1}}\cdot\frac{V_{REF}}{2^{n_2}} = \frac{V_{REF}
     \(m(2^{n/m} - 1)\).
   \item \textbf{Impedances}:
     \paragraph{At Input:} the S/H input capacitance only (one coarse flash, \(2^{n_1} - 1\) comparators).
-  \item \textbf{DAC Accuracy}: an error \(\delta\) in \(V_{DAC}\) appears in \(V_{RES}\) as \(2^{n_1}\delta\); it must stay below
-    half a fine LSB, \(2^{n_1}|\delta| < \frac{V_{REF}}{2^{n_2+1}}\), i.e.\ \(|\delta| < \frac{V_{REF}}{2^{n+1}}\): the coarse DAC must be \(n\)-bit accurate.
+  \item \textbf{DAC Accuracy}: an error \(V_e\) in \(V_{DAC}\) appears in \(V_{RES}\) as \(2^{n_1}V_e\); it must stay below
+    half a fine LSB, \(2^{n_1}|V_e| < \frac{V_{REF}}{2^{n_2+1}}\), i.e.\ \(|V_e| < \frac{V_{REF}}{2^{n+1}}\): the coarse DAC must be \(n\)-bit accurate.
   \item \textbf{Advantages \& Limitations}: \((2^{n_1} - 1) + (2^{n_2} - 1)\) comparators instead of \(2^n - 1\),
     redundancy tolerates coarse errors; but needs a S/H, a DAC and a residue amplifier accurate to
     \(n\) bits, and two sequential steps per sample.

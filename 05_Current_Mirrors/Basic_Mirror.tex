@@ -238,12 +238,12 @@ Here's a table of the voltages at each terminal of the transistors:
       \begin{align*}
         Z_{out} &\approx \frac{1}{g_{o_1}} = \frac{1}{K_{CLM} I_{M_1}}
       \end{align*}
-  \item \textbf{Mismatch:} \(M_1\) differs from its ideal copy by \(\Delta k\) and \(\Delta V_{th}\); from
+  \item \textbf{Mismatch:} \(M_1\) differs from its ideal copy by \(dk\) and \(dV_{th}\); from
     \(I = k(V_{GS} - V_{th})^2\) at fixed \(V_{GS}\):
     \begin{align*}
       dI &= (V_{GS} - V_{th})^2dk - 2k(V_{GS} - V_{th})dV_{th} \hspace{1cm} \Rightarrow \hspace{1cm}
-      \frac{\Delta I_{OUT}}{I_{OUT}} = \frac{\Delta k}{k} - \frac{2\Delta V_{th}}{V_{ov}} \\
-      SD\left(\frac{\Delta I_{OUT}}{I_{OUT}}\right) &= \sqrt{SD\left(\tfrac{\Delta k}{k}\right)^2 + \frac{4\,SD(\Delta V_{th})^2}{V_{ov}^2}} \hspace{1cm} \text{[independent, variances add]}
+      \frac{dI_{OUT}}{I_{OUT}} = \frac{dk}{k} - \frac{2dV_{th}}{V_{ov}} \\
+      SD\left(\frac{dI_{OUT}}{I_{OUT}}\right) &= \sqrt{SD\left(\tfrac{dk}{k}\right)^2 + \frac{4\,SD(dV_{th})^2}{V_{ov}^2}} \hspace{1cm} \text{[independent, variances add]}
     \end{align*}
     the opposite of a differential pair: a mirror wants a large \(V_{ov}\).
   \item \textbf{Noise:} \(M_0\)'s channel noise \(4kT\frac{2}{3}g_{m_0}\) and \(G_2\)'s \(4kTG_2\) flow into the diode node (\(\frac{1}{g_{m_0}}\)) and are copied
