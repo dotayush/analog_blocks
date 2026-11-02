@@ -114,6 +114,13 @@ below.
     \paragraph{At Output:} \(Z_{out} = Z_{dn} \parallel R_L \approx g_{m2} r_{o2} r_{o1} \parallel R_L\).
   \item \textbf{Output Swing (Max)}: from Q5, \(V_{ov1} + V_{ov2} \leq V_{OUT} \leq V_{dd} - |V_{ov,L}|\)
     (\(|V_{ov,L}|\) of the load source).
+  \item \textbf{Cascode Device Noise}: a noise current \(I_n\) across \(M_2\) (drain to source), \(V_{in} = 0\), output shorted;
+    applying KCL at \(V_x\) (\(I_{d1} = g_{o1}V_x\) equals the \(M_2\) current):
+    \begin{align*}
+      g_{o1}V_x &= -(g_{m2}' + g_{o2})V_x + I_n \hspace{1cm} \Rightarrow \hspace{1cm} V_x = \frac{I_n}{g_{o1} + g_{m2}' + g_{o2}} \\
+      \frac{I_{out}}{I_n} &= \frac{g_{o1}}{g_{o1} + g_{m2}' + g_{o2}} \approx \frac{1}{g_{m2}' r_{o1}}
+    \end{align*}
+    the cascode device adds almost no noise: \(M_1\) (and the load) set it.
   \item \textbf{Advantages \& Limitations}: gain \(\approx (g_m r_o)^2\) with a cascoded load,
     \(Z_{out} \approx g_m r_o^2\), Miller effect on \(C_{gd1}\) removed, same \(GBW\) as a CS; but one
     extra \(V_{ov}\) of headroom, an extra bias \(V_{B2}\), and the gain needs an equally high

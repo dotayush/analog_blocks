@@ -128,6 +128,13 @@ and the output swing is larger than the telescopic cascode's.
     \paragraph{At Output:} \(Z_{out} = Z_{dn} \parallel Z_{up}\) per side.
   \item \textbf{Output Swing (Max)}: from Q5, \(V_{ov,B} + V_{ov3} \leq V_{O} \leq V_{dd} - |V_{ov7}| - |V_{ov5}|\)
     (four \(V_{ov}\), not five), and \(V_{IC}\) is independent of it.
+  \item \textbf{Noise}: each device adds a drain current noise \(4kT\frac{2}{3}g_m\); dividing the total output
+    current noise by \(G_m^2 = g_{m1}^2\) refers it to the differential input (the sink \(M_B\) injects at the fold node and reaches the output through \(M_3\), \(\frac{|I_{sc}|}{I_{in}} \approx 1\); cascodes negligible):
+    \begin{align*}
+      \overline{V_{n,in}^2} &= 2\cdot\frac{8kT}{3 g_{m1}}\left(1 + \frac{g_{mB}}{g_{m1}} + \frac{g_{m7}}{g_{m1}}\right) \ \text{[V}^2\text{/Hz]}
+    \end{align*}
+    the input pair dominates when its \(g_{m1}\) is the largest (load devices at large \(V_{ov}\)).
+    \(M_B\) carries \(I_B \geq I_T\), so \(g_{mB}\) is large: use a large \(V_{ov,B}\) to keep it small.
   \item \textbf{Advantages \& Limitations}: input range to the negative rail, input common mode
     independent of the output (unity gain buffer possible), more swing than the telescopic;
     but \(I_{dd} \geq 2 I_T\), about half the telescopic gain (\(r_{o1} \parallel r_{oB}\)), and a lower

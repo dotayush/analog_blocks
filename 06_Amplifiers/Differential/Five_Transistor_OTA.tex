@@ -132,6 +132,15 @@ load and bandwidth by \(C_L\).
     \end{align*}
   \item \textbf{Output Swing (Max)}: from Q5,
     \(V_{IC} - V_{th} \leq V_{OUT} \leq V_{dd} - |V_{ov4}|\).
+  \item \textbf{Noise}: each device adds a drain current noise \(4kT\frac{2}{3}g_m\); dividing the total output
+    current noise by \(G_m^2 = g_{m1}^2\) refers it to the differential input (\(M_3\)'s noise is mirrored to the output by \(M_4\), gain 1):
+    \begin{align*}
+      \overline{V_{n,in}^2} &= 2\cdot\frac{8kT}{3 g_{m1}}\left(1 + \frac{g_{m3}}{g_{m1}}\right) \ \text{[V}^2\text{/Hz]}
+    \end{align*}
+    the input pair dominates when its \(g_{m1}\) is the largest (load devices at large \(V_{ov}\)).
+  \item \textbf{Random Offset}: the pair contributes as Section~\ref{sec:amp_diffpair}; the mirror's
+    \(\Delta V_{th,34}\) unbalances the currents by \(g_{m3}\Delta V_{th,34}\), referred to the input by \(\frac{1}{g_{m1}}\):
+    \(SD(V_{OS}) \approx \sqrt{SD(\Delta V_{th,12})^2 + \left(\frac{g_{m3}}{g_{m1}}\right)^2 SD(\Delta V_{th,34})^2}\).
   \item \textbf{Advantages \& Limitations}: differential to single ended with the full \(g_{m1}\),
     one high impedance node (single dominant pole, simple compensation by \(C_L\)), zero
     systematic offset; but only one stage of gain (\(A_{V0} \approx 30\text{--}40\,dB\)), the mirror pole limits \(PM\), and the swing is bounded by \(V_{IC}\).

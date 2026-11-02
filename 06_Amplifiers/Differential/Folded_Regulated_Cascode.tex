@@ -96,6 +96,9 @@ range, regulation recovers (and exceeds) the telescopic gain.
     \paragraph{At Input:} \(I_G = 0\): \(Z_{in} \to \infty\) at DC.
     \paragraph{At Output:} \(Z_{out} = Z_{dn} \parallel Z_{up} \approx \frac{g_m r_o A_b r_o}{2}\) per side.
   \item \textbf{Output Swing (Max)}: from Q5, \(V_{ov,B} + V_{ov3} \leq V_O \leq V_{dd} - |V_{ov7}| - |V_{ov5}|\).
+  \item \textbf{Noise}: as the folded cascode (Section~\ref{sec:amp_folded}),
+    \(\overline{V_{n,in}^2} = 2\cdot\frac{8kT}{3g_{m1}}\left(1 + \frac{g_{mB} + g_{m7}}{g_{m1}}\right)\); the auxiliary amplifiers drive gates of cascode
+    devices whose noise is suppressed by \(\approx \frac{1}{g_m r_o}\) (Section~\ref{sec:amp_cascode}).
   \item \textbf{Advantages \& Limitations}: telescopic level gain (or more) with the folded input
     range and swing; but two auxiliary amplifiers (power, area), doublets that must be placed
     correctly for settling, and \(I_{dd} \geq 2 I_T\) as the folded cascode.

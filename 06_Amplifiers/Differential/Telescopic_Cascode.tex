@@ -97,6 +97,14 @@ speed per unit power of single stage op-amps, at the cost of swing.
     \paragraph{At Input:} \(I_G = 0\): \(Z_{in} \to \infty\) at DC.
     \paragraph{At Output:} \(Z_{out} = Z_{dn} \parallel Z_{up} \approx \frac{g_m r_o^2}{2}\) per side.
   \item \textbf{Output Swing (Max)}: from Q5, \(V_{ov9} + V_{ov1} + V_{ov3} \leq V_{O} \leq V_{dd} - |V_{ov7}| - |V_{ov5}|\).
+  \item \textbf{Noise}: each device adds a drain current noise \(4kT\frac{2}{3}g_m\); dividing the total output
+    current noise by \(G_m^2 = g_{m1}^2\) refers it to the differential input (cascodes \(M_3\), \(M_5\) negligible, Section~\ref{sec:amp_cascode}; \(M_7\) is the load source):
+    \begin{align*}
+      \overline{V_{n,in}^2} &= 2\cdot\frac{8kT}{3 g_{m1}}\left(1 + \frac{g_{m7}}{g_{m1}}\right) \ \text{[V}^2\text{/Hz]}
+    \end{align*}
+    the input pair dominates when its \(g_{m1}\) is the largest (load devices at large \(V_{ov}\)).
+  \item \textbf{Power}: one current path, \(I_{dd} = I_T\) (plus bias): \(\frac{GB}{I_{dd}} = \frac{g_{m1}}{2\pi C_L I_T} = \frac{1}{2\pi C_L V_{ov1}}\)
+    [\(g_{m1} = \frac{I_T}{V_{ov1}}\)], twice the folded cascode's for the same \(V_{ov1}\).
   \item \textbf{Advantages \& Limitations}: gain \(\approx \frac{(g_m r_o)^2}{2}\) and \(GB = \frac{g_{m1}}{2\pi C_L}\)
     from a single current path (lowest power), high \(p_2\) (NMOS cascode); but five \(V_{ov}\)
     of headroom, input common mode tied to \(V_{B3}\), and unity gain buffering needs

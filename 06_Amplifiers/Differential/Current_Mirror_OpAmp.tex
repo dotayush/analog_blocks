@@ -120,6 +120,13 @@ its direction. The mirrors multiply the transconductance by \(B\) (a
     \paragraph{At Output:} \(V_{id} = 0\) holds \(V_b = V_c = 0\): \(Z_{out} = \frac{1}{g_{o6} + g_{o8}} = r_{o6} \parallel r_{o8}\).
   \item \textbf{Output Swing (Max)}: \(M_8\) and \(M_6\) saturated:
     \(V_{ov8} \leq V_{OUT} \leq V_{dd} - |V_{ov6}|\), close to rail to rail.
+  \item \textbf{Efficiency}: per supply current, with \(g_{m1} = \frac{I_T}{V_{ov1}}\) and \(I_{dd} = (1 + B)I_T\):
+    \begin{align*}
+      \frac{GB}{I_{dd}} &= \frac{B g_{m1}}{2\pi C_L (1 + B) I_T} = \frac{B}{1 + B}\cdot\frac{1}{2\pi C_L V_{ov1}} \hspace{1cm}
+      \frac{SR}{I_{dd}} = \frac{B I_T}{C_L(1 + B) I_T} = \frac{B}{1 + B}\cdot\frac{1}{C_L}
+    \end{align*}
+    against \(\frac{1}{2\pi C_L V_{ov1}}\) and \(\frac{1}{C_L}\) per \(I_T\) for the 5T OTA (\(I_{dd} = I_T\)): the mirrors raise \(GB\) and \(SR\) at a
+    fixed \(I_T\) but cost a factor \(\frac{B}{1 + B} < 1\) in efficiency.
   \item \textbf{Advantages \& Limitations}: \(GB\) and \(SR\) multiplied by \(B\), output swing close to
     the rails, internal nodes low impedance; but \(I_{dd} = (1 + B) I_T\), \(A_{V0}\) no higher than the 5T
     OTA, and \(p_a\) falls with \(B\) (phase margin limits \(B\) to 2--5).

@@ -78,6 +78,8 @@ multiplied by \(1 + A_b\) without stacking more devices (no swing cost).
     \paragraph{At Output:} (1): \(Z_{out} \approx (1 + A_b) g_{m2} r_{o2} r_{o1}\), falling to \(R_c\) above \(\omega_b\).
   \item \textbf{Output Swing (Max)}: from Q5, \(V_{OUT} \geq V_{ref} + V_{ov2}\), as a plain cascode for
     \(V_{ref} = V_{ov1}\).
+  \item \textbf{Auxiliary Amplifier Range}: \(A_b\) senses \(V_x = V_{ref}\) and drives \(V_{G2} = V_{ref} + V_{GS2}\), so its
+    input common mode is \(V_{ref}\) (near ground: a PMOS input pair) and its output must reach \(V_{ref} + V_{th} + V_{ov2}\).
   \item \textbf{Advantages \& Limitations}: \(Z_{out}\) and gain multiplied by \(1 + A_b\) without
     stacking devices (no swing cost), \(GB\) unchanged; but the auxiliary amplifier costs power
     and area, and the doublet slows settling unless \(\omega_b\) is placed correctly.

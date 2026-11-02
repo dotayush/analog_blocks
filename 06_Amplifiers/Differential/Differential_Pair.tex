@@ -147,6 +147,27 @@ written as differential and common mode parts,
     \(V_{O1} - V_S \geq V_{GS} - V_{th}\), i.e. \(V_{O1} \geq V_{IC} - V_{th}\), so
     \(V_{IC,\max} = V_{O1} + V_{th} = V_{dd} - \frac{I_D}{G_D} + V_{th}\).
   \item \textbf{Output Swing (Max)}: \(V_{IC} - V_{th} \leq V_{O1,2} \leq V_{dd}\).
+  \item \textbf{Input Offset}: \(M_1\), \(M_2\) differ by \(\Delta V_{th}\), \(\Delta k\) (\(k_n \pm \frac{\Delta k}{2}\)) and the loads by
+    \(\Delta R\) (\(R_D \pm \frac{\Delta R}{2}\)). Equal outputs need \((R_D + \frac{\Delta R}{2})(k_n + \frac{\Delta k}{2})(V_{ov} + \frac{V_{OS}}{2} - \frac{\Delta V_{th}}{2})^2 =
+    (R_D - \frac{\Delta R}{2})(k_n - \frac{\Delta k}{2})(V_{ov} - \frac{V_{OS}}{2} + \frac{\Delta V_{th}}{2})^2\); to first order in every \(\Delta\):
+    \begin{align*}
+      V_{OS} &= \Delta V_{th} - \frac{V_{ov}}{2}\left(\frac{\Delta k}{k_n} + \frac{\Delta R}{R_D}\right) \hspace{1cm} [\text{products of } \Delta\text{s dropped}] \\
+      SD(V_{OS}) &= \sqrt{SD(\Delta V_{th})^2 + \frac{V_{ov}^2}{4}\left(SD\left(\tfrac{\Delta k}{k_n}\right)^2 + SD\left(\tfrac{\Delta R}{R_D}\right)^2\right)} \hspace{0.5cm} [\text{independent, variances add}]
+    \end{align*}
+    a small \(V_{ov}\) leaves only \(\Delta V_{th}\).
+  \item \textbf{Distortion (Large Signal, Time Domain, AC Input Analysis (Q6))}: from the Linear Range result,
+    \(I_{D1} - I_{D2} = g_m V_{ID}\sqrt{1 - \frac{V_{ID}^2}{4V_{ov}^2}} \approx g_m V_{ID}\left(1 - \frac{V_{ID}^2}{8V_{ov}^2}\right)\) [\(\sqrt{1 - x} \approx 1 - \frac{x}{2}\)];
+    with \(V_{ID} = V_p\sin\omega t\) and \(\sin^3 x = \frac{3\sin x - \sin 3x}{4}\):
+    \begin{align*}
+      HD_3 &= \frac{g_m\frac{V_p^3}{8V_{ov}^2}\cdot\frac{1}{4}}{g_m V_p} = \frac{V_p^2}{32V_{ov}^2}
+    \end{align*}
+    odd order only: the even terms cancel in the difference. \(HD_3 < 1\%\) needs \(V_p < \sqrt{0.32}\,V_{ov} = 0.57\,V_{ov}\).
+  \item \textbf{Noise}: each device adds a drain current noise \(4kT\frac{2}{3}g_m\); dividing the total output
+    current noise by \(G_m^2 = g_{m1}^2\) refers it to the differential input (load resistors \(4kTG_D\) each):
+    \begin{align*}
+      \overline{V_{n,in}^2} &= 2\cdot\frac{8kT}{3 g_{m1}}\left(1 + \frac{3 G_D}{2 g_{m1}}\right) \ \text{[V}^2\text{/Hz]}
+    \end{align*}
+    the input pair dominates when its \(g_{m1}\) is the largest (load devices at large \(V_{ov}\)).
   \item \textbf{Advantages \& Limitations}: rejects the common mode (\(CMRR \approx \frac{g_m}{g_{o,tail}}\)),
     supply noise and even order distortion cancel in \(V_{o1} - V_{o2}\); but the linear range is
     only \(\approx 0.28\,V_{ov}\) for \(1\%\), the gain is that of one CS stage, and \(CMRR\) needs a
