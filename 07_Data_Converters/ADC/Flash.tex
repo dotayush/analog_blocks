@@ -26,7 +26,8 @@ Fastest architecture, cost exponential in \(n\) (rarely above 6--8 bits).
 \end{circuitfig}
 
 \subsubsection{Transfer Function}
-\textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}: the
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}: the
 \(2^n - 1\) taps are separated by \(2^n - 2\) resistors \(R\), with
 \(\frac{R}{2}\) at the bottom and \(\frac{3R}{2}\) at the top, so the string
 has
@@ -49,10 +50,22 @@ outputs \(T_k = 1\) if \(V_{IN} > V_{T,k}\). The thresholds increase with \(k\),
   D &= \sum_{k=1}^{2^n - 1} T_k \hspace{1cm} \text{for } \left(D - \tfrac{1}{2}\right) X_{LSB} < V_{IN} < \left(D + \tfrac{1}{2}\right) X_{LSB}
 \end{align*}
 i.e.\ \(D\) is \(\frac{V_{IN}}{X_{LSB}}\) rounded to the nearest integer.
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}: the source resistance \(R_s\)
+    drives all \(2^n - 1\) comparator inputs in parallel, \(C_{IN} = (2^n - 1) C_{in,comp}\):
+    \begin{align*}
+      H(s) &= \frac{V_{in,comp}}{V_{in}} = \frac{\frac{1}{sC_{IN}}}{R_s + \frac{1}{sC_{IN}}} = \frac{1}{1 + s R_s (2^n - 1) C_{in,comp}} \tag{1}
+    \end{align*}
+\end{enumerate}
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \textbf{Comparator Offset}: offset \(V_{os,k}\) moves transition \(k\)
+  \item \textbf{Poles (\(D(s) = 0\))}: from (1), \(s_p = -\frac{1}{R_s (2^n - 1) C_{in,comp}}\): the input bandwidth
+    \(f_p = \frac{1}{2\pi R_s (2^n - 1) C_{in,comp}}\) falls as \(2^n\).
+  \item \textbf{Zeroes (\(N(s) = 0\))}: \(N(s) = 1 \neq 0\): no finite zero.
+  \item \textbf{DC Gain (\(H(0)\))}: \(H(0) = 1\); code gain \(\frac{D}{V_{IN}} = \frac{1}{X_{LSB}} = \frac{2^n}{V_{REF}}\).
+  \item \textbf{Speed}: one comparator decision plus encoding per sample, \(t_{conv} = t_{comp} + t_{enc}\)
+    (one clock), the fastest architecture.
+  \item \textbf{Differential Non-Linearity (DNL)} from comparator offset: offset \(V_{os,k}\) moves transition \(k\)
     to \(V_{T,k} + V_{os,k}\):
     \begin{align*}
       DNL_k &= \frac{(V_{T,k+1} + V_{os,k+1}) - (V_{T,k} + V_{os,k})}{X_{LSB}} - 1
@@ -71,8 +84,18 @@ i.e.\ \(D\) is \(\frac{V_{IN}}{X_{LSB}}\) rounded to the nearest integer.
   \item \textbf{Bubbles}: metastability or offset can give \(\ldots 1101 \ldots\)
     (a 0 inside the 1s); a 3-input majority gate per position removes single
     bubbles before encoding.
-  \item \textbf{Cost}: \(2^n - 1\) comparators, input capacitance
-    \((2^n - 1) C_{in,comp}\), power \(\propto 2^n\).
+  \item \textbf{Impedances}:
+    \paragraph{At Input:} \(Z_{in} = \frac{1}{s (2^n - 1) C_{in,comp}}\) (capacitive, \(\propto 2^n\)).
+    \paragraph{At Reference:} \(Z_{REF} = 2^n R\) (the string).
+  \item \textbf{Advantages \& Limitations}: one clock per conversion, no sample and hold needed in
+    principle; but \(2^n - 1\) comparators (area, power \(\propto 2^n\)), input capacitance \(\propto 2^n\), and
+    \(SD(V_{os}) < \frac{X_{LSB}}{3\sqrt{2}}\) shrinks with every bit (rarely above 6--8 bits).
+\end{enumerate}
+
+\subsubsection{Design}
+\begin{enumerate}
+  \item \(X_{LSB} = \frac{V_{REF}}{2^n}\); comparators with \(SD(V_{os}) < \frac{X_{LSB}}{3\sqrt{2}}\).
+  \item \(R_s (2^n - 1) C_{in,comp} \leq \frac{1}{2\pi f_{in,\max}}\) (input bandwidth).
 \end{enumerate}
 
 \subsubsection{Question}
