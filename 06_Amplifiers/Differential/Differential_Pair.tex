@@ -80,25 +80,31 @@ written as differential and common mode parts,
       V_s &= V_{ic}
     \end{align*}
     so \(V_s = 0\) for a purely differential input (\(V_{ic} = 0\)), and each
-    half is a CS stage driven by \(\pm\frac{V_{id}}{2}\) (half circuit).
+    half is a CS stage driven by \(\pm\frac{V_{id}}{2}\) (half circuit).\\
+    Half circuit with \(C_L\) at each output, \(V_s = 0\),
+    \(I_{d1} = g_m \frac{V_{id}}{2} + g_o V_{o1}\). Applying KCL at \(V_{o1}\) (\(I_{d1}\) and the
+    currents through \(G_D\), \(C_L\) leave the node):
+    \begin{align*}
+      V_{o1} (G_D + sC_L) + g_m \frac{V_{id}}{2} + g_o V_{o1} &= 0 \\
+      V_{o1} &= -\frac{g_m}{2(G_D + g_o + sC_L)} V_{id} \tag{4}
+    \end{align*}
+    The other half is driven by \(-\frac{V_{id}}{2}\), so \(V_{o2} = -V_{o1}\):
+    \begin{align*}
+      A_d(s) = \frac{V_{o1} - V_{o2}}{V_{id}} = \frac{2 V_{o1}}{V_{id}} &= -\frac{g_m}{G_D + g_o + sC_L} \tag{5}
+    \end{align*}
 \end{enumerate}
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \textbf{Differential Gain, Small Signal, Frequency Domain, AC Input Analysis (Q4)}: with \(V_s = 0\),
-    \(I_{d1} = g_m \frac{V_{id}}{2} + g_o V_{o1}\). KCL at \(V_{o1}\) (\(I_{d1}\)
-    and the current through \(G_D\) leave the node):
-    \begin{align*}
-      V_{o1} G_D + I_{d1} &= 0 \\
-      V_{o1} G_D + g_m \frac{V_{id}}{2} + g_o V_{o1} &= 0 \\
-      V_{o1} &= -\frac{g_m}{2(G_D + g_o)} V_{id}
-    \end{align*}
-    The other half is driven by \(-\frac{V_{id}}{2}\), so
-    \(V_{o2} = +\frac{g_m}{2(G_D + g_o)} V_{id} = -V_{o1}\):
-    \[
-      A_d = \frac{V_{o1} - V_{o2}}{V_{id}} = \frac{2 V_{o1}}{V_{id}} = -\frac{2 g_m}{2(G_D + g_o)} = -\frac{g_m}{G_D + g_o}
-    \]
-  \item \textbf{Common Mode Gain, Small Signal, Frequency Domain, AC Input Analysis (Q4)}: tail current source with output conductance
+  \item \textbf{Poles (\(D(s) = 0\))}: \(G_D + g_o + s_p C_L = 0 \Rightarrow s_p = -\frac{G_D + g_o}{C_L}\),
+    \(f_p = \frac{G_D + g_o}{2\pi C_L}\).
+  \item \textbf{Zeroes (\(N(s) = 0\))}: \(N(s) = -g_m \neq 0\): no finite zero (\(C_{gd}\) neglected).
+  \item \textbf{DC Gain (\(A_d(0)\))}: \(s = 0\) in (5),
+    \(A_d = -\frac{g_m}{G_D + g_o} = -g_m (R_D \parallel r_o)\); single ended
+    \(\frac{V_{o1}}{V_{id}} = \frac{A_d}{2}\).
+  \item \textbf{Gain-Bandwidth Product (\(GBW\))}:
+    \(GBW = |A_d| f_p = \frac{g_m}{G_D + g_o}\cdot\frac{G_D + g_o}{2\pi C_L} = \frac{g_m}{2\pi C_L}\).
+  \item \textbf{Common Mode Gain (\(A_c\))}: tail current source with output conductance
     \(g_{o,tail}\), \(V_{i1} = V_{i2} = V_{ic}\), \(g_o\) neglected. Both halves
     are identical and their sum flows through the tail, \(2 I_d = g_{o,tail} V_s\),
     so \(I_d = \frac{g_{o,tail} V_s}{2}\); also \(I_d = g_m(V_{ic} - V_s)\):
@@ -116,7 +122,7 @@ written as differential and common mode parts,
       CMRR = \frac{|A_d/2|}{|A_c|} = \frac{g_m}{2 G_D} \cdot \frac{G_D(2 g_m + g_{o,tail})}{g_m g_{o,tail}} = \frac{2 g_m + g_{o,tail}}{2 g_{o,tail}} = \frac{g_m}{g_{o,tail}} + \frac{1}{2} \approx \frac{g_m}{g_{o,tail}}
     \]
     (perfectly matched halves give \(V_{o1} - V_{o2} = 0\) for any \(V_{ic}\)).
-  \item \textbf{Linear Range, Large Signal, Time Domain, DC Input Analysis (Q5)}: dividing (3) by the linear part \(g_m V_{ID}\)
+  \item \textbf{Linear Range (Large Signal, Time Domain, DC Input Analysis (Q5))}: dividing (3) by the linear part \(g_m V_{ID}\)
     (\(g_m = \sqrt{2 k_n I_T}\)) and using
     \(k_n = \frac{I_T}{2 V_{ov}^2}\) (from \(k_n V_{ov}^2 = \frac{I_T}{2}\)):
     \begin{align*}
@@ -130,11 +136,29 @@ written as differential and common mode parts,
     \end{align*}
     Larger \(V_{ov}\) widens the linear range and lowers \(g_m = \frac{2 I_D}{V_{ov}}\)
     for the same current.
-  \item \textbf{Input Common Mode Range, Large Signal, Time Domain, DC Input Analysis (Q5)}: the tail needs
+  \item \textbf{Impedances}:
+    \paragraph{At Input:} \(I_G = 0\): \(Z_{in} \to \infty\) at DC (\(\frac{C_{gs}}{2}\) between the gates
+    for a differential input, the two \(C_{gs}\) in series).
+    \paragraph{At Output:} \(V_{id} = 0\), half circuit CS output (Section~\ref{sec:amp_cs}):
+    \(Z_{out} = R_D \parallel r_o\) per side.
+  \item \textbf{Input Common Mode Range (Large Signal, Time Domain, DC Input Analysis (Q5))}: the tail needs
     \(V_S \geq V_{ov,T}\) and \(V_{IC} = V_S + V_{GS}\), so
     \(V_{IC,\min} = V_{GS} + V_{ov,T}\). \(M_1\) saturated needs
     \(V_{O1} - V_S \geq V_{GS} - V_{th}\), i.e. \(V_{O1} \geq V_{IC} - V_{th}\), so
     \(V_{IC,\max} = V_{O1} + V_{th} = V_{dd} - \frac{I_D}{G_D} + V_{th}\).
+  \item \textbf{Output Swing (Max)}: \(V_{IC} - V_{th} \leq V_{O1,2} \leq V_{dd}\).
+  \item \textbf{Advantages \& Limitations}: rejects the common mode (\(CMRR \approx \frac{g_m}{g_{o,tail}}\)),
+    supply noise and even order distortion cancel in \(V_{o1} - V_{o2}\); but the linear range is
+    only \(\approx 0.28\,V_{ov}\) for \(1\%\), the gain is that of one CS stage, and \(CMRR\) needs a
+    high impedance tail and matched halves.
+\end{enumerate}
+
+\subsubsection{Design}
+\begin{enumerate}
+  \item \(V_{ov}\) from the linear range (\(V_{ID,1\%} = 0.282\,V_{ov}\)); \(I_T\) from \(GBW = \frac{g_m}{2\pi C_L}\),
+    \(g_m = \frac{I_T}{V_{ov}}\).
+  \item \(\frac{W}{L} = \frac{2 I_D}{K_P V_{ov}^2}\) with \(I_D = \frac{I_T}{2}\); \(R_D = \frac{V_{dd} - V_{O}}{I_D}\).
+  \item Tail \(g_{o,tail} \leq \frac{g_m}{CMRR}\).
 \end{enumerate}
 
 \subsubsection{Question}
