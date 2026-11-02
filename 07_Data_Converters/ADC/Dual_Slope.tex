@@ -26,7 +26,8 @@ Slow, but extremely accurate and immune to \(R\), \(C\) and clock values.
 \end{circuitfig}
 
 \subsubsection{Transfer Function}
-\textbf{Large Signal, Time Domain, AC Input Analysis (Q6)}: the ideal
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, AC Input Analysis (Q6)}: the ideal
 integrator (Section~\ref{sec:amp_integrator}) gives
 \(V_x(t) = V_x(t_0) - \frac{1}{RC}\int_{t_0}^{t} V\,dt'\) for the applied \(V\); it starts at \(V_x(0) = 0\).
 Define the average over phase 1, \(\overline{V_{IN}} = \frac{1}{T_1}\int_0^{T_1} V_{IN}\, dt\).
@@ -37,29 +38,52 @@ Define the average over phase 1, \(\overline{V_{IN}} = \frac{1}{T_1}\int_0^{T_1}
 Phase 2 ends when the comparator sees \(V_x = 0\):
 \begin{align*}
   0 &= -\frac{\overline{V_{IN}} T_1}{RC} + \frac{V_{REF} T_2}{RC} \\
-  V_{REF} T_2 &= \overline{V_{IN}} T_1 \hspace{1cm} [\times RC] \\
+  V_{REF} T_2 &= \overline{V_{IN}} T_1 \\
   T_2 &= \frac{\overline{V_{IN}}}{V_{REF}} T_1 \\
   N_2 T_{clk} &= \frac{\overline{V_{IN}}}{V_{REF}} N_1 T_{clk} \hspace{0.5cm} \Rightarrow \hspace{0.5cm}
-  N_2 = N_1 \frac{\overline{V_{IN}}}{V_{REF}}
+  N_2 = N_1 \frac{\overline{V_{IN}}}{V_{REF}} \tag{1}
 \end{align*}
 \(R\), \(C\) and \(T_{clk}\) cancel (they only need to be constant over one conversion).
-
-\subsubsection{Analysis}
-\begin{enumerate}
-  \item \textbf{Noise Rejection, Small Signal, Frequency Domain, AC Input
-    Analysis (Q4)}: phase 1 is a linear average of \(V_{IN}\) over \(T_1\). For
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}: phase 1 is a linear average
+    of \(V_{IN}\) over \(T_1\). For
     \(V_{IN} = e^{j2\pi f t}\) (a sine is the imaginary part of
     \(A e^{j\theta} e^{j2\pi f t}\)):
     \begin{align*}
       H(f) = \frac{1}{T_1}\int_0^{T_1} e^{j2\pi f t}\, dt &= \frac{1}{T_1}\cdot\frac{e^{j2\pi f T_1} - 1}{j2\pi f} \\
       &= \frac{e^{j\pi f T_1}}{T_1}\cdot\frac{e^{j\pi f T_1} - e^{-j\pi f T_1}}{j2\pi f} \hspace{1cm} [\text{factoring } e^{j\pi f T_1}] \\
       &= \frac{e^{j\pi f T_1}}{T_1}\cdot\frac{2j\sin(\pi f T_1)}{j2\pi f} = e^{j\pi f T_1}\frac{\sin(\pi f T_1)}{\pi f T_1} \hspace{1cm} [e^{jx} - e^{-jx} = 2j\sin x] \\
-      |H(f)| &= \left|\frac{\sin(\pi f T_1)}{\pi f T_1}\right|
+      |H(f)| &= \left|\frac{\sin(\pi f T_1)}{\pi f T_1}\right| \tag{2}
     \end{align*}
-    with nulls where \(\sin(\pi f T_1) = 0\), \(f = \frac{k}{T_1}\) (\(k = 1, 2, \ldots\)).
-    \(T_1 = 100\,\)ms: \(50\,Hz \cdot 0.1\,s = 5\) and \(60\,Hz \cdot 0.1\,s = 6\) are both
-    integers, so both mains frequencies and all their harmonics are rejected.
+\end{enumerate}
+
+\subsubsection{Analysis}
+\begin{enumerate}
+  \item \textbf{Poles}: (2) is entire (no poles): a finite time average.
+  \item \textbf{Zeroes (\(N(f) = 0\))}: \(\sin(\pi f T_1) = 0\), \(f \neq 0\): \(f_z = \frac{k}{T_1}\) (\(k = 1, 2, \ldots\)); \(T_1 = 100\,\)ms puts
+    nulls at every multiple of \(10\,\)Hz, so \(50\,\)Hz, \(60\,\)Hz and all their harmonics are rejected.
+  \item \textbf{DC Gain (\(H(0)\))}: \(\lim_{f \to 0}\frac{\sin(\pi f T_1)}{\pi f T_1} = 1\); code gain \(\frac{N_2}{V_{IN}} = \frac{N_1}{V_{REF}}\) [from (1)].
   \item \textbf{Conversion Time}: \(N_1 = 2^n\) and \(N_2 \leq N_1\) (as
     \(\overline{V_{IN}} \leq V_{REF}\)), so at most \((N_1 + N_2) T_{clk} = 2 \cdot 2^n T_{clk} = 2^{n+1} T_{clk}\).
-    16 bits at \(f_{clk} = 1\,\)MHz: \(2^{17} \cdot 1\,\mu s = 131072\,\mu s = 131\,ms\).
+  \item \textbf{Output Swing (Max)}: the integrator peak at full scale,
+    \(|V_x(T_1)| = \frac{V_{REF} T_1}{RC} \leq |V_{OL}|\), sets \(RC \geq \frac{V_{REF} T_1}{|V_{OL}|}\).
+  \item \textbf{Impedances}:
+    \paragraph{At Input:} \(Z_{in} = R\) (virtual ground, Section~\ref{sec:amp_integrator}).
+  \item \textbf{Advantages \& Limitations}: \(R\), \(C\), \(T_{clk}\) cancel (high accuracy), mains rejection by
+    choice of \(T_1\), inherently monotonic (a counter); but slow (\(2^{n+1} T_{clk}\)), integrator and
+    comparator offsets need an auto-zero phase, and dielectric absorption of \(C\) limits linearity.
 \end{enumerate}
+
+\subsubsection{Design}
+\begin{enumerate}
+  \item \(T_1 = \frac{k}{f_{mains}}\) for both mains (e.g. \(100\,\)ms); \(f_{clk} = \frac{2^n}{T_1}\).
+  \item \(RC \geq \frac{V_{REF} T_1}{|V_{OL}|}\).
+\end{enumerate}
+
+\subsubsection{Question}
+16 bits, \(f_{clk} = 1\,\)MHz, \(V_{REF} = 2\,V\), \(V_{OL} = -10\,V\). Find the worst conversion time and
+the smallest \(RC\).
+\paragraph{Solution:}
+\begin{align*}
+  t_{conv} &= 2^{n+1} T_{clk} = 2^{17} \cdot 1\,\mu s = 131072\,\mu s = 131\,ms \\
+  T_1 &= 2^{16} \cdot 1\,\mu s = 65.5\,ms \hspace{1cm} RC \geq \frac{2\,V \cdot 65.5\,ms}{10\,V} = 13.1\,ms
+\end{align*}
