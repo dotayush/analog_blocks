@@ -151,3 +151,23 @@ Design a resistive voltage divider to step down a \(10V\) supply to
         \end{aligned}
       \]
 \end{enumerate}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms Vout Vcc Vee G1 G2 It
+  % KCL at Vout (G1 to Vcc, G2 to Vee)
+  vout = solve((Vout - Vcc)*G1 + (Vout - Vee)*G2 == 0, Vout);
+  printf('=== Vout ===\n'); pretty(simplify(vout))
+  printf('=== H1 = Vout/Vcc (Vee = 0) ===\n'); pretty(simplify(subs(vout, Vee, 0)/Vcc))
+  % output impedance: sources shorted, It into Vout
+  vo = solve(Vout*G1 + Vout*G2 == It, Vout);
+  printf('=== Zout ===\n'); pretty(simplify(vo/It))
+
+  % Question: 10 V -> 3.3 V, R2 = 10k
+  r = 3.3/6.7; R2 = 10e3; R1 = R2/r;
+  printf('R2/R1 = %.4f, R1 = %.2f k, Vout = %.3f V, Zin = %.1f k, Zout = %.2f k\n', ...
+         r, R1/1e3, 10*R2/(R1 + R2), (R1 + R2)/1e3, R1*R2/(R1 + R2)/1e3);
+\end{lstlisting}

@@ -136,3 +136,16 @@ a factor of 10. Assume \(C_1 = 1\mu F\).
     Check: \(\frac{I_{out}}{I_{in}} = \frac{C_1}{C_1 + C_2} = \frac{1 \mu F}{1 \mu F + 9 \mu F} = \frac{1}{10}\).
 \end{enumerate}
 
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms s Vin Iin C1 C2
+  vin = solve(Iin == Vin*s*C1 + Vin*s*C2, Vin);
+  printf('=== I_C1/Iin, I_C2/Iin ===\n'); pretty(simplify(vin*s*C1/Iin)); pretty(simplify(vin*s*C2/Iin))
+
+  % Question: divide by 10, C1 = 1 uF
+  c1 = 1e-6; c2 = 9*c1;
+  printf('C2 = %.0f uF, I_C1/Iin = %.2f\n', c2*1e6, c1/(c1 + c2));
+\end{lstlisting}

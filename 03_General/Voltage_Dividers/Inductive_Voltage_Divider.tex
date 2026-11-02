@@ -135,3 +135,19 @@ value.
       Z_{out} &= s(0.7 \cdot 18nH) = s(12.6nH) = j 2 \pi f (12.6nH)
     \end{align*}
 \end{enumerate}
+
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms s Vout Vcc Vee L1 L2
+  % KCL at Vout (L1 to Vcc, L2 to Vee)
+  vout = solve((Vout - Vcc)/(s*L1) + (Vout - Vee)/(s*L2) == 0, Vout);
+  printf('=== Vout ===\n'); pretty(simplify(vout))
+  printf('=== Zin, Zout ===\n'); pretty(simplify(s*L1 + s*L2)); pretty(simplify(1/(1/(s*L1) + 1/(s*L2))))
+
+  % Question: 10 V -> 7 V
+  r = (0 - 7)/(7 - 10);
+  printf('L2/L1 = %.3f, Zin = s*%.3f*L1, Zout = s*%.3f*L1\n', r, 1 + r, r/(1 + r));
+\end{lstlisting}

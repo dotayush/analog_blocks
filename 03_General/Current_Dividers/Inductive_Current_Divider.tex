@@ -131,3 +131,16 @@ Determine the output current \(I_{L_1}\) and \(I_{L_2}\) for the following value
     Check: \(I_{L_1} + I_{L_2} = 6.67mA + 3.33mA = 10mA = I_{in}\).
 \end{enumerate}
 
+\subsubsection{Code}
+\begin{lstlisting}[language=Octave]
+  clear; clc;
+  pkg load symbolic;
+
+  syms s Vin Iin L1 L2
+  vin = solve(Iin == Vin/(s*L1) + Vin/(s*L2), Vin);
+  printf('=== I_L1/Iin, I_L2/Iin ===\n'); pretty(simplify(vin/(s*L1)/Iin)); pretty(simplify(vin/(s*L2)/Iin))
+
+  % Question: L1 = 10 mH, L2 = 20 mH, Iin = 10 mA
+  l1 = 10e-3; l2 = 20e-3; i = 10e-3;
+  printf('I_L1 = %.2f mA, I_L2 = %.2f mA\n', i*l2/(l1 + l2)*1e3, i*l1/(l1 + l2)*1e3);
+\end{lstlisting}
