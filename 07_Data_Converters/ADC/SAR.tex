@@ -21,7 +21,8 @@ very low power, no op-amp.
 \end{circuitfig}
 
 \subsubsection{Transfer Function}
-\textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}: trial \(k\)
+\begin{enumerate}
+  \item \textbf{Large Signal, Time Domain, DC Input Analysis (Q5)}: trial \(k\)
 (\(k = n - 1 \ldots 0\)) sets \(b_k = 1\) with all decided higher bits kept and
 the lower bits 0, so the DAC (Section~\ref{sec:dc_char}) outputs
 \begin{align*}
@@ -43,13 +44,23 @@ then floated (charge conserved) and the bottom plates switched to
 \begin{align*}
   \sum_{k=0}^{n-1} 2^k C_u (V_x - b_k V_{REF}) + C_u (V_x - 0) &= -2^n C_u V_{IN} \\
   2^n C_u V_x - C_u V_{REF} \sum_k b_k 2^k &= -2^n C_u V_{IN} \\
-  V_x &= -V_{IN} + \frac{\sum_k b_k 2^k}{2^n} V_{REF} = -V_{IN} + \frac{D}{2^n} V_{REF} \hspace{1cm} [\div 2^n C_u]
+  V_x &= -V_{IN} + \frac{\sum_k b_k 2^k}{2^n} V_{REF} = -V_{IN} + \frac{D}{2^n} V_{REF} \tag{1}
 \end{align*}
 The comparator only checks the sign of \(V_x\) (\(b_k\) kept if \(V_x \leq 0\));
 sampling, DAC and subtraction share one capacitor array.
+  \item \textbf{Small Signal, Frequency Domain, AC Input Analysis (Q4)}: switch resistance \(R_{sw}\)
+    into the array \(2^n C_u\) (sampling and each trial):
+    \begin{align*}
+      H(s) &= \frac{1}{1 + s R_{sw} 2^n C_u} = \frac{1}{1 + s T_c} \hspace{1cm} [T_c = R_{sw} 2^n C_u] \tag{2}
+    \end{align*}
+\end{enumerate}
 
 \subsubsection{Analysis}
 \begin{enumerate}
+  \item \textbf{Poles (\(D(s) = 0\))}: from (2), \(s_p = -\frac{1}{T_c} = -\frac{1}{R_{sw} 2^n C_u}\).
+  \item \textbf{Zeroes (\(N(s) = 0\))}: none.
+  \item \textbf{DC Gain (\(H(0)\))}: \(H(0) = 1\); code gain \(\frac{2^n}{V_{REF}}\) [from (1)], with \(C_p\) a gain error
+    on \(V_x\) only (Section~\ref{sec:dac_mdac}).
   \item \textbf{Speed}: one sampling cycle plus \(n\) trials,
     \(f_s = \frac{f_{clk}}{n + 1}\). The DAC (time constant \(T_c\)) must settle a full
     scale step to \(\frac{1}{2}\) LSB in each cycle:
@@ -58,10 +69,24 @@ sampling, DAC and subtraction share one capacitor array.
       e^{t/T_c} &> 2^{n+1} \hspace{1cm} \Rightarrow \hspace{1cm} t > T_c \ln(2^{n+1}) = (n + 1) T_c \ln 2 \\
       T_c (n + 1) \ln 2 &< \frac{1}{f_{clk}}
     \end{align*}
-  \item \textbf{Comparator}: the same comparator makes every decision, so its
+  \item \textbf{Comparator Offset and Noise}: the same comparator makes every decision, so its
     offset shifts all transitions equally (a pure offset, no DNL); its noise
     must be \(< \frac{X_{LSB}}{2}\) at the final, smallest trial.
-  \item \textbf{Linearity}: set by the DAC matching (Section~\ref{sec:dac_mdac}).
+  \item \textbf{Linearity (DNL, INL)}: set by the DAC matching, \(SD(DNL_{N/2}) = \sqrt{2^n - 1}\,S_C\) (Section~\ref{sec:dac_mdac}).
+  \item \textbf{Impedances}:
+    \paragraph{At Input:} the sampling array \(2^n C_u\) through \(R_{sw}\) (switched capacitive load).
+    \paragraph{At Reference:} code dependent switched capacitance (charge drawn every trial).
+  \item \textbf{Advantages \& Limitations}: very low power (only a comparator and switches, no
+    op-amp), sampling, DAC and subtraction in one array, a single comparator (offset only);
+    but \(n + 1\) cycles per sample (moderate speed), linearity set by capacitor matching, and a
+    reference that must settle every trial.
+\end{enumerate}
+
+\subsubsection{Design}
+\begin{enumerate}
+  \item \(C_u\) from \(\frac{kT}{C}\) and matching (Section~\ref{sec:dac_mdac}).
+  \item \(f_{clk} = (n + 1) f_s\), \(R_{sw} < \frac{1}{(n + 1)\ln 2 \cdot 2^n C_u f_{clk}}\).
+  \item Comparator noise \(< \frac{X_{LSB}}{2}\).
 \end{enumerate}
 
 \subsubsection{Question}
