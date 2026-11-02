@@ -86,6 +86,14 @@ a voltage buffer.
   \item \textbf{Output Swing (Max)}: \(V_{OUT} = V_{IN} - V_{th} - V_{ov}\) (a level shift of \(V_{GS}\));
     the sink needs \(V_{OUT} \geq V_{ov,sink}\) and \(M_1\) needs \(V_{IN} \leq V_{dd} + V_{th}\):
     \(V_{ov,sink} \leq V_{OUT} \leq V_{dd} - V_{ov}\).
+  \item \textbf{Slew Rate (Large Signal, Time Domain, AC Input Analysis (Q6))}: rising, \(M_1\) can source a large
+    current into \(C_L\) (its \(V_{GS}\) grows); falling, \(M_1\) turns off and only the sink \(I_{bias}\) discharges \(C_L\):
+    \begin{align*}
+      \left.\frac{dV_{OUT}}{dt}\right|_{fall} &= -\frac{I_{bias}}{C_L} \hspace{1cm} \Rightarrow \hspace{1cm} f \leq \frac{I_{bias}}{2\pi C_L V_p}
+    \end{align*}
+    (a sine of amplitude \(V_p\) has slope \(2\pi f V_p\)); e.g.\ \(100\,\mu\)A into \(5\,\)pF: \(20\,\)V/\(\mu\)s.
+  \item \textbf{Distortion}: the gain \(\frac{g_m}{g_m + g_{mb} + G_L}\) changes with \(V_{OUT}\) through \(g_{mb}\) (body effect,
+    \(V_{SB} = V_{OUT}\)); tying the body to the source (separate well) removes it.
   \item \textbf{Advantages \& Limitations}: \(Z_{in} \to \infty\), \(Z_{out} \approx \frac{1}{g_m}\),
     bandwidth \(\approx \frac{g_m}{2\pi C_L}\), \(C_{gs}\) bootstrapped; but gain \(< 1\) (body effect),
     costs \(V_{GS}\) of headroom, and \(V_{th}\) moves with \(V_{OUT}\) (non-linearity).

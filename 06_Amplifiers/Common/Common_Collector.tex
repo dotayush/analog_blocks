@@ -88,6 +88,11 @@ multiplied by \(B_F + 1\), output impedance divided by \(B_F + 1\).
     \end{align*}
   \item \textbf{Output Swing (Max)}: \(V_{OUT} = V_{IN} - V_{BE} - I_B R_S\); forward active
     \(V_{CE} = V_{cc} - V_{OUT} \gtrsim 0.3\,V\): \(0 \leq V_{OUT} \lesssim V_{cc} - 0.3\,V\).
+  \item \textbf{Slew Rate (Large Signal, Time Domain, AC Input Analysis (Q6))}: falling edges are limited by the
+    emitter current source \(I_{bias}\) (the transistor turns off): \(\left.\frac{dV_{OUT}}{dt}\right|_{fall} = -\frac{I_{bias}}{C_L}\); with
+    a resistor \(R_E\) instead, the discharge is the exponential \(V_{OUT} e^{-t/(R_E C_L)}\).
+  \item \textbf{Input Impedance with \(C_L\)}: \(Z_{in} = r_{be} + (B_F + 1)\frac{1}{G_E + sC_L}\) [the \(R_E\) term of \(Z_{in}\) with
+    \(G_E \to Y_E\)]: the load capacitance is seen at the base divided by \(B_F + 1\).
   \item \textbf{Advantages \& Limitations}: \(Z_{in}\) multiplied and \(Z_{out}\) divided by
     \(B_F + 1\), gain \(\approx 1\), wide bandwidth; but costs \(V_{BE} \approx 0.7\,V\) of headroom,
     gain \(< 1\), and \(Z_{out}\) depends on the source resistance \(R_S\).

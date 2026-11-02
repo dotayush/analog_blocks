@@ -70,6 +70,10 @@ voltage gain.
     \end{align*}
   \item \textbf{Output Swing (Max)}: forward active \(V_{CB} \gtrsim -0.4\,\)V:
     \(V_B - 0.4\,V \lesssim V_{OUT} \leq V_{cc}\).
+  \item \textbf{Input Matching}: \(Z_{in} = \frac{A_F}{g_m} = \frac{A_F V_T}{I_C}\) equal to a line impedance \(R_0\):
+    \(I_C = \frac{A_F V_T}{R_0}\); e.g.\ \(R_0 = 50\,\Omega\): \(I_C = \frac{0.99 \cdot 26\,mV}{50\,\Omega} = 515\,\mu\)A.
+  \item \textbf{Bandwidth}: with \(C_\pi\) at the emitter, the input pole \(\frac{G_S + g_m + g_{be}}{C_\pi}\) is above
+    \(\frac{g_m}{C_\pi} \approx 2\pi f_T\) (\(C_\mu\) neglected): the CB stage is limited by the output pole, not the device.
   \item \textbf{Advantages \& Limitations}: low \(Z_{in} = \frac{A_F}{g_m}\) (current buffer,
     gain \(A_F\)), high \(Z_{out}\), no Miller effect; but a voltage source with \(R_S\) is
     attenuated by \(\frac{G_S}{G_S + g_m + g_{be}}\), and the emitter carries the full signal current.

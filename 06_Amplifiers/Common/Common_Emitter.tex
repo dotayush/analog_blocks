@@ -91,6 +91,18 @@ at the collector, emitter shared. An emitter resistor \(G_E\)
     the input range grows by the same factor the gain falls.
   \item \textbf{Output Swing (Max)}: forward active \(V_{CE} \gtrsim 0.3\,\)V:
     \(V_E + 0.3\,V \lesssim V_{OUT} \leq V_{cc}\).
+  \item \textbf{Distortion (Large Signal, Time Domain, AC Input Analysis (Q6))}: \(R_E = 0\),
+    \(V_{BE} = V_{BE(Q)} + V_p\sin\omega t\), with \(e^x = 1 + x + \frac{x^2}{2} + \cdots\):
+    \begin{align*}
+      I_C &= I_{C(Q)}e^{\frac{V_p\sin\omega t}{V_T}} \approx I_{C(Q)}\left(1 + \frac{V_p}{V_T}\sin\omega t + \frac{V_p^2}{2V_T^2}\sin^2\omega t\right) \\
+      HD_2 &= \frac{\frac{V_p^2}{2V_T^2}\cdot\frac{1}{2}}{\frac{V_p}{V_T}} = \frac{V_p}{4V_T} \hspace{1cm} [\sin^2 x = \tfrac{1 - \cos 2x}{2}]
+    \end{align*}
+    \(HD_2 < 1\%\) needs \(V_p < 0.04\,V_T \approx 1\,\)mV; degeneration divides \(V_{be}\) by \(1 + (g_m + g_{be})R_E\) (Linearity, above).
+  \item \textbf{Noise}: collector shot noise \(2qI_C\), base resistance \(4kTr_b\) and the load \(4kTG_C\), referred to
+    the base (\(R_E = 0\)):
+    \begin{align*}
+      \overline{V_{n,in}^2} &= \frac{2qI_C}{g_m^2} + 4kTr_b + \frac{4kTG_C}{g_m^2} = \frac{2kT}{g_m} + 4kTr_b + \frac{4kTG_C}{g_m^2} \hspace{1cm} \left[\frac{qI_C}{g_m^2} = \frac{qV_T}{g_m} = \frac{kT}{g_m}\right]
+    \end{align*}
   \item \textbf{Advantages \& Limitations}: \(g_m = \frac{I_C}{V_T}\) is the largest
     transconductance per current of any device, degeneration gives a resistor ratio gain
     \(-A_F\frac{R_C}{R_E}\) and wider linear range; but finite \(Z_{in} = r_{be} + (B_F + 1)R_E\)

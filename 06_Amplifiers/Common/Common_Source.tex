@@ -147,6 +147,24 @@ outside the symbol.
     \end{align*}
   \item \textbf{Output Swing (Max)}: saturation needs \(V_{OUT} \geq V_{IN} - V_{th} = V_{ov}\);
     cutoff gives \(V_{OUT} = V_{dd}\): \(V_{ov} \leq V_{OUT} \leq V_{dd}\).
+  \item \textbf{Distortion (Large Signal, Time Domain, AC Input Analysis (Q6))}: \(V_{GS} = V_{GS(Q)} + V_p\sin\omega t\)
+    in the square law (\(K_{CLM} = 0\)):
+    \begin{align*}
+      I_D &= k_n (V_{ov} + V_p\sin\omega t)^2 = k_n\left(V_{ov}^2 + 2V_{ov}V_p\sin\omega t + V_p^2\sin^2\omega t\right) \\
+      I_D &= k_n\left(V_{ov}^2 + \frac{V_p^2}{2}\right) + 2k_nV_{ov}V_p\sin\omega t - \frac{k_nV_p^2}{2}\cos 2\omega t \hspace{1cm} [\sin^2 x = \tfrac{1 - \cos 2x}{2}] \\
+      HD_2 &= \frac{\frac{k_nV_p^2}{2}}{2k_nV_{ov}V_p} = \frac{V_p}{4V_{ov}}
+    \end{align*}
+    e.g.\ \(HD_2 < 1\%\) needs \(V_p < 0.04\,V_{ov}\) (\(8\,\)mV at \(V_{ov} = 0.2\,\)V). No third harmonic: the square law is
+    exactly second order.
+  \item \textbf{Noise}: drain current noise \(4kT\frac{2}{3}g_m\) (channel) and \(4kTG_D\) (load), referred to the
+    gate by dividing by \(g_m^2\):
+    \begin{align*}
+      \overline{V_{n,in}^2} &= 4kT\left(\frac{2}{3g_m} + \frac{G_D}{g_m^2}\right) \ \text{[V}^2\text{/Hz]}
+    \end{align*}
+    plus flicker \(\frac{K_f}{C_{ox}WLf}\) (Section~\ref{sec:devices_mosfet}). A larger \(g_m\) lowers both terms.
+  \item \textbf{Supply Rejection}: \(V_{dd}\) couples to \(V_{out}\) through the divider \(G_D\) against \(g_o\)
+    (\(V_g\) held): \(\frac{V_{out}}{V_{dd}} = \frac{G_D}{G_D + g_o} \approx 1\), so \(PSRR = \frac{|A_{V0}|}{G_D/(G_D + g_o)} = \frac{g_m}{G_D}\):
+    resistively loaded stages pass supply noise almost unattenuated.
   \item \textbf{Advantages \& Limitations}: the highest gain per transistor
     (\(\frac{g_m}{G_D + g_o}\)), \(Z_{in} \to \infty\) at DC; but inverting, \(Z_{out} = R_D \parallel r_o\)
     is high (needs a buffer for low impedance loads), Miller multiplied \(C_{gd}\) limits the

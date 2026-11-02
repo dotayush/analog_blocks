@@ -134,6 +134,12 @@ The DC path for the drain current goes through \(G_S\) and the source
     \end{align*}
     the cascode boost: \(R_S\) below a common gate device is multiplied by \(\approx g_m r_o\).
   \item \textbf{Output Swing (Max)}: from Q5, \(V_B - V_{th} \leq V_{OUT} \leq V_{dd}\).
+  \item \textbf{Noise}: the channel noise \(4kT\frac{2}{3}g_m\) of \(M_1\), referred to the input as a voltage with the
+    source driven by \(V_{in}\) (\(G_S \to \infty\)): \(\overline{V_{n,in}^2} = \frac{4kT\frac{2}{3}g_m + 4kTG_D}{(g_m + g_{mb})^2}\); with a current
+    input (\(G_S \to 0\)) the channel noise circulates inside the device and only \(4kTG_D\) and the bias
+    source noise reach the output.
+  \item \textbf{Input Matching}: \(Z_{in} \approx \frac{1}{g_m + g_{mb}}\) [\(R_D \ll r_o\)] equal to a line impedance \(R_0\)
+    sets \(g_m + g_{mb} = \frac{1}{R_0}\); e.g.\ \(R_0 = 50\,\Omega\) needs \(g_m + g_{mb} = 20\,\)mS.
   \item \textbf{Advantages \& Limitations}: non-inverting, low \(Z_{in}\) (current buffer),
     high \(Z_{out}\), no Miller multiplication (wide bandwidth); but the low \(Z_{in}\) loads a
     voltage source (gain falls with \(R_S\)), and the signal current flows through the
