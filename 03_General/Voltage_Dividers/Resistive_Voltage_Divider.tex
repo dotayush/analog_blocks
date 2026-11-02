@@ -97,6 +97,11 @@ current leaves the node) we get:
     respective frequency of operation or If you can control the load,
     keep the load impedance at least 10 times larger than the output
     impedance of the divider.
+  \item \textbf{Power:} the source sees \(R_1 + R_2 = \frac{G_1 + G_2}{G_1G_2}\):
+    \(P = \frac{V_{in}^2}{R_1 + R_2} = V_{in}^2\frac{G_1G_2}{G_1 + G_2}\), drawn continuously.
+  \item \textbf{Noise:} both resistors' \(4kTR\) reach the output as the Thevenin resistance (Section~\ref{sec:theory_general_noise}):
+    \(\overline{V_{out}^2} = 4kT\frac{1}{G_1 + G_2}\) [V\(^2\)/Hz]; lower noise and lower loading both need small resistors, i.e.\ more
+    power.
 \end{enumerate}
 
 \subsubsection{Question}

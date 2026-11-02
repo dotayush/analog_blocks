@@ -177,6 +177,19 @@ low-pass and high-pass characteristics.
         Z_{out} &= \frac{R_1 - j \omega R_1^2 C_1}{1 + (\omega R_1 C_1)^2} \hspace{1cm} \text{(\(j^2 = -1\))} \\
         Z_{out} &= \frac{R_1}{1 + (\omega R_1 C_1)^2} - j \frac{\omega R_1^2 C_1}{1 + (\omega R_1 C_1)^2}
       \end{align*}
+  \item \textbf{Step Response (Small Signal, Time Domain, AC Input Analysis (Q2)):}
+    \(V_1 = \frac{V_s}{s}\) into \(H_1(s)\), \(V_2 = 0\):
+    \begin{align*}
+      V_{out}(s) &= \frac{V_s}{s(1 + sR_1C_1)} = V_s\left(\frac{1}{s} - \frac{R_1C_1}{1 + sR_1C_1}\right) \hspace{1cm} \text{[Partial fractions]} \\
+      V_{out}(t) &= V_s\left(1 - e^{-\frac{t}{R_1C_1}}\right) \hspace{1cm} \text{[Inverse Laplace]}
+    \end{align*}
+    \(63\%\) at \(t = R_1C_1\), \(10\%\) to \(90\%\) in \(R_1C_1\ln 9 = 2.2\,R_1C_1\); the high pass gives the complement
+    \(V_s e^{-\frac{t}{R_1C_1}}\).
+  \item \textbf{Noise (\(\frac{kT}{C}\)):} \(R_1\)'s noise \(4kTR_1\) (Section~\ref{sec:theory_general_noise}) reaches \(V_{out}\) through \(H_1\):
+    \begin{align*}
+      \overline{V_{out}^2} &= \int_0^\infty \frac{4kTR_1}{1 + (2\pi fR_1C_1)^2}df = 4kTR_1\cdot\frac{1}{4R_1C_1} = \frac{kT}{C_1} \hspace{1cm} \left[\int_0^\infty \frac{df}{1 + (2\pi f\tau)^2} = \frac{1}{4\tau}\right]
+    \end{align*}
+    independent of \(R_1\): only a larger \(C_1\) lowers it (\(\sqrt{kT/1\,pF} = 64\,\mu\)V rms at \(300\,\)K).
 \end{enumerate}
 
 \subsubsection{Question}

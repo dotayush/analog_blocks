@@ -478,6 +478,9 @@ or parallel. An RLC Band Filter can be broken down into two types:
             \end{align*}
           \end{enumerate}
     \end{enumerate}
+  \item \textbf{Noise Bandwidth:} for the band pass \(H(s) = \frac{s\frac{\omega_0}{Q}}{s^2 + s\frac{\omega_0}{Q} + \omega_0^2}\) (peak 1), white noise of density
+    \(\overline{V_n^2}\) gives \(\overline{V_{out}^2} = \overline{V_n^2}\int_0^\infty |H(j2\pi f)|^2 df = \overline{V_n^2}\cdot\frac{\pi}{2}\cdot\frac{f_0}{Q}\): the equivalent noise
+    bandwidth is \(\frac{\pi}{2}BW\), \(57\%\) wider than the \(-3\,\)dB bandwidth.
 \end{enumerate}
 
 \subsubsection{Question}

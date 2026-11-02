@@ -188,6 +188,13 @@ at $V_{out}$ on Full Schematic, we get:
       \end{align*}
     Both impedances are purely reactive: \(Z_{in} = 0\) and
     \(|Z_{out}| \to \infty\) at \(\omega = \frac{1}{\sqrt{L_1 C_1}}\).
+  \item \textbf{Step Response (Small Signal, Time Domain, AC Input Analysis (Q2)):}
+    \(V_1 = \frac{V_s}{s}\) into \(H_1(s) = \frac{1}{1 + s^2L_1C_1}\), \(\omega_0 = \frac{1}{\sqrt{L_1C_1}}\):
+    \begin{align*}
+      V_{out}(s) &= \frac{V_s\,\omega_0^2}{s(s^2 + \omega_0^2)} = V_s\left(\frac{1}{s} - \frac{s}{s^2 + \omega_0^2}\right) \hspace{1cm} \text{[Partial fractions]} \\
+      V_{out}(t) &= V_s\left(1 - \cos\omega_0 t\right) \hspace{1cm} \text{[Inverse Laplace]}
+    \end{align*}
+    a lossless filter rings for ever between 0 and \(2V_s\): any real use needs a resistance (RLC, Section~\ref{sec:filt_rlc_band}).
 \end{enumerate}
 
 \subsubsection{Question}
