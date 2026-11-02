@@ -31,7 +31,7 @@ range, regulation recovers (and exceeds) the telescopic gain.
   \draw (BP.+) -- ++(-0.6,0) node[left]{$V_{refp}$};
   \draw (BP.out) -- ++(0.3,0) |- (M5.G);
   \node at (-2.2,3.9) {$A_{bp}$};
-  \draw (0,3.35) node[circ]{} -- (1.4,3.35) node[circ]{} node[above]{$V_{o1}$};
+  \draw (0,3.35) node[circ]{} -- (1.4,3.35) node[circ]{} node[above]{$V_{o1}$} to[capacitor, l={$C_L$}] (1.4,1.6) node[ground]{};
   \draw (3,6.0) node[vcc]{$V_{dd}$} to[american current source, l={$\frac{I_T}{2} + \frac{g_{m1} V_{id}}{2}$}] (3,1.1) -- (0,1.1);
 \end{circuitfig}
 
@@ -67,24 +67,55 @@ range, regulation recovers (and exceeds) the telescopic gain.
       |A_d| &= \frac{2 |I_{sc}| (Z_{dn} \parallel Z_{up})}{V_{id}} \approx g_{m1}(Z_{dn} \parallel Z_{up})
              \approx g_{m1}\left[g_{m3} A_{bn} r_{o3} R_f \parallel g_{m5} A_{bp} r_{o5} r_{o7}\right]
     \end{align*}
-    keeping the dominant term of each impedance (\(1 + A_b \approx A_b\)).
+    keeping the dominant term of each impedance (\(1 + A_b \approx A_b\)). With \(C_L\) at each output:
+    \begin{align*}
+      A_d(s) &= \frac{A_d}{1 + s (Z_{dn} \parallel Z_{up}) C_L} \tag{1}
+    \end{align*}
 \end{enumerate}
 
 \subsubsection{Analysis}
 \begin{enumerate}
-  \item \textbf{Gain Estimate}: take every \(g_m r_o\) equal, \(R_f \approx r_o\) and
-    \(A_{bn} = A_{bp} = A_b\). Then
+  \item \textbf{Poles (\(D(s) = 0\))}: from (1),
+    \(s_{p1} = -\frac{1}{(Z_{dn} \parallel Z_{up}) C_L}\) (dominant); non-dominant at the fold node
+    \(\approx -\frac{g_{m3}}{C_f}\), plus the auxiliary doublets (Section~\ref{sec:amp_regulated}).
+  \item \textbf{Zeroes (\(N(s) = 0\))}: none from (1); each auxiliary loop adds a zero at
+    \(\approx \omega_b\) cancelling its doublet pole (Section~\ref{sec:amp_regulated}).
+  \item \textbf{DC Gain (\(A_d(0)\))}: every \(g_m r_o\) equal, \(R_f \approx r_o\), \(A_{bn} = A_{bp} = A_b\):
     \begin{align*}
       Z_{dn} \approx Z_{up} &\approx g_m r_o \cdot A_b \cdot r_o \hspace{1cm}
       Z_{dn} \parallel Z_{up} \approx \frac{g_m r_o A_b r_o}{2} \\
       |A_d| &\approx g_m \cdot \frac{g_m r_o A_b r_o}{2} = \frac{(g_m r_o)^2 A_b}{2}
     \end{align*}
-    With single stage auxiliary amplifiers \(A_b \approx g_m r_o\):
-    \(|A_d| \approx \frac{(g_m r_o)^3}{2}\); e.g. \(g_m r_o = 50\):
-    \(\frac{50^3}{2} = \frac{125000}{2} = 62500\) (\(20\log_{10} 62500 = 96\,dB\)) in a single stage.
-  \item \textbf{Gain-Bandwidth}: \(GB = \frac{|A_d|\, p_1}{2\pi}\) with
-    \(p_1 = \frac{1}{(Z_{dn} \parallel Z_{up}) C_L}\) gives \(GB = \frac{g_{m1}}{2\pi C_L}\), unchanged.
-    The auxiliary amplifiers must have their unity gain frequency between the
-    main loop bandwidth and the main non-dominant pole to avoid slow doublets
-    (Section~\ref{sec:amp_regulated}).
+    single stage auxiliary amplifiers \(A_b \approx g_m r_o\): \(|A_d| \approx \frac{(g_m r_o)^3}{2}\); e.g. \(g_m r_o = 50\):
+    \(\frac{50^3}{2} = 62500\) (\(20\log_{10} 62500 = 96\,dB\)) in a single stage.
+  \item \textbf{Gain-Bandwidth Product (\(GB\))}:
+    \(GB = |A_d| \frac{|s_{p1}|}{2\pi} = g_{m1}(Z_{dn} \parallel Z_{up})\cdot\frac{1}{2\pi(Z_{dn} \parallel Z_{up}) C_L} = \frac{g_{m1}}{2\pi C_L}\),
+    unchanged. The auxiliary unity gain frequencies must lie between \(2\pi GB\) and the main
+    non-dominant pole (Section~\ref{sec:amp_regulated}).
+  \item \textbf{Impedances}:
+    \paragraph{At Input:} \(I_G = 0\): \(Z_{in} \to \infty\) at DC.
+    \paragraph{At Output:} \(Z_{out} = Z_{dn} \parallel Z_{up} \approx \frac{g_m r_o A_b r_o}{2}\) per side.
+  \item \textbf{Output Swing (Max)}: from Q5, \(V_{ov,B} + V_{ov3} \leq V_O \leq V_{dd} - |V_{ov7}| - |V_{ov5}|\).
+  \item \textbf{Advantages \& Limitations}: telescopic level gain (or more) with the folded input
+    range and swing; but two auxiliary amplifiers (power, area), doublets that must be placed
+    correctly for settling, and \(I_{dd} \geq 2 I_T\) as the folded cascode.
 \end{enumerate}
+
+\subsubsection{Design}
+\begin{enumerate}
+  \item The folded cascode design (Section~\ref{sec:amp_folded}) for \(SR\), \(GB\), swing.
+  \item \(A_b\) from the required gain: \(A_b \approx \frac{2 |A_d|}{(g_m r_o)^2}\).
+  \item \(V_{refn} = V_{ov,B}\), \(V_{dd} - V_{refp} = |V_{ov7}|\) plus margin.
+\end{enumerate}
+
+\subsubsection{Question}
+\(g_m = 1\,mS\), \(r_o = 100\,k\Omega\), \(R_f \approx r_o\), \(A_b = 50\), \(C_L = 1\,pF\). Find \(|A_d|\),
+\(f_{p1}\) and \(GB\).
+\paragraph{Solution:}
+\begin{align*}
+  Z_{dn} \approx Z_{up} &\approx g_m r_o A_b r_o = 10^{-3} \cdot 10^{5} \cdot 50 \cdot 10^{5} = 500\,M\Omega \hspace{1cm}
+  Z_{dn} \parallel Z_{up} = 250\,M\Omega \\
+  |A_d| &= g_m (Z_{dn} \parallel Z_{up}) = 10^{-3} \cdot 2.5 \times 10^{8} = 250000 \hspace{1cm} (108\,dB) \\
+  f_{p1} &= \frac{1}{2\pi \cdot 2.5 \times 10^{8}\,\Omega \cdot 10^{-12}\,F} = \frac{1}{1.571 \times 10^{-3}\,s} = 637\,Hz \\
+  GB &= \frac{g_m}{2\pi C_L} = \frac{10^{-3}}{2\pi \cdot 10^{-12}}\,Hz = 159\,MHz \hspace{1cm} [= 250000 \cdot 637\,Hz]
+\end{align*}
