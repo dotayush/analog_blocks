@@ -38,10 +38,13 @@ address this with worked examples.
 Figure~\ref{fig:analysis-classes} considers three such characteristics to
 build a classification space.
 \begin{enumerate}
-    \item \textbf{Input Excitation:} The input is an entirely new signal of
+    \item \textbf{Input Excitation:} The input is an independent source of
       interest, injected at a node so that the transfer function to another
       node (acting as the output) can be computed. It is not the bias of the
-      circuit. This input is either DC or AC.
+      circuit: the bias sources only set the operating point, while the input
+      is the signal being transferred, so it is kept whether the devices are
+      linearized or not. This input is either DC (constant in time) or AC
+      (time varying).
       This forms the Axis of Input Excitation, the X-axis of the
       classification space.
     \item \textbf{Mathematical Representation:} The response is computed
@@ -82,25 +85,44 @@ analysis technique that arises from it.
 
 \begin{itemize}
     \item \textbf{Q1: Small Signal, Time Domain, DC Input:}
-      The analysis of a circuit with a DC input
-      signal, where the response is computed in the time domain, and the
-      non-linear devices are linearized about a bias point. In small
-      signal analysis, the DC operating point is used to compute the
-      linearization and is then removed from the circuit: independent DC
-      voltage sources are shorted, independent DC current sources are
-      opened, leaving only the incremental (perturbation) behaviour about
-      that point. A DC input to this linearized circuit is therefore
-      identically zero by construction. This analysis is \textbf{not useful}.
+      The analysis of a circuit with a DC input signal, where the response is
+      computed in the time domain, and the non-linear devices are linearized
+      about a bias point. Linearizing zeroes the \emph{bias} sources (DC voltage
+      sources shorted, DC current sources opened); the input is an independent
+      source of interest, not a bias source, so it stays. A constant input
+      \(V_{in}\) on top of the bias \(V_{IN,Q}\) moves the output by:
+      \begin{align*}
+        V_{OUT} &= f(V_{IN}) \hspace{1cm} [\text{Q5 transfer characteristic}] \\
+        V_{OUT,Q} + V_{out} &= f(V_{IN,Q} + V_{in}) \approx f(V_{IN,Q}) + f'(V_{IN,Q})\, V_{in} \hspace{1cm} [\text{Linearizing about } V_{IN,Q}] \\
+        V_{out} &= f'(V_{IN,Q})\, V_{in} = \left.\frac{dV_{OUT}}{dV_{IN}}\right|_{Q} V_{in} \hspace{1cm} [V_{OUT,Q} = f(V_{IN,Q})]
+      \end{align*}
+      The result is real and non-zero: a \textbf{shift of the bias point}, given
+      by the slope of the \textbf{Q5} characteristic. It holds a single piece of
+      information, the response at zero frequency (the DC bin). It is used for
+      small DC errors and sensitivities (offset, drift, supply and load
+      regulation), but it is \textbf{redundant} as an analysis technique: the
+      same number is \(H(0)\) from \textbf{Q4} or the slope from \textbf{Q5}.
     \item \textbf{Q2: Small Signal, Time Domain, AC Input:}
       The analysis of a circuit with an AC input
       signal, where the response is computed in the time domain, and the
       non-linear devices are linearized about a bias point. It is a very
-      useful technique, and is equal to the Inverse Laplace Transform of
-      \textbf{Q4}.
+      useful technique (step, pulse and settling responses). It is the Inverse
+      Laplace Transform of \textbf{Q4}:
+      \(V_{out}(t) = \mathcal{L}^{-1}\{H(s) V_{in}(s)\}\).
     \item \textbf{Q3: Small Signal, Frequency Domain, DC Input:}
-      It is the Laplace Transform of \textbf{Q1}, differing only in the Mathematical
-      Representation used. Since \textbf{Q1} is identically zero, so is this one, by
-      linearity of the transform. This analysis is \textbf{not useful}.
+      It is the Laplace Transform of \textbf{Q1}, differing only in the
+      Mathematical Representation used. A DC input has no content away from
+      zero frequency, so only the \(s \to 0\) bin of \(H(s)\) is reached; for a
+      constant \(V_{in}\) applied at \(t = 0\):
+      \begin{align*}
+        V_{out}(s) &= H(s)\frac{V_{in}}{s} \hspace{1cm} [\mathcal{L}\{V_{in}\} = \tfrac{V_{in}}{s}] \\
+        \lim_{t \to \infty} V_{out}(t) &= \lim_{s \to 0} s\, V_{out}(s) = \lim_{s \to 0} s\, H(s)\frac{V_{in}}{s} = H(0)\, V_{in} \hspace{1cm} [\text{Final Value Theorem}]
+      \end{align*}
+      which is the \textbf{Q1} result, \(H(0) = \left.\frac{dV_{OUT}}{dV_{IN}}\right|_{Q}\).
+      The transient on the way there is the step response, an AC (time
+      varying) excitation that belongs to \textbf{Q2} and \textbf{Q4}. This
+      analysis gives a real result (the bias point shift in the DC bin) but is
+      \textbf{redundant}.
     \item \textbf{Q4: Small Signal, Frequency Domain, AC Input:}
       The analysis of a circuit with an AC
       input signal, where the response is computed in the frequency
@@ -121,10 +143,12 @@ analysis technique that arises from it.
       analysis.
     \item \textbf{Q7: Large Signal, Frequency Domain, DC Input:}
       It is the Laplace Transform of \textbf{Q5}, differing only in the
-      Mathematical Representation used. It does contain information about
-      the circuit, namely the frequency response to a DC input but since
-      it is only a single frequency bin at zero, this analysis is
-      \textbf{not useful}.
+      Mathematical Representation used. The devices are not linearized, so
+      there is no transfer function; the output to a constant \(V_{IN}\) is
+      \(V_{OUT}(s) = \frac{f(V_{IN})}{s}\), again a single bin at zero frequency
+      holding the full non-linear operating point \(f(V_{IN})\). It gives a real
+      result but it is the \textbf{Q5} result rewritten, so it is
+      \textbf{redundant}.
     \item \textbf{Q8: Large Signal, Frequency Domain, AC Input:}
       It is the Laplace Transform of \textbf{Q6},
       differing only in the Mathematical Representation used. It contains
@@ -139,9 +163,12 @@ analysis technique that arises from it.
       implemented as FOUR analysis.
 \end{itemize}
 
-Removing \textbf{Q1}, \textbf{Q3} and \textbf{Q7} due to lack of usefulness,
-we can summarize the octants and the analysis techniques that arise
-from them:
+\textbf{Q1}, \textbf{Q3} and \textbf{Q7} are not zero: each returns a DC input's
+effect, which lives only in the zero frequency bin. \textbf{Q1} and \textbf{Q3}
+give the bias point shift \(H(0) V_{in}\) and \textbf{Q7} gives the operating point
+\(f(V_{IN})\); both are already obtained from \textbf{Q4} at \(s = 0\) and from
+\textbf{Q5}. Leaving out these three redundant octants, we can summarize the
+independent octants and the analysis techniques that arise from them:
 \begin{table}[H]
     \centering
     \begin{tabular}{|c|c|c|c|c|c|}\hline
@@ -152,7 +179,7 @@ from them:
       Q6 & 101 & Large Signal & Time      & AC & TRAN \\ \hline
       Q8 & 111 & Large Signal & Frequency & AC & FOUR \\ \hline
     \end{tabular}
-    \caption{Summary of the five useful octants of analysis techniques.}\label{tab:quadrant-summary}
+    \caption{Summary of the five independent octants of analysis techniques.}\label{tab:quadrant-summary}
 \end{table}
 
 \section{Octant/Axes Dependencies}
@@ -162,6 +189,9 @@ understand when analysing circuits.
 \begin{itemize}
     \item \textbf{Q2} and \textbf{Q4} depend on \textbf{Q5} to find a bias
       point to linearize the non-linear devices about.
+    \item \textbf{Q1} (and \textbf{Q3}) is the slope of \textbf{Q5} at the bias
+      point, and equals \textbf{Q4} at \(s = 0\):
+      \(H(0) = \left.\frac{dV_{OUT}}{dV_{IN}}\right|_{Q}\).
     \item \textbf{Q6} can be computed without any knowledge of \textbf{Q5}
       but it is often useful to compute \textbf{Q5} first to find a bias
       point and use that to set initial conditions.
