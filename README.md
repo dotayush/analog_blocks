@@ -39,6 +39,5 @@ main.tex, preamble.tex
 07_Data_Converters/ Characterisation, DAC/, ADC/
 08_PLL_VCO/        phase detectors, charge pump, PLL, VCOs
 09_RF/             reserved
-10_Electromech/    Motors/
 AX_Theory/         appendix: General/, Control_Systems/, EM/
 ```
